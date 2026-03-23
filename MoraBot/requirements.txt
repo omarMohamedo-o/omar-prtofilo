@@ -1,0 +1,36 @@
+# Natural Language Processing
+google-genai
+langchain-google-genai
+python-dotenv
+langchain
+langchain-community
+langchain-huggingface
+langchain-chroma
+chromadb
+openai
+sentence-transformers
+
+# for visulization
+requests
+pillow
+ipython
+
+# for voice recognition
+SpeechRecognition
+faster_whisper
+pyttsx3
+pyaudio
+pygame
+langid
+gtts
+
+# to chat with our data
+docx2txt
+unstructured
+unstructured[pdf]
+
+#for api
+fastapi
+uvicorn[standard]
+python-multipart
+pyrebase4
