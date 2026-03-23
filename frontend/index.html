@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Omar Prtofilo</title>
+    <!-- Favicons -->
+    <!-- <link rel="icon" href="/favicon.ico" sizes="any"> -->
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg?v=3">
+    <link rel="icon" type="image/png" href="/favicon/favicon-32x32.png?v=3" sizes="32x32">
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png?v=3">
+    <link rel="manifest" href="/favicon/site.webmanifest?v=3">
+    <meta name="theme-color" content="#00778a" />
+    <script>
+        // Prevent browser from auto-restoring scroll position on navigation/refresh
+        try {
+            if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        } catch (e) { }
+        // Remove any URL hash immediately so browser won't auto-scroll to anchors
+        if (location.hash) {
+            try {
+                history.replaceState(null, '', location.pathname + location.search);
+            } catch (e) { }
+            // ensure top position
+            try { window.scrollTo(0, 0); } catch (e) { }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
