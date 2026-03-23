@@ -1,0 +1,98 @@
+# ============================================
+# MORA Portfolio - Git Ignore
+# ============================================
+
+# ==========================================
+# SECRETS - CRITICAL: Never commit these!
+# ==========================================
+.env
+.env.*
+!.env.example
+*/.env
+*/.env.*
+!*/.env.example
+secrets/
+*.pem
+*.key
+*.crt
+*credentials*
+*secret*
+!*.example
+
+# ==========================================
+# Node.js
+# ==========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn
+
+# ==========================================
+# Python
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# ==========================================
+# Build artifacts
+# ==========================================
+dist/
+build/
+*.tgz
+
+# ==========================================
+# IDE & Editors
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ==========================================
+# OS Files
+# ==========================================
+.DS_Store
+Thumbs.db
+*.log
+
+# ==========================================
+# Testing
+# ==========================================
+coverage/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# ==========================================
+# Docker (local overrides)
+# ==========================================
+docker-compose.override.yml
+docker-compose.local.yml
+
+# ==========================================
+# MoraBot Data (generated/user data)
+# ==========================================
+MoraBot/SOURCE_DOCUMENTS/
+MoraBot/DB/
+.vercel
+.env*.local
+
+# ==========================================
+# Fly.io Configuration (deployment)
+# ==========================================
+fly.toml
+.fly/

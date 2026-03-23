@@ -1,0 +1,49 @@
+# MORA Portfolio - Root .dockerignore
+# =====================================
+
+# Git
+.git/
+.gitignore
+
+# Node modules (each service has its own)
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files (use .env.example as template)
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+build/
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+logs/
+
+# Documentation
+README.md
+docs/
+*.md
+
+# Test files
+coverage/
+.pytest_cache/
+htmlcov/
+
+# Docker (prevent recursive copies)
+Dockerfile*
+docker-compose*
+.dockerignore
