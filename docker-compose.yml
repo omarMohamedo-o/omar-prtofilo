@@ -1,0 +1,268 @@
+# ============================================
+# MORA Portfolio - Docker Compose
+# Production-ready multi-service setup
+# ============================================
+# Usage:
+#   docker compose up -d                    # Start all services
+#   docker compose up -d --build            # Rebuild and start
+#   docker compose logs -f                  # View logs
+#   docker compose down                     # Stop services
+#   docker compose down -v                  # Stop and remove volumes
+# ============================================
+
+services:
+  # ==========================================
+  # Frontend Service (React + Vite + Nginx)
+  # ==========================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=/api
+    image: mora-portfolio/frontend:latest
+    container_name: mora-frontend
+    restart: unless-stopped
+    networks:
+      - mora-network
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================
+  # MoraBot Service (Python FastAPI)
+  # ==========================================
+  morabot:
+    build:
+      context: ./MoraBot
+      dockerfile: Dockerfile
+    image: mora-portfolio/morabot:latest
+    container_name: mora-bot
+    restart: unless-stopped
+    networks:
+      - mora-network
+    env_file:
+      - ./MoraBot/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Persist ChromaDB database
+      - morabot_db:/app/DB
+      # Persist uploads and generated images
+      - morabot_uploads:/app/uploads
+      - morabot_images:/app/generated_images
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  # ==========================================
+  # Backend SMTP service (Node.js) - handles discovery form
+  # ==========================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: mora-portfolio/backend:latest
+    container_name: mora-backend
+    restart: unless-stopped
+    networks:
+      - mora-network
+    env_file:
+      - ./backend/.env
+    environment:
+      - NODE_ENV=production
+    # Do not expose to the public by default; expose for local debugging
+    expose:
+      - "3001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.05'
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    secrets:
+      - smtp_user
+      - smtp_password
+
+  # ==========================================
+  # Nginx Reverse Proxy
+  # ==========================================
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: mora-portfolio/nginx:latest
+    container_name: mora-nginx
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    networks:
+      - mora-network
+    environment:
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
+    volumes:
+      # SSL certificates (uncomment for production)
+      # - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      frontend:
+        condition: service_healthy
+      morabot:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================
+  # Redis Cache (Optional - for session/caching)
+  # ==========================================
+  redis:
+    image: redis:7-alpine
+    container_name: mora-redis
+    restart: unless-stopped
+    networks:
+      - mora-network
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+# ==========================================
+# Networks
+# ==========================================
+networks:
+  mora-network:
+    driver: bridge
+    name: mora-portfolio-network
+
+# ==========================================
+# Volumes
+# ==========================================
+volumes:
+  morabot_db:
+    name: mora-morabot-db
+  morabot_uploads:
+    name: mora-morabot-uploads
+  morabot_images:
+    name: mora-morabot-images
+  redis_data:
+    name: mora-redis-data
+  nginx_logs:
+    name: mora-nginx-logs
+
+secrets:
+  smtp_user:
+    file: ./secrets/smtp_user.txt
+  smtp_password:
+    file: ./secrets/smtp_password.txt

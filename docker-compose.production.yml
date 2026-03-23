@@ -1,0 +1,45 @@
+# ============================================
+# MORA Portfolio - Production Docker Compose
+# Use with: docker compose -f docker-compose.yml -f docker-compose.production.yml up -d
+# ============================================
+#
+# This file is designed for production deployments with:
+# - External secrets management (GitHub Secrets, Vault, AWS Secrets Manager)
+# - Container registry images instead of local builds
+# - Production-grade security settings
+#
+# Required GitHub Secrets:
+# - SMTP_USER: SMTP username for email sending
+# - SMTP_PASSWORD: SMTP password/app password
+# - GOOGLE_API_KEY: Google AI API key for MoraBot
+# - HF_TOKEN: HuggingFace token for MoraBot
+#
+# ============================================
+
+services:
+  frontend:
+    image: ${REGISTRY:-ghcr.io}/${IMAGE_PREFIX:-mora-portfolio}/frontend:${TAG:-latest}
+    build: !reset null
+
+  morabot:
+    image: ${REGISTRY:-ghcr.io}/${IMAGE_PREFIX:-mora-portfolio}/morabot:${TAG:-latest}
+    build: !reset null
+    env_file: !reset null
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - HF_TOKEN=${HF_TOKEN}
+
+  backend:
+    image: ${REGISTRY:-ghcr.io}/${IMAGE_PREFIX:-mora-portfolio}/backend:${TAG:-latest}
+    build: !reset null
+    env_file: !reset null
+    environment:
+      - NODE_ENV=production
+      - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - RECEIVER_EMAIL=${RECEIVER_EMAIL}
+
+  nginx:
+    image: ${REGISTRY:-ghcr.io}/${IMAGE_PREFIX:-mora-portfolio}/nginx:${TAG:-latest}
+    build: !reset null
