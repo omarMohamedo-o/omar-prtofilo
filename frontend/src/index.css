@@ -1,0 +1,2845 @@
+/* Brand design tokens (moved from src/styles/design.css) */
+:root {
+    --brand-dark: #071f3a;
+    /* primary brand blue - used consistently across all elements */
+    --brand: #1e90ff;
+    /* light cyan for CTAs and highlights */
+    --brand-medium: #4db8e8;
+    /* lighter cyan shade */
+    --brand-light: #6cc7ff;
+    /* dark accent for backgrounds */
+    --brand-accent: #092033;
+    --brand-rgb: 30, 144, 255;
+}
+
+/* Fluid base typography for accessibility and scaling */
+:root {
+    --fluid-base: clamp(0.95rem, 0.9rem + 0.5vw, 1.0625rem);
+}
+
+/* stylelint-disable-next-line at-rule-no-unknown */
+@tailwind base;
+/* stylelint-disable-next-line at-rule-no-unknown */
+@tailwind components;
+/* stylelint-disable-next-line at-rule-no-unknown */
+@tailwind utilities;
+
+/* ===========================================
+   RESPONSIVE LAYOUT SYSTEM
+   =========================================== */
+
+/* Consistent section spacing - mobile first */
+.ds-section {
+    padding: 3rem 1rem;
+    background: transparent;
+}
+
+@media (min-width: 640px) {
+    .ds-section {
+        padding: 4rem 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ds-section {
+        padding: 6rem 2rem;
+    }
+}
+
+/* Responsive card styles */
+.ds-card {
+    background: linear-gradient(135deg, rgba(var(--brand-rgb), 1) 0%, var(--brand-accent) 100%);
+    color: #ffffff;
+    border-radius: 12px;
+    /* mobile-first, smaller base padding; scales up in media queries below */
+    padding: 0.5rem;
+    box-shadow: 0 12px 30px rgba(var(--brand-rgb), 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@media (min-width: 640px) {
+    .ds-card {
+        padding: 1rem;
+        border-radius: 14px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ds-card {
+        padding: 1.25rem;
+        border-radius: 16px;
+    }
+}
+
+.ds-card h2,
+.ds-card h3 {
+    color: #ffffff;
+}
+
+/* Card title styling: larger font, no spacing above */
+.ds-card h2,
+.ds-card h3 {
+    font-size: 1.35rem !important;
+    /* ~22px - larger title */
+    line-height: 1.25 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-weight: 700 !important;
+}
+
+/* Remove top padding/margin from all first-child elements inside cards */
+.ds-card>*:first-child,
+.ds-card>div:first-child,
+.ds-card>div:first-child>h2:first-child,
+.ds-card>div:first-child>h3:first-child,
+.ds-card>h2:first-child,
+.ds-card>h3:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Eliminate all nested div padding/margin at top of cards */
+.ds-card .relative,
+.ds-card .relative>div:first-child,
+.ds-card .flex-1,
+.ds-card>div>div:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Override Tailwind padding on cards - responsive padding */
+.ds-card[class*="p-"] {
+    padding: 0.5rem 1rem 0.875rem 1rem !important;
+}
+
+@media (min-width: 640px) {
+    .ds-card[class*="p-"] {
+        padding: 0.5rem 1.25rem 1rem 1.25rem !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ds-card[class*="p-"] {
+        padding: 0.75rem 1.5rem 1.25rem 1.5rem !important;
+    }
+}
+
+/* Increase icon size inside cards for better visibility */
+.ds-card svg,
+.ds-card .svg-inline--fa,
+.ds-card .feather {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 28px !important;
+    display: inline-flex !important;
+    vertical-align: middle !important;
+}
+
+/* Global section title style: large, centered, with accent highlight */
+/* Uses fluid typography for smooth scaling */
+.section-title {
+    font-size: clamp(1.75rem, 1.5rem + 2vw, 2.5rem) !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    margin-bottom: clamp(1.5rem, 1rem + 2vw, 2.5rem) !important;
+    line-height: 1.1 !important;
+}
+
+.section-title .highlight {
+    background: linear-gradient(90deg, var(--brand-medium), var(--brand-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+}
+
+/* Theme-specific highlight colors for section titles */
+.space-theme.space-theme-cyan .section-title .highlight {
+    background: linear-gradient(90deg, #7feaff, #60a5fa) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+}
+
+.space-theme.space-theme-purple .section-title .highlight {
+    background: linear-gradient(90deg, #a78bfa, #ec4899) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+}
+
+.ds-card p,
+.ds-card .muted {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.ds-card .ds-cta {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--brand-medium), var(--brand-light));
+    color: var(--brand-accent);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.ds-card .ds-cta:hover {
+    filter: brightness(1.05);
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    scroll-behavior: smooth
+}
+
+body {
+    @apply text-surface antialiased bg-deepSpace;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.chat-widget {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 1000;
+}
+
+@media (min-width: 640px) {
+    .chat-widget {
+        bottom: 24px;
+        right: 24px;
+    }
+}
+
+/* Notification bubble that appears above the chat FAB */
+.chat-notice {
+    position: absolute;
+    right: 14px;
+    bottom: 72px;
+    /* Responsive width - max 480px on large screens */
+    width: calc(100vw - 100px);
+    max-width: 420px;
+    /* No white frame — remove border and outer padding so only the dark panel shows */
+    background: transparent;
+    color: #ffffff;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+    padding: 0;
+    /* inner panel handles padding */
+    box-sizing: border-box;
+    z-index: 1100;
+}
+
+.chat-notice-inner {
+    display: grid;
+    /* stack title and body vertically so the body appears below the title
+       and aligned to the left (previous layout used a two-column grid). */
+    grid-template-columns: 1fr;
+    gap: 8px;
+    align-items: start;
+}
+
+/* Inner content: dark strip with white text to match 'floating card' look */
+.chat-notice-inner {
+    background: linear-gradient(90deg, rgba(5, 10, 20, 0.98), rgba(8, 16, 30, 0.95));
+    padding: 14px 16px;
+    border-radius: 12px;
+}
+
+.chat-notice-title {
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.05;
+    white-space: normal;
+}
+
+.chat-notice-body {
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1.35;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.chat-notice-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 6px;
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .chat-notice {
+        right: 8px;
+        left: auto;
+        bottom: 60px;
+        /* Responsive width for small screens */
+        max-width: calc(100vw - 80px);
+        width: calc(100vw - 80px);
+        padding: 0;
+    }
+
+    .chat-notice-inner {
+        grid-template-columns: 1fr;
+        padding: 12px 14px;
+    }
+
+    .chat-notice-title {
+        padding-bottom: 4px;
+        font-size: 14px;
+    }
+
+    .chat-notice-body {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .chat-notice-close {
+        top: 6px;
+        right: 6px;
+        padding: 4px;
+        font-size: 14px;
+    }
+}
+
+.chat-fab {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-medium) 100%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    touch-action: manipulation;
+}
+
+@media (min-width: 640px) {
+    .chat-fab {
+        width: 56px;
+        height: 56px;
+    }
+}
+
+.chat-fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4)
+}
+
+/* TTS speaker button inside chat messages */
+.chat-tts-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.chat-tts-btn:hover {
+    background: rgba(var(--brand-rgb), 0.06);
+}
+
+/* Microphone / recording button */
+.chat-record-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.chat-record-btn.recording {
+    background: rgba(var(--brand-rgb), 0.12);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.chat-record-btn:hover {
+    background: rgba(var(--brand-rgb), 0.06);
+}
+
+.chat-panel {
+    position: absolute;
+    /* reduced gap between chat window and FAB: was 56px */
+    bottom: 36px;
+    right: 0;
+    /* responsive width: cap at 360px but shrink on narrow viewports */
+    width: min(360px, 90vw);
+    height: 500px;
+    max-height: calc(100vh - 140px);
+    max-height: calc(100dvh - 140px);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    overflow: hidden
+}
+
+.chat-panel.open {
+    display: flex
+}
+
+/* Mobile responsive chat panel */
+@media (max-width: 480px) {
+    .chat-panel {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        max-width: 100vw;
+        max-height: 100vh;
+        max-height: 100dvh;
+        border-radius: 0;
+        z-index: 10001;
+    }
+
+    .chat-widget {
+        z-index: 10000;
+    }
+
+    .chat-body {
+        @apply text-surface antialiased bg-deepSpace;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+}
+
+/* Slightly reduce space between up-arrow and chat FAB on small screens */
+@media (max-width: 480px) {
+    .up-arrow-button {
+        bottom: 72 !important;
+    }
+}
+
+/* VoiceChat styles */
+.voicechat-root {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 480px;
+}
+
+.recorder-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mic-area {
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+.mic-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0ea5a4;
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    box-shadow: 0 6px 18px rgba(14, 165, 164, 0.18);
+    cursor: pointer
+}
+
+.mic-btn.recording {
+    animation: pulse 1s infinite;
+    background: #ef4444
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1)
+    }
+
+    50% {
+        transform: scale(1.06)
+    }
+
+    100% {
+        transform: scale(1)
+    }
+}
+
+.record-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start
+}
+
+.rec-timer {
+    font-weight: 600;
+    color: #111
+}
+
+.wavebars {
+    display: flex;
+    gap: 4px;
+    height: 18px
+}
+
+.wavebars span {
+    display: block;
+    width: 4px;
+    background: #d1d5db;
+    border-radius: 2px;
+    height: 8px
+}
+
+.wavebars.anim span {
+    animation: wave 900ms infinite ease-in-out;
+}
+
+.wavebars.anim span:nth-child(1) {
+    animation-delay: 0ms
+}
+
+.wavebars.anim span:nth-child(2) {
+    animation-delay: 120ms
+}
+
+.wavebars.anim span:nth-child(3) {
+    animation-delay: 240ms
+}
+
+.wavebars.anim span:nth-child(4) {
+    animation-delay: 360ms
+}
+
+.wavebars.anim span:nth-child(5) {
+    animation-delay: 480ms
+}
+
+@keyframes wave {
+    0% {
+        height: 8px
+    }
+
+    50% {
+        height: 22px
+    }
+
+    100% {
+        height: 8px
+    }
+}
+
+.rec-actions .small-btn {
+    background: transparent;
+    border: 1px solid #e5e7eb;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer
+}
+
+.voice-preview {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: #f3f4f6
+}
+
+.preview-left {
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+.preview-duration {
+    font-weight: 600
+}
+
+.preview-actions {
+    display: flex;
+    gap: 8px
+}
+
+.icon-btn {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer
+}
+
+.icon-btn.send {
+    background: #10b981;
+    color: #fff;
+    border: none
+}
+
+.icon-btn.danger {
+    background: #ef4444;
+    color: #fff;
+    border: none
+}
+
+.voice-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f3f4f6;
+
+    .voice-bubble {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 18px;
+        max-width: 80%;
+    }
+
+    .voice-bubble.sent {
+        background: linear-gradient(90deg, #34d399, #059669);
+        color: #fff;
+        align-self: flex-end
+    }
+}
+
+.bubble-left {
+    display: flex;
+    align-items: center
+}
+
+.bubble-body {
+    @apply text-surface antialiased bg-deepSpace;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.bubble-duration {
+    font-weight: 700
+}
+
+.bubble-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px
+}
+
+.bubble-ts {
+    font-size: 12px;
+    opacity: 0.9
+}
+
+.avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2)
+}
+
+
+.chat-header {
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-medium) 100%);
+    color: white;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.chat-title {
+    font-weight: 600;
+    font-size: 18px
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s
+}
+
+.chat-close:hover {
+    opacity: 1
+}
+
+.chat-body {
+    /* Light body to match the reference: white/light gray conversation area */
+    background: #fafafa;
+    color: #111827;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chat-msg {
+    position: relative;
+    max-width: 85%;
+    padding: 10px 44px 10px 14px;
+    /* reserve space on right for action button */
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.chat-msg.user {
+    background: linear-gradient(90deg, var(--brand-medium), var(--brand));
+    color: white;
+    align-self: flex-end;
+    margin-left: auto
+}
+
+.chat-msg.bot {
+    background: white;
+    color: #333;
+    align-self: flex-start;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+}
+
+.chat-input {
+    padding: 12px;
+    background: transparent;
+    border-top: 1px solid transparent;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    /* keep input area pinned to bottom of panel */
+    position: sticky;
+    bottom: 0;
+}
+
+.chat-input-wrapper {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 8px 12px;
+    position: relative;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+}
+
+.chat-text-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 0;
+    padding-right: 44px;
+    font-size: 14px;
+    outline: none;
+    color: #4b5563;
+    caret-color: var(--brand);
+}
+
+.chat-text-input::placeholder {
+    color: #999
+}
+
+.chat-send-btn,
+.chat-attach-btn-inside {
+    background: none;
+    border: none;
+    color: var(--brand);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    transition: all 0.2s
+}
+
+.chat-send-btn:hover,
+.chat-attach-btn-inside:hover {
+    color: var(--brand-medium);
+    transform: scale(1.1)
+}
+
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    align-items: center
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--brand-medium);
+    animation: typing 1.4s infinite
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s
+}
+
+@keyframes typing {
+
+    0%,
+    60%,
+    100% {
+        opacity: 0.3;
+        transform: translateY(0)
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateY(-8px)
+    }
+}
+
+.whatsapp-fab {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #25d366;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 999;
+    text-decoration: none
+}
+
+.whatsapp-fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.5)
+}
+
+.whatsapp-fab-icon {
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+/* Recording bar (WhatsApp-style) */
+.recording-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.02));
+    border-radius: 28px;
+    padding: 8px 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.recording-cancel-btn,
+.recording-stop-btn {
+    background: transparent;
+    border: none;
+    color: #555;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.recording-cancel-btn:hover,
+.recording-stop-btn:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.recording-indicator {
+    width: 10px;
+    height: 10px;
+    background: #ff4d4f;
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(255, 77, 79, 0.7);
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 77, 79, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 77, 79, 0);
+    }
+}
+
+.recording-time {
+    font-weight: 600;
+    color: #222;
+    min-width: 48px;
+    text-align: center;
+}
+
+.recording-waveform {
+    flex: 1;
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    height: 28px;
+}
+
+.recording-wave-bar {
+    display: inline-block;
+    width: 3px;
+    background: linear-gradient(180deg, var(--brand-medium), var(--brand));
+    border-radius: 2px;
+    height: 40%;
+    animation: wave 1s infinite ease-in-out;
+}
+
+@keyframes wave {
+    0% {
+        transform: scaleY(0.6);
+    }
+
+    50% {
+        transform: scaleY(1);
+    }
+
+    100% {
+        transform: scaleY(0.6);
+    }
+}
+
+/* Voice preview bar (after recording, before sending) */
+.voice-preview-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(90deg, #e3f2fd, #bbdefb);
+    border-radius: 28px;
+    padding: 8px 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.voice-preview-play {
+    background: var(--brand);
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.9);
+    /* white bars */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.voice-preview-play:hover {
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px rgba(30, 144, 255, 0.4);
+}
+
+.voice-preview-duration {
+    font-weight: 600;
+    color: #0d47a1;
+    min-width: 40px;
+}
+
+.voice-preview-waveform {
+    flex: 1;
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    height: 24px;
+}
+
+.voice-preview-bar-item {
+    display: inline-block;
+    width: 3px;
+    background: var(--brand);
+    border-radius: 2px;
+    height: 60%;
+}
+
+.voice-preview-bar-item:nth-child(odd) {
+    height: 40%;
+}
+
+.voice-preview-bar-item:nth-child(3n) {
+    height: 80%;
+}
+
+.voice-preview-delete {
+    background: #ef5350;
+    border: none;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+}
+
+.voice-preview-delete:hover {
+    transform: scale(1.08);
+    background: #d32f2f;
+}
+
+.voice-preview-send {
+    background: var(--brand);
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.voice-preview-send:hover {
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px rgba(30, 144, 255, 0.4);
+}
+
+.voice-preview-send:disabled {
+    background: #90caf9;
+    cursor: not-allowed;
+}
+
+/* Voice message player (bubble) - WhatsApp style */
+.voice-message-player {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    max-width: 100%;
+    width: 260px;
+    background: transparent;
+}
+
+.voice-message-player.user {
+    background: #0d47a1;
+    /* solid dark blue */
+    color: #fff;
+    align-self: flex-end;
+    margin-left: auto;
+    border-radius: 12px 12px 0 12px;
+}
+
+.voice-message-player.bot {
+    background: #f2f2f2;
+    color: #111;
+    align-self: flex-start;
+    border-radius: 12px 12px 12px 0;
+}
+
+.voice-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.voice-play-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #ffffff;
+    /* white circle */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #0d47a1;
+    /* dark icon */
+    font-size: 18px;
+}
+
+.voice-play-btn:hover {
+    transform: scale(1.04);
+}
+
+.voice-play-btn.left-overlap {
+    position: static;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.voice-play-btn.left-overlap .svg-inline--fa {
+    margin-left: 2px;
+}
+
+.voice-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.voice-waveform {
+    display: flex;
+    align-items: center;
+    height: 28px;
+    position: relative;
+}
+
+.voice-waveform-bars {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.voice-bar {
+    display: inline-block;
+    width: 3px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 1px;
+    min-height: 4px;
+}
+
+.voice-progress-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.voice-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.voice-duration {
+    font-weight: 500;
+}
+
+.voice-timestamp {
+    font-size: 10px;
+    opacity: 0.9;
+}
+
+@keyframes voiceWave {
+    0% {
+        transform: scaleY(0.5);
+        opacity: 0.6
+    }
+
+    30% {
+        transform: scaleY(1);
+        opacity: 1
+    }
+
+    60% {
+        transform: scaleY(0.7);
+        opacity: 0.8
+    }
+
+    100% {
+        transform: scaleY(0.5);
+        opacity: 0.6
+    }
+}
+
+.voice-message-player.user .voice-bar {
+    background: var(--brand);
+    opacity: 0.8;
+}
+
+.voice-time {
+    font-size: 12px;
+    min-width: 56px;
+    text-align: right;
+    color: inherit;
+}
+
+/* small left time label inside bubble */
+.voice-time-left {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0d47a1;
+    min-width: 36px;
+}
+
+.voice-speaker-btn {
+    background: transparent;
+    border: none;
+    color: inherit;
+    padding: 6px;
+    cursor: pointer;
+}
+
+/* small progress overlay inside waveform */
+.voice-waveform-progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+/* action buttons for pending voice preview */
+.voice-action-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.voice-action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.voice-action-delete {
+    background: rgba(0, 0, 0, 0.06);
+    color: #333;
+}
+
+.voice-action-send {
+    background: var(--brand);
+    color: white;
+}
+
+/* -----------------------
+   Space / Galaxy Theme
+   ----------------------- */
+
+:root {
+    --space-ink: #03040a;
+    --space-deep: #050517;
+    --space-nebula-1: rgba(84, 14, 160, 0.22);
+    --space-nebula-2: rgba(8, 36, 120, 0.26);
+    --glow-cyan: rgba(80, 255, 255, 0.16);
+    --glow-purple: rgba(140, 90, 255, 0.12);
+    --accent-cyan: #7feaff;
+    --accent-purple: #a78bfa;
+    --surface: #e6eefc;
+    /* text on dark */
+    --muted-surface: rgba(230, 238, 252, 0.8);
+}
+
+.space-theme {
+    background: radial-gradient(1200px 600px at 10% 10%, var(--space-nebula-1), transparent 12%),
+        radial-gradient(900px 500px at 90% 80%, var(--space-nebula-2), transparent 18%),
+        linear-gradient(180deg, #000010 0%, #06061a 40%, #0b0b1a 100%);
+    color: var(--surface);
+    min-height: 100%;
+}
+
+.space-bg .stars {
+    position: absolute;
+    inset: 0;
+    background-repeat: repeat;
+    background-size: contain;
+    opacity: 0.9;
+    will-change: transform, opacity;
+}
+
+.space-bg .stars-slow {
+    background-image: radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.08) 50%, transparent 51%),
+        radial-gradient(1px 1px at 30% 70%, rgba(255, 255, 255, 0.06) 50%, transparent 51%),
+        radial-gradient(1px 1px at 70% 30%, rgba(255, 255, 255, 0.04) 50%, transparent 51%);
+    animation: driftSlow 110s linear infinite;
+    z-index: -10;
+}
+
+.space-bg .stars-mid {
+    background-image: radial-gradient(1px 1px at 20% 40%, rgba(255, 255, 255, 0.12) 50%, transparent 51%),
+        radial-gradient(1px 1px at 50% 10%, rgba(255, 255, 255, 0.08) 50%, transparent 51%);
+    animation: drift 90s linear infinite;
+    opacity: 0.85;
+    z-index: -9;
+}
+
+.space-bg .stars-fast {
+    background-image: radial-gradient(1px 1px at 40% 60%, rgba(255, 255, 255, 0.18) 50%, transparent 51%),
+        radial-gradient(1px 1px at 60% 20%, rgba(255, 255, 255, 0.14) 50%, transparent 51%);
+    animation: driftFast 70s linear infinite;
+    opacity: 0.95;
+    z-index: -8;
+}
+
+.space-bg .nebula {
+    position: absolute;
+    inset: -10% -20% auto -20%;
+    height: 70vh;
+    background: radial-gradient(40% 60% at 20% 30%, rgba(120, 50, 200, 0.14), transparent 30%),
+        radial-gradient(30% 40% at 80% 80%, rgba(6, 23, 89, 0.16), transparent 30%);
+    filter: blur(42px) saturate(120%);
+    opacity: 0.9;
+    z-index: -11;
+}
+
+@keyframes driftSlow {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-80px, -30px, 0);
+    }
+}
+
+@keyframes drift {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(60px, 40px, 0);
+    }
+}
+
+@keyframes driftFast {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-120px, 80px, 0);
+    }
+}
+
+/* subtle twinkle */
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.9
+    }
+
+    50% {
+        opacity: 0.6
+    }
+}
+
+/* Orbital motion - DISABLED */
+.orbits {
+    display: none;
+}
+
+.orbit {
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    transform-origin: 50% 50%;
+    animation: none;
+    opacity: 0
+}
+
+.orbit-1 {
+    top: 6%;
+    left: 62%;
+    width: 520px;
+    height: 520px;
+    animation-duration: 72s
+}
+
+.orbit-2 {
+    top: 55%;
+    left: 15%;
+    width: 260px;
+    height: 260px;
+    animation-duration: 22s
+}
+
+.orbit-3 {
+    top: 36%;
+    left: 72%;
+    width: 180px;
+    height: 180px;
+    animation-duration: 30s
+}
+
+.orbit-4 {
+    top: 72%;
+    left: 40%;
+    width: 340px;
+    height: 340px;
+    animation-duration: 88s
+}
+
+.planet {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 2%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 24px var(--glow-cyan);
+    background: radial-gradient(circle at 30% 30%, var(--accent-cyan), #003044);
+}
+
+.planet-2 {
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle at 30% 30%, var(--accent-purple), #220033);
+    box-shadow: 0 0 20px var(--glow-purple);
+}
+
+.planet-3 {
+    width: 22px;
+    height: 22px;
+    background: radial-gradient(circle at 30% 30%, rgba(180, 220, 255, 0.9), #002233);
+    box-shadow: 0 0 30px rgba(110, 231, 255, 0.08);
+}
+
+.planet-4 {
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle at 30% 30%, rgba(200, 150, 255, 0.95), #220022);
+    box-shadow: 0 0 18px rgba(167, 139, 250, 0.08);
+}
+
+@keyframes orbitSpin {
+    from {
+        transform: rotate(0deg)
+    }
+
+    to {
+        transform: rotate(360deg)
+    }
+}
+
+/* Floating / hover micro-motion */
+@keyframes floaty {
+    0% {
+        transform: translateY(0)
+    }
+
+    50% {
+        transform: translateY(-6px)
+    }
+
+    100% {
+        transform: translateY(0)
+    }
+}
+
+.glow-btn {
+    background: linear-gradient(90deg, rgba(110, 231, 255, 0.06), rgba(167, 139, 250, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--surface);
+    transition: transform 320ms cubic-bezier(.2, .9, .3, 1), box-shadow 320ms, filter 320ms;
+}
+
+.glow-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 6px 30px var(--glow-cyan);
+}
+
+.glow-btn:focus {
+    outline: none;
+    box-shadow: 0 0 30px rgba(110, 231, 255, 0.08), 0 6px 30px rgba(110, 231, 255, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .glow-btn,
+    .btn-orbit-hover {
+        transition: none !important;
+        transform: none !important
+    }
+}
+
+/* make ds-card feel cosmic */
+.ds-card {
+    background: linear-gradient(180deg, rgba(10, 12, 20, 0.6), rgba(8, 10, 18, 0.5));
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 10px 40px rgba(15, 10, 40, 0.55), 0 0 30px rgba(80, 200, 255, 0.03) inset;
+}
+
+/* subtle neon outlines - orbit animation removed */
+.btn-orbit-hover:hover {
+    /* Orbit animation disabled - keeping selector for backwards compatibility */
+    opacity: 1;
+}
+
+/* small performance-friendly twinkles on large viewports */
+@media (prefers-reduced-motion: no-preference) {
+
+    .stars-slow,
+    .stars-mid,
+    .stars-fast {
+        animation-timing-function: linear
+    }
+
+    .planet {
+        /* Planet animation removed */
+        animation: none;
+    }
+}
+
+/* DS card CTA glow under space theme */
+.space-theme .ds-card .ds-cta {
+    background: linear-gradient(90deg, rgba(127, 234, 255, 0.06), rgba(167, 139, 250, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--surface);
+    box-shadow: 0 8px 30px rgba(127, 234, 255, 0.04);
+}
+
+.space-theme .ds-card .ds-cta:hover {
+    filter: brightness(1.06);
+    box-shadow: 0 12px 40px rgba(127, 234, 255, 0.08);
+}
+
+/* Highlight for title last-word wrapping */
+.title-highlight {
+    color: var(--accent-cyan);
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Header: integrated with hero initially; becomes compact/split on scroll */
+nav {
+    transition: background-color 260ms ease, backdrop-filter 260ms ease, box-shadow 260ms ease, border-color 260ms ease, padding 260ms ease;
+    overflow: visible;
+}
+
+/* On mobile, always show a background for clear separation */
+@media (max-width: 1023px) {
+    nav {
+        background: rgba(6, 8, 15, 0.95);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+}
+
+nav.scrolled {
+    /* make fully opaque to avoid rendering seams */
+    background: rgba(6, 8, 15, 1);
+    /* remove visible divider line to avoid the white rule between header and hero */
+    border-bottom-color: transparent;
+    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+}
+
+/* Apply backdrop blur only on medium+ screens to avoid heavy paint on mobile */
+@media (min-width: 640px) {
+    nav.scrolled {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+}
+
+/* ── Logo sizes: expanded → compact, responsive ── */
+.nav-logo {
+    transition: height 300ms ease, margin 300ms ease, transform 300ms ease;
+    transform: scale(1);
+    transform-origin: left center;
+}
+
+/* Mobile default (expanded) */
+.nav-logo {
+    height: 3.5rem;
+    /* visually enlarge without changing layout by using transform */
+    transform: scale(1.6);
+    transform-origin: left center;
+}
+
+/* Larger visual scale on wider viewports, but keep layout height modest */
+@media (min-width: 640px) {
+    .nav-logo {
+        height: 4rem;
+        /* layout height */
+        margin: 0;
+        transform-origin: left center;
+        transform: scale(2.4);
+        /* visually larger */
+        transition: transform 0.34s ease, height 0.34s ease;
+    }
+}
+
+/* Desktop-specific logo sizing */
+@media (min-width: 1024px) {
+    .nav-logo {
+        height: 4rem;
+        /* layout height for alignment */
+        margin: 0;
+        transform-origin: left center;
+        transform: scale(2.8);
+        /* visually larger */
+        transition: transform 0.34s ease, height 0.34s ease;
+    }
+}
+
+/* Compact (scrolled) - return logo to natural size */
+nav.scrolled .nav-logo {
+    transform: scale(1) !important;
+    margin: 0 !important;
+    height: 3.5rem !important;
+}
+
+@media (min-width: 640px) {
+    nav.scrolled .nav-logo {
+        height: 3rem !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    nav.scrolled .nav-logo {
+        height: 3.5rem !important;
+    }
+}
+
+/* Increase top/bottom padding for the expanded desktop header so it reads as part of the hero */
+@media (min-width: 1024px) {
+    nav .max-w-7xl {
+        padding-top: 2.25rem;
+        padding-bottom: 2.25rem;
+        transition: padding 0.34s ease;
+    }
+
+    nav.scrolled .max-w-7xl {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+}
+
+/* Increase header vertical space on small screens so hero text isn't overlapped */
+@media (max-width: 639px) {
+    nav .max-w-7xl {
+        padding-top: 0.9rem;
+        padding-bottom: 0.9rem;
+    }
+
+    nav.scrolled .max-w-7xl {
+        padding-top: 0.45rem;
+        padding-bottom: 0.45rem;
+    }
+}
+
+/* Slightly compact the nav content when scrolled */
+nav.scrolled .max-w-7xl {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+/* Subtle divider for split appearance */
+@media (min-width: 768px) {
+    nav.scrolled {
+        border-bottom: 1px solid transparent;
+    }
+}
+
+/* Ensure no visible hairline between header and hero */
+nav,
+nav.scrolled,
+nav * {
+    border-bottom-color: transparent !important;
+    border-top-color: transparent !important;
+}
+
+/* Respect user's reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+
+    nav,
+    nav * {
+        transition: none !important;
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+/* Remove any top border on the hero section */
+section#home {
+    border-top: none !important;
+}
+
+/* When header is scrolled, hero padding is handled by component classes */
+nav.scrolled+section#home {
+    min-height: auto !important;
+}
+
+@media (min-width: 1024px) {
+    nav.scrolled+section#home {
+        min-height: auto !important;
+    }
+}
+
+/* Global header height variable (JS will override this with the real height).
+   Fallbacks keep things reasonable before JS runs. */
+:root {
+    --header-height: 80px;
+}
+
+/* Slightly smaller default on narrow viewports as a sensible fallback */
+@media (max-width: 768px) {
+    :root {
+        --header-height: 70px;
+    }
+}
+
+/* Always offset hero by the header height so content never sits under the fixed nav. */
+section#home {
+    padding-top: calc(var(--header-height) + 0.5rem) !important;
+}
+
+/* On desktop reduce the extra offset so hero sits closer to the header */
+@media (min-width: 1024px) {
+    section#home {
+        /* reduce extra offset on large screens so hero is closer to header */
+        padding-top: calc(var(--header-height) + 0rem) !important;
+    }
+}
+
+/* Preserve brand colors for floating action buttons while keeping glow */
+.whatsapp-fab.glow-btn {
+    background: #25d366;
+    border: 1px solid rgba(37, 211, 102, 0.14);
+    color: #ffffff;
+    box-shadow: 0 10px 40px rgba(37, 211, 102, 0.12), 0 0 18px rgba(37, 211, 102, 0.08);
+}
+
+.whatsapp-fab.glow-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 50px rgba(37, 211, 102, 0.18), 0 0 26px rgba(37, 211, 102, 0.12);
+}
+
+.chat-fab.glow-btn {
+    background: linear-gradient(135deg, #1e90ff 0%, #4facff 100%);
+    border: 1px solid rgba(30, 144, 255, 0.12);
+    color: #ffffff;
+    box-shadow: 0 10px 40px rgba(30, 144, 255, 0.12), 0 0 18px rgba(79, 172, 255, 0.08);
+}
+
+.chat-fab.glow-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 50px rgba(30, 144, 255, 0.18), 0 0 26px rgba(79, 172, 255, 0.12);
+}
+
+/* Ensure icon colors remain readable */
+.whatsapp-fab .whatsapp-fab-icon svg,
+.chat-fab .chat-fab-icon svg {
+    color: #fff;
+}
+
+.space-theme .title-highlight {
+    filter: drop-shadow(0 4px 14px rgba(127, 234, 255, 0.06));
+}
+
+
+/* Apply consistent padding to all main sections with ids (overrides utility classes by source order) */
+/* Standardize vertical spacing for all sections: 12px top, 6px bottom */
+section,
+section[id] {
+    padding-top: 24px !important;
+    padding-bottom: 12px !important;
+}
+
+/* Standardize section titles across the site to match the "My Certifications" style
+   - center-align headings
+   - keep consistent font-size/weight
+   - reduce space after the title (override utility `mb-12` used in components)
+   - ensure the title highlighter keeps its gradient effect */
+section[id] h2,
+section[id] h3 {
+    font-size: 2.25rem;
+    /* similar to Tailwind's text-4xl */
+    line-height: 1.08;
+    font-weight: 700;
+    text-align: center;
+    /* standardized spacing around main section titles */
+    margin-top: 48px !important;
+    /* 48px above title */
+    margin-bottom: 24px !important;
+    /* 24px below title */
+    color: var(--surface);
+}
+
+section[id] h2 .title-highlight,
+section[id] h3 .title-highlight {
+    display: inline-block;
+}
+
+/* Ensure titles inside card components are left-aligned while
+   keeping main section headings centered. This overrides
+   section-wide centering for card content. */
+.ds-card h2,
+.ds-card h3,
+.ds-card .text-center {
+    text-align: left !important;
+}
+
+/* Fix for spacing inside cards (overrides section-wide margin-bottom on h3) */
+.ds-card h3 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1.05 !important;
+}
+
+/* Ensure no top gap between card headings and the following element */
+.ds-card h3+* {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Also guard common immediate sibling types to avoid spacing from other rules */
+.ds-card h3+div,
+.ds-card h3+.flex,
+.ds-card h3+a,
+.ds-card h3+p {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Slightly reduced spacing on small screens */
+/* Keep same standardized spacing across breakpoints for consistency */
+@media (max-width: 640px) {
+
+    section,
+    section[id] {
+        padding-top: 24px !important;
+        padding-bottom: 12px !important;
+    }
+}
+
+@media (min-width: 1280px) {
+
+    section,
+    section[id] {
+        padding-top: 24px !important;
+        padding-bottom: 12px !important;
+    }
+}
+
+/* =========================================
+   🌌 ENHANCED SPACE / GALAXY THEME
+   ========================================= */
+
+/* Individual Star Elements */
+.star {
+    position: absolute;
+    border-radius: 50%;
+    background: #ffffff;
+    will-change: opacity, transform;
+}
+
+.star-twinkle {
+    animation: starTwinkle 4s ease-in-out infinite;
+}
+
+.star-twinkle-fast {
+    animation: starTwinkle 2.5s ease-in-out infinite;
+}
+
+.star-pulse {
+    animation: starPulse 3s ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+@keyframes starPulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+        box-shadow: 0 0 2px rgba(255, 255, 255, 0.3);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.3);
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    }
+}
+
+/* Cosmic Dust Particles */
+.cosmic-dust {
+    position: absolute;
+    inset: 0;
+    z-index: -6;
+    overflow: hidden;
+}
+
+.dust-particle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+    animation: dustFloat linear infinite;
+    will-change: transform;
+}
+
+@keyframes dustFloat {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(15px, -20px) rotate(90deg);
+    }
+
+    50% {
+        transform: translate(-10px, -40px) rotate(180deg);
+    }
+
+    75% {
+        transform: translate(20px, -60px) rotate(270deg);
+    }
+
+    100% {
+        transform: translate(0, -100vh) rotate(360deg);
+    }
+}
+
+/* Enhanced Nebula */
+.nebula {
+    position: absolute;
+    inset: -20% -30%;
+    height: 140vh;
+    background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(120, 50, 200, 0.12), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(6, 80, 140, 0.15), transparent 50%),
+        radial-gradient(ellipse 40% 30% at 60% 20%, rgba(140, 80, 200, 0.08), transparent 40%);
+    filter: blur(60px) saturate(130%);
+    opacity: 0.8;
+    z-index: -11;
+    animation: nebulaShift 60s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+}
+
+.nebula-2 {
+    position: absolute;
+    inset: 30% -20%;
+    height: 100vh;
+    background:
+        radial-gradient(ellipse 45% 35% at 70% 50%, rgba(80, 160, 200, 0.1), transparent 50%),
+        radial-gradient(ellipse 35% 25% at 30% 60%, rgba(100, 60, 180, 0.08), transparent 40%);
+    filter: blur(80px) saturate(120%);
+    opacity: 0.6;
+    z-index: -12;
+    animation: nebulaShift 80s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes nebulaShift {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: translate(30px, -20px) scale(1.05);
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: translate(-20px, 10px) scale(0.98);
+        opacity: 0.75;
+    }
+}
+
+/* Shooting Stars */
+.shooting-stars {
+    position: absolute;
+    inset: 0;
+    z-index: -5;
+    overflow: hidden;
+}
+
+.shooting-star {
+    position: absolute;
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), transparent);
+    border-radius: 2px;
+    opacity: 0;
+    transform-origin: left center;
+}
+
+.shooting-star-1 {
+    top: 15%;
+    left: 10%;
+    transform: rotate(35deg);
+}
+
+.shooting-star-2 {
+    top: 35%;
+    left: 60%;
+    transform: rotate(40deg);
+}
+
+.shooting-star-3 {
+    top: 65%;
+    left: 30%;
+    transform: rotate(30deg);
+}
+
+/* Orbital Rings - DISABLED */
+.orbit-ring {
+    display: none;
+}
+
+.orbit-ring-1 {
+    display: none;
+}
+
+.orbit-ring-2 {
+    display: none;
+}
+
+.orbit-ring-3 {
+    display: none;
+}
+
+@keyframes orbitPulse {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: scale(1.02);
+    }
+}
+
+/* Enhanced Orbital Planets */
+.orbit-5 {
+    top: 82%;
+    left: 70%;
+    width: 200px;
+    height: 200px;
+    animation-duration: 55s;
+}
+
+.planet-5 {
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 200, 150, 0.9), #442200);
+    box-shadow: 0 0 15px rgba(255, 180, 100, 0.15);
+}
+
+/* Connection Lines for themes - DISABLED */
+.connection-lines {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: -4;
+    opacity: 0.4;
+}
+
+.connection-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.connection-path {
+    fill: none;
+    stroke-width: 0.15;
+    stroke-dasharray: 5 3;
+    animation: connectionFlow 20s linear infinite;
+}
+
+.path-1 {
+    animation-delay: 0s;
+}
+
+.path-2 {
+    animation-delay: -7s;
+}
+
+.path-3 {
+    animation-delay: -14s;
+}
+
+@keyframes connectionFlow {
+    0% {
+        stroke-dashoffset: 0;
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        stroke-dashoffset: -100;
+        opacity: 0.3;
+    }
+}
+
+/* DevOps theme - Network topology style */
+.network-topology .connection-path {
+    stroke-dasharray: 3 2;
+}
+
+/* ML theme - Neural connections style */
+.neural-connections .connection-path {
+    stroke-dasharray: 1 4;
+    animation: neuralPulse 15s ease-in-out infinite;
+}
+
+@keyframes neuralPulse {
+
+    0%,
+    100% {
+        stroke-dashoffset: 0;
+        opacity: 0.2;
+    }
+
+    25% {
+        opacity: 0.5;
+    }
+
+    50% {
+        stroke-dashoffset: -50;
+        opacity: 0.3;
+    }
+
+    75% {
+        opacity: 0.6;
+    }
+}
+
+/* =========================================
+   🪐 ORBITAL SECTION TRANSITIONS
+   ========================================= */
+
+/* All sections are visible - individual elements animate in */
+section[id] {
+    opacity: 1;
+    transform: none;
+}
+
+/* Parallax scroll effect for sections */
+.space-theme section[id] {
+    --parallax-offset: 0;
+    will-change: transform;
+}
+
+/* =========================================
+   🌍 STAGGERED CARD ANIMATIONS
+   ========================================= */
+
+/* Enhanced stagger delays for sequential reveal */
+.stagger-1 {
+    animation-delay: 0.08s !important;
+}
+
+.stagger-2 {
+    animation-delay: 0.16s !important;
+}
+
+.stagger-3 {
+    animation-delay: 0.24s !important;
+}
+
+.stagger-4 {
+    animation-delay: 0.32s !important;
+}
+
+.stagger-5 {
+    animation-delay: 0.40s !important;
+}
+
+.stagger-6 {
+    animation-delay: 0.48s !important;
+}
+
+.stagger-7 {
+    animation-delay: 0.56s !important;
+}
+
+.stagger-8 {
+    animation-delay: 0.64s !important;
+}
+
+.stagger-9 {
+    animation-delay: 0.72s !important;
+}
+
+.stagger-10 {
+    animation-delay: 0.80s !important;
+}
+
+.stagger-11 {
+    animation-delay: 0.88s !important;
+}
+
+.stagger-12 {
+    animation-delay: 0.96s !important;
+}
+
+/* Orbital slide-in animation */
+@keyframes orbitalSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-40px) translateY(30px) rotate(-3deg) scale(0.95);
+    }
+
+    60% {
+        opacity: 0.8;
+        transform: translateX(5px) translateY(-5px) rotate(0.5deg) scale(1.01);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+}
+
+@keyframes orbitalSlideInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(40px) translateY(30px) rotate(3deg) scale(0.95);
+    }
+
+    60% {
+        opacity: 0.8;
+        transform: translateX(-5px) translateY(-5px) rotate(-0.5deg) scale(1.01);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+}
+
+@keyframes orbitalFadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.96) rotate(1deg);
+    }
+
+    70% {
+        opacity: 0.9;
+        transform: translateY(-8px) scale(1.01) rotate(-0.3deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+}
+
+.animate-orbital-left {
+    animation: orbitalSlideIn 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-orbital-right {
+    animation: orbitalSlideInRight 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-orbital-up {
+    animation: orbitalFadeUp 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* =========================================
+   🧩 FLOATING CARD EFFECTS
+   ========================================= */
+
+/* Cards start hidden and animate in when scrolled into view */
+.card-hidden {
+    opacity: 0 !important;
+    transform: translateY(40px) translateX(-15px) rotate(-1.5deg) scale(0.96) !important;
+    transition: none !important;
+}
+
+.card-visible {
+    opacity: 1 !important;
+    transform: translateY(0) translateX(0) rotate(0) scale(1) !important;
+    animation: cardReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+}
+
+@keyframes cardReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) translateX(-15px) rotate(-1.5deg) scale(0.96);
+    }
+
+    60% {
+        opacity: 0.9;
+        transform: translateY(-5px) translateX(3px) rotate(0.3deg) scale(1.01);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) translateX(0) rotate(0) scale(1);
+    }
+}
+
+/* Alternate direction for odd cards */
+.card-hidden:nth-child(odd) {
+    transform: translateY(40px) translateX(15px) rotate(1.5deg) scale(0.96) !important;
+}
+
+/* Cards have subtle floating animation - DISABLED */
+.card-orbital {
+    animation: none;
+}
+
+/* Pause floating on non-orbital cards - ANIMATION DISABLED */
+.ds-card {
+    animation: none;
+    will-change: transform, box-shadow;
+}
+
+.ds-card:hover,
+.card-orbital {
+    animation: none;
+}
+
+@keyframes cardFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(-4px) rotate(0.3deg);
+    }
+
+    50% {
+        transform: translateY(-6px) rotate(-0.2deg);
+    }
+
+    75% {
+        transform: translateY(-3px) rotate(0.2deg);
+    }
+}
+
+/* Orbital hover effect */
+.ds-card::before {
+    /* Orbit ring disabled */
+    display: none;
+}
+
+@keyframes orbitGlow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Glow effect on hover */
+.ds-card {
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.4s ease,
+        border-color 0.3s ease;
+}
+
+.ds-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+        0 20px 60px rgba(15, 10, 40, 0.4),
+        0 0 40px rgba(127, 234, 255, 0.08) inset,
+        0 0 80px rgba(127, 234, 255, 0.04);
+    border-color: rgba(127, 234, 255, 0.15);
+}
+
+/* =========================================
+   🎨 THEME VARIATIONS
+   ========================================= */
+
+/* DevOps Theme (Cyan/Blue) - Stable, Engineered */
+.space-theme-cyan {
+    --theme-primary: #7feaff;
+    --theme-secondary: #60a5fa;
+    --theme-glow: rgba(127, 234, 255, 0.15);
+    --theme-glow-strong: rgba(127, 234, 255, 0.25);
+}
+
+.space-theme-cyan .ds-card:hover {
+    box-shadow:
+        0 20px 60px rgba(15, 10, 40, 0.4),
+        0 0 40px rgba(127, 234, 255, 0.1) inset,
+        0 0 60px rgba(96, 165, 250, 0.06);
+    border-color: rgba(127, 234, 255, 0.2);
+}
+
+.space-theme-cyan .ds-card::before {
+    background: conic-gradient(from 180deg, transparent, rgba(127, 234, 255, 0.12), transparent 40%);
+}
+
+.space-theme.space-theme-cyan .title-highlight {
+    background: linear-gradient(90deg, #7feaff, #60a5fa) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    filter: drop-shadow(0 2px 10px rgba(127, 234, 255, 0.2));
+}
+
+.space-theme-cyan .nebula {
+    background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(60, 130, 200, 0.12), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(6, 100, 160, 0.15), transparent 50%),
+        radial-gradient(ellipse 40% 30% at 60% 20%, rgba(80, 180, 220, 0.08), transparent 40%);
+}
+
+/* ML Theme (Purple/Pink) - Intelligent, Dynamic */
+.space-theme-purple {
+    --theme-primary: #a78bfa;
+    --theme-secondary: #ec4899;
+    --theme-glow: rgba(167, 139, 250, 0.15);
+    --theme-glow-strong: rgba(167, 139, 250, 0.25);
+}
+
+.space-theme-purple .ds-card:hover {
+    box-shadow:
+        0 20px 60px rgba(20, 10, 50, 0.5),
+        0 0 40px rgba(167, 139, 250, 0.1) inset,
+        0 0 60px rgba(236, 72, 153, 0.06);
+    border-color: rgba(167, 139, 250, 0.2);
+}
+
+.space-theme-purple .ds-card::before {
+    background: conic-gradient(from 180deg, transparent, rgba(167, 139, 250, 0.12), rgba(236, 72, 153, 0.08), transparent 50%);
+}
+
+.space-theme.space-theme-purple .title-highlight {
+    background: linear-gradient(90deg, #a78bfa, #ec4899) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    filter: drop-shadow(0 2px 10px rgba(167, 139, 250, 0.2));
+}
+
+.space-theme-purple .nebula {
+    background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(140, 80, 220, 0.14), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(180, 60, 140, 0.12), transparent 50%),
+        radial-gradient(ellipse 40% 30% at 60% 20%, rgba(120, 50, 180, 0.1), transparent 40%);
+}
+
+.space-theme-purple .nebula-2 {
+    background:
+        radial-gradient(ellipse 45% 35% at 70% 50%, rgba(160, 100, 200, 0.1), transparent 50%),
+        radial-gradient(ellipse 35% 25% at 30% 60%, rgba(200, 80, 160, 0.08), transparent 40%);
+}
+
+/* Planet colors by theme */
+.space-theme-purple .planet-1 {
+    background: radial-gradient(circle at 30% 30%, #a78bfa, #4c1d95);
+    box-shadow: 0 0 25px rgba(167, 139, 250, 0.3);
+}
+
+.space-theme-purple .planet-3 {
+    background: radial-gradient(circle at 30% 30%, #ec4899, #831843);
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.25);
+}
+
+/* =========================================
+   ⚡ PERFORMANCE & ACCESSIBILITY
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .star,
+    .dust-particle,
+    .nebula,
+    .nebula-2,
+    .shooting-star,
+    .orbit,
+    .orbit-ring,
+    .ds-card,
+    .connection-path {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    section[id] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .ds-card:hover {
+        transform: none;
+    }
+}
+
+/* GPU acceleration hints */
+.space-bg,
+.stars,
+.nebula,
+.orbit,
+.planet,
+.ds-card {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Reduce animations on low-power mode or battery saver */
+@media (prefers-reduced-motion: no-preference) {
+    .space-theme {
+        scroll-behavior: smooth;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .ds-card {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .title-highlight {
+        filter: none;
+        color: #ffffff !important;
+        background: none !important;
+        -webkit-background-clip: unset;
+        background-clip: unset;
+    }
+}
+
+/* =========================================
+   📱 RESPONSIVE ADJUSTMENTS
+   ========================================= */
+
+@media (max-width: 768px) {
+    .orbit-ring {
+        display: none;
+    }
+
+    .shooting-star {
+        width: 50px;
+    }
+
+    .nebula,
+    .nebula-2 {
+        filter: blur(40px);
+        opacity: 0.5;
+    }
+
+    .cosmic-dust .dust-particle {
+        display: none;
+    }
+
+    .connection-lines {
+        opacity: 0.2;
+    }
+
+    .ds-card:hover {
+        transform: translateY(-4px) scale(1.01);
+    }
+
+    @keyframes cardFloat {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-3px);
+        }
+    }
+}
+
+@media (max-width: 480px) {
+
+    .stars-slow,
+    .stars-mid {
+        opacity: 0.5;
+    }
+
+    .orbit {
+        opacity: 0.4;
+    }
+
+    .planet {
+        width: 10px !important;
+        height: 10px !important;
+    }
+}
+
+/* =========================================
+   Mode Switcher - Floating & Responsive
+   ========================================= */
+
+/* Floating mode switcher container */
+.mode-switcher-float {
+    animation: modeSwitcherFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes modeSwitcherFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Main toggle button */
+.mode-switcher-btn {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(6, 182, 212, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transform: scale(1);
+}
+
+.mode-switcher-btn:hover {
+    transform: scale(1.05);
+    border-color: rgba(6, 182, 212, 0.4);
+    box-shadow:
+        0 6px 30px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(6, 182, 212, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.mode-switcher-btn-open {
+    border-color: rgba(6, 182, 212, 0.5);
+    box-shadow:
+        0 6px 30px rgba(0, 0, 0, 0.5),
+        0 0 50px rgba(6, 182, 212, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Focus styles for accessibility */
+.mode-switcher-btn:focus {
+    outline: none;
+}
+
+.mode-switcher-btn:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 3px rgba(6, 182, 212, 0.5),
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(6, 182, 212, 0.15);
+}
+
+/* Purple theme variant */
+.space-theme-purple .mode-switcher-btn {
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(168, 85, 247, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.space-theme-purple .mode-switcher-btn:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow:
+        0 6px 30px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(168, 85, 247, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.space-theme-purple .mode-switcher-btn-open {
+    border-color: rgba(168, 85, 247, 0.5);
+    box-shadow:
+        0 6px 30px rgba(0, 0, 0, 0.5),
+        0 0 50px rgba(168, 85, 247, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.space-theme-purple .mode-switcher-btn:focus-visible {
+    box-shadow:
+        0 0 0 3px rgba(168, 85, 247, 0.5),
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(168, 85, 247, 0.15);
+}
+
+/* Dropdown container */
+.mode-switcher-dropdown {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 10px 50px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(6, 182, 212, 0.1);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+}
+
+.mode-switcher-dropdown-open {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.mode-switcher-dropdown-closed {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+}
+
+.space-theme-purple .mode-switcher-dropdown {
+    box-shadow:
+        0 10px 50px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(168, 85, 247, 0.1);
+}
+
+/* Glow pulse animation on hover */
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        box-shadow:
+            0 4px 20px rgba(0, 0, 0, 0.4),
+            0 0 30px rgba(6, 182, 212, 0.15);
+    }
+
+    50% {
+        box-shadow:
+            0 4px 20px rgba(0, 0, 0, 0.4),
+            0 0 45px rgba(6, 182, 212, 0.25);
+    }
+}
+
+.mode-switcher-btn:hover {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+.space-theme-purple .mode-switcher-btn:hover {
+    animation: glowPulsePurple 2s ease-in-out infinite;
+}
+
+@keyframes glowPulsePurple {
+
+    0%,
+    100% {
+        box-shadow:
+            0 4px 20px rgba(0, 0, 0, 0.4),
+            0 0 30px rgba(168, 85, 247, 0.15);
+    }
+
+    50% {
+        box-shadow:
+            0 4px 20px rgba(0, 0, 0, 0.4),
+            0 0 45px rgba(168, 85, 247, 0.25);
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .mode-switcher-float {
+        animation: none;
+    }
+
+    .mode-switcher-btn:hover {
+        animation: none;
+    }
+
+    .mode-switcher-dropdown {
+        transition: opacity 0.15s ease;
+    }
+}
