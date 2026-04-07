@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import {
@@ -8,6 +8,7 @@ import {
   viewportOptions
 } from '../utils/animationVariants';
 import useIsMobile from '../hooks/useIsMobile';
+import ProjectModal from './ProjectModal';
 
 const Projects = function Projects({ isVisible, projects = [], themeColor = 'cyan' }) {
   const isMobile = useIsMobile();
@@ -19,6 +20,8 @@ const Projects = function Projects({ isVisible, projects = [], themeColor = 'cya
   const techHover = themeColor === 'purple'
     ? 'hover:bg-purple-500/20'
     : 'hover:bg-cyan-500/20';
+
+  const [selected, setSelected] = useState(null);
 
   return (
     <motion.section
@@ -40,53 +43,43 @@ const Projects = function Projects({ isVisible, projects = [], themeColor = 'cya
         {/* Phase 2: Content container with delayed staggered children */}
         <motion.div
           variants={containerVariant}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
         >
           {projects.map((project, index) => (
             <motion.div
               key={index}
               variants={getOrbitalItemVariant(index, isMobile)}
               whileHover={{ scale: 1.03, y: -5 }}
-              className={`ds-card rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 card-orbital ${borderHover} transition-all duration-500 group drop-shadow-lg hover:shadow-cyanGlow/20`}
+              className={`cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl card-orbital ${borderHover} transition-all duration-500 group drop-shadow-lg hover:shadow-cyanGlow/20`}
+              onClick={() => setSelected(project)}
             >
-              <h3 className={`text-xl sm:text-2xl font-bold ${textColor} flex items-center justify-between`}>
-                {project.title}
-                {project.link && project.link !== "#" && (
-                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 group-hover:rotate-12 cursor-pointer p-2 -mr-2">
-                    <ExternalLink size={20} />
-                  </a>
-                )}
-              </h3>
-              <div className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed mt-3 sm:mt-4">
-                {project.description ? (
-                  (() => {
-                    const lines = project.description.split('\n').map(l => l.trim()).filter(Boolean);
-                    return (
-                      <>
-                        <div>{lines[0]}</div>
-                        {lines.slice(1).map((line, i) => (
-                          <div key={i} className="mt-2">
-                            <span className="font-semibold">{line.replace(/^•\s*/, '')}</span>
-                          </div>
-                        ))}
-                      </>
-                    );
-                  })()
-                ) : null}
-              </div>
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                {project.tech.map((tech, i) => (
-                  <span
-                    key={i}
-                    className={`bg-white/10 px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm ${techColor} ${techHover} transition-all duration-300 transform hover:scale-110 glow-btn`}
-                  >
-                    {tech}
-                  </span>
-                ))}
+              {/* image area */}
+              {project.image ? (
+                <div className="w-full h-40 bg-gray-100">
+                  <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div className="w-full h-40 flex items-center justify-center bg-gradient-to-r from-sky-500 to-cyan-500 text-white">
+                  <div className="text-lg font-semibold">{project.title}</div>
+                </div>
+              )}
+
+              <div className="p-4 bg-white">
+                <h4 className={`text-lg font-semibold ${textColor} truncate`}>{project.title}</h4>
+                <div className="text-gray-500 text-sm mt-2 line-clamp-3">{project.description}</div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {(project.tech || []).slice(0, 6).map((t, i) => (
+                    <span key={i} className={`px-2 py-1 rounded-full text-xs bg-gray-100 ${techColor}`}>{t}</span>
+                  ))}
+                </div>
               </div>
             </motion.div>
           ))}
         </motion.div>
+
+        {selected && (
+          <ProjectModal project={selected} onClose={() => setSelected(null)} />
+        )}
       </div>
     </motion.section>
   );
