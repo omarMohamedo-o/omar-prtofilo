@@ -413,8 +413,8 @@ body {
 
 /* Scroll-down button inside chat panel */
 .chat-scroll-down {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -430,7 +430,7 @@ body {
     position: absolute;
     right: 12px;
     /* sit just above the input/typing bar inside the chat panel */
-    bottom: 88px;
+    bottom: 64px;
     z-index: 1050;
 }
 

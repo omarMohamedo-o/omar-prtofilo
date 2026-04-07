@@ -7,6 +7,8 @@ export default function DownArrowButton({ visible = false, onClick = () => { }, 
 
     // Inline mode: render a simple button to be placed inside the chat panel
     if (inline) {
+        // reuse up-arrow visual language and spacing
+        const classes = `chat-scroll-down p-2 sm:p-3 rounded-full bg-[#0B0B1A]/80 backdrop-blur-sm text-white shadow-lg hover:scale-105 active:scale-95 transform-gpu transition-all duration-200 ${className}`;
         return (
             <button
                 key="down-arrow-inline"
@@ -14,7 +16,7 @@ export default function DownArrowButton({ visible = false, onClick = () => { }, 
                 aria-label={'Scroll to latest message'}
                 title={'Scroll to latest message'}
                 role="button"
-                className={`chat-scroll-down ${className}`}
+                className={classes}
             >
                 <FaArrowDown size={16} />
             </button>
