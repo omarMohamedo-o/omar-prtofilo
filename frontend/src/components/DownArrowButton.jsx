@@ -2,9 +2,26 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { FaArrowDown } from 'react-icons/fa';
 
-export default function DownArrowButton({ visible = false, onClick = () => { }, className = '' }) {
+export default function DownArrowButton({ visible = false, onClick = () => { }, className = '', inline = false }) {
     if (!visible) return null;
 
+    // Inline mode: render a simple button to be placed inside the chat panel
+    if (inline) {
+        return (
+            <button
+                key="down-arrow-inline"
+                onClick={(e) => { e?.preventDefault(); onClick(e); }}
+                aria-label={'Scroll to latest message'}
+                title={'Scroll to latest message'}
+                role="button"
+                className={`chat-scroll-down ${className}`}
+            >
+                <FaArrowDown size={16} />
+            </button>
+        );
+    }
+
+    // Default portal-mounted floating button (keeps previous behavior)
     // runtime-safe detection for RTL layouts
     const lang = (typeof navigator !== 'undefined' && navigator.language) || (typeof document !== 'undefined' && document.documentElement?.lang) || 'en';
     const isRTL = typeof document !== 'undefined' ? (document.dir === 'rtl' || String(lang).toLowerCase().startsWith('ar')) : String(lang).toLowerCase().startsWith('ar');

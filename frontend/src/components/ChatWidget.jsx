@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaPaperPlane, FaRobot, FaWhatsapp, FaPaperclip, FaMicrophone, FaStop, FaPlay, FaPause, FaTrash, FaUser, FaArrowDown } from 'react-icons/fa';
+import { FaPaperPlane, FaRobot, FaWhatsapp, FaPaperclip, FaMicrophone, FaStop, FaPlay, FaPause, FaTrash, FaUser } from 'react-icons/fa';
 import { sendTextMessage, sendImageMessage, uploadFile, transcribeAudio, speakText as speakTextService } from '../services/chatbotService';
 import SpeakerButton from './ChatTTS';
 import DownArrowButton from './DownArrowButton';
@@ -366,10 +366,8 @@ export default function ChatWidget() {
         const mr = mediaRecorderRef.current;
         if (!mr || mr.state === 'inactive') return;
         try {
-            // Request any buffered data first to reduce chance of empty blob
-            try { mr.requestData(); } catch (e) { /* ignore if not supported */ }
             mr.stop();
-            // do not clear mediaRecorderRef here; let onstop handler finalize and clear it
+            mediaRecorderRef.current = null;
         } catch (err) {
             console.warn('Error stopping recorder', err);
         }
@@ -777,20 +775,6 @@ export default function ChatWidget() {
                         {isLoading && (
                             <div className="chat-msg bot">
                                 <div className="chat-text">
-
-                                    {/* Scroll-down button inside chat panel (appears when user scrolls up) */}
-                                    {showScrollDown && (
-                                        <button
-                                            type="button"
-                                            aria-label="Scroll to latest message"
-                                            title="Scroll to latest message"
-                                            className="chat-scroll-down absolute z-50 p-2 rounded-full bg-[#0B0B1A]/80 text-white shadow-lg hover:scale-105 active:scale-95 transform-gpu transition-all duration-200"
-                                            style={{ right: 12, bottom: 84 }}
-                                            onClick={() => { scrollToBottomIfNeeded(true); setShowScrollDown(false); }}
-                                        >
-                                            <FaArrowDown />
-                                        </button>
-                                    )}
                                     <span className="typing-indicator">
                                         <span></span>
                                         <span></span>
@@ -926,7 +910,9 @@ export default function ChatWidget() {
                     </div>
                 </div>
 
-                <DownArrowButton visible={showScrollDown} onClick={() => { scrollToBottomIfNeeded(true); setShowScrollDown(false); }} />
+
+                {/* Render the scroll-down button inside the chat panel */}
+                <DownArrowButton visible={showScrollDown} inline onClick={() => { scrollToBottomIfNeeded(true); setShowScrollDown(false); }} />
 
                 <button ref={fabRef} className="chat-fab glow-btn" onClick={() => setOpen(v => !v)} aria-label="Open chat">
                     <span className="chat-fab-icon" aria-hidden>
