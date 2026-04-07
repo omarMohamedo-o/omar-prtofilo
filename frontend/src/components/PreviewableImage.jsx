@@ -36,6 +36,9 @@ export default function PreviewableImage({
     openPreview(imageArray, initialIndex, alt);
   };
 
+  // Create WebP variant of the image
+  const webpSrc = src ? src.replace(/\.(jpg|jpeg|png)$/i, '.webp') : null;
+
   return (
     <button
       type="button"
@@ -43,13 +46,28 @@ export default function PreviewableImage({
       className={`rounded-md overflow-hidden border border-white/5 shadow-md focus:outline-none focus:ring-2 focus:ring-cyan-400/50 transition-transform hover:scale-105 ${wrapperClassName}`}
       aria-label={ariaLabel || `View ${alt}`}
     >
-      <img
-        src={src}
-        alt={alt}
-        className={`cursor-pointer ${className}`}
-        onError={onError}
-        {...imgProps}
-      />
+      {webpSrc ? (
+        <picture>
+          <source srcSet={webpSrc} type="image/webp" />
+          <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            className={`cursor-pointer ${className}`}
+            onError={onError}
+            {...imgProps}
+          />
+        </picture>
+      ) : (
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className={`cursor-pointer ${className}`}
+          onError={onError}
+          {...imgProps}
+        />
+      )}
     </button>
   );
 }

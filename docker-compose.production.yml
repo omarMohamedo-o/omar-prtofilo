@@ -30,15 +30,9 @@ services:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - HF_TOKEN=${HF_TOKEN}
 
-  backend:
-    image: ${REGISTRY:-ghcr.io}/${IMAGE_PREFIX:-mora-portfolio}/backend:${TAG:-latest}
+  frontend-mailer:
+    image: ${REGISTRY:-ghcr.io}/${IMAGE_PREFIX:-mora-portfolio}/frontend-mailer:${TAG:-latest}
     build: !reset null
-    env_file: !reset null
-    environment:
-      - NODE_ENV=production
-      - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
-      - SMTP_PORT=${SMTP_PORT:-587}
-      - RECEIVER_EMAIL=${RECEIVER_EMAIL}
 
   nginx:
     image: ${REGISTRY:-ghcr.io}/${IMAGE_PREFIX:-mora-portfolio}/nginx:${TAG:-latest}

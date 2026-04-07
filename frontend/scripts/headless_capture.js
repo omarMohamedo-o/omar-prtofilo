@@ -1,11 +1,11 @@
-const fs = require('fs');
-const puppeteer = require('puppeteer');
+import fs from 'fs';
+import puppeteer from 'puppeteer';
 
-(async () => {
-    const outLog = '/tmp/headless_console.log';
-    const outScreenshot = '/tmp/headless_page.png';
-    const url = process.argv[2] || 'http://localhost:5173/';
+const outLog = '/tmp/headless_console.log';
+const outScreenshot = '/tmp/headless_page.png';
+const url = process.argv[2] || 'http://localhost:5173/';
 
+async function run() {
     const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
 
@@ -44,4 +44,6 @@ const puppeteer = require('puppeteer');
     console.log('Saved console log to', outLog);
 
     await browser.close();
-})();
+}
+
+run().catch(e => { console.error('Headless run failed:', e); process.exit(1); });

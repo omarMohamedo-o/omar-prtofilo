@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Mail, Phone, MapPin, FileText, Server, Brain, ChevronDown } from 'lucide-react';
 import { MODES, modeInfo } from '../data/data';
+import { getOptimizedImagePath } from '../utils/imageOptimization';
 import ButtonCard from './ButtonCard';
 import { containerVariant, itemVariant } from '../utils/animationVariants';
 
@@ -203,7 +204,7 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
             <div className={`w-full h-full rounded-[2rem] sm:rounded-[3rem] overflow-hidden border border-gray-700/50 backdrop-blur-sm bg-deepSpace/40 shadow-2xl glass-card relative z-10 group`}>
               <div className="absolute inset-0 bg-gradient-to-t from-deepSpace/80 via-transparent to-transparent opacity-60 z-20"></div>
               <img
-                src={personalInfo.image || '/images/me/profile.jpg'}
+                src={getOptimizedImagePath(personalInfo.image || '/images/me/profile.jpg')}
                 alt={personalInfo.name || 'Profile'}
                 className="w-full h-full object-cover"
                 style={{ objectPosition: '35% 12%' }}

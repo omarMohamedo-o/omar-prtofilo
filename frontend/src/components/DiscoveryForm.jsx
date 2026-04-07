@@ -38,10 +38,12 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
         (async () => {
             setStatus({ loading: true, message: null, error: null });
             try {
-                // Use a relative path by default so requests go through nginx reverse-proxy
-                // In local debug override with VITE_BACKEND_URL env var (e.g. http://localhost:3001)
-                const base = import.meta.env.VITE_BACKEND_URL || '';
-                const url = base ? `${base.replace(/\/$/, '')}/api/discovery` : '/api/discovery';
+                // Discovery is served by the nginx-proxied local route in Docker,
+                // and by the Vercel serverless function in production.
+                const discoveryBase = import.meta.env.VITE_DISCOVERY_API_URL || '';
+                const url = discoveryBase
+                    ? `${discoveryBase.replace(/\/$/, '')}/discovery`
+                    : '/api/discovery';
                 console.debug('DiscoveryForm: POST', url);
                 const resp = await fetch(url, {
                     method: 'POST',

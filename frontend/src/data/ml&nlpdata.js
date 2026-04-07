@@ -91,7 +91,6 @@ export const mlnlpCourses = [
         provider: "IBM",
         date: "May 2025",
         verified: true,
-        platform: "Credly",
         link: "https://www.credly.com/badges/517d3f92-9950-4b0c-b637-cc22f5206447/linked_in_profile",
         providerLink: "https://www.ibm.com/us-en",
         image: "IBM_Docker_Essentials _A_Developer_Introduction.png"
@@ -101,7 +100,6 @@ export const mlnlpCourses = [
         provider: "Amazon Web Services (AWS)",
         date: "Apr 2025",
         verified: true,
-        platform: "Credly",
         link: "https://www.credly.com/badges/795c58fb-53f7-4859-b894-51660e879def/print",
         providerLink: "https://pages.awscloud.com/AWS-Academy.html",
         image: "AWS_Academy_Graduate___Cloud_Foundations__Training_Badge_Badge.png"

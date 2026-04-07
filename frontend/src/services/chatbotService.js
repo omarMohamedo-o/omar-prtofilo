@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-// Use environment variable for API URL, fallback to localhost for development
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
+// Use build-time env vars, then fall back to the nginx-proxied API path.
+// For local direct access, set VITE_BACKEND_URL=http://localhost:8001.
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_URL || '/api';
 
 export async function sendTextMessage(message, stream = false) {
     try {

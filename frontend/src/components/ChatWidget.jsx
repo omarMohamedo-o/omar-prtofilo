@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaPaperPlane, FaRobot, FaWhatsapp, FaPaperclip, FaMicrophone, FaStop, FaPlay, FaPause, FaTrash, FaUser } from 'react-icons/fa';
-import { sendTextMessage, sendImageMessage, uploadFile, transcribeAudio } from '../services/chatbotService';
+import { FaPaperPlane, FaRobot, FaWhatsapp, FaPaperclip, FaMicrophone, FaStop, FaPlay, FaPause, FaTrash, FaUser, FaArrowDown } from 'react-icons/fa';
+import { sendTextMessage, sendImageMessage, uploadFile, transcribeAudio, speakText as speakTextService } from '../services/chatbotService';
 import SpeakerButton from './ChatTTS';
+import DownArrowButton from './DownArrowButton';
 
 export default function ChatWidget() {
     const [open, setOpen] = useState(false);
@@ -22,13 +23,17 @@ export default function ChatWidget() {
     const [pendingVoice, setPendingVoice] = useState(null);
     const [playingAudioId, setPlayingAudioId] = useState(null);
     const audioRefs = useRef({});
+    const playbackAudioRef = useRef(null);
     const widgetRef = useRef(null);
     const fabRef = useRef(null);
     const panelRef = useRef(null);
+    const chatBodyRef = useRef(null);
+    const userNearBottomRef = useRef(true);
+    const [showScrollDown, setShowScrollDown] = useState(false);
 
     const send = async () => {
         if (!value.trim()) return;
-
+        console.debug('ChatWidget: Sending message', value);
         const userMsg = { id: Date.now(), from: 'user', text: value.trim() };
         setMessages(prev => [...prev, userMsg]);
         const userQuery = value.trim();
@@ -56,6 +61,14 @@ export default function ChatWidget() {
                 from: 'bot',
                 text: botAnswer
             }]);
+
+            console.debug('ChatWidget: Bot answer received', botAnswer);
+            // Auto-play bot reply using TTS (falls back gracefully in ChatTTS)
+            try {
+                await speakText(botAnswer);
+            } catch (e) {
+                console.warn('ChatWidget: Auto-play TTS failed', e);
+            }
         } catch (error) {
             console.error('Error communicating with chatbot:', error);
             setMessages(prev => [...prev, {
@@ -107,19 +120,121 @@ export default function ChatWidget() {
     };
 
     // Toggle audio playback for voice messages
-    const toggleAudioPlayback = (msgId, audioUrl) => {
-        const audio = audioRefs.current[msgId];
-        if (!audio) return;
+    const toggleAudioPlayback = async (msgId, audioUrl) => {
+        const hiddenAudio = audioRefs.current[msgId];
+        if (!hiddenAudio && !audioUrl) return;
 
         if (playingAudioId === msgId) {
-            audio.pause();
+            playbackAudioRef.current?.pause();
             setPlayingAudioId(null);
-        } else {
-            // Pause any currently playing audio
-            Object.values(audioRefs.current).forEach(a => a?.pause());
-            audio.currentTime = 0;
-            audio.play();
+            return;
+        }
+
+        // Pause any currently playing audio before starting a new one.
+        Object.values(audioRefs.current).forEach(a => a?.pause());
+        playbackAudioRef.current?.pause();
+
+        const targetAudio = new Audio(audioUrl || hiddenAudio?.src);
+        playbackAudioRef.current = targetAudio;
+        targetAudio.currentTime = 0;
+        targetAudio.volume = 1;
+
+        const handleEnded = () => setPlayingAudioId(null);
+        const handleError = (err) => {
+            console.warn('Voice playback failed', err);
+            setPlayingAudioId(null);
+        };
+
+        targetAudio.addEventListener('ended', handleEnded, { once: true });
+        targetAudio.addEventListener('error', handleError, { once: true });
+
+        try {
+            const playPromise = targetAudio.play();
+            if (playPromise && typeof playPromise.then === 'function') {
+                await playPromise;
+            }
             setPlayingAudioId(msgId);
+        } catch (err) {
+            handleError(err);
+        }
+    };
+
+    const playAudioByRef = async (audioKey, fallbackAudioUrl = null) => {
+        const audio = audioRefs.current[audioKey];
+        if (!audio && !fallbackAudioUrl) return false;
+
+        const targetAudio = audio || new Audio(fallbackAudioUrl);
+
+        try {
+            targetAudio.currentTime = 0;
+            targetAudio.volume = 1;
+            const playPromise = targetAudio.play();
+            if (playPromise && typeof playPromise.then === 'function') {
+                await playPromise;
+            }
+            return true;
+        } catch (err) {
+            console.warn('Audio playback failed', err);
+            return false;
+        }
+    };
+
+    const audioBufferToWavBlob = (audioBuffer) => {
+        const numChannels = audioBuffer.numberOfChannels;
+        const sampleRate = audioBuffer.sampleRate;
+        const length = audioBuffer.length;
+        const bitsPerSample = 16;
+        const bytesPerSample = bitsPerSample / 8;
+        const blockAlign = numChannels * bytesPerSample;
+        const byteRate = sampleRate * blockAlign;
+        const dataSize = length * blockAlign;
+        const buffer = new ArrayBuffer(44 + dataSize);
+        const view = new DataView(buffer);
+
+        const writeString = (offset, str) => {
+            for (let i = 0; i < str.length; i++) {
+                view.setUint8(offset + i, str.charCodeAt(i));
+            }
+        };
+
+        writeString(0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeString(8, 'WAVE');
+        writeString(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, numChannels, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, byteRate, true);
+        view.setUint16(32, blockAlign, true);
+        view.setUint16(34, bitsPerSample, true);
+        writeString(36, 'data');
+        view.setUint32(40, dataSize, true);
+
+        let offset = 44;
+        for (let i = 0; i < length; i++) {
+            for (let ch = 0; ch < numChannels; ch++) {
+                const sample = Math.max(-1, Math.min(1, audioBuffer.getChannelData(ch)[i]));
+                view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
+                offset += 2;
+            }
+        }
+
+        return new Blob([buffer], { type: 'audio/wav' });
+    };
+
+    const convertAudioFileToWav = async (file) => {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return file;
+
+        const ctx = new AudioCtx();
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            const decoded = await ctx.decodeAudioData(arrayBuffer.slice(0));
+            const wavBlob = audioBufferToWavBlob(decoded);
+            return new File([wavBlob], `voice-${Date.now()}.wav`, { type: 'audio/wav' });
+        } finally {
+            try { await ctx.close(); } catch (e) { }
         }
     };
 
@@ -251,8 +366,10 @@ export default function ChatWidget() {
         const mr = mediaRecorderRef.current;
         if (!mr || mr.state === 'inactive') return;
         try {
+            // Request any buffered data first to reduce chance of empty blob
+            try { mr.requestData(); } catch (e) { /* ignore if not supported */ }
             mr.stop();
-            mediaRecorderRef.current = null;
+            // do not clear mediaRecorderRef here; let onstop handler finalize and clear it
         } catch (err) {
             console.warn('Error stopping recorder', err);
         }
@@ -342,10 +459,12 @@ export default function ChatWidget() {
                 <audio
                     ref={el => audioRefs.current[msg.id] = el}
                     src={msg.audioUrl}
+                    preload="auto"
                     style={{ display: 'none' }}
                 />
                 {/* Play/Pause button */}
                 <button
+                    type="button"
                     className="voice-play-btn"
                     onClick={(e) => { e.stopPropagation(); toggleAudioPlayback(msg.id, msg.audioUrl); }}
                     aria-label={isPlaying ? 'Pause' : 'Play'}
@@ -378,6 +497,20 @@ export default function ChatWidget() {
     const sendVoiceMessage = async () => {
         const pv = pendingVoice;
         if (!pv) return;
+        const voiceMsgId = Date.now();
+        const voiceMessage = {
+            id: voiceMsgId,
+            from: 'user',
+            text: '🎤 Voice message',
+            audioUrl: pv.audioUrl,
+            audioDuration: pv.audioDuration,
+            voiceStatus: 'transcribing'
+        };
+
+        // Move the recording preview into the chat immediately so it no longer
+        // stays stuck in the recorder bar while transcription runs.
+        setMessages(prev => [...prev, voiceMessage]);
+        setPendingVoice(null);
         setIsLoading(true);
         try {
             const file = pv.file;
@@ -388,41 +521,53 @@ export default function ChatWidget() {
                     from: 'bot',
                     text: 'Recording appears empty. Please try again.'
                 }]);
-                setPendingVoice(null);
                 return;
             }
 
-            const transcription = await transcribeAudio(file);
-            const transcribedText = (transcription && transcription.text) ? transcription.text.trim() : '';
+            let transcription = await transcribeAudio(file);
+            let transcribedText = (transcription && transcription.text) ? transcription.text.trim() : '';
+
+            // Fallback: convert to WAV and retry transcription for better accuracy.
+            if (!transcribedText) {
+                try {
+                    const wavFile = await convertAudioFileToWav(file);
+                    if (wavFile && wavFile !== file) {
+                        transcription = await transcribeAudio(wavFile);
+                        transcribedText = (transcription && transcription.text) ? transcription.text.trim() : '';
+                    }
+                } catch (convErr) {
+                    console.warn('Voice WAV conversion fallback failed', convErr);
+                }
+            }
+
+            console.debug('ChatWidget: Transcription result', transcription);
 
             // If transcription succeeded, send it as text to the chatbot
             if (transcribedText) {
-                setMessages(prev => [...prev, {
-                    id: Date.now(),
-                    from: 'user',
-                    text: `🎤 "${transcribedText}"`,
-                    audioUrl: pv.audioUrl,
-                    audioDuration: pv.audioDuration
-                }]);
+                setMessages(prev => prev.map(m => (
+                    m.id === voiceMsgId
+                        ? { ...m, text: `🎤 "${transcribedText}"`, voiceStatus: 'ready' }
+                        : m
+                )));
 
                 const response = await sendTextMessage(transcribedText, false);
                 const botAnswer = response?.Answer || response?.answer || 'Sorry, I could not process your request.';
-
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     from: 'bot',
                     text: botAnswer
                 }]);
+
+                console.debug('ChatWidget: Bot answer received (voice flow)', botAnswer);
+                try { await speakText(botAnswer); } catch (e) { console.warn('ChatWidget: Auto-play TTS failed (voice flow)', e); }
             } else {
                 // Transcription empty — show clear feedback and avoid sending empty content
                 console.warn('Transcription returned empty text for file:', file);
-                setMessages(prev => [...prev, {
-                    id: Date.now(),
-                    from: 'user',
-                    text: '🎤 Voice message',
-                    audioUrl: pv.audioUrl,
-                    audioDuration: pv.audioDuration
-                }]);
+                setMessages(prev => prev.map(m => (
+                    m.id === voiceMsgId
+                        ? { ...m, voiceStatus: 'failed' }
+                        : m
+                )));
 
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
@@ -430,9 +575,6 @@ export default function ChatWidget() {
                     text: 'Sorry, I could not understand the audio. Please try again or type your message.'
                 }]);
             }
-
-            // clear pending preview
-            setPendingVoice(null);
         } catch (err) {
             console.error('Error sending voice message', err);
             setMessages(prev => [...prev, {
@@ -539,6 +681,52 @@ export default function ChatWidget() {
         return () => window.removeEventListener('resize', onResize);
     }, [open]);
 
+    // Smart auto-scroll: scroll to bottom only when user is already near bottom
+    const scrollToBottomIfNeeded = (force = false) => {
+        const container = chatBodyRef.current;
+        if (!container) return;
+
+        const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+
+        if (force || isNearBottom || userNearBottomRef.current) {
+            // scroll after DOM updates
+            requestAnimationFrame(() => {
+                try { container.scrollTop = container.scrollHeight; } catch (e) { }
+            });
+        }
+    };
+
+    // Track user scroll interactions to avoid forcing scroll when user reads older messages
+    useEffect(() => {
+        const c = chatBodyRef.current;
+        if (!c) return;
+        const onScroll = () => {
+            const near = c.scrollHeight - c.scrollTop - c.clientHeight < 120;
+            userNearBottomRef.current = near;
+            // show the scroll-down button when user is not near bottom
+            try { setShowScrollDown(!near); } catch (e) { }
+        };
+        c.addEventListener('scroll', onScroll, { passive: true });
+        // Initialize
+        onScroll();
+        return () => c.removeEventListener('scroll', onScroll);
+    }, []);
+
+    // When messages change, try to auto-scroll if appropriate
+    useEffect(() => {
+        scrollToBottomIfNeeded(false);
+    }, [messages]);
+
+    // When chat opens, close notice and ensure scroll to bottom
+    useEffect(() => {
+        if (open) {
+            if (showNotice) setShowNotice(false);
+            // force scroll to bottom when opening to show latest messages
+            scrollToBottomIfNeeded(true);
+            setShowScrollDown(false);
+        }
+    }, [open]);
+
     return (
         <>
             <a
@@ -571,9 +759,9 @@ export default function ChatWidget() {
                         <button className="chat-close" onClick={() => setOpen(false)}>✕</button>
                     </div>
 
-                    <div className="chat-body">
+                    <div ref={chatBodyRef} className="chat-body">
                         {messages.map(m => (
-                            <div key={m.id} className={`chat-msg ${m.from === 'bot' ? 'bot' : 'user'}`}>
+                            <div key={m.id} className={`chat-msg ${m.from === 'bot' ? 'bot' : 'user'} ${m.audioUrl ? 'audio' : ''}`}>
                                 {m.audioUrl ? (
                                     <VoiceMessagePlayer msg={m} />
                                 ) : (
@@ -589,6 +777,20 @@ export default function ChatWidget() {
                         {isLoading && (
                             <div className="chat-msg bot">
                                 <div className="chat-text">
+
+                                    {/* Scroll-down button inside chat panel (appears when user scrolls up) */}
+                                    {showScrollDown && (
+                                        <button
+                                            type="button"
+                                            aria-label="Scroll to latest message"
+                                            title="Scroll to latest message"
+                                            className="chat-scroll-down absolute z-50 p-2 rounded-full bg-[#0B0B1A]/80 text-white shadow-lg hover:scale-105 active:scale-95 transform-gpu transition-all duration-200"
+                                            style={{ right: 12, bottom: 84 }}
+                                            onClick={() => { scrollToBottomIfNeeded(true); setShowScrollDown(false); }}
+                                        >
+                                            <FaArrowDown />
+                                        </button>
+                                    )}
                                     <span className="typing-indicator">
                                         <span></span>
                                         <span></span>
@@ -638,18 +840,23 @@ export default function ChatWidget() {
                             /* Voice preview bar - after recording, before sending */
                             <div className="voice-preview-bar">
                                 <button
+                                    type="button"
                                     className="voice-preview-play"
-                                    onClick={() => {
+                                    onClick={async () => {
                                         const audio = audioRefs.current['preview'];
                                         if (!audio) return;
                                         if (playingAudioId === 'preview') {
                                             audio.pause();
                                             setPlayingAudioId(null);
-                                        } else {
-                                            Object.values(audioRefs.current).forEach(a => a?.pause());
-                                            audio.currentTime = 0;
-                                            audio.play();
+                                            return;
+                                        }
+
+                                        Object.values(audioRefs.current).forEach(a => a?.pause());
+                                        const started = await playAudioByRef('preview', pendingVoice.audioUrl);
+                                        if (started) {
                                             setPlayingAudioId('preview');
+                                        } else {
+                                            setPlayingAudioId(null);
                                         }
                                     }}
                                     aria-label={playingAudioId === 'preview' ? 'Pause preview' : 'Play preview'}
@@ -660,6 +867,7 @@ export default function ChatWidget() {
                                     ref={el => audioRefs.current['preview'] = el}
                                     src={pendingVoice.audioUrl}
                                     onEnded={() => setPlayingAudioId(null)}
+                                    preload="auto"
                                     style={{ display: 'none' }}
                                 />
                                 <span className="voice-preview-duration">{formatTime(pendingVoice.audioDuration)}</span>
@@ -717,6 +925,8 @@ export default function ChatWidget() {
                         )}
                     </div>
                 </div>
+
+                <DownArrowButton visible={showScrollDown} onClick={() => { scrollToBottomIfNeeded(true); setShowScrollDown(false); }} />
 
                 <button ref={fabRef} className="chat-fab glow-btn" onClick={() => setOpen(v => !v)} aria-label="Open chat">
                     <span className="chat-fab-icon" aria-hidden>

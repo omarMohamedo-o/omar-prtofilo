@@ -6,28 +6,41 @@ import {
     containerVariant,
     itemVariant
 } from '../utils/animationVariants';
+import { getOptimizedImagePath } from '../utils/imageOptimization';
 import SectionWrapper from './SectionWrapper';
 import ButtonCard from './ButtonCard';
 import useIsMobile from '../hooks/useIsMobile';
 import PreviewableImage from './PreviewableImage';
 
 export function getImagePath(item) {
-    if (Array.isArray(item.images) && item.images.length) return `/images/certifications/${item.images[0]}`;
-    if (item.image) return `/images/certifications/${item.image}`;
-    const slug = String(item.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    return `/images/certifications/${slug}.png`;
+    let basePath = '';
+    if (Array.isArray(item.images) && item.images.length) {
+        basePath = `/images/certifications/${item.images[0]}`;
+    } else if (item.image) {
+        basePath = `/images/certifications/${item.image}`;
+    } else {
+        const slug = String(item.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        basePath = `/images/certifications/${slug}.png`;
+    }
+    return getOptimizedImagePath(basePath);
 }
 
 export function getImages(item) {
-    if (Array.isArray(item.images) && item.images.length) return item.images.map((f) => `/images/certifications/${f}`);
-    if (item.image) return [`/images/certifications/${item.image}`];
-    const slug = String(item.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    return [`/images/certifications/${slug}.png`];
+    let basePaths = [];
+    if (Array.isArray(item.images) && item.images.length) {
+        basePaths = item.images.map((f) => `/images/certifications/${f}`);
+    } else if (item.image) {
+        basePaths = [`/images/certifications/${item.image}`];
+    } else {
+        const slug = String(item.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        basePaths = [`/images/certifications/${slug}.png`];
+    }
+    return basePaths.map(path => getOptimizedImagePath(path));
 }
 
 export function handleImageError(e, name) {
     const slug = String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    const fallback = `/images/certifications/${slug}.png`;
+    const fallback = getOptimizedImagePath(`/images/certifications/${slug}.png`);
 
     if (e.currentTarget.src.endsWith(fallback)) {
         e.currentTarget.onerror = null;

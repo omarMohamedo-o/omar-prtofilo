@@ -22,9 +22,9 @@ COPY src ./src
 COPY index.html ./
 COPY postcss.config.js tailwind.config.js vite.config.js ./
 
-# Build arguments for API URL configuration
-ARG VITE_API_URL=/api
-ENV VITE_API_URL=${VITE_API_URL}
+# Build arguments for API URL configuration (Vite reads `VITE_` vars at build time)
+ARG VITE_BACKEND_URL=/api
+ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
 
 # Build optimizations
 ENV NODE_ENV=production
@@ -67,6 +67,10 @@ RUN apk upgrade --no-cache && \
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Ensure the nginx config is writable by the `nginx` user so entrypoint
+# scripts can modify templates when the container runs as non-root.
+RUN chown nginx:nginx /etc/nginx/conf.d/default.conf
 
 # Copy built application from builder (Vite outputs to dist/)
 COPY --from=builder /app/dist /usr/share/nginx/html

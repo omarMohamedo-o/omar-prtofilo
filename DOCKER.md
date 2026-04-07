@@ -14,10 +14,14 @@ Production-ready Docker containerization for the MORA Portfolio application.
 │                          │                                   │
 ▼                          ▼                                   │
 ┌────────────────┐  ┌──────────────────┐  ┌──────────────────┐ │
-│   MoraBot      │  │    Frontend      │  │     Redis        │ │
-│  (FastAPI)     │  │ (React + Nginx)  │  │    (Cache)       │ │
-│   Port 8001    │  │    Port 80       │  │   Port 6379      │ │
+│   MoraBot      │  │    Frontend      │  │ Frontend Mailer  │ │
+│  (FastAPI)     │  │ (React + Nginx)  │  │  (Discovery API) │ │
+│   Port 8001    │  │    Port 80       │  │   Port 8787      │ │
 └────────────────┘  └──────────────────┘  └──────────────────┘ │
+┌──────────────────────────────────────────────────────────────┐ │
+│                         Redis (Cache)                        │ │
+│                          Port 6379                           │ │
+└──────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -27,6 +31,7 @@ Production-ready Docker containerization for the MORA Portfolio application.
 |---------|-------------|---------------|
 | `frontend` | React + Vite SPA served by Nginx | 80 |
 | `morabot` | Python FastAPI AI chatbot | 8001 |
+| `frontend-mailer` | Discovery form mailer API | 8787 |
 | `nginx` | Reverse proxy & load balancer | 80, 443 |
 | `redis` | Cache (optional) | 6379 |
 
@@ -58,7 +63,7 @@ docker compose ps
 
 ### 3. Access the Application
 
-- **Frontend**: <http://localhost>
+- **Frontend**: <http://localhost:5050>
 - **API Health**: <http://localhost/api/health>
 
 ## Commands
@@ -93,8 +98,8 @@ docker compose exec frontend sh
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `HTTP_PORT` | 80 | HTTP port |
-| `HTTPS_PORT` | 443 | HTTPS port |
+| `HTTP_PORT` | 5050 | HTTP port |
+| `HTTPS_PORT` | 8443 | HTTPS port |
 
 #### `MoraBot/.env`
 
@@ -177,6 +182,6 @@ docker compose build frontend --no-cache
 
 ```bash
 # Change port in .env
-echo "HTTP_PORT=8080" >> .env
+echo "HTTP_PORT=8081" >> .env
 docker compose up -d
 ```

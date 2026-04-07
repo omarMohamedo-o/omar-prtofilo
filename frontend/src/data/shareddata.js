@@ -67,14 +67,36 @@ export const Experiences = [
         company: "Black Horse Courses",
         link: "https://black-horse-courses.com/",
         location: "Alexandria, Egypt",
-        period: "Jan 2025 – Present",
+        period: "Jan 2025 – Dec 2025",
         type: "Part-time, Onsite",
         achievements: [
             "Delivered Python and machine learning training to 50+ students",
             "Focused on OOP, data structures, and real-world model deployment",
             "Achieved 95% satisfaction rate"
         ]
-    }
+    },
+    {
+        title: "Python & AI Instructor",
+        company: "ischool",
+        link: "https://www.ischooltech.com/",
+        location: "Cairo, Egypt",
+        period: "Apr 2026 – Present",
+        type: "Part-time, remote",
+        achievements: [
+            "Designed and led Python, AI, and robotics projects, enabling students to build simulation-driven applications and data-centric AI models using Godot and GDScript."
+        ]
+    },
+    // {
+    //     title: "Python & AI Instructor",
+    //     company: "ischool",
+    //     link: "https://www.ischooltech.com/",
+    //     location: "Cairo, Egypt",
+    //     period: "Apr 2026 – Present",
+    //     type: "Part-time, remote",
+    //     achievements: [
+    //         "Designed and led Python, AI, and robotics projects, enabling students to build simulation-driven applications and data-centric AI models using Godot and GDScript."
+    //     ]
+    // }
 ];
 
 export const education = [
@@ -101,6 +123,7 @@ export const education = [
         location: "Alexandria, Egypt",
         period: "Sep 2019 – Jul 2024",
         project: "HistoryVerse – AI/AR platform for interactive historical exploration (Grade: A+)"
+        // cgpa: "4.0 / 4.0 (Excellent)",
     }
 ];
 

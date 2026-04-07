@@ -7,6 +7,7 @@ import {
   getOrbitalItemVariant,
   viewportOptions
 } from '../utils/animationVariants';
+import { getOptimizedImagePath } from '../utils/imageOptimization';
 import useIsMobile from '../hooks/useIsMobile';
 import PreviewableImage from './PreviewableImage';
 
@@ -72,7 +73,7 @@ export default function Internships({ isVisible, internships = [], themeColor = 
               <div className="absolute bottom-4 right-4 flex items-end gap-2 hidden md:flex">
                 {internship.company && internship.company.toLowerCase().includes('information technology institute') && (
                   <PreviewableImage
-                    src="/images/certifications/ITI-certified-system-administration.jpg"
+                    src={getOptimizedImagePath("/images/certifications/ITI-certified-system-administration.jpg")}
                     alt="ITI Certificate"
                     className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
                   />
@@ -80,14 +81,14 @@ export default function Internships({ isVisible, internships = [], themeColor = 
 
                 {internship.company && internship.company.toLowerCase().includes('depi') && (
                   <PreviewableImage
-                    src="/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.jpg"
+                    src={getOptimizedImagePath("/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.jpg")}
                     alt="DEPI Badge"
                     className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
                   />
                 )}
                 {internship.title && internship.title.toLowerCase().includes('artificial intelligence') && (
                   <PreviewableImage
-                    src="/images/certifications/we-certified-artificial-intelligence.jpg"
+                    src={getOptimizedImagePath("/images/certifications/we-certified-artificial-intelligence.jpg")}
                     alt="WE Certificate"
                     className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
                   />
@@ -98,7 +99,7 @@ export default function Internships({ isVisible, internships = [], themeColor = 
               <div className="mt-4 flex items-center gap-2 md:hidden justify-end">
                 {internship.company && internship.company.toLowerCase().includes('information technology institute') && (
                   <PreviewableImage
-                    src="/images/certifications/ITI-certified-system-administration.jpg"
+                    src={getOptimizedImagePath("/images/certifications/ITI-certified-system-administration.jpg")}
                     alt="ITI Certificate"
                     className="w-20 xs:w-24 h-14 xs:h-16 object-contain bg-black/20"
                   />
@@ -106,14 +107,14 @@ export default function Internships({ isVisible, internships = [], themeColor = 
 
                 {internship.company && internship.company.toLowerCase().includes('depi') && (
                   <PreviewableImage
-                    src="/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.jpg"
+                    src={getOptimizedImagePath("/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.jpg")}
                     alt="DEPI Badge"
                     className="w-20 xs:w-24 h-14 xs:h-16 object-contain bg-black/20"
                   />
                 )}
                 {internship.title && internship.title.toLowerCase().includes('artificial intelligence') && (
                   <PreviewableImage
-                    src="/images/certifications/we-certified-artificial-intelligence.jpg"
+                    src={getOptimizedImagePath("/images/certifications/we-certified-artificial-intelligence.jpg")}
                     alt="WE Certificate"
                     className="w-20 xs:w-24 h-14 xs:h-16 object-contain bg-black/20"
                   />
