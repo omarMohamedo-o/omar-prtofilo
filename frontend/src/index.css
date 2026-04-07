@@ -419,38 +419,19 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: 9999px;
-    background: linear-gradient(135deg, #34ace0 0%, #1e62c8 100%);
-    box-shadow: 0 8px 20px rgba(30, 98, 200, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    /* Match UpArrowButton dark translucent style */
+    background: rgba(11, 11, 26, 0.8);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(6px);
-    border: 2px solid rgba(255, 255, 255, 0.06);
+    border: none;
     cursor: pointer;
     transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
     position: absolute;
     right: 12px;
-    bottom: 96px;
-    /* sits above the input area inside panel */
+    /* sit just above the input/typing bar inside the chat panel */
+    bottom: 88px;
     z-index: 1050;
-}
-
-.chat-scroll-down:hover {
-    transform: translateY(-2px) scale(1.02);
-}
-
-.chat-scroll-down:active {
-    transform: translateY(0) scale(0.98);
-}
-
-.chat-scroll-down svg {
-    width: 20px;
-    height: 20px;
-}
-
-/* Position tweak for mobile: raise button above bottom input bar */
-@media (max-width: 480px) {
-    .chat-scroll-down {
-        right: 12px !important;
-        bottom: 110px !important;
-    }
 }
 
 .chat-panel.open {
