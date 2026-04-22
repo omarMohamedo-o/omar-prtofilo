@@ -91,8 +91,24 @@ MoraBot/DB/
 .vercel
 .env*.local
 
+# Vercel build output and local metadata
+.vercel_build_output/
+.vercel/
+.vercel/*
+.vercelignore
+vercel.json
+
+# Vercel deployment artifacts (ignore local-only files)
+.vercel/project.json
+.vercel/locations.json
+.vercel/global.json
+.vercel/cache/
+.vercel/build-cache/
+.vercel/.cache
+
 # ==========================================
 # Fly.io Configuration (deployment)
 # ==========================================
 fly.toml
 .fly/
+backend/.env
