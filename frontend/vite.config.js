@@ -1,36 +1,46 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import imagemin from 'vite-plugin-imagemin';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { readFileSync, existsSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+function resolveBackendPort() {
+    if (process.env.BACKEND_PORT) return process.env.BACKEND_PORT;
+
+    const portFile = resolve(__dirname, '.backend-port');
+    if (existsSync(portFile)) {
+        const value = readFileSync(portFile, 'utf8').trim();
+        if (value) return value;
+    }
+
+    return '8000';
+}
+
+const backendPort = resolveBackendPort();
+
 export default defineConfig({
     plugins: [
-        react(),
-        imagemin({
-            mozjpeg: { quality: 70, progressive: true },
-            pngquant: { quality: [0.6, 0.8] },
-            webp: { quality: 75 },
-            svg: { multipass: true }
-        })
+        react()
     ],
     publicDir: 'public',
     build: {
         outDir: 'dist',
         emptyOutDir: true,
-        minify: 'terser',
+        minify: 'esbuild',
         sourcemap: false,
         // More aggressive code splitting
         rollupOptions: {
             output: {
-                manualChunks: {
-                    vendor: ['react', 'react-dom'],
-                    motion: ['framer-motion'],
-                    icons: ['react-icons', 'lucide-react']
+                manualChunks(id) {
+                    if (!id.includes('node_modules')) return null;
+                    if (id.includes('framer-motion')) return 'motion';
+                    if (id.includes('react-icons') || id.includes('lucide-react')) return 'icons';
+                    if (id.includes('react') || id.includes('react-dom')) return 'vendor';
+                    return null;
                 }
             }
         },
@@ -44,6 +54,15 @@ export default defineConfig({
         }
     },
     server: {
-        port: 5173
+        port: 5173,
+        proxy: {
+            // Forward discovery API requests to the backend mailer server
+            '/api/discovery': {
+                target: `http://localhost:${backendPort}`,
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path.replace(/^\/api\/discovery/, '/discovery')
+            }
+        }
     }
 });

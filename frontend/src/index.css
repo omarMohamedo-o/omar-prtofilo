@@ -349,8 +349,9 @@ body {
 .chat-tts-btn {
     position: absolute;
     right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 8px;
+    top: auto;
+    transform: none;
     background: transparent;
     border: none;
     color: var(--brand);
@@ -413,25 +414,30 @@ body {
 
 /* Scroll-down button inside chat panel */
 .chat-scroll-down {
-    width: 52px;
-    height: 52px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 9999px;
-    /* Match UpArrowButton dark translucent style */
-    background: rgba(11, 11, 26, 0.8);
+    border-radius: 8px;
+    /* rounded square */
+    background: rgba(11, 11, 26, 0.9);
     color: #fff;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(6px);
     border: none;
     cursor: pointer;
-    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease, background .12s ease;
     position: absolute;
     right: 12px;
     /* sit just above the input/typing bar inside the chat panel */
-    bottom: 64px;
+    bottom: 74px;
     z-index: 1050;
+}
+
+.chat-scroll-down svg {
+    width: 14px;
+    height: 14px;
 }
 
 .chat-panel.open {
@@ -741,6 +747,8 @@ body {
     color: #111827;
     flex: 1;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
     overflow-x: hidden;
     margin: 0;
     padding: 16px;
@@ -760,6 +768,7 @@ body {
     line-height: 1.4;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    border-radius: 12px;
 }
 
 .chat-msg.user {
@@ -767,6 +776,7 @@ body {
     color: white;
     align-self: flex-end;
     background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+    border-radius: 12px;
 }
 
 .chat-msg.bot {
@@ -775,7 +785,8 @@ body {
     filter: brightness(1.03);
     box-shadow: 0 8px 20px rgba(30, 136, 229, 0.35);
     align-self: flex-start;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
 }
 
 /* Audio messages use their own inner bubble styling, so remove outer frame */

@@ -64,6 +64,17 @@ export const Intern = [
 export const Experiences = [
     {
         title: "Python & AI Instructor",
+        company: "EYouth",
+        link: "https://eyouthlearning.com/en",
+        location: "Cairo, Egypt",
+        period: "Apr 2026 – Present",
+        type: "Part-time, remote",
+        achievements: [
+            "Designed and led Python, AI, and robotics projects, enabling students to build simulation-driven applications and data-centric AI models using Godot and GDScript."
+        ]
+    },
+    {
+        title: "Python & AI Instructor",
         company: "Black Horse Courses",
         link: "https://black-horse-courses.com/",
         location: "Alexandria, Egypt",
@@ -73,17 +84,6 @@ export const Experiences = [
             "Delivered Python and machine learning training to 50+ students",
             "Focused on OOP, data structures, and real-world model deployment",
             "Achieved 95% satisfaction rate"
-        ]
-    },
-    {
-        title: "Python & AI Instructor",
-        company: "ischool",
-        link: "https://www.ischooltech.com/",
-        location: "Cairo, Egypt",
-        period: "Apr 2026 – Present",
-        type: "Part-time, remote",
-        achievements: [
-            "Designed and led Python, AI, and robotics projects, enabling students to build simulation-driven applications and data-centric AI models using Godot and GDScript."
         ]
     },
     // {

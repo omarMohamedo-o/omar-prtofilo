@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaPaperPlane, FaRobot, FaWhatsapp, FaPaperclip, FaMicrophone, FaStop, FaPlay, FaPause, FaTrash, FaUser } from 'react-icons/fa';
-import { sendTextMessage, sendImageMessage, uploadFile, transcribeAudio, speakText as speakTextService } from '../services/chatbotService';
+import { sendTextMessage, sendImageMessage, uploadFile, transcribeAudio } from '../services/chatbotService';
 import SpeakerButton from './ChatTTS';
 import DownArrowButton from './DownArrowButton';
 
@@ -30,12 +30,15 @@ export default function ChatWidget() {
     const chatBodyRef = useRef(null);
     const userNearBottomRef = useRef(true);
     const [showScrollDown, setShowScrollDown] = useState(false);
+    const prevScrollTop = useRef(0);
+    const [lastMessageSender, setLastMessageSender] = useState(null);
 
     const send = async () => {
         if (!value.trim()) return;
         console.debug('ChatWidget: Sending message', value);
         const userMsg = { id: Date.now(), from: 'user', text: value.trim() };
         setMessages(prev => [...prev, userMsg]);
+        setLastMessageSender('user');
         const userQuery = value.trim();
         setValue('');
         setIsLoading(true);
@@ -61,14 +64,10 @@ export default function ChatWidget() {
                 from: 'bot',
                 text: botAnswer
             }]);
+            setLastMessageSender('bot');
 
             console.debug('ChatWidget: Bot answer received', botAnswer);
-            // Auto-play bot reply using TTS (falls back gracefully in ChatTTS)
-            try {
-                await speakText(botAnswer);
-            } catch (e) {
-                console.warn('ChatWidget: Auto-play TTS failed', e);
-            }
+            // NOTE: TTS playback is only triggered by user interaction (speaker button).
         } catch (error) {
             console.error('Error communicating with chatbot:', error);
             setMessages(prev => [...prev, {
@@ -76,40 +75,13 @@ export default function ChatWidget() {
                 from: 'bot',
                 text: 'Sorry, I\'m having trouble connecting. Please try again later.'
             }]);
+            setLastMessageSender('bot');
         } finally {
             setIsLoading(false);
         }
     };
 
-    // Speak text: prefer backend TTS endpoint, fallback to browser SpeechSynthesis
-    const speakText = async (text) => {
-        if (!text) return;
-        try {
-            const audioBlob = await speakTextService(text, 'gtts');
-            if (audioBlob) {
-                const audioUrl = URL.createObjectURL(audioBlob);
-                const audio = new Audio(audioUrl);
-                audio.play().catch(() => { });
-                audio.onended = () => URL.revokeObjectURL(audioUrl);
-                return;
-            }
-        } catch (err) {
-            // fall through to browser TTS
-            console.warn('Backend TTS failed, falling back to browser TTS', err);
-        }
-
-        try {
-            const synth = window.speechSynthesis;
-            if (synth) {
-                synth.cancel();
-                const utter = new SpeechSynthesisUtterance(text);
-                utter.lang = navigator.language || 'en-US';
-                synth.speak(utter);
-            }
-        } catch (e) {
-            console.warn('Browser TTS unavailable', e);
-        }
-    };
+    // TTS is handled by the per-message `SpeakerButton` (ChatTTS).
 
     // Format seconds to mm:ss
     const formatTime = (seconds) => {
@@ -508,6 +480,7 @@ export default function ChatWidget() {
         // Move the recording preview into the chat immediately so it no longer
         // stays stuck in the recorder bar while transcription runs.
         setMessages(prev => [...prev, voiceMessage]);
+        setLastMessageSender('user');
         setPendingVoice(null);
         setIsLoading(true);
         try {
@@ -555,9 +528,10 @@ export default function ChatWidget() {
                     from: 'bot',
                     text: botAnswer
                 }]);
+                setLastMessageSender('bot');
 
                 console.debug('ChatWidget: Bot answer received (voice flow)', botAnswer);
-                try { await speakText(botAnswer); } catch (e) { console.warn('ChatWidget: Auto-play TTS failed (voice flow)', e); }
+                // NOTE: TTS playback is only triggered by user interaction (speaker button).
             } else {
                 // Transcription empty — show clear feedback and avoid sending empty content
                 console.warn('Transcription returned empty text for file:', file);
@@ -572,6 +546,7 @@ export default function ChatWidget() {
                     from: 'bot',
                     text: 'Sorry, I could not understand the audio. Please try again or type your message.'
                 }]);
+                setLastMessageSender('bot');
             }
         } catch (err) {
             console.error('Error sending voice message', err);
@@ -580,6 +555,7 @@ export default function ChatWidget() {
                 from: 'bot',
                 text: 'Failed to process voice message. Please try again.'
             }]);
+            setLastMessageSender('bot');
         } finally {
             setIsLoading(false);
         }
@@ -610,6 +586,7 @@ export default function ChatWidget() {
                 file: file
             };
             setMessages(prev => [...prev, fileMsg]);
+            setLastMessageSender('user');
 
             // Store the file for use with next message
             setUploadedFile(file);
@@ -624,18 +601,21 @@ export default function ChatWidget() {
                     from: 'bot',
                     text: 'Image received! Ask me anything about this image.'
                 }]);
+                setLastMessageSender('bot');
             } else if (file.type === 'application/pdf') {
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     from: 'bot',
                     text: 'PDF received! Ask me questions about the document.'
                 }]);
+                setLastMessageSender('bot');
             } else {
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     from: 'bot',
                     text: 'File received!'
                 }]);
+                setLastMessageSender('bot');
             }
         }
     };
@@ -698,22 +678,52 @@ export default function ChatWidget() {
     useEffect(() => {
         const c = chatBodyRef.current;
         if (!c) return;
+
+        // initialize
+        prevScrollTop.current = c.scrollTop;
+
         const onScroll = () => {
-            const near = c.scrollHeight - c.scrollTop - c.clientHeight < 120;
+            const cur = c.scrollTop;
+            const scrolledUpBy = prevScrollTop.current - cur; // positive when scrolled up
+            const near = c.scrollHeight - cur - c.clientHeight < 120;
             userNearBottomRef.current = near;
-            // show the scroll-down button when user is not near bottom
-            try { setShowScrollDown(!near); } catch (e) { }
+
+            // Show when user scrolls up by a small threshold (start of scroll up)
+            // Use a very small threshold so small wheel/touch moves trigger the button.
+            if (scrolledUpBy > 2 && !near) {
+                setShowScrollDown(true);
+            }
+
+            // Hide when user scrolls back near bottom or scrolls down
+            if (near || scrolledUpBy < -2) {
+                setShowScrollDown(false);
+            }
+
+            prevScrollTop.current = cur;
         };
+
         c.addEventListener('scroll', onScroll, { passive: true });
-        // Initialize
+        // Initialize visibility based on current position
         onScroll();
         return () => c.removeEventListener('scroll', onScroll);
-    }, []);
+    }, [open]);
 
-    // When messages change, try to auto-scroll if appropriate
+    // When messages change, always scroll for user messages; only follow bot when near bottom
     useEffect(() => {
-        scrollToBottomIfNeeded(false);
-    }, [messages]);
+        const c = chatBodyRef.current;
+        if (!c) return;
+
+        const isNearBottom = c.scrollHeight - c.scrollTop - c.clientHeight < 120;
+
+        if (lastMessageSender === 'user') {
+            scrollToBottomIfNeeded(true);
+            return;
+        }
+
+        if (lastMessageSender === 'bot' && (isNearBottom || userNearBottomRef.current)) {
+            scrollToBottomIfNeeded(true);
+        }
+    }, [messages, lastMessageSender]);
 
     // When chat opens, close notice and ensure scroll to bottom
     useEffect(() => {
@@ -721,6 +731,8 @@ export default function ChatWidget() {
             if (showNotice) setShowNotice(false);
             // force scroll to bottom when opening to show latest messages
             scrollToBottomIfNeeded(true);
+            setShowScrollDown(false);
+        } else {
             setShowScrollDown(false);
         }
     }, [open]);
@@ -908,11 +920,17 @@ export default function ChatWidget() {
                             </>
                         )}
                     </div>
+
+                    {/* Render the scroll-down button inside the chat panel */}
+                    <DownArrowButton
+                        visible={open && showScrollDown}
+                        inline
+                        onClick={() => {
+                            scrollToBottomIfNeeded(true);
+                            setShowScrollDown(false);
+                        }}
+                    />
                 </div>
-
-
-                {/* Render the scroll-down button inside the chat panel */}
-                <DownArrowButton visible={showScrollDown} inline onClick={() => { scrollToBottomIfNeeded(true); setShowScrollDown(false); }} />
 
                 <button ref={fabRef} className="chat-fab glow-btn" onClick={() => setOpen(v => !v)} aria-label="Open chat">
                     <span className="chat-fab-icon" aria-hidden>
