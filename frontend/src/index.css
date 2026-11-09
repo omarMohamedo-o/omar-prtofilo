@@ -216,14 +216,48 @@ body {
     }
 }
 
+/* Unified "Need help?" Action Badge Card */
+.need-help-card {
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    padding: 12px 14px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    width: 300px;
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    animation: needHelpFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .need-help-card {
+    background: rgba(15, 23, 42, 0.96);
+    border: 1px solid rgba(6, 182, 212, 0.35);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45), 0 0 20px rgba(6, 182, 212, 0.15);
+}
+
+@keyframes needHelpFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 /* Notification bubble that appears above the chat FAB */
 .chat-notice {
     position: absolute;
-    right: 14px;
-    bottom: 72px;
+    right: 0;
+    bottom: 105px;
     /* Responsive width - max 480px on large screens */
-    width: calc(100vw - 100px);
-    max-width: 420px;
+    width: calc(100vw - 48px);
+    max-width: 380px;
     /* No white frame — remove border and outer padding so only the dark panel shows */
     background: transparent;
     color: #ffffff;
@@ -396,14 +430,13 @@ body {
 
 .chat-panel {
     position: absolute;
-    /* reduced gap between chat window and FAB: was 56px */
-    bottom: 36px;
+    bottom: 72px;
     right: 0;
-    /* responsive width: cap at 360px but shrink on narrow viewports */
-    width: min(360px, 90vw);
-    height: 500px;
-    max-height: calc(100vh - 140px);
-    max-height: calc(100dvh - 140px);
+    /* responsive width: cap at 380px but shrink on narrow viewports */
+    width: min(380px, 92vw);
+    height: 520px;
+    max-height: calc(100vh - 120px);
+    max-height: calc(100dvh - 120px);
     background: white;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);

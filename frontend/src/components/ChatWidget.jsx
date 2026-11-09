@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaPaperPlane, FaRobot, FaWhatsapp, FaPaperclip, FaMicrophone, FaStop, FaPlay, FaPause, FaTrash, FaUser } from 'react-icons/fa';
+import { FaPaperPlane, FaRobot, FaWhatsapp, FaPaperclip, FaMicrophone, FaStop, FaPlay, FaPause, FaTrash, FaUser, FaPhoneAlt, FaCommentDots } from 'react-icons/fa';
 import { Sparkles, Copy, Check, RotateCcw } from 'lucide-react';
 import { sendTextMessage, sendImageMessage, uploadFile, transcribeAudio } from '../services/chatbotService';
 import SpeakerButton from './ChatTTS';
@@ -802,10 +802,27 @@ export default function ChatWidget() {
         }
     }, [messages, lastMessageSender]);
 
+    // Listen for custom open/close events across the application
+    useEffect(() => {
+        const handleCloseChat = () => setOpen(false);
+        const handleOpenChat = () => {
+            setOpen(true);
+            setShowNotice(false);
+        };
+        window.addEventListener('close-chat-widget', handleCloseChat);
+        window.addEventListener('open-chat-widget', handleOpenChat);
+        return () => {
+            window.removeEventListener('close-chat-widget', handleCloseChat);
+            window.removeEventListener('open-chat-widget', handleOpenChat);
+        };
+    }, []);
+
     // When chat opens, close notice and ensure scroll to bottom
     useEffect(() => {
         if (open) {
             if (showNotice) setShowNotice(false);
+            // Close 3D Minecraft guide so they don't overlap on the right side
+            window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: false } }));
             // force scroll to bottom when opening to show latest messages
             scrollToBottomIfNeeded(true);
             setShowScrollDown(false);
@@ -815,31 +832,17 @@ export default function ChatWidget() {
     }, [open]);
 
     return (
-        <>
-            <a
-                className="whatsapp-fab glow-btn"
-                href="https://wa.me/201011297869"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Contact Omar on WhatsApp"
-                title="Contact Omar on WhatsApp"
-            >
-                <span className="whatsapp-fab-icon" aria-hidden>
-                    <FaWhatsapp className="text-white" />
-                </span>
-            </a>
-
-            <div className="chat-widget" aria-hidden={!open} ref={widgetRef}>
-                {/* Small notification bubble above the chat FAB */}
-                {showNotice && (
-                    <div className="chat-notice" role="status" aria-live="polite">
-                        <div className="chat-notice-inner">
-                            <div className="chat-notice-title">MORA – Your Guide to Omar</div>
-                            <div className="chat-notice-body">Ask me anything about Omar, including his skills, projects, experience, and ways you can collaborate. <strong>Ask me now!</strong></div>
-                        </div>
-                        <button className="chat-notice-close" aria-label="Close" onClick={() => setShowNotice(false)}>✕</button>
+        <div className="chat-widget" aria-hidden={false} ref={widgetRef}>
+            {/* Small notification bubble above the widget */}
+            {showNotice && !open && (
+                <div className="chat-notice" role="status" aria-live="polite">
+                    <div className="chat-notice-inner">
+                        <div className="chat-notice-title">MORA – Your Guide to Omar</div>
+                        <div className="chat-notice-body">Ask me anything about Omar's skills, production systems at PlayerHub, or HistoryVerse (A+). <strong>Ask me now!</strong></div>
                     </div>
-                )}
+                    <button className="chat-notice-close" aria-label="Close" onClick={() => setShowNotice(false)}>✕</button>
+                </div>
+            )}
                 <div ref={panelRef} className={`chat-panel ${open ? 'open' : ''}`} role="dialog" aria-label="Chat widget">
                     <div className="chat-header">
                         <div className="flex items-center gap-2">
@@ -1059,12 +1062,105 @@ export default function ChatWidget() {
                     />
                 </div>
 
-                <button ref={fabRef} className="chat-fab glow-btn" onClick={() => setOpen(v => !v)} aria-label="Open chat">
-                    <span className="chat-fab-icon" aria-hidden>
-                        <FaRobot className="text-white" />
-                    </span>
-                </button>
+                {/* Unified "Need help?" Action Badge on the Right */}
+                {!open ? (
+                    <div className="need-help-card shadow-2xl transition-all duration-300">
+                        {/* Header: Logo + "Need help?" + Tour badge */}
+                        <div className="flex items-center justify-between mb-2.5">
+                            <div className="flex items-center gap-2.5">
+                                {/* Circular Logo Badge with green online pulse */}
+                                <div className="relative">
+                                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-600 via-teal-500 to-blue-600 p-[1.5px] shadow-sm flex items-center justify-center">
+                                        <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-cyan-300 font-bold text-xs">
+                                            ⚙️
+                                        </div>
+                                    </div>
+                                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-white dark:border-slate-900 animate-pulse" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight">
+                                        Need help?
+                                    </span>
+                                    <span className="text-[10px] text-slate-500 dark:text-cyan-400/80 font-medium">
+                                        AI Assistant & 3D Guide
+                                    </span>
+                                </div>
+                            </div>
+                            {/* Guided Tour Trigger Button */}
+                            <button
+                                type="button"
+                                onClick={() => window.dispatchEvent(new CustomEvent('start-portfolio-tour'))}
+                                className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30 font-semibold transition-colors"
+                                title="Start Guided Tour"
+                            >
+                                🧭 Tour
+                            </button>
+                        </div>
+
+                        {/* Action Buttons Row: Ask anything + Chat Icon + 3D Minecraft Guide + WhatsApp */}
+                        <div className="flex items-center gap-2">
+                            {/* 1. "Ask anything" Pill Button */}
+                            <button
+                                type="button"
+                                onClick={() => setOpen(true)}
+                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full border border-teal-600/50 dark:border-cyan-400/60 bg-teal-50/60 dark:bg-cyan-950/40 hover:bg-teal-100/70 dark:hover:bg-cyan-900/50 text-teal-700 dark:text-cyan-300 font-semibold text-xs transition-all shadow-sm group/ask"
+                                title="Ask MORA AI anything"
+                            >
+                                <FaPhoneAlt size={10} className="text-teal-600 dark:text-cyan-400 -rotate-12 group-hover/ask:rotate-0 transition-transform" />
+                                <span>Ask anything</span>
+                            </button>
+
+                            {/* 2. Chat Icon Button */}
+                            <button
+                                type="button"
+                                ref={fabRef}
+                                onClick={() => setOpen(true)}
+                                className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-cyan-300 flex items-center justify-center transition-transform hover:scale-110 shadow-sm"
+                                title="Open MORA AI Chat"
+                                aria-label="Open Chat"
+                            >
+                                <FaCommentDots size={15} />
+                            </button>
+
+                            {/* 3. 3D Minecraft Guide Button */}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: true } }));
+                                }}
+                                className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-cyan-300 flex items-center justify-center transition-transform hover:scale-110 shadow-sm text-sm"
+                                title="Open 3D Minecraft Guide (Steve Omar)"
+                                aria-label="Open 3D Guide"
+                            >
+                                ⛏️
+                            </button>
+
+                            {/* 4. WhatsApp Button */}
+                            <a
+                                href="https://wa.me/201011297869"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-9 h-9 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white flex items-center justify-center transition-transform hover:scale-110 shadow-md shadow-green-500/20"
+                                title="Chat on WhatsApp with Omar (+20 101 1297 869)"
+                                aria-label="WhatsApp"
+                            >
+                                <FaWhatsapp size={18} />
+                            </a>
+                        </div>
+                    </div>
+                ) : (
+                    <button
+                        ref={fabRef}
+                        className="chat-fab glow-btn"
+                        onClick={() => setOpen(false)}
+                        aria-label="Close chat"
+                        title="Close chat"
+                    >
+                        <span className="chat-fab-icon text-white text-lg font-bold" aria-hidden>
+                            ✕
+                        </span>
+                    </button>
+                )}
             </div>
-        </>
     );
 }

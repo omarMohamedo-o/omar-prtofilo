@@ -19,28 +19,13 @@ export default function UpArrowButton({ className = '' }) {
         }
     };
 
-    // If a WhatsApp FAB exists, position this button just above it on the same side.
-    let arrowStyle = { right: isRTL ? 'auto' : 16, left: isRTL ? 16 : 'auto', bottom: 24, transition: 'opacity .25s, transform .2s' };
-    if (typeof document !== 'undefined') {
-        const fab = document.querySelector('.whatsapp-fab');
-        if (fab) {
-            try {
-                const fabRect = fab.getBoundingClientRect();
-                const fabHeight = Math.round(fabRect.height) || 56;
-                // default gap above the FAB
-                const gap = 12;
-                const bottomOffset = 24 + fabHeight + gap; // 24 is FAB bottom spacing in CSS
-                // align to FAB side (left) for LTR; if RTL align to right
-                if (!isRTL) {
-                    arrowStyle = { left: 24, right: 'auto', bottom: bottomOffset, transition: 'opacity .25s, transform .2s' };
-                } else {
-                    arrowStyle = { right: 24, left: 'auto', bottom: bottomOffset, transition: 'opacity .25s, transform .2s' };
-                }
-            } catch (e) {
-                // ignore and use default
-            }
-        }
-    }
+    // Position UpArrowButton cleanly on the bottom-left corner with 0 overlap
+    const arrowStyle = {
+        left: isRTL ? 'auto' : 24,
+        right: isRTL ? 24 : 'auto',
+        bottom: 24,
+        transition: 'opacity .25s, transform .2s'
+    };
 
     const content = show ? (
         <button

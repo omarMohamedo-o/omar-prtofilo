@@ -682,18 +682,23 @@ export default function MinecraftGuide3D({ onStartTour }) {
             setActionBadge('Idle');
         };
 
-        const handleToggleGuide = () => {
-            setIsOpen(true);
+        const handleToggleGuide = (e) => {
+            const forceOpen = e?.detail?.open;
+            setIsOpen(prev => (forceOpen !== undefined ? forceOpen : !prev));
             setIsMinimized(false);
-            animStateRef.current.mode = 'jump';
-            setActionBadge('Hello!');
-            setTimeout(() => {
-                animStateRef.current.mode = 'wave';
+            if (forceOpen !== false) {
+                // Dispatch event so 2D chat widget collapses cleanly
+                window.dispatchEvent(new CustomEvent('close-chat-widget'));
+                animStateRef.current.mode = 'jump';
+                setActionBadge('Hello!');
                 setTimeout(() => {
-                    animStateRef.current.mode = 'idle';
-                    setActionBadge('Idle');
-                }, 1500);
-            }, 500);
+                    animStateRef.current.mode = 'wave';
+                    setTimeout(() => {
+                        animStateRef.current.mode = 'idle';
+                        setActionBadge('Idle');
+                    }, 1500);
+                }, 500);
+            }
         };
 
         window.addEventListener('portfolio-tour-step', handleTourStep);
@@ -1247,29 +1252,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
     ];
 
     if (!isOpen) {
-        return (
-            <motion.button
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.94 }}
-                onClick={() => { setIsOpen(true); setIsMinimized(false); }}
-                className="fixed bottom-6 left-6 z-40 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-[#1e293b]/95 border-2 border-cyan-500/60 shadow-[0_0_25px_rgba(6,182,212,0.35)] backdrop-blur-md text-white font-mono text-sm group hover:border-cyan-400 transition-all"
-                title="Open 3D Minecraft Guide"
-            >
-                <div className="w-8 h-8 rounded-lg bg-cyan-950/80 border border-cyan-400 flex items-center justify-center text-lg shadow-inner group-hover:rotate-6 transition-transform">
-                    ⛏️
-                </div>
-                <div className="flex flex-col text-left">
-                    <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider">3D AI Guide</span>
-                    <span className="text-xs text-slate-200 font-semibold">Minecraft Omar</span>
-                </div>
-                <span className="flex h-2.5 w-2.5 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
-                </span>
-            </motion.button>
-        );
+        return null;
     }
 
     return (
@@ -1278,7 +1261,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.92 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className={`fixed bottom-6 left-6 z-40 flex flex-col font-mono transition-all duration-300 ${
+            className={`fixed bottom-6 right-6 z-50 flex flex-col font-mono transition-all duration-300 ${
                 isMinimized ? 'w-[280px]' : 'w-[360px] sm:w-[410px]'
             }`}
         >
