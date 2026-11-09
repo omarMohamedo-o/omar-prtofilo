@@ -383,6 +383,34 @@ export function queryLocalKnowledge(userQuery = '', conversationHistory = []) {
     const rawLower = userQuery.toLowerCase().trim();
     const isArabic = /[\u0600-\u06FF]/.test(userQuery);
 
+    // Natural Conversational Greetings (like ChatGPT)
+    if (/^(hi|hello|hey|yo|howdy|sup|good\s*morning|good\s*evening|greetings|ازيك|مرحبا|سلام|اهلا|صباح الخير|مساء الخير|هاي|هلو)[\s!.]*$/i.test(rawLower)) {
+        return isArabic
+            ? "👋 أهلاً بك! أنا **MORA**، المساعد الذكي الخاص بالمهندس **عمر جاد**.\n\nكيف يمكنني مساعدتك اليوم؟ يسعدني أن تسألني عن خبرات عمر في **PlayerHub.GG** و**CliniSoft**، أو مشروعه المميز **HistoryVerse (+A)**، مهاراته في MLOps و Cloud، أو كيفية التواصل معه وتوظيفه! 🚀"
+            : "👋 Hey there! I'm **MORA**, Omar Gad's personal AI Assistant.\n\nHow can I help you today? Ask me anything about Omar's work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse (A+)** AI/AR platform, his **MLOps & LLM skills**, or how to get in touch!";
+    }
+
+    // Friendly Check-ins
+    if (/(how\s*are\s*you|how\s*is\s*it\s*going|how\s*do\s*you\s*do|عامل ايه|اخبارك|ازيك ايه الاخبار|كيف حالك)/i.test(rawLower)) {
+        return isArabic
+            ? "أنا ممتاز وبأفضل حال، شكراً لسؤالك! جاهز لمساعدتك بكامل طاقتي 🚀 حابب تعرف إيه عن مسيرة عمر الهندسية أو مشاريعه في الذكاء الاصطناعي؟"
+            : "I'm doing great and running at full speed! 🚀 Ready to answer any questions about Omar's engineering projects, production architecture, or background. What would you like to explore?";
+    }
+
+    // Who are you / Identity
+    if (/(who\s*are\s*you|what\s*is\s*your\s*name|tell\s*me\s*about\s*yourself|انت مين|اسمك ايه|عرف نفسك|مين انت)/i.test(rawLower)) {
+        return isArabic
+            ? "أنا **MORA**، الممثل التقني الذكي والمساعد الرسمي للمهندس **عمر جاد**.\nأنا مصمم للإجابة عن كل ما يتعلق بخبرات عمر، مشاريعه (مثل **HistoryVerse** و**SDXL LoRA**)، وبنيته التحتية في **PlayerHub.GG**. يمكنك سؤالي عن أي مهارة أو أداة!"
+            : "I'm **MORA**, the official autonomous AI representative and technical assistant for **Omar Gad** (Omar Mohamed Abdelsalam).\nI'm grounded in his verified portfolio, production systems, and resume. Feel free to quiz me on his skills, past companies, or graduation project!";
+    }
+
+    // What can you do
+    if (/(what\s*can\s*you\s*do|help\s*me|capabilities|تقدر تعمل ايه|بتعمل ايه|مساعده)/i.test(rawLower)) {
+        return isArabic
+            ? "أستطيع مساعدتك في عدة أمور:\n• الإجابة عن مشاريع عمر وخبراته في **PlayerHub.GG** و**CliniSoft**.\n• شرح تفاصيل مشروع تخرجه **HistoryVerse (+A)** وتدريب **SDXL LoRA**.\n• استعراض مهاراته في **MLOps** و **Docker** و **Kubernetes** و **LLMs**.\n• إرشادك في جولة داخل البورتفوليو أو تزويدك ببيانات التواصل والتوظيف!"
+            : "Here's what I can do for you:\n• Answer detailed technical questions about Omar's work at **PlayerHub.GG** and **CliniSoft**.\n• Explain his flagship projects like **HistoryVerse (A+)** and **SDXL LoRA fine-tuning**.\n• Break down his **MLOps, Cloud, and LLM stack** (Docker, Kubernetes, Terraform, Vault).\n• Provide direct contact info, resume downloads, or guide you through the portfolio!";
+    }
+
     // Expand colloquial phrases & normalize Arabic
     const expandedQuery = isArabic ? expandColloquialQuery(userQuery) : userQuery;
     const norm = normalizeArabicText(expandedQuery);

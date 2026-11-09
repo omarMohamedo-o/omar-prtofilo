@@ -46,56 +46,64 @@ Guidelines:
 4. If asked about off-topic subjects (sports, recipes, general coding help unrelated to Omar), politely and wittily redirect them to Omar's engineering work and availability.`;
 
     if (apiKey) {
-        try {
-            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        const candidateModels = [
+            process.env.GEMINI_MODEL || 'gemini-1.5-flash-latest',
+            'gemini-1.5-flash',
+            'gemini-2.0-flash-lite',
+            'gemini-1.5-flash-8b'
+        ];
 
-            const contents = [
-                {
-                    role: 'user',
-                    parts: [{ text: `${SYSTEM_PROMPT}\n\nPlease acknowledge your role as MORA.` }]
-                },
-                {
-                    role: 'model',
-                    parts: [{ text: "Understood. I am MORA, Omar Gad's personal AI Assistant, grounded in his verified portfolio facts." }]
-                }
-            ];
-
-            // Append conversational history if provided
-            if (Array.isArray(history)) {
-                for (const turn of history.slice(-6)) {
-                    contents.push({
-                        role: turn.role === 'assistant' ? 'model' : 'user',
-                        parts: [{ text: turn.content || '' }]
-                    });
-                }
-            }
-
-            contents.push({
+        const contents = [
+            {
                 role: 'user',
-                parts: [{ text: query }]
-            });
-
-            const response = await fetch(geminiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents,
-                    generationConfig: {
-                        temperature: 0.7,
-                        maxOutputTokens: 900
-                    }
-                })
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                const answer = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (answer) {
-                    return res.status(200).json({ Answer: answer.trim() });
-                }
+                parts: [{ text: `${SYSTEM_PROMPT}\n\nPlease acknowledge your role as MORA.` }]
+            },
+            {
+                role: 'model',
+                parts: [{ text: "Understood. I am MORA, Omar Gad's personal AI Assistant, grounded in his verified portfolio facts." }]
             }
-        } catch (err) {
-            console.error('Gemini API call failed in serverless handler:', err);
+        ];
+
+        // Append conversational history if provided
+        if (Array.isArray(history)) {
+            for (const turn of history.slice(-6)) {
+                contents.push({
+                    role: turn.role === 'assistant' ? 'model' : 'user',
+                    parts: [{ text: turn.content || '' }]
+                });
+            }
+        }
+
+        contents.push({
+            role: 'user',
+            parts: [{ text: query }]
+        });
+
+        for (const modelName of candidateModels) {
+            try {
+                const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+                const response = await fetch(geminiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents,
+                        generationConfig: {
+                            temperature: 0.7,
+                            maxOutputTokens: 900
+                        }
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const answer = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (answer) {
+                        return res.status(200).json({ Answer: answer.trim() });
+                    }
+                }
+            } catch (modelErr) {
+                console.warn(`Model ${modelName} call failed, trying next...`, modelErr.message);
+            }
         }
     }
 
@@ -105,7 +113,80 @@ Guidelines:
         .replace(/[\u0617-\u061A\u064B-\u0652\u0670\u0640]/g, '')
         .replace(/[إأآا]/g, 'ا')
         .replace(/ة/g, 'ه')
-        .replace(/ى/g, 'ي');
+        .replace(/ى/g, 'ي')
+        .trim();
+
+    // 1. Natural Conversational Greetings (like ChatGPT)
+    if (/^(hi|hello|hey|yo|howdy|sup|good\s*morning|good\s*evening|greetings|ازيك|مرحبا|سلام|اهلا|صباح الخير|مساء الخير|هاي|هلو)[\s!.]*$/i.test(normalized)) {
+        if (isArabic) {
+            return res.status(200).json({
+                Answer: "👋 أهلاً بك! أنا **MORA**، المساعد الذكي الخاص بالمهندس **عمر جاد**.\n\nكيف يمكنني مساعدتك اليوم؟ يسعدني أن تسألني عن خبرات عمر في **PlayerHub.GG** و**CliniSoft**، أو مشروعه المميز **HistoryVerse (+A)**، مهاراته في MLOps و Cloud، أو كيفية التواصل معه وتوظيفه! 🚀"
+            });
+        }
+        return res.status(200).json({
+            Answer: "👋 Hey there! I'm **MORA**, Omar Gad's personal AI Assistant.\n\nHow can I help you today? Ask me anything about Omar's work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse (A+)** AI/AR platform, his **MLOps & LLM skills**, or how to get in touch!"
+        });
+    }
+
+    // 2. "How are you" / Friendly Check-ins
+    if (/(how\s*are\s*you|how\s*is\s*it\s*going|how\s*do\s*you\s*do|عامل ايه|اخبارك|ازيك ايه الاخبار|كيف حالك)/i.test(normalized)) {
+        if (isArabic) {
+            return res.status(200).json({
+                Answer: "أنا ممتاز وبأفضل حال، شكراً لسؤالك! جاهز لمساعدتك بكامل طاقتي 🚀 حابب تعرف إيه عن مسيرة عمر الهندسية أو مشاريعه في الذكاء الاصطناعي؟"
+            });
+        }
+        return res.status(200).json({
+            Answer: "I'm doing great and running at full speed! 🚀 Ready to answer any questions about Omar's engineering projects, production architecture, or background. What would you like to explore?"
+        });
+    }
+
+    // 3. "Who are you" / "What is your name"
+    if (/(who\s*are\s*you|what\s*is\s*your\s*name|tell\s*me\s*about\s*yourself|انت مين|اسمك ايه|عرف نفسك|مين انت)/i.test(normalized)) {
+        if (isArabic) {
+            return res.status(200).json({
+                Answer: "أنا **MORA**، الممثل التقني الذكي والمساعد الرسمي للمهندس **عمر جاد**.\nأنا مصمم للإجابة عن كل ما يتعلق بخبرات عمر، مشاريعه (مثل **HistoryVerse** و**SDXL LoRA**)، وبنيته التحتية في **PlayerHub.GG**. يمكنك سؤالي عن أي مهارة أو أداة!"
+            });
+        }
+        return res.status(200).json({
+            Answer: "I'm **MORA**, the official autonomous AI representative and technical assistant for **Omar Gad** (Omar Mohamed Abdelsalam).\nI'm grounded in his verified portfolio, production systems, and resume. Feel free to quiz me on his skills, past companies, or graduation project!"
+        });
+    }
+
+    // 4. "What can you do"
+    if (/(what\s*can\s*you\s*do|help\s*me|capabilities|تقدر تعمل ايه|بتعمل ايه|مساعده)/i.test(normalized)) {
+        if (isArabic) {
+            return res.status(200).json({
+                Answer: "أستطيع مساعدتك في عدة أمور:\n• الإجابة عن مشاريع عمر وخبراته في **PlayerHub.GG** و**CliniSoft**.\n• شرح تفاصيل مشروع تخرجه **HistoryVerse (+A)** وتدريب **SDXL LoRA**.\n• استعراض مهاراته في **MLOps** و **Docker** و **Kubernetes** و **LLMs**.\n• إرشادك في جولة داخل البورتفوليو أو تزويدك ببيانات التواصل والتوظيف!"
+            });
+        }
+        return res.status(200).json({
+            Answer: "Here's what I can do for you:\n• Answer detailed technical questions about Omar's work at **PlayerHub.GG** and **CliniSoft**.\n• Explain his flagship projects like **HistoryVerse (A+)** and **SDXL LoRA fine-tuning**.\n• Break down his **MLOps, Cloud, and LLM stack** (Docker, Kubernetes, Terraform, Vault).\n• Provide direct contact info, resume downloads, or guide you through the portfolio!"
+        });
+    }
+
+    // 5. Thanks & Appreciation
+    if (/(thank\s*you|thanks|thx|شكرا|تسلم|جزاك الله خيرا|الف شكر)/i.test(normalized)) {
+        if (isArabic) {
+            return res.status(200).json({
+                Answer: "العفو، تحت أمرك دائماً! يسعدني دائماً تقديم المساعدة 🚀"
+            });
+        }
+        return res.status(200).json({
+            Answer: "You're very welcome! Let me know if there's anything else you'd like to explore about Omar's work! 🚀"
+        });
+    }
+
+    // 6. Goodbyes
+    if (/(bye|goodbye|see\s*you|مع السلامة|باي|اشوفك بعدين)/i.test(normalized)) {
+        if (isArabic) {
+            return res.status(200).json({
+                Answer: "مع السلامة! سعدت بالتحدث معك، وأتمنى لك يوماً رائعاً. يمكنك دائماً العودة أو التواصل مع عمر عبر البريد أو لينكد إن! 🚀"
+            });
+        }
+        return res.status(200).json({
+            Answer: "Goodbye! Thanks for visiting Omar's portfolio. Feel free to come back anytime or reach out to Omar via email or LinkedIn! 🚀"
+        });
+    }
 
     // Out-of-domain guardrail
     if (/(football|soccer|كورة|ماتش|طبخة|recipe|cooking|weather|طقس|crypto|bitcoin)/i.test(normalized)) {
