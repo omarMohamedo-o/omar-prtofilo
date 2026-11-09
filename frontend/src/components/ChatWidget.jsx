@@ -832,7 +832,22 @@ export default function ChatWidget() {
     }, [open]);
 
     return (
-        <div className="chat-widget" aria-hidden={false} ref={widgetRef}>
+        <>
+            {/* WhatsApp Floating Action Button (Bottom Left - Previous Design) */}
+            <a
+                className="whatsapp-fab glow-btn"
+                href="https://wa.me/201011297869"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Contact Omar on WhatsApp"
+                title="Contact Omar on WhatsApp"
+            >
+                <span className="whatsapp-fab-icon" aria-hidden>
+                    <FaWhatsapp className="text-white" />
+                </span>
+            </a>
+
+            <div className="chat-widget" aria-hidden={false} ref={widgetRef}>
             {/* Small notification bubble above the widget */}
             {showNotice && !open && (
                 <div className="chat-notice" role="status" aria-live="polite">
@@ -1097,7 +1112,7 @@ export default function ChatWidget() {
                             </button>
                         </div>
 
-                        {/* Action Buttons Row: Ask anything + Chat Icon + 3D Minecraft Guide + WhatsApp */}
+                        {/* Action Buttons Row: Ask anything + Chat Icon + 3D Minecraft Guide */}
                         <div className="flex items-center gap-2">
                             {/* 1. "Ask anything" Pill Button */}
                             <button
@@ -1134,18 +1149,6 @@ export default function ChatWidget() {
                             >
                                 ⛏️
                             </button>
-
-                            {/* 4. WhatsApp Button */}
-                            <a
-                                href="https://wa.me/201011297869"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-9 h-9 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white flex items-center justify-center transition-transform hover:scale-110 shadow-md shadow-green-500/20"
-                                title="Chat on WhatsApp with Omar (+20 101 1297 869)"
-                                aria-label="WhatsApp"
-                            >
-                                <FaWhatsapp size={18} />
-                            </a>
                         </div>
                     </div>
                 ) : (
@@ -1162,5 +1165,6 @@ export default function ChatWidget() {
                     </button>
                 )}
             </div>
+        </>
     );
 }
