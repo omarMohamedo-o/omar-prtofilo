@@ -8,8 +8,10 @@ import {
   viewportOptions
 } from '../utils/animationVariants';
 import useIsMobile from '../hooks/useIsMobile';
+import { useLanguage } from '../context/LanguageContext';
 
 const Experience = function Experience({ isVisible, experiences = [], themeColor = 'cyan' }) {
+  const { t } = useLanguage();
   const isMobile = useIsMobile();
   const textColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
   const borderHover = themeColor === 'purple'
@@ -30,7 +32,7 @@ const Experience = function Experience({ isVisible, experiences = [], themeColor
           variants={titleVariant}
           className="section-title"
         >
-          <span className="text-surface">Professional</span> <span className="highlight">Experience</span>
+          <span className="text-surface">{t('experienceTitle1')}</span> <span className="highlight">{t('experienceTitle2')}</span>
         </motion.h2>
 
         {/* Phase 2: Content container with delayed staggered children */}

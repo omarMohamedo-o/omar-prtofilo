@@ -5,9 +5,11 @@ import { MODES, modeInfo } from '../data/data';
 import { getOptimizedImagePath } from '../utils/imageOptimization';
 import ButtonCard from './ButtonCard';
 import { containerVariant, itemVariant } from '../utils/animationVariants';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Info({ isVisible = () => false, personalInfo = {}, themeColor = 'cyan', currentMode = MODES.DEVOPS, onModeChange = () => { }, scrollToSection = () => { } }) {
   const [showModeDropdown, setShowModeDropdown] = useState(false);
+  const { t, isRTL } = useLanguage();
 
   const accentColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
   const bgAccent = themeColor === 'purple' ? 'bg-purple-500' : 'bg-cyan-500';
@@ -21,7 +23,7 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
     <section id="home" className="min-h-svh flex flex-col lg:flex-row items-center justify-center relative px-4 sm:px-6 md:px-8 pt-[var(--header-height,100px)] lg:pt-0 pb-8 sm:pb-12 lg:pb-16 overflow-hidden" style={{ scrollMarginTop: '6rem' }}>
 
       {/* Floating Mode Switcher - Desktop Only */}
-      <div className="hidden lg:block absolute top-28 right-8 z-40 mode-switcher-float">
+      <div className={`hidden lg:block absolute top-28 ${isRTL ? 'left-8' : 'right-8'} z-40 mode-switcher-float`}>
         <div className="relative">
           <button
             onClick={() => setShowModeDropdown(!showModeDropdown)}
@@ -32,12 +34,12 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
             aria-expanded={showModeDropdown}
           >
             {currentMode === MODES.DEVOPS ? <Infinity size={18} /> : <Brain size={18} />}
-            <span>View as</span>
+            <span>{t('viewAs')}</span>
             <ChevronDown size={14} className={`transition-transform duration-300 ${showModeDropdown ? 'rotate-180' : ''}`} />
           </button>
 
           {/* Dropdown */}
-          <div className={`absolute top-full right-0 mt-3 mode-switcher-dropdown rounded-xl p-2 min-w-[180px] transition-all duration-300 ${showModeDropdown ? 'mode-switcher-dropdown-open' : 'mode-switcher-dropdown-closed'}`} role="listbox">
+          <div className={`absolute top-full ${isRTL ? 'left-0' : 'right-0'} mt-3 mode-switcher-dropdown rounded-xl p-2 min-w-[180px] transition-all duration-300 ${showModeDropdown ? 'mode-switcher-dropdown-open' : 'mode-switcher-dropdown-closed'}`} role="listbox">
             {Object.entries(modeInfo).map(([mode, info]) => (
               <button
                 key={mode}
@@ -53,14 +55,14 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
                   }`}
               >
                 {mode === MODES.DEVOPS ? <Infinity size={16} /> : <Brain size={16} />}
-                <span>{info.label}</span>
+                <span>{isRTL ? (info.labelAr || info.label) : info.label}</span>
               </button>
             ))}
             <div className={`mt-2 text-center text-xs px-3 py-1.5 rounded-full ${currentMode === MODES.DEVOPS
               ? 'bg-cyan-500/20 text-cyan-400'
               : 'bg-purple-500/20 text-purple-400'
               }`}>
-              {modeInfo[currentMode]?.description}
+              {isRTL ? (modeInfo[currentMode]?.descriptionAr || modeInfo[currentMode]?.description) : modeInfo[currentMode]?.description}
             </div>
           </div>
         </div>
@@ -160,12 +162,12 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
               variants={itemVariant}
             >
               <FileText size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Book a Discovery Call</span>
+              <span className="whitespace-nowrap">{t('bookDiscoveryCall')}</span>
             </ButtonCard>
             {personalInfo.resume && (
               <ButtonCard href={personalInfo.resume} external className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white" variants={itemVariant}>
                 <FileText size={18} className="sm:w-5 sm:h-5" />
-                Resume
+                {t('resume')}
               </ButtonCard>
             )}
           </motion.div>

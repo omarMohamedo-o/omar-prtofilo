@@ -7,8 +7,10 @@ import {
   viewportOptions
 } from '../utils/animationVariants';
 import useIsMobile from '../hooks/useIsMobile';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Languages({ isVisible, languages = [], themeColor = 'cyan' }) {
+  const { t } = useLanguage();
   const isMobile = useIsMobile();
   const accentColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
   const borderHover = themeColor === 'purple' ? 'hover:border-purple-500/50' : 'hover:border-cyan-500/50';
@@ -27,7 +29,7 @@ export default function Languages({ isVisible, languages = [], themeColor = 'cya
           variants={titleVariant}
           className="section-title"
         >
-          <span className="text-surface">My</span> <span className="highlight">Languages</span>
+          <span className="text-surface">{t('languagesTitle1')}</span> <span className="highlight">{t('languagesTitle2')}</span>
         </motion.h2>
 
         {/* Phase 2: Content container with delayed staggered children */}

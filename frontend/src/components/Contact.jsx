@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Phone, BadgeCheck, FileText, MapPin } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 import {
   titleVariant,
   containerVariant,
@@ -9,6 +10,7 @@ import {
 } from '../utils/animationVariants';
 
 export function Contact({ isVisible, personalInfo = {}, themeColor = 'cyan' }) {
+  const { t } = useLanguage();
   const accentColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
   const mapsUrl = personalInfo.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(personalInfo.location)}` : null;
 
@@ -32,7 +34,7 @@ export function Contact({ isVisible, personalInfo = {}, themeColor = 'cyan' }) {
       href: mapsUrl,
       className: "bg-sky-600 hover:bg-sky-500 text-white",
       icon: <MapPin size={18} className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" />,
-      label: "Location",
+      label: t('locationLabel'),
       external: true
     },
     personalInfo.linkedin && {
@@ -53,14 +55,14 @@ export function Contact({ isVisible, personalInfo = {}, themeColor = 'cyan' }) {
       href: personalInfo.credly,
       className: "bg-orange-600 hover:bg-orange-500 text-white",
       icon: <BadgeCheck size={18} className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" />,
-      label: "Badges",
+      label: t('badgesLabel'),
       external: true
     },
     personalInfo.resume && {
       href: personalInfo.resume,
       className: "bg-red-600 hover:bg-red-500 text-white",
       icon: <FileText size={18} className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" />,
-      label: "Resume",
+      label: t('resume'),
       external: true
     }
   ].filter(Boolean);
@@ -79,7 +81,7 @@ export function Contact({ isVisible, personalInfo = {}, themeColor = 'cyan' }) {
           variants={titleVariant}
           className="section-title"
         >
-          <span className="text-surface">Let's</span> <span className="highlight">Connect</span>
+          <span className="text-surface">{t('contactTitle1')}</span> <span className="highlight">{t('contactTitle2')}</span>
         </motion.h2>
 
         {/* Phase 2: Content container with delayed staggered children */}
@@ -88,7 +90,7 @@ export function Contact({ isVisible, personalInfo = {}, themeColor = 'cyan' }) {
             variants={itemVariant}
             className="text-sm sm:text-base lg:text-lg text-gray-600 mb-6 sm:mb-8 lg:mb-10 leading-relaxed px-2"
           >
-            I'm always open to discussing new projects, opportunities, or collaborations.
+            {t('contactSubtitle')}
           </motion.p>
 
           <motion.div

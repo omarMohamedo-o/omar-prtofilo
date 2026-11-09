@@ -1,6 +1,7 @@
 import React from 'react'
 import Portfolio from '../components/Portfolio'
 import { ImagePreviewProvider, useImagePreviewContext } from '../context/ImagePreviewContext'
+import { LanguageProvider } from '../context/LanguageContext'
 import ImagePreviewModal from '../components/ImagePreviewModal'
 
 // Global modal that connects to context
@@ -19,9 +20,11 @@ function GlobalImagePreviewModal() {
 
 export default function App() {
     return (
-        <ImagePreviewProvider>
-            <Portfolio />
-            <GlobalImagePreviewModal />
-        </ImagePreviewProvider>
+        <LanguageProvider>
+            <ImagePreviewProvider>
+                <Portfolio />
+                <GlobalImagePreviewModal />
+            </ImagePreviewProvider>
+        </LanguageProvider>
     )
 }

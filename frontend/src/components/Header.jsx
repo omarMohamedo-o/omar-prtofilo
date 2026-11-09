@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { ChevronDown, Infinity, Brain, Menu, X } from 'lucide-react';
+import { ChevronDown, Infinity, Brain, Menu, X, Globe } from 'lucide-react';
 import { MODES, modeInfo } from '../data/data';
 import { getOptimizedImagePath } from '../utils/imageOptimization';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Header({
     scrollToSection = () => { },
@@ -79,12 +80,23 @@ export default function Header({
         scrollToSection(section);
     };
 
+    const { language, toggleLanguage, t, isRTL } = useLanguage();
+
     const accentColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
     const hoverAccent = themeColor === 'purple' ? 'hover:text-purple-400' : 'hover:text-cyan-400';
     const borderAccent = themeColor === 'purple' ? 'border-purple-400' : 'border-cyan-400';
     const bgAccent = themeColor === 'purple' ? 'bg-purple-500' : 'bg-cyan-500';
 
-    const navItems = ['About', 'Experience', 'Internships', 'Skills', 'Projects', 'Education', 'Certifications', 'FAQ', 'Contact'];
+    const navItems = [
+        { id: 'about', label: t('navAbout') },
+        { id: 'experience', label: t('navExperience') },
+        { id: 'internships', label: t('navInternships') },
+        { id: 'skills', label: t('navSkills') },
+        { id: 'projects', label: t('navProjects') },
+        { id: 'education', label: t('navEducation') },
+        { id: 'certifications', label: t('navCertifications') },
+        { id: 'contact', label: t('navContact') }
+    ];
 
     const [isDesktop, setIsDesktop] = useState(typeof window !== 'undefined' ? window.innerWidth >= 1024 : false);
 
@@ -124,17 +136,29 @@ export default function Header({
                     <div className="hidden lg:flex gap-6">
                         {navItems.map((item) => (
                             <button
-                                key={item}
-                                onClick={() => scrollToSection(item.toLowerCase())}
+                                key={item.id}
+                                onClick={() => scrollToSection(item.id)}
                                 className={`text-surface/90 ${hoverAccent} transition-all duration-300 text-sm font-medium glow-btn`}
                             >
-                                {item}
+                                {item.label}
                             </button>
                         ))}
                     </div>
 
-                    {/* Desktop Right: Tour Guide, Discovery, and View as (last on right) */}
-                    <div className="hidden lg:flex items-center gap-4">
+                    {/* Desktop Right: Language Toggle, Tour Guide, Discovery, and View as */}
+                    <div className="hidden lg:flex items-center gap-3">
+                        {/* Language Toggle Button */}
+                        <button
+                            type="button"
+                            onClick={toggleLanguage}
+                            className={`flex items-center gap-1.5 px-3 py-2 border ${borderAccent} rounded-lg text-sm font-semibold ${accentColor} glow-btn transition-all duration-300 hover:scale-105`}
+                            title={language === 'en' ? "تبديل إلى اللغة العربية" : "Switch to English"}
+                            aria-label="Toggle language"
+                        >
+                            <Globe size={15} />
+                            <span>{language === 'en' ? 'العربية' : 'English'}</span>
+                        </button>
+
                         {/* Unified Tour Guide button (no icons, original clean design) */}
                         <button
                             type="button"
@@ -143,9 +167,9 @@ export default function Header({
                                 window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: true } }));
                             }}
                             className={`px-3 py-2 border ${borderAccent} rounded-lg text-sm font-medium ${accentColor} glow-btn transition-all duration-300`}
-                            title="Start Guided Interactive Tour"
+                            title={t('tourGuide')}
                         >
-                            Tour Guide
+                            {t('tourGuide')}
                         </button>
 
                         {/* Book a Discovery Call */}
@@ -153,10 +177,10 @@ export default function Header({
                             onClick={() => scrollToSection('discovery')}
                             className={`px-4 py-2 border ${borderAccent} rounded-lg text-sm font-medium ${accentColor} glow-btn`}
                         >
-                            Book a Discovery Call
+                            {t('bookDiscoveryCall')}
                         </button>
 
-                        {/* View as Dropdown - Last element at the right corner */}
+                        {/* View as Dropdown */}
                         <div className="relative">
                             <button
                                 onClick={() => setShowModeDropdown(!showModeDropdown)}
@@ -166,12 +190,12 @@ export default function Header({
                                 aria-haspopup="listbox"
                                 aria-expanded={showModeDropdown}
                             >
-                                <span>View as</span>
+                                <span>{t('viewAs')}</span>
                                 <ChevronDown size={14} className={`text-gray-400 transition-transform duration-200 ${showModeDropdown ? 'rotate-180' : ''}`} />
                             </button>
 
                             {showModeDropdown && (
-                                <div className="absolute top-full right-0 mt-2 bg-gray-900/95 backdrop-blur-md rounded-xl p-2 border border-gray-700 shadow-xl min-w-[160px] z-50" role="listbox">
+                                <div className="absolute top-full right-0 mt-2 bg-gray-900/95 backdrop-blur-md rounded-xl p-2 border border-gray-700 shadow-xl min-w-[170px] z-50" role="listbox">
                                     {Object.entries(modeInfo).map(([mode, info]) => (
                                         <button
                                             key={mode}
@@ -187,14 +211,14 @@ export default function Header({
                                                 }`}
                                         >
                                             {mode === MODES.DEVOPS ? <Infinity size={16} /> : <Brain size={16} />}
-                                            <span>{info.label}</span>
+                                            <span>{isRTL ? (info.labelAr || info.label) : info.label}</span>
                                         </button>
                                     ))}
                                     <div className={`mt-2 text-center text-xs px-3 py-1 rounded-full ${currentMode === MODES.DEVOPS
                                         ? 'bg-cyan-500/20 text-cyan-400'
                                         : 'bg-purple-500/20 text-purple-400'
                                         }`}>
-                                        {modeInfo[currentMode]?.description}
+                                        {isRTL ? (modeInfo[currentMode]?.descriptionAr || modeInfo[currentMode]?.description) : modeInfo[currentMode]?.description}
                                     </div>
                                 </div>
                             )}
@@ -228,22 +252,37 @@ export default function Header({
                         </button>
                     </div>
 
+                    {/* Language Switcher in Mobile Drawer */}
+                    <div className="px-4 xs:px-6 py-2 border-b border-gray-800/80">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                toggleLanguage();
+                                setMobileMenuOpen(false);
+                            }}
+                            className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border ${borderAccent} text-sm font-semibold ${accentColor} glow-btn`}
+                        >
+                            <Globe size={18} />
+                            <span>{language === 'en' ? 'التحويل إلى العربية (Arabic)' : 'Switch to English'}</span>
+                        </button>
+                    </div>
+
                     {/* Navigation Links - touch-friendly spacing */}
                     <div className="flex flex-col px-4 xs:px-6 py-2 gap-1">
                         {navItems.map((item) => (
                             <button
-                                key={item}
-                                onClick={() => handleNavClick(item.toLowerCase())}
-                                className={`text-left text-surface/90 ${hoverAccent} transition-all duration-300 text-base xs:text-lg font-medium py-3 xs:py-3.5 border-b border-gray-700/50 touch-manipulation active:bg-gray-800/50`}
+                                key={item.id}
+                                onClick={() => handleNavClick(item.id)}
+                                className={`${isRTL ? 'text-right' : 'text-left'} text-surface/90 ${hoverAccent} transition-all duration-300 text-base xs:text-lg font-medium py-3 xs:py-3.5 border-b border-gray-700/50 touch-manipulation active:bg-gray-800/50`}
                             >
-                                {item}
+                                {item.label}
                             </button>
                         ))}
                     </div>
 
                     {/* Mode Switcher */}
                     <div className="px-4 xs:px-6 py-4">
-                        <p className="text-gray-500 text-xs xs:text-sm mb-2 xs:mb-3">View as:</p>
+                        <p className="text-gray-500 text-xs xs:text-sm mb-2 xs:mb-3">{t('viewAs')}:</p>
                         <div className="flex flex-col gap-2">
                             {Object.entries(modeInfo).map(([mode, info]) => (
                                 <button
@@ -257,7 +296,7 @@ export default function Header({
                                         }`}
                                 >
                                     {mode === MODES.DEVOPS ? <Infinity size={16} className="xs:w-[18px] xs:h-[18px]" /> : <Brain size={16} className="xs:w-[18px] xs:h-[18px]" />}
-                                    <span>{info.label}</span>
+                                    <span>{isRTL ? (info.labelAr || info.label) : info.label}</span>
                                 </button>
                             ))}
                         </div>
@@ -274,13 +313,13 @@ export default function Header({
                             }}
                             className={`w-full py-2.5 rounded-lg border ${borderAccent} text-sm font-medium ${accentColor} glow-btn text-center active:scale-95`}
                         >
-                            Tour Guide
+                            {t('tourGuide')}
                         </button>
                         <button
                             onClick={() => handleNavClick('discovery')}
                             className={`w-full py-2.5 xs:py-3 ${bgAccent} text-gray-900 rounded-lg font-semibold text-sm xs:text-base text-center touch-manipulation active:opacity-90`}
                         >
-                            Book a Discovery Call
+                            {t('bookDiscoveryCall')}
                         </button>
                     </div>
                 </div>

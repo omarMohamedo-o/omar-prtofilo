@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function DiscoveryForm({ isVisible = () => false, themeColor = 'cyan' }) {
+    const { t, isRTL } = useLanguage();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -73,7 +75,7 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
         })();
     };
 
-    const services = [
+    const servicesEn = [
         'DevOps Consulting',
         'MLOps Implementation',
         'Cloud Architecture',
@@ -82,6 +84,18 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
         'AI/ML Solutions',
         'Other'
     ];
+
+    const servicesAr = [
+        'استشارات DevOps وهندسة السحابة',
+        'تطبيق وبناء أنظمة MLOps',
+        'تصميم المعمارية السحابية',
+        'إعداد وأتمتة مسارات CI/CD',
+        'أتمتة البنية التحتية (IaC)',
+        'حلول ونماذج الذكاء الاصطناعي (AI/ML)',
+        'استشارة تقنية أخرى'
+    ];
+
+    const services = isRTL ? servicesAr : servicesEn;
 
     return (
         <section id="discovery" className="py-24 px-6 scroll-mt-20">
@@ -92,14 +106,18 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
                         <div className="flex flex-col justify-center">
                             <div className="flex items-center justify-center mb-0">
                                 <span className={`${accentColor} text-sm font-semibold tracking-wider uppercase`}>
-                                    Get in Touch
+                                    {isRTL ? 'حجز استشارة مباشرة' : 'Get in Touch'}
                                 </span>
                             </div>
                             <h2 className="section-title text-gray-900 mt-1 mb-4 leading-tight">
-                                Do your growth plans need reliable insights, quicker time-to-market, or affordable solutions?
+                                {isRTL 
+                                    ? 'هل تحتاج خطط نموك التقنية إلى استشارات موثوقة، وسرعة في الوصول للإنتاج، وحلول اقتصادية؟'
+                                    : 'Do your growth plans need reliable insights, quicker time-to-market, or affordable solutions?'}
                             </h2>
                             <p className="text-gray-700 text-lg leading-relaxed">
-                                My unique Human-AI synergy can help you tackle your business challenges, in a way that is better, faster and more cost effective than any traditional approach.
+                                {isRTL 
+                                    ? 'يساعدك التعاون المباشر بين الخبرة الهندسية وتطبيقات الذكاء الاصطناعي على حل التحديات البرمجية وبناء بنية تحتية سحابية مرنة بكفاءة وتكلفة مدروسة.'
+                                    : 'My unique Human-AI synergy can help you tackle your business challenges, in a way that is better, faster and more cost effective than any traditional approach.'}
                             </p>
                         </div>
 
@@ -112,7 +130,7 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
                                         name="firstName"
                                         value={formData.firstName}
                                         onChange={handleChange}
-                                        placeholder="First Name*"
+                                        placeholder={isRTL ? "الاسم الأول*" : "First Name*"}
                                         required
                                         className={`w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 ${borderFocus} focus:ring-2 focus:outline-none transition-all duration-300`}
                                     />
@@ -121,7 +139,7 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
                                         name="lastName"
                                         value={formData.lastName}
                                         onChange={handleChange}
-                                        placeholder="Last Name"
+                                        placeholder={isRTL ? "اسم العائلة" : "Last Name"}
                                         className={`w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 ${borderFocus} focus:ring-2 focus:outline-none transition-all duration-300`}
                                     />
                                 </div>
@@ -132,7 +150,7 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
                                         name="companyName"
                                         value={formData.companyName}
                                         onChange={handleChange}
-                                        placeholder="Company Name"
+                                        placeholder={isRTL ? "اسم الشركة / المؤسسة" : "Company Name"}
                                         className={`w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 ${borderFocus} focus:ring-2 focus:outline-none transition-all duration-300`}
                                     />
                                     <input
@@ -140,7 +158,7 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
                                         name="businessEmail"
                                         value={formData.businessEmail}
                                         onChange={handleChange}
-                                        placeholder="Business Email*"
+                                        placeholder={isRTL ? "البريد الإلكتروني المهني*" : "Business Email*"}
                                         required
                                         className={`w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 ${borderFocus} focus:ring-2 focus:outline-none transition-all duration-300`}
                                     />
@@ -152,19 +170,19 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
                                         name="phoneNumber"
                                         value={formData.phoneNumber}
                                         onChange={handleChange}
-                                        placeholder="Phone Number*"
+                                        placeholder={isRTL ? "رقم الهاتف / واتساب*" : "Phone Number*"}
                                         required
                                         className={`w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 ${borderFocus} focus:ring-2 focus:outline-none transition-all duration-300`}
                                     />
                                     <div>
-                                        <label className="block text-gray-700 text-sm mb-1">Service of interest*</label>
+                                        <label className="block text-gray-700 text-sm mb-1">{isRTL ? "الخدمة المطلوبة*" : "Service of interest*"}</label>
                                         <select
                                             name="serviceOfInterest"
                                             value={formData.serviceOfInterest}
                                             onChange={handleChange}
                                             className={`w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-gray-900 ${borderFocus} focus:ring-2 focus:outline-none transition-all duration-300 appearance-none cursor-pointer`}
                                         >
-                                            <option value="" className="bg-white">Please Select</option>
+                                            <option value="" className="bg-white">{isRTL ? "يرجى الاختيار" : "Please Select"}</option>
                                             {services.map((service, index) => (
                                                 <option key={index} value={service} className="bg-white text-gray-900">
                                                     {service}
@@ -174,15 +192,15 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
                                     </div>
                                 </div>
 
-                                {/* Privacy checkbox removed from the card as requested */}
-
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                                     <button
                                         type="submit"
                                         disabled={status.loading}
                                         className={`w-full md:w-auto px-8 py-3 ${buttonBg} text-white font-semibold rounded-lg transition-all duration-300 transform ${status.loading ? 'opacity-60 cursor-wait' : 'hover:scale-105 hover:shadow-lg'} border border-transparent glow-btn`}
                                     >
-                                        {status.loading ? 'Sending…' : 'Book a Discovery Call'}
+                                        {status.loading 
+                                            ? (isRTL ? 'جاري الإرسال...' : 'Sending…') 
+                                            : (isRTL ? 'حجز استشارة تقنية' : 'Book a Discovery Call')}
                                     </button>
                                     <div className="mt-2 sm:mt-0">
                                         {status.message && <div className="text-green-500 font-medium">{status.message}</div>}

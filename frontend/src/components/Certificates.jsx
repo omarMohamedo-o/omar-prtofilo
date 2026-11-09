@@ -11,6 +11,7 @@ import SectionWrapper from './SectionWrapper';
 import ButtonCard from './ButtonCard';
 import useIsMobile from '../hooks/useIsMobile';
 import PreviewableImage from './PreviewableImage';
+import { useLanguage } from '../context/LanguageContext';
 
 export function getImagePath(item) {
     let basePath = '';
@@ -52,12 +53,13 @@ export function handleImageError(e, name) {
 }
 
 export function Certifications({ isVisible, certifications = [], themeColor = 'cyan' }) {
+    const { t } = useLanguage();
     const isMobile = useIsMobile();
     const accentColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
     const borderHover = themeColor === 'purple' ? 'hover:border-purple-500/50' : 'hover:border-cyan-500/50';
 
     return (
-        <SectionWrapper id="certifications" titleLeft="My" titleRight="Certifications" childrenWrapperClassName="space-y-4 sm:space-y-6 lg:space-y-8">
+        <SectionWrapper id="certifications" titleLeft={t('certificationsTitle1')} titleRight={t('certificationsTitle2')} childrenWrapperClassName="space-y-4 sm:space-y-6 lg:space-y-8">
             {certifications.map((cert, index) => (
                 <motion.div
                     key={index}
@@ -108,10 +110,15 @@ export function Certifications({ isVisible, certifications = [], themeColor = 'c
                             <motion.div variants={itemVariant} className="text-surface/70 text-xs sm:text-sm">{cert.date}</motion.div>
                         </motion.div>
 
-                        <motion.div variants={containerVariant} className="mt-3 sm:mt-0 sm:ml-4">
+                        <motion.div variants={containerVariant} className="mt-3 sm:mt-0 sm:ml-4 flex items-center gap-2">
+                            {cert.pdf && (
+                                <ButtonCard variants={itemVariant} href={cert.pdf} external className="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/20 px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold">
+                                    PDF 📄
+                                </ButtonCard>
+                            )}
                             {cert.verified && (
-                                <ButtonCard variants={itemVariant} href={cert.link} external className="absolute right-3 bottom-3 sm:static sm:ml-4 bg-green-500/10 text-green-300 px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold">
-                                    Verified ✓
+                                <ButtonCard variants={itemVariant} href={cert.link} external className="bg-green-500/10 text-green-300 px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold">
+                                    {t('verified')}
                                 </ButtonCard>
                             )}
                         </motion.div>
@@ -123,6 +130,7 @@ export function Certifications({ isVisible, certifications = [], themeColor = 'c
 }
 
 export function Courses({ isVisible, courses = [], themeColor = 'cyan' }) {
+    const { t } = useLanguage();
     const isMobile = useIsMobile();
     const accentColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
     const borderHover = themeColor === 'purple' ? 'hover:border-purple-500/50' : 'hover:border-cyan-500/50';
@@ -130,7 +138,7 @@ export function Courses({ isVisible, courses = [], themeColor = 'cyan' }) {
     const gridColumns = isMobile ? 1 : 3;
 
     return (
-        <SectionWrapper id="courses" titleLeft="Professional" titleRight="Courses" childrenWrapperClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        <SectionWrapper id="courses" titleLeft={t('coursesTitle1')} titleRight={t('coursesTitle2')} childrenWrapperClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {courses.map((course, index) => (
                 <motion.div
                     key={index}

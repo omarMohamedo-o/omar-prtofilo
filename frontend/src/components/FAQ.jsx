@@ -127,11 +127,10 @@ function FAQ({ isVisible, themeColor = 'cyan' }) {
               <motion.div
                 key={idx}
                 variants={getOrbitalItemVariant(idx)}
-                className={`rounded-2xl border transition-all duration-300 backdrop-blur-md overflow-hidden ${
-                  isOpen
-                    ? `bg-slate-900/90 ${activeBorder} shadow-lg shadow-cyan-500/10`
-                    : `bg-slate-900/40 border-slate-800/80 ${borderHover}`
-                }`}
+                className={`rounded-2xl border transition-all duration-300 backdrop-blur-md overflow-hidden ${isOpen
+                  ? `bg-slate-900/90 ${activeBorder} shadow-lg shadow-cyan-500/10`
+                  : `bg-slate-900/40 border-slate-800/80 ${borderHover}`
+                  }`}
               >
                 <button
                   type="button"
@@ -140,9 +139,8 @@ function FAQ({ isVisible, themeColor = 'cyan' }) {
                   aria-expanded={isOpen}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`mt-0.5 p-1.5 rounded-lg border ${
-                      isOpen ? 'bg-cyan-500/20 border-cyan-400/60 text-cyan-300' : 'bg-slate-800/60 border-slate-700/60 text-slate-400'
-                    }`}>
+                    <div className={`mt-0.5 p-1.5 rounded-lg border ${isOpen ? 'bg-cyan-500/20 border-cyan-400/60 text-cyan-300' : 'bg-slate-800/60 border-slate-700/60 text-slate-400'
+                      }`}>
                       <Icon size={16} />
                     </div>
                     <div>
@@ -156,9 +154,8 @@ function FAQ({ isVisible, themeColor = 'cyan' }) {
                   </div>
                   <ChevronDown
                     size={20}
-                    className={`text-slate-400 flex-shrink-0 mt-1 transition-transform duration-300 ${
-                      isOpen ? 'rotate-180 text-cyan-400' : ''
-                    }`}
+                    className={`text-slate-400 flex-shrink-0 mt-1 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-400' : ''
+                      }`}
                   />
                 </button>
 

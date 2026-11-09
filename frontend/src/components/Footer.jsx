@@ -1,8 +1,10 @@
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Phone, BadgeCheck, FileText } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const Footer = function Footer({ personalInfo = {}, themeColor = 'cyan' }) {
+    const { isRTL, t } = useLanguage();
     return (
         <motion.footer
             initial={{ opacity: 0 }}
@@ -41,7 +43,12 @@ const Footer = function Footer({ personalInfo = {}, themeColor = 'cyan' }) {
                     <span>RHCSA Certified #250-068-707</span>
                     <span>Remote Technical Mentor (Volunteer) at Palestine Polytechnic University</span>
                 </div>
-                <p className="text-sm text-surface/70">© {new Date().getFullYear()} Omarmohamed-portfolio — {personalInfo.name} ({personalInfo.fullName}). All rights reserved.</p>
+                <p className="text-sm text-surface/70">
+                    {isRTL 
+                        ? `© ${new Date().getFullYear()} محفظة عمر محمد الهندسية — ${personalInfo.name}. ${t('rightsReserved')}`
+                        : `© ${new Date().getFullYear()} Omarmohamed-portfolio — ${personalInfo.name} (${personalInfo.fullName || 'Omar Mohamed'}). ${t('rightsReserved')}`
+                    }
+                </p>
             </div>
         </motion.footer>
     );

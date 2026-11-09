@@ -1,4 +1,4 @@
-# robots.txt for Omar Mohamed (Omar Gad) Portfolio
+# robots.txt for Omar Mohamed Portfolio
 # https://omarmohamed-portfolio.vercel.app/
 
 # Standard Search Engines

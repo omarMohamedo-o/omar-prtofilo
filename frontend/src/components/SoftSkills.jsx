@@ -9,8 +9,10 @@ import {
     viewportOptions
 } from '../utils/animationVariants';
 import useIsMobile from '../hooks/useIsMobile';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function SoftSkills({ isVisible, softSkills = {}, themeColor = 'cyan' }) {
+    const { t } = useLanguage();
     const isMobile = useIsMobile();
     const textColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
     const borderHover = themeColor === 'purple'
@@ -26,15 +28,21 @@ export default function SoftSkills({ isVisible, softSkills = {}, themeColor = 'c
     const getIcon = (category) => {
         const iconMap = {
             'Leadership': Users,
+            'القيادة': Users,
             'Communication': MessageCircle,
+            'التواصل': MessageCircle,
             'Problem': Brain,
+            'حل': Brain,
             'Goal': Target,
             'Time': Clock,
             'Creative': Lightbulb,
+            'ابتكار': Lightbulb,
             'Emotional': Heart,
             'Adaptability': Puzzle,
+            'مرونة': Puzzle,
             'Collaboration': Users,
             'Critical': Brain,
+            'تحليلي': Brain,
             'Teamwork': Users,
             'Interpersonal': Heart
         };
@@ -59,7 +67,7 @@ export default function SoftSkills({ isVisible, softSkills = {}, themeColor = 'c
                     variants={titleVariant}
                     className="section-title"
                 >
-                    <span className="text-surface">Soft</span> <span className="highlight">Skills</span>
+                    <span className="text-surface">{t('softSkillsTitle1')}</span> <span className="highlight">{t('softSkillsTitle2')}</span>
                 </motion.h2>
 
                 {/* Phase 2: Content container with delayed staggered children */}

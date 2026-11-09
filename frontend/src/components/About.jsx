@@ -6,8 +6,10 @@ import {
   itemVariant,
   viewportOptions
 } from '../utils/animationVariants';
+import { useLanguage } from '../context/LanguageContext';
 
 const About = function About({ isVisible, aboutMe = [], themeColor = 'cyan' }) {
+  const { t } = useLanguage();
   const borderHover = themeColor === 'purple'
     ? 'hover:border-purple-500/30'
     : 'hover:border-cyan-500/30';
@@ -26,7 +28,7 @@ const About = function About({ isVisible, aboutMe = [], themeColor = 'cyan' }) {
           variants={titleVariant}
           className="section-title"
         >
-          <span className="text-surface">About</span> <span className="highlight">Me</span>
+          <span className="text-surface">{t('aboutTitle1')}</span> <span className="highlight">{t('aboutTitle2')}</span>
         </motion.h2>
 
         {/* Phase 2: Content container with delayed children */}

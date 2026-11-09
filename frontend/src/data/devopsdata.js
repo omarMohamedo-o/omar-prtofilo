@@ -76,7 +76,8 @@ export const devopsCertifications = [
         verified: true,
         link: "https://www.aspireleaders.org/",
         issuerLink: "https://www.aspireleaders.org/",
-        image: "Aspire-Leaders-Program.png"
+        image: "Aspire-Leaders-Program.png",
+        pdf: "/images/certifications/Aspire-Certificate.pdf"
     },
     {
         name: "Red Hat Certified System Administrator (RHCSA)",

@@ -23,6 +23,7 @@ import MinecraftGuide3D from './MinecraftGuide3D';
 
 // Import data with mode support
 import { MODES, getPortfolioData } from '../data/data';
+import { useLanguage } from '../context/LanguageContext';
 
 // CSS Styles
 const styles = `
@@ -160,9 +161,10 @@ export default function Portfolio() {
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState(new Set());
   const [currentMode, setCurrentMode] = useState(MODES.DEVOPS);
+  const { language } = useLanguage();
 
-  // Get portfolio data based on current mode
-  const portfolioData = useMemo(() => getPortfolioData(currentMode), [currentMode]);
+  // Get portfolio data based on current mode and language
+  const portfolioData = useMemo(() => getPortfolioData(currentMode, language), [currentMode, language]);
 
   // Prevent browser auto-scroll to hash on refresh and ensure page opens at top
   useEffect(() => {

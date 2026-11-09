@@ -5,6 +5,7 @@
  */
 
 import * as shared from './shareddata';
+import * as arabic from './arabicData';
 
 // Import DevOps-specific data
 import {
@@ -35,27 +36,34 @@ export const MODES = shared.MODES;
 export const modeInfo = {
     [MODES.DEVOPS]: {
         label: 'DevOps & MLOps',
-        description: 'MLOps & Cloud DevOps Engineer'
+        description: 'MLOps & Cloud DevOps Engineer',
+        labelAr: 'DevOps و MLOps',
+        descriptionAr: 'مهندس MLOps والسحابة'
     },
     [MODES.MLNLP]: {
         label: 'AI & ML',
-        description: 'AI & Machine Learning Engineer'
+        description: 'AI & Machine Learning Engineer',
+        labelAr: 'الذكاء الاصطناعي وتعلم الآلة',
+        descriptionAr: 'مهندس ذكاء اصطناعي وتعلم آلة'
     }
 };
 
 /**
- * Get portfolio data based on selected mode
+ * Get portfolio data based on selected mode and language
  * @param {string} mode - Portfolio mode (MODES.DEVOPS or MODES.MLNLP)
+ * @param {string} language - UI Language ('en' or 'ar')
  * @returns {object} Complete portfolio data
  */
-export function getPortfolioData(mode = MODES.DEVOPS) {
+export function getPortfolioData(mode = MODES.DEVOPS, language = 'en') {
+    const isAr = language === 'ar';
+
     const baseData = {
-        personalInfo: { ...shared.personalInfo },
-        experiences: [...shared.Experiences],
+        personalInfo: isAr ? { ...shared.personalInfo, ...arabic.arabicPersonalInfo } : { ...shared.personalInfo },
+        experiences: isAr ? [...arabic.arabicExperiences] : [...shared.Experiences],
         volunteering: [...shared.Volunteering],
-        internships: [...shared.Intern],
-        education: [...shared.education],
-        languages: [...shared.languages]
+        internships: isAr ? [...arabic.arabicInternships] : [...shared.Intern],
+        education: isAr ? [...arabic.arabicEducation] : [...shared.education],
+        languages: isAr ? [...arabic.arabicLanguages] : [...shared.languages]
     };
 
     switch (mode) {
@@ -64,14 +72,17 @@ export function getPortfolioData(mode = MODES.DEVOPS) {
                 ...baseData,
                 personalInfo: {
                     ...baseData.personalInfo,
-                    ...mlnlpPersonalInfo
+                    ...(isAr ? arabic.arabicMlnlpData.personalInfo : mlnlpPersonalInfo)
                 },
                 // All experiences are relevant to AI/ML & Engineering
                 experiences: baseData.experiences,
-                internships: baseData.internships.filter(i => i.title !== 'System Administration Intern'),
-                aboutMe: mlnlpAboutMe,
-                skills: mlnlpSkills,
-                softSkills: mlnlpSoftSkills,
+                internships: baseData.internships.filter(i => 
+                    i.title !== 'System Administration Intern' && 
+                    i.title !== 'متدرب إدارة أنظمة وشبكات'
+                ),
+                aboutMe: isAr ? arabic.arabicMlnlpData.aboutMe : mlnlpAboutMe,
+                skills: isAr ? arabic.arabicMlnlpData.skills : mlnlpSkills,
+                softSkills: isAr ? arabic.arabicMlnlpData.softSkills : mlnlpSoftSkills,
                 projects: mlnlpProjects,
                 certifications: mlnlpCertifications,
                 courses: mlnlpCourses,
@@ -84,13 +95,16 @@ export function getPortfolioData(mode = MODES.DEVOPS) {
                 ...baseData,
                 personalInfo: {
                     ...baseData.personalInfo,
-                    ...devopsPersonalInfo
+                    ...(isAr ? arabic.arabicDevopsData.personalInfo : devopsPersonalInfo)
                 },
                 experiences: baseData.experiences,
-                internships: baseData.internships.filter(i => i.title !== 'Artificial Intelligence Engineer Intern'),
-                aboutMe: devopsAboutMe,
-                skills: devopsSkills,
-                softSkills: devopsSoftSkills,
+                internships: baseData.internships.filter(i => 
+                    i.title !== 'Artificial Intelligence Engineer Intern' && 
+                    i.title !== 'متدرب ذكاء اصطناعي ومعالجة لغات طبيعية'
+                ),
+                aboutMe: isAr ? arabic.arabicDevopsData.aboutMe : devopsAboutMe,
+                skills: isAr ? arabic.arabicDevopsData.skills : devopsSkills,
+                softSkills: isAr ? arabic.arabicDevopsData.softSkills : devopsSoftSkills,
                 projects: devopsProjects,
                 certifications: devopsCertifications,
                 courses: devopsCourses,
