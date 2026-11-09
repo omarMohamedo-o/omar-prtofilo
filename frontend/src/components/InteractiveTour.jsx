@@ -60,6 +60,13 @@ const TOUR_STEPS = [
     itemHighlights: ['Aspire Leaders Program (Aspire Institute)', 'RHCSA (Red Hat Certified)', 'HCCDA Huawei Cloud Developer', 'Docker Essentials (IBM)']
   },
   {
+    targetId: 'faq',
+    title: 'Key Questions & Direct Answers',
+    badge: 'AEO / FAQ',
+    description: 'Direct-answer snippets addressing core engineering inquiries, live deployments, scalable architecture, tech stack, and collaboration workflows.',
+    itemHighlights: ['Featured Projects & Metrics', 'Production Architecture & Scaling', 'Verified Live Deployments', 'Direct Contact Channels']
+  },
+  {
     targetId: 'contact',
     title: 'Connect & Chat with MORA',
     badge: 'Get in Touch',

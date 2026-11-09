@@ -84,7 +84,7 @@ export default function Header({
     const borderAccent = themeColor === 'purple' ? 'border-purple-400' : 'border-cyan-400';
     const bgAccent = themeColor === 'purple' ? 'bg-purple-500' : 'bg-cyan-500';
 
-    const navItems = ['About', 'Experience', 'Internships', 'Skills', 'Projects', 'Education', 'Certifications', 'Contact'];
+    const navItems = ['About', 'Experience', 'Internships', 'Skills', 'Projects', 'Education', 'Certifications', 'FAQ', 'Contact'];
 
     const [isDesktop, setIsDesktop] = useState(typeof window !== 'undefined' ? window.innerWidth >= 1024 : false);
 

@@ -19,6 +19,7 @@ import UpArrowButton from './UpArrowButton';
 import DiscoveryForm from './DiscoveryForm';
 import SpaceBackground from './SpaceBackground';
 import InteractiveTour from './InteractiveTour';
+import FAQ from './FAQ';
 
 // Import data with mode support
 import { MODES, getPortfolioData } from '../data/data';
@@ -377,6 +378,9 @@ export default function Portfolio() {
       {portfolioData.languages && portfolioData.languages.length > 0 && (
         <Languages isVisible={isVisible} languages={portfolioData.languages} themeColor={themeColor} />
       )}
+
+      {/* Frequently Asked Questions (FAQ) Section */}
+      <FAQ isVisible={isVisible} themeColor={themeColor} />
 
       {/* Discovery Form Section */}
       <DiscoveryForm isVisible={isVisible} themeColor={themeColor} />

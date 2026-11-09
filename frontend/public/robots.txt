@@ -1,9 +1,47 @@
-# robots.txt for ChloroMaster
+# robots.txt for Omar Mohamed (Omar Gad) Portfolio
+# https://omarmohamed-portfolio.vercel.app/
 
-# Allow all search engines
+# Standard Search Engines
 User-agent: *
+Allow: /
 Disallow: /api/
-Disallow: /admin/
+
+# AI Search & Answer Engines (AEO / GEO / Perplexity / OpenAI / Claude)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
 
 # Sitemap location
-Sitemap: https://chloromaster.com/sitemap.xml
+Sitemap: https://omarmohamed-portfolio.vercel.app/sitemap.xml
