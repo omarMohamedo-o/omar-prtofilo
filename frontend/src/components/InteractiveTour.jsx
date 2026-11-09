@@ -95,13 +95,18 @@ export default function InteractiveTour({ onTourToggle }) {
 
   // Register global trigger so any button can launch the tour
   useEffect(() => {
-    window.startPortfolioTour = () => {
+    const launch = () => {
       setShowPrompt(false);
       setCurrentStep(0);
       setTourActive(true);
     };
+
+    window.startPortfolioTour = launch;
+    window.addEventListener('start-portfolio-tour', launch);
+
     return () => {
       delete window.startPortfolioTour;
+      window.removeEventListener('start-portfolio-tour', launch);
     };
   }, []);
 
@@ -128,18 +133,31 @@ export default function InteractiveTour({ onTourToggle }) {
     }
   }, []);
 
-  // Trigger scroll on step change
+  // Trigger scroll on step change and dispatch tour step event
   useEffect(() => {
     if (tourActive) {
-      const targetId = TOUR_STEPS[currentStep].targetId;
+      const currentStepData = TOUR_STEPS[currentStep];
+      const targetId = currentStepData.targetId;
       scrollToTarget(targetId);
       if (onTourToggle) onTourToggle(true);
+
+      // Notify external 3D guide character
+      window.dispatchEvent(new CustomEvent('portfolio-tour-step', {
+        detail: {
+          stepIndex: currentStep,
+          totalSteps: TOUR_STEPS.length,
+          title: currentStepData.title,
+          badge: currentStepData.badge,
+          description: currentStepData.description
+        }
+      }));
     } else {
       if (previousHighlightRef.current) {
         previousHighlightRef.current.classList.remove('tour-focused-element');
         previousHighlightRef.current = null;
       }
       if (onTourToggle) onTourToggle(false);
+      window.dispatchEvent(new CustomEvent('portfolio-tour-ended'));
     }
   }, [tourActive, currentStep, scrollToTarget, onTourToggle]);
 

@@ -190,6 +190,19 @@ export default function Header({
                             <span>Tour Guide</span>
                         </button>
 
+                        {/* 3D Minecraft Guide button */}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide'));
+                            }}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all hover:scale-105 active:scale-95 font-mono"
+                            title="Open 3D Minecraft Guide & LLM Companion"
+                        >
+                            <span>⛏️</span>
+                            <span>3D Guide</span>
+                        </button>
+
                         {/* Book a Discovery Call */}
                         <button
                             onClick={() => scrollToSection('discovery')}
@@ -273,6 +286,17 @@ export default function Header({
                         >
                             <Sparkles size={16} />
                             <span>Start Guided Tour</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setMobileMenuOpen(false);
+                                window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide'));
+                            }}
+                            className={`w-full py-2.5 rounded-lg border border-emerald-500/40 text-emerald-300 bg-emerald-500/10 font-semibold text-sm flex items-center justify-center gap-2 active:scale-95 font-mono`}
+                        >
+                            <span>⛏️</span>
+                            <span>3D Minecraft Guide</span>
                         </button>
                         <button
                             onClick={() => handleNavClick('discovery')}

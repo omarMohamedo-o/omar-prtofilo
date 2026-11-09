@@ -20,6 +20,7 @@ import DiscoveryForm from './DiscoveryForm';
 import SpaceBackground from './SpaceBackground';
 import InteractiveTour from './InteractiveTour';
 import FAQ from './FAQ';
+import MinecraftGuide3D from './MinecraftGuide3D';
 
 // Import data with mode support
 import { MODES, getPortfolioData } from '../data/data';
@@ -393,6 +394,9 @@ export default function Portfolio() {
 
       {/* Up arrow (above chat widget) */}
       <UpArrowButton />
+
+      {/* 3D Minecraft Guide Character & LLM Companion */}
+      <MinecraftGuide3D />
 
       {/* Interactive Animated Guide & Tour */}
       <InteractiveTour />
