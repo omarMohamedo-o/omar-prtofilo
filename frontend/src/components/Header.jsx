@@ -146,7 +146,7 @@ export default function Header({
                 className={`fixed top-0 w-full z-50 border-b text-surface transition-all duration-300 ${scrolled ? "scrolled shadow-lg" : "border-transparent"}`}>
                 <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
                     {/* Left: Logo */}
-                    <div className="flex items-center">
+                    <div className="flex items-center flex-shrink-0 nav-logo-wrapper">
                         <img
                             src={getOptimizedImagePath(currentMode === MODES.DEVOPS ? "/images/me/OmarsLogo-dev.svg" : currentMode === MODES.MLNLP ? "/images/me/OmarsLogo-ml.svg" : "/images/me/OmarsLogo.svg")}
                             alt={currentMode === MODES.DEVOPS ? "Omar - DevOps Logo" : currentMode === MODES.MLNLP ? "Omar - ML Logo" : "Omar's Logo"}
@@ -155,13 +155,13 @@ export default function Header({
                         />
                     </div>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden lg:flex gap-6">
-                        {navItems.map((item) => (
+                    {/* Desktop Navigation with left padding on the About button to ensure zero overlap with logo */}
+                    <div className="hidden lg:flex items-center gap-3 xl:gap-5 2xl:gap-6 ps-6 xl:ps-10">
+                        {navItems.map((item, idx) => (
                             <button
                                 key={item.id}
                                 onClick={() => scrollToSection(item.id)}
-                                className={`text-surface/90 ${hoverAccent} transition-all duration-300 text-sm font-medium glow-btn`}
+                                className={`text-surface/90 ${hoverAccent} transition-all duration-300 text-xs xl:text-sm font-medium glow-btn whitespace-nowrap ${idx === 0 ? 'ps-3 xl:ps-5' : ''}`}
                             >
                                 {item.label}
                             </button>

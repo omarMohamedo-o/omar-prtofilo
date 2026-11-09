@@ -1764,29 +1764,52 @@ nav.scrolled {
 }
 
 /* ── Logo sizes: expanded → compact, responsive ── */
+.nav-logo-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    min-width: 130px;
+    transition: min-width 0.34s ease, width 0.34s ease;
+}
+
+@media (min-width: 1024px) {
+    .nav-logo-wrapper {
+        min-width: 165px;
+    }
+}
+
+nav.scrolled .nav-logo-wrapper {
+    min-width: auto;
+}
+
 .nav-logo {
     transition: height 300ms ease, margin 300ms ease, transform 300ms ease;
     transform: scale(1);
     transform-origin: left center;
 }
 
+/* RTL logo origin */
+[dir="rtl"] .nav-logo,
+html.rtl-mode .nav-logo {
+    transform-origin: right center !important;
+}
+
 /* Mobile default (expanded) */
 .nav-logo {
-    height: 3.5rem;
-    /* visually enlarge without changing layout by using transform */
-    transform: scale(1.6);
+    height: 3rem;
+    /* visually enlarge without overflowing layout */
+    transform: scale(1.4);
     transform-origin: left center;
 }
 
 /* Larger visual scale on wider viewports, but keep layout height modest */
 @media (min-width: 640px) {
     .nav-logo {
-        height: 4rem;
-        /* layout height */
+        height: 3.25rem;
         margin: 0;
         transform-origin: left center;
-        transform: scale(2.4);
-        /* visually larger */
+        transform: scale(1.6);
         transition: transform 0.34s ease, height 0.34s ease;
     }
 }
@@ -1794,12 +1817,10 @@ nav.scrolled {
 /* Desktop-specific logo sizing */
 @media (min-width: 1024px) {
     .nav-logo {
-        height: 4rem;
-        /* layout height for alignment */
+        height: 3.5rem;
         margin: 0;
         transform-origin: left center;
-        transform: scale(2.8);
-        /* visually larger */
+        transform: scale(1.75);
         transition: transform 0.34s ease, height 0.34s ease;
     }
 }
@@ -1808,18 +1829,18 @@ nav.scrolled {
 nav.scrolled .nav-logo {
     transform: scale(1) !important;
     margin: 0 !important;
-    height: 3.5rem !important;
+    height: 2.75rem !important;
 }
 
 @media (min-width: 640px) {
     nav.scrolled .nav-logo {
-        height: 3rem !important;
+        height: 2.75rem !important;
     }
 }
 
 @media (min-width: 1024px) {
     nav.scrolled .nav-logo {
-        height: 3.5rem !important;
+        height: 3rem !important;
     }
 }
 
