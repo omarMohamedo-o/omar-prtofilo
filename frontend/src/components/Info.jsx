@@ -80,6 +80,13 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
+          {/* Brand Identity & Authority Badge */}
+          <div className="mb-3 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+            <span className="font-bold tracking-wide">Omarmohamed-portfolio</span>
+            <span className="text-slate-400 hidden sm:inline">• Official AI & MLOps Showcase</span>
+          </div>
+
           {/* Desktop: small title above name (keeps existing appearance) */}
           <div className="hidden lg:block mb-4">
             <span className={`${accentColor} text-xl font-bold tracking-wider uppercase`}>{personalInfo.title}</span>
@@ -97,7 +104,7 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
           </div>
 
           {/* Mobile: name then title */}
-          <div className="block lg:hidden mt-4">
+          <div className="block lg:hidden mt-2">
             <motion.h1
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}

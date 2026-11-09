@@ -35,7 +35,19 @@ const Footer = function Footer({ personalInfo = {}, themeColor = 'cyan' }) {
                         <Phone size={24} />
                     </a>
                 </div>
-                <p className="text-sm text-surface/70">© {new Date().getFullYear()} {personalInfo.name}</p>
+                <div className="mb-6 flex flex-wrap items-center justify-center gap-3 text-xs font-mono">
+                    <span className="px-3 py-1 rounded-full bg-slate-900 border border-cyan-500/30 text-cyan-300">
+                        Brand: <strong>Omarmohamed-portfolio</strong>
+                    </span>
+                    <span className="px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300 flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Last Updated: November 2026 (Live Release v2.4)
+                    </span>
+                    <span className="px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300">
+                        RHCSA Certified #250-068-707
+                    </span>
+                </div>
+                <p className="text-sm text-surface/70">© {new Date().getFullYear()} Omarmohamed-portfolio — {personalInfo.name} ({personalInfo.fullName}). All rights reserved.</p>
             </div>
         </motion.footer>
     );
