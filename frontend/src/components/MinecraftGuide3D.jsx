@@ -112,67 +112,233 @@ function createHeadTexture() {
 }
 
 /**
- * Generate 64x64 Torso texture: Cyber teal hoodie with "AI" emblem & pocket
+ * Generate 64x64 Torso texture:
+ * Developer Hoodie with crisp white GitHub Invertocat logo on the chest,
+ * terminal prompt (>_), circuit board tracings, and lanyard ID badge.
  */
 function createTorsoTexture() {
     const { canvas, ctx } = createPixelCanvas(64, 64);
 
-    // Dark slate cyan hoodie base
-    const cyanTones = ['#0f766e', '#115e59', '#134e4a', '#14b8a6'];
+    // Deep tech charcoal/black developer hoodie base
+    const darkTones = ['#18181b', '#121214', '#202024', '#09090b'];
     for (let x = 0; x < 64; x += 8) {
         for (let y = 0; y < 64; y += 8) {
-            ctx.fillStyle = cyanTones[Math.floor(Math.random() * (cyanTones.length - 1))];
+            ctx.fillStyle = darkTones[Math.floor(Math.random() * darkTones.length)];
             ctx.fillRect(x, y, 8, 8);
         }
     }
 
-    // Collar / neckline
+    // Collar / neckline / skin
     ctx.fillStyle = '#d79b76';
-    ctx.fillRect(24, 0, 16, 8);
-    ctx.fillStyle = '#0d9488';
-    ctx.fillRect(20, 8, 24, 4);
+    ctx.fillRect(24, 0, 16, 6);
+    ctx.fillStyle = '#3f3f46';
+    ctx.fillRect(22, 6, 20, 3);
 
-    // Center glowing emblem "AI"
+    // Subtle cyan circuit lines down both flanks
+    ctx.fillStyle = '#06b6d4';
+    ctx.fillRect(6, 12, 2, 28);
+    ctx.fillRect(8, 22, 4, 2);
+    ctx.fillRect(12, 20, 2, 6);
+    ctx.fillRect(56, 12, 2, 28);
+    ctx.fillRect(52, 26, 4, 2);
+    ctx.fillRect(50, 24, 2, 6);
+
+    // --- GITHUB INVERTOCAT PIXEL LOGO ON CHEST ---
+    // Outer circular Octocat badge background (crisp white)
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(22, 14, 20, 16);
+    ctx.fillRect(20, 16, 24, 12);
+    // Cat ears
+    ctx.fillRect(22, 11, 6, 4);
+    ctx.fillRect(36, 11, 6, 4);
+    ctx.fillRect(24, 9, 3, 3);
+    ctx.fillRect(37, 9, 3, 3);
+
+    // Invertocat inner face silhouette (dark hoodie inside)
+    ctx.fillStyle = '#18181b';
+    ctx.fillRect(26, 18, 12, 9);
+    ctx.fillRect(24, 20, 16, 6);
+    // Ear cutouts
+    ctx.fillRect(26, 15, 3, 4);
+    ctx.fillRect(35, 15, 3, 4);
+
+    // Whiskers / inner highlights
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(28, 22, 3, 2);
+    ctx.fillRect(33, 22, 3, 2);
+    ctx.fillRect(30, 24, 4, 1);
+
+    // --- TERMINAL PROMPT & GIT BRANCH UNDER LOGO ---
+    // Terminal green prompt: >_
+    ctx.fillStyle = '#22c55e';
+    ctx.fillRect(22, 34, 3, 1);
+    ctx.fillRect(24, 35, 2, 2);
+    ctx.fillRect(22, 37, 3, 1);
+    // Blinking cursor
+    ctx.fillRect(27, 37, 4, 1);
+
+    // Git branch icon in cyan
     ctx.fillStyle = '#38bdf8';
-    // 'A'
-    ctx.fillRect(24, 22, 6, 14);
-    ctx.fillRect(30, 22, 6, 4);
-    ctx.fillRect(30, 28, 6, 3);
-    ctx.fillRect(36, 22, 6, 14);
+    ctx.fillRect(34, 34, 2, 5);
+    ctx.fillRect(36, 36, 3, 1);
+    ctx.fillRect(39, 34, 2, 5);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(33, 33, 4, 2);
+    ctx.fillRect(38, 33, 4, 2);
+    ctx.fillRect(33, 38, 4, 2);
 
-    // Front hoodie pocket
-    ctx.fillStyle = '#042f2e';
-    ctx.fillRect(12, 42, 40, 16);
-    ctx.strokeStyle = '#2dd4bf';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(12, 42, 40, 16);
+    // --- FRONT HOODIE POCKET & DEV BADGE ---
+    ctx.fillStyle = '#09090b';
+    ctx.fillRect(14, 44, 36, 14);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(14, 44, 36, 14);
+
+    // Dev ID lanyard badge hanging into pocket
+    ctx.fillStyle = '#6366f1';
+    ctx.fillRect(18, 41, 10, 12);
+    ctx.fillStyle = '#e0e7ff';
+    ctx.fillRect(20, 43, 6, 4); // Photo
+    ctx.fillStyle = '#22c55e';
+    ctx.fillRect(20, 49, 6, 2); // "DEV" green bar
 
     // Belt
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#27272a';
     ctx.fillRect(0, 58, 64, 6);
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = '#38bdf8'; // Cyan buckle
     ctx.fillRect(28, 58, 8, 6);
 
     return canvasToTexture(canvas);
 }
 
 /**
- * Generate 32x32 Limb textures for Arms (sleeves + skin hands)
+ * Generate 32x64 Limb textures for Arms (Sleeves with tech symbols & smartwatch)
  */
-function createArmTexture() {
+function createArmTexture(isLeft = false) {
     const { canvas, ctx } = createPixelCanvas(32, 64);
 
-    // Sleeve
-    ctx.fillStyle = '#0f766e';
-    ctx.fillRect(0, 0, 32, 44);
-    ctx.fillStyle = '#14b8a6';
-    ctx.fillRect(0, 40, 32, 4);
+    // Dark charcoal hoodie sleeve
+    const sleeveTones = ['#18181b', '#121214', '#202024'];
+    for (let x = 0; x < 32; x += 8) {
+        for (let y = 0; y < 44; y += 8) {
+            ctx.fillStyle = sleeveTones[Math.floor(Math.random() * sleeveTones.length)];
+            ctx.fillRect(x, y, 8, 8);
+        }
+    }
+
+    if (isLeft) {
+        // Left arm: Git & Python tech badges
+        ctx.fillStyle = '#06b6d4';
+        ctx.fillRect(14, 4, 4, 36);
+        ctx.fillStyle = '#3b82f6';
+        ctx.fillRect(8, 10, 8, 4);
+        ctx.fillStyle = '#eab308';
+        ctx.fillRect(16, 14, 8, 4);
+    } else {
+        // Right arm: Smartwatch on wrist + circuit stripes
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(14, 8, 4, 32);
+        // Smartwatch band
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(0, 36, 32, 6);
+        // Glowing cyan watch face
+        ctx.fillStyle = '#06b6d4';
+        ctx.fillRect(8, 35, 16, 8);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(12, 38, 8, 2);
+    }
+
+    // Sleeve cuff
+    ctx.fillStyle = '#3f3f46';
+    ctx.fillRect(0, 42, 32, 3);
 
     // Skin hand
     ctx.fillStyle = '#d79b76';
-    ctx.fillRect(0, 44, 32, 20);
+    ctx.fillRect(0, 45, 32, 19);
     ctx.fillStyle = '#c88b66';
-    ctx.fillRect(4, 52, 10, 8);
+    ctx.fillRect(4, 52, 8, 7);
+
+    return canvasToTexture(canvas);
+}
+
+/**
+ * Generate 64x64 Tactical Laptop Backpack texture with nylon grid, MOLLE webbing & cyan accents
+ */
+function createBackpackTexture() {
+    const { canvas, ctx } = createPixelCanvas(64, 64);
+
+    // Deep tech ballistic nylon dark slate
+    const nylonTones = ['#0f172a', '#1e293b', '#0b1120', '#172554'];
+    for (let x = 0; x < 64; x += 8) {
+        for (let y = 0; y < 64; y += 8) {
+            ctx.fillStyle = nylonTones[Math.floor(Math.random() * nylonTones.length)];
+            ctx.fillRect(x, y, 8, 8);
+        }
+    }
+
+    // Main top laptop zipper in neon cyan
+    ctx.fillStyle = '#06b6d4';
+    ctx.fillRect(8, 8, 48, 4);
+    ctx.fillStyle = '#e2e8f0'; // Silver zipper pulls
+    ctx.fillRect(28, 6, 8, 6);
+
+    // MOLLE / webbing loops across the center
+    ctx.fillStyle = '#334155';
+    ctx.fillRect(12, 24, 40, 6);
+    ctx.fillRect(12, 38, 40, 6);
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(16, 24, 4, 6);
+    ctx.fillRect(28, 24, 4, 6);
+    ctx.fillRect(40, 24, 4, 6);
+    ctx.fillRect(16, 38, 4, 6);
+    ctx.fillRect(28, 38, 4, 6);
+    ctx.fillRect(40, 38, 4, 6);
+
+    // Reflective safety tape
+    ctx.fillStyle = '#38bdf8';
+    ctx.fillRect(14, 50, 36, 4);
+
+    return canvasToTexture(canvas);
+}
+
+/**
+ * Generate 64x64 Laptop texture with sleek space-gray aluminum and glowing GitHub logo on lid
+ */
+function createLaptopTexture() {
+    const { canvas, ctx } = createPixelCanvas(64, 64);
+
+    // Brushed space-gray aluminum lid
+    const grayTones = ['#64748b', '#475569', '#52627a', '#3f4e66'];
+    for (let x = 0; x < 64; x += 8) {
+        for (let y = 0; y < 64; y += 8) {
+            ctx.fillStyle = grayTones[Math.floor(Math.random() * grayTones.length)];
+            ctx.fillRect(x, y, 8, 8);
+        }
+    }
+
+    // Outer dark bezel/frame
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(2, 2, 60, 60);
+
+    // Glowing cyan GitHub Octocat logo on the laptop lid!
+    ctx.fillStyle = '#38bdf8';
+    // Head circle
+    ctx.fillRect(24, 20, 16, 14);
+    ctx.fillRect(22, 22, 20, 10);
+    // Cat ears
+    ctx.fillRect(24, 16, 5, 4);
+    ctx.fillRect(35, 16, 5, 4);
+    // Inner logo cutout
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(28, 24, 8, 6);
+    // Glowing center
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(30, 26, 4, 2);
+
+    // "DEV / AI" branding on bottom edge
+    ctx.fillStyle = '#22c55e';
+    ctx.fillRect(22, 48, 20, 3);
 
     return canvasToTexture(canvas);
 }
@@ -456,26 +622,105 @@ export default function MinecraftGuide3D({ onStartTour }) {
         // Textures
         const headTex = createHeadTexture();
         const torsoTex = createTorsoTexture();
-        const armTex = createArmTexture();
+        const leftArmTex = createArmTexture(true);
+        const rightArmTex = createArmTexture(false);
         const legTex = createLegTexture();
+        const backpackTex = createBackpackTexture();
+        const laptopTex = createLaptopTexture();
 
         // Materials
         const headMat = new THREE.MeshLambertMaterial({ map: headTex });
         const torsoMat = new THREE.MeshLambertMaterial({ map: torsoTex });
-        const armMat = new THREE.MeshLambertMaterial({ map: armTex });
+        const leftArmMat = new THREE.MeshLambertMaterial({ map: leftArmTex });
+        const rightArmMat = new THREE.MeshLambertMaterial({ map: rightArmTex });
         const legMat = new THREE.MeshLambertMaterial({ map: legTex });
+        const backpackMat = new THREE.MeshLambertMaterial({ map: backpackTex });
+        const laptopMat = new THREE.MeshLambertMaterial({ map: laptopTex });
 
-        // Character Root Group
+        // Character Root Group (hero 3/4 angle showing GitHub logo & Laptop backpack)
         const characterGroup = new THREE.Group();
         characterGroup.position.set(0, -0.2, 0);
+        characterGroup.rotation.y = -0.22;
         scene.add(characterGroup);
         characterGroupRef.current = characterGroup;
 
-        // 1. Torso (1.0 wide, 1.4 high, 0.6 deep)
+        // 1. Torso (1.0 wide, 1.35 high, 0.55 deep)
         const torsoGeo = new THREE.BoxGeometry(1.0, 1.35, 0.55);
         const torsoMesh = new THREE.Mesh(torsoGeo, torsoMat);
         torsoMesh.position.y = 0.68;
         characterGroup.add(torsoMesh);
+
+        // =====================================================================
+        // 3D LAPTOP BACKPACK ("labtop backbag") RIGGING
+        // =====================================================================
+        const backpackGroup = new THREE.Group();
+        backpackGroup.position.set(0, 0.02, -0.38); // Centered on back of torso
+        torsoMesh.add(backpackGroup);
+
+        // A. Main tactical backpack body
+        const backpackBodyGeo = new THREE.BoxGeometry(0.86, 1.15, 0.38);
+        const backpackBodyMesh = new THREE.Mesh(backpackBodyGeo, backpackMat);
+        backpackGroup.add(backpackBodyMesh);
+
+        // B. Laptop peeking out of the top compartment slot!
+        const laptopGeo = new THREE.BoxGeometry(0.72, 0.52, 0.08);
+        const laptopMesh = new THREE.Mesh(laptopGeo, laptopMat);
+        laptopMesh.position.set(0, 0.62, -0.06);
+        laptopMesh.rotation.x = -0.16; // Tilted back resting in sleeve
+        backpackGroup.add(laptopMesh);
+
+        // C. Illuminated Green Power LED on laptop corner
+        const ledGeo = new THREE.BoxGeometry(0.06, 0.06, 0.06);
+        const ledMat = new THREE.MeshBasicMaterial({ color: 0x22c55e });
+        const ledMesh = new THREE.Mesh(ledGeo, ledMat);
+        ledMesh.position.set(0.28, 0.86, -0.10);
+        backpackGroup.add(ledMesh);
+
+        // D. Lower utility pocket with cyan zipper
+        const frontPocketGeo = new THREE.BoxGeometry(0.68, 0.46, 0.16);
+        const frontPocketMat = new THREE.MeshLambertMaterial({ color: 0x0f172a });
+        const frontPocketMesh = new THREE.Mesh(frontPocketGeo, frontPocketMat);
+        frontPocketMesh.position.set(0, -0.25, -0.24);
+        backpackGroup.add(frontPocketMesh);
+
+        // Cyan zipper teeth on pocket
+        const zipGeo = new THREE.BoxGeometry(0.62, 0.04, 0.02);
+        const zipMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4 });
+        const zipMesh = new THREE.Mesh(zipGeo, zipMat);
+        zipMesh.position.set(0, 0.08, -0.09);
+        frontPocketMesh.add(zipMesh);
+
+        // E. Water bottle / thermos flask in side pocket
+        const bottleGeo = new THREE.BoxGeometry(0.20, 0.52, 0.20);
+        const bottleMat = new THREE.MeshLambertMaterial({ color: 0x38bdf8 });
+        const bottleMesh = new THREE.Mesh(bottleGeo, bottleMat);
+        bottleMesh.position.set(-0.48, -0.10, 0.02);
+        backpackGroup.add(bottleMesh);
+
+        const bottleCapGeo = new THREE.BoxGeometry(0.12, 0.10, 0.12);
+        const bottleCapMat = new THREE.MeshLambertMaterial({ color: 0x0f172a });
+        const bottleCap = new THREE.Mesh(bottleCapGeo, bottleCapMat);
+        bottleCap.position.y = 0.30;
+        bottleMesh.add(bottleCap);
+
+        // F. 3D Shoulder Straps wrapping over shoulders to the front chest
+        const strapMat = new THREE.MeshLambertMaterial({ color: 0x1e293b });
+        const strapGeo = new THREE.BoxGeometry(0.18, 1.34, 0.12);
+
+        const leftStrap = new THREE.Mesh(strapGeo, strapMat);
+        leftStrap.position.set(-0.32, 0.02, 0.28);
+        torsoMesh.add(leftStrap);
+
+        const rightStrap = new THREE.Mesh(strapGeo, strapMat);
+        rightStrap.position.set(0.32, 0.02, 0.28);
+        torsoMesh.add(rightStrap);
+
+        // Cyan chest buckle connector
+        const chestClipGeo = new THREE.BoxGeometry(0.44, 0.08, 0.08);
+        const chestClipMat = new THREE.MeshLambertMaterial({ color: 0x06b6d4 });
+        const chestClip = new THREE.Mesh(chestClipGeo, chestClipMat);
+        chestClip.position.set(0, 0.15, 0.32);
+        torsoMesh.add(chestClip);
 
         // 2. Head Group & Mesh (Pivots at neck)
         const headGroup = new THREE.Group();
@@ -508,7 +753,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
         leftArmGroupRef.current = leftArmGroup;
 
         const armGeo = new THREE.BoxGeometry(0.44, 1.3, 0.44);
-        const leftArmMesh = new THREE.Mesh(armGeo, armMat);
+        const leftArmMesh = new THREE.Mesh(armGeo, leftArmMat);
         leftArmMesh.position.set(0, -0.58, 0);
         leftArmGroup.add(leftArmMesh);
 
@@ -518,7 +763,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
         characterGroup.add(rightArmGroup);
         rightArmGroupRef.current = rightArmGroup;
 
-        const rightArmMesh = new THREE.Mesh(armGeo, armMat);
+        const rightArmMesh = new THREE.Mesh(armGeo, rightArmMat);
         rightArmMesh.position.set(0, -0.58, 0);
         rightArmGroup.add(rightArmMesh);
 
@@ -683,14 +928,19 @@ export default function MinecraftGuide3D({ onStartTour }) {
             renderer.dispose();
             headTex.dispose();
             torsoTex.dispose();
-            armTex.dispose();
+            leftArmTex.dispose();
+            rightArmTex.dispose();
             legTex.dispose();
+            backpackTex.dispose();
+            laptopTex.dispose();
         };
     }, []);
 
     // Quick prompt buttons
     const QUICK_PROMPTS = [
         { label: "🧭 Tour Portfolio", action: handleLaunchTour },
+        { label: "💻 Laptop & Tech Stack", text: "What tech stack, tools, and laptop environment do you use?" },
+        { label: "🐙 GitHub Projects", text: "Tell me about Omar's GitHub repositories and open-source projects" },
         { label: "🏢 PlayerHub (Dubai)", text: "What does Omar do at PlayerHub.GG in Dubai?" },
         { label: "🏥 CliniSoft Healthcare", text: "Tell me about Omar's healthcare AI work at CliniSoft" },
         { label: "🏛️ HistoryVerse (A+)", text: "What is HistoryVerse and what technologies did Omar use?" },

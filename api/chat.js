@@ -119,6 +119,18 @@ Guidelines:
         });
     }
 
+    // Laptop Backpack, Tech Tools & GitHub
+    if (/laptop|backbag|backpack|bag|شنطة|لابتوب|كمبيوتر|جيت هاب|github|tools|stack/i.test(normalized)) {
+        if (isArabic) {
+            return res.status(200).json({
+                Answer: "💻 **لابتوب وحقيبة المهندس عمر جاد:**\nفي حقيبتي التكتيكية ثلاثية الأبعاد (Laptop Backpack) والممهورة بشعار GitHub:\n• **بيئة العمل المتطورة:** لابتوب عالي الأداء مع بيئة Linux/Mac، وحاويات Docker و Kubernetes محلية للتطوير واختبار النماذج.\n• **حزمة أدوات AI & MLOps:** مكتبات PyTorch و Transformers و ChromaDB و Langfuse و MLflow.\n• **مستودعات GitHub:** يمكنك استكشاف مشاريعه مفتوحة المصدر وكود HistoryVerse و SDXL LoRA عبر: [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o) 🚀"
+            });
+        }
+        return res.status(200).json({
+            Answer: "💻 **Omar Gad's Developer Laptop & Backpack:**\nInside my 3D Minecraft tactical backpack (sporting the glowing GitHub logo):\n• **Development Environment:** High-performance Linux/Mac workstation with local Docker containers, Kubernetes clusters, and VS Code configured for high-velocity AI engineering.\n• **AI & MLOps Stack:** PyTorch, Hugging Face Transformers, ChromaDB RAG vectorstores, Langfuse tracing, and MLflow.\n• **GitHub Repositories:** Explore Omar's open-source projects including HistoryVerse, SDXL LoRA fine-tuning, and CI/CD pipelines at [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o) 🚀"
+        });
+    }
+
     // PlayerHub.GG
     if (/playerhub|بلاير|دبي|dubai|scraping|ha\s*proxy|mariadb/i.test(normalized)) {
         if (isArabic) {
