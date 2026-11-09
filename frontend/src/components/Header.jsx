@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { ChevronDown, Infinity, Brain, Menu, X, Sparkles } from 'lucide-react';
+import { ChevronDown, Infinity, Brain, Menu, X } from 'lucide-react';
 import { MODES, modeInfo } from '../data/data';
 import { getOptimizedImagePath } from '../utils/imageOptimization';
 
@@ -133,9 +133,30 @@ export default function Header({
                         ))}
                     </div>
 
-                    {/* Desktop Right: View as & Discovery Button */}
+                    {/* Desktop Right: Tour Guide, Discovery, and View as (last on right) */}
                     <div className="hidden lg:flex items-center gap-4">
-                        {/* View as Dropdown */}
+                        {/* Unified Tour Guide button (no icons, original clean design) */}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                if (window.startPortfolioTour) window.startPortfolioTour();
+                                window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: true } }));
+                            }}
+                            className={`px-3 py-2 border ${borderAccent} rounded-lg text-sm font-medium ${accentColor} glow-btn transition-all duration-300`}
+                            title="Start Guided Interactive Tour"
+                        >
+                            Tour Guide
+                        </button>
+
+                        {/* Book a Discovery Call */}
+                        <button
+                            onClick={() => scrollToSection('discovery')}
+                            className={`px-4 py-2 border ${borderAccent} rounded-lg text-sm font-medium ${accentColor} glow-btn`}
+                        >
+                            Book a Discovery Call
+                        </button>
+
+                        {/* View as Dropdown - Last element at the right corner */}
                         <div className="relative">
                             <button
                                 onClick={() => setShowModeDropdown(!showModeDropdown)}
@@ -145,12 +166,12 @@ export default function Header({
                                 aria-haspopup="listbox"
                                 aria-expanded={showModeDropdown}
                             >
-                                View as
-                                <ChevronDown size={14} className={`text-gray-600 transition-transform duration-200 ${showModeDropdown ? 'rotate-180' : ''}`} />
+                                <span>View as</span>
+                                <ChevronDown size={14} className={`text-gray-400 transition-transform duration-200 ${showModeDropdown ? 'rotate-180' : ''}`} />
                             </button>
 
                             {showModeDropdown && (
-                                <div className="absolute top-full right-0 mt-2 bg-gray-900/95 backdrop-blur-md rounded-xl p-2 border border-gray-700 shadow-xl min-w-[160px]" role="listbox">
+                                <div className="absolute top-full right-0 mt-2 bg-gray-900/95 backdrop-blur-md rounded-xl p-2 border border-gray-700 shadow-xl min-w-[160px] z-50" role="listbox">
                                     {Object.entries(modeInfo).map(([mode, info]) => (
                                         <button
                                             key={mode}
@@ -178,38 +199,6 @@ export default function Header({
                                 </div>
                             )}
                         </div>
-
-                        {/* Interactive Tour Guide button */}
-                        <button
-                            type="button"
-                            onClick={() => window.startPortfolioTour && window.startPortfolioTour()}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/10 hover:bg-cyan-500/20 ${accentColor} border border-cyan-500/30 transition-all hover:scale-105 active:scale-95`}
-                            title="Start Guided Interactive Tour"
-                        >
-                            <Sparkles size={14} className={accentColor} />
-                            <span>Tour Guide</span>
-                        </button>
-
-                        {/* 3D Minecraft Guide button */}
-                        <button
-                            type="button"
-                            onClick={() => {
-                                window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide'));
-                            }}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all hover:scale-105 active:scale-95 font-mono"
-                            title="Open 3D Minecraft Guide & LLM Companion"
-                        >
-                            <span>⛏️</span>
-                            <span>3D Guide</span>
-                        </button>
-
-                        {/* Book a Discovery Call */}
-                        <button
-                            onClick={() => scrollToSection('discovery')}
-                            className={`px-4 py-2 border ${borderAccent} rounded-lg text-sm font-medium ${accentColor} glow-btn`}
-                        >
-                            Book a Discovery Call
-                        </button>
                     </div>
 
                     {/* Mobile: Hamburger Menu Button */}
@@ -281,22 +270,11 @@ export default function Header({
                             onClick={() => {
                                 setMobileMenuOpen(false);
                                 if (window.startPortfolioTour) window.startPortfolioTour();
+                                window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: true } }));
                             }}
-                            className={`w-full py-2.5 rounded-lg border border-cyan-500/40 text-cyan-300 bg-cyan-500/10 font-semibold text-sm flex items-center justify-center gap-2 active:scale-95`}
+                            className={`w-full py-2.5 rounded-lg border ${borderAccent} text-sm font-medium ${accentColor} glow-btn text-center active:scale-95`}
                         >
-                            <Sparkles size={16} />
-                            <span>Start Guided Tour</span>
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setMobileMenuOpen(false);
-                                window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide'));
-                            }}
-                            className={`w-full py-2.5 rounded-lg border border-emerald-500/40 text-emerald-300 bg-emerald-500/10 font-semibold text-sm flex items-center justify-center gap-2 active:scale-95 font-mono`}
-                        >
-                            <span>⛏️</span>
-                            <span>3D Minecraft Guide</span>
+                            Tour Guide
                         </button>
                         <button
                             onClick={() => handleNavClick('discovery')}
