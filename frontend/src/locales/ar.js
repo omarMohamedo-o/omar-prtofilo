@@ -18,6 +18,9 @@ export const ar = {
     mlnlpMode: "الذكاء الاصطناعي وتعلم الآلة",
     switchLanguageTitle: "Switch to English",
     languageToggleLabel: "English",
+    languageSelect: "اللغة",
+    langEnglish: "English",
+    langArabic: "العربية",
 
     // Hero & Info Section
     brandBadgeText: "محفظة عمر محمد",

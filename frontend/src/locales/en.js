@@ -18,6 +18,9 @@ export const en = {
     mlnlpMode: "AI & ML",
     switchLanguageTitle: "تبديل إلى اللغة العربية",
     languageToggleLabel: "العربية",
+    languageSelect: "Language",
+    langEnglish: "English",
+    langArabic: "العربية",
 
     // Hero & Info Section
     brandBadgeText: "Omarmohamed-portfolio",

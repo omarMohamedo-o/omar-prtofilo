@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { ChevronDown, Infinity, Brain, Menu, X, Globe } from 'lucide-react';
+import { ChevronDown, Infinity, Brain, Menu, X, Globe, Check } from 'lucide-react';
 import { MODES, modeInfo } from '../data/data';
 import { getOptimizedImagePath } from '../utils/imageOptimization';
 import { useLanguage } from '../context/LanguageContext';
@@ -80,7 +80,30 @@ export default function Header({
         scrollToSection(section);
     };
 
-    const { language, toggleLanguage, t, isRTL } = useLanguage();
+    const { language, setLanguage, toggleLanguage, t, isRTL } = useLanguage();
+    const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+    const langDropdownRef = useRef(null);
+
+    // Close language dropdown on outside click or Escape key
+    useEffect(() => {
+        if (!langDropdownOpen) return;
+        const handleClickOutside = (event) => {
+            if (langDropdownRef.current && !langDropdownRef.current.contains(event.target)) {
+                setLangDropdownOpen(false);
+            }
+        };
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                setLangDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [langDropdownOpen]);
 
     const accentColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
     const hoverAccent = themeColor === 'purple' ? 'hover:text-purple-400' : 'hover:text-cyan-400';
@@ -145,20 +168,8 @@ export default function Header({
                         ))}
                     </div>
 
-                    {/* Desktop Right: Language Toggle, Tour Guide, Discovery, and View as */}
+                    {/* Desktop Right: Tour Guide, Discovery, and Language Dropdown (Far Right) */}
                     <div className="hidden lg:flex items-center gap-3">
-                        {/* Language Toggle Button */}
-                        <button
-                            type="button"
-                            onClick={toggleLanguage}
-                            className={`flex items-center gap-1.5 px-3 py-2 border ${borderAccent} rounded-lg text-sm font-semibold ${accentColor} glow-btn transition-all duration-300 hover:scale-105`}
-                            title={t('switchLanguageTitle')}
-                            aria-label={t('switchLanguageTitle')}
-                        >
-                            <Globe size={15} />
-                            <span>{t('languageToggleLabel')}</span>
-                        </button>
-
                         {/* Unified Tour Guide button (no icons, original clean design) */}
                         <button
                             type="button"
@@ -179,6 +190,73 @@ export default function Header({
                         >
                             {t('bookDiscoveryCall')}
                         </button>
+
+                        {/* Language Dropdown Menu (Far Right) */}
+                        <div className="relative" ref={langDropdownRef}>
+                            <button
+                                type="button"
+                                onClick={() => setLangDropdownOpen((prev) => !prev)}
+                                className={`flex items-center gap-2 px-3 py-2 border ${borderAccent} rounded-lg text-sm font-semibold ${accentColor} glow-btn transition-all duration-300 hover:scale-105`}
+                                title={t('languageSelect')}
+                                aria-label={t('languageSelect')}
+                                aria-expanded={langDropdownOpen}
+                                aria-haspopup="listbox"
+                            >
+                                <Globe size={15} />
+                                <span>{language === 'ar' ? 'العربية' : 'English'}</span>
+                                <ChevronDown size={14} className={`transition-transform duration-200 ${langDropdownOpen ? 'rotate-180' : ''}`} />
+                            </button>
+
+                            {langDropdownOpen && (
+                                <div
+                                    className={`absolute ${isRTL ? 'left-0' : 'right-0'} mt-2 w-36 bg-slate-900/95 backdrop-blur-xl border ${borderAccent} rounded-xl shadow-2xl py-1.5 z-50 overflow-hidden`}
+                                    role="listbox"
+                                    aria-label={t('languageSelect')}
+                                >
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setLanguage('en');
+                                            setLangDropdownOpen(false);
+                                        }}
+                                        className={`w-full flex items-center justify-between px-3.5 py-2 text-sm transition-colors duration-150 ${
+                                            language === 'en'
+                                                ? `${accentColor} font-semibold bg-white/5`
+                                                : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                                        }`}
+                                        role="option"
+                                        aria-selected={language === 'en'}
+                                    >
+                                        <span className="flex items-center gap-2">
+                                            <span className="text-[10px] font-mono px-1 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">EN</span>
+                                            <span>{t('langEnglish')}</span>
+                                        </span>
+                                        {language === 'en' && <Check size={14} className={accentColor} />}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setLanguage('ar');
+                                            setLangDropdownOpen(false);
+                                        }}
+                                        className={`w-full flex items-center justify-between px-3.5 py-2 text-sm transition-colors duration-150 ${
+                                            language === 'ar'
+                                                ? `${accentColor} font-semibold bg-white/5`
+                                                : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                                        }`}
+                                        role="option"
+                                        aria-selected={language === 'ar'}
+                                    >
+                                        <span className="flex items-center gap-2">
+                                            <span className="text-[10px] font-mono px-1 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">AR</span>
+                                            <span>{t('langArabic')}</span>
+                                        </span>
+                                        {language === 'ar' && <Check size={14} className={accentColor} />}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Mobile: Hamburger Menu Button */}
@@ -209,20 +287,42 @@ export default function Header({
                     </div>
 
                     {/* Language Switcher in Mobile Drawer */}
-                    <div className="px-4 xs:px-6 py-2 border-b border-gray-800/80">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                toggleLanguage();
-                                setMobileMenuOpen(false);
-                            }}
-                            className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border ${borderAccent} text-sm font-semibold ${accentColor} glow-btn`}
-                            title={t('switchLanguageTitle')}
-                            aria-label={t('switchLanguageTitle')}
-                        >
-                            <Globe size={18} />
-                            <span>{t('switchLanguageTitle')}</span>
-                        </button>
+                    <div className="px-4 xs:px-6 py-3 border-b border-gray-800/80">
+                        <p className="text-gray-500 text-xs xs:text-sm mb-2">{t('languageSelect')}:</p>
+                        <div className="grid grid-cols-2 gap-2">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setLanguage('en');
+                                    setMobileMenuOpen(false);
+                                }}
+                                className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg border text-xs xs:text-sm font-semibold transition-all duration-200 ${
+                                    language === 'en'
+                                        ? `${borderAccent} ${accentColor} bg-white/5`
+                                        : 'border-gray-800 text-gray-400 hover:text-white'
+                                }`}
+                            >
+                                <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-slate-800 text-slate-300 border border-slate-700/60">EN</span>
+                                <span>{t('langEnglish')}</span>
+                                {language === 'en' && <Check size={14} className={accentColor} />}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setLanguage('ar');
+                                    setMobileMenuOpen(false);
+                                }}
+                                className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg border text-xs xs:text-sm font-semibold transition-all duration-200 ${
+                                    language === 'ar'
+                                        ? `${borderAccent} ${accentColor} bg-white/5`
+                                        : 'border-gray-800 text-gray-400 hover:text-white'
+                                }`}
+                            >
+                                <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-slate-800 text-slate-300 border border-slate-700/60">AR</span>
+                                <span>{t('langArabic')}</span>
+                                {language === 'ar' && <Check size={14} className={accentColor} />}
+                            </button>
+                        </div>
                     </div>
 
                     {/* Navigation Links - touch-friendly spacing */}
