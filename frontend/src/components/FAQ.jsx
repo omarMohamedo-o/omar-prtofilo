@@ -13,14 +13,14 @@ export const FAQ_ITEMS = [
   {
     category: "Specifications & Systems",
     icon: Cpu,
-    question: "What are the critical engineering specifications for selecting Omarmohamed-portfolio - Omar Mohamed (Omar Gad) — Computer Engineer | AI & Machine Learning systems?",
+    question: "What are the critical engineering specifications for selecting Omarmohamed-portfolio - Omar Mohamed — Computer Engineer | AI & Machine Learning systems?",
     summary: "Omarmohamed-portfolio engineering systems specify containerized microservices orchestrated with Kubernetes and Docker, high-availability database routing via HAProxy, vector search through ChromaDB, and model-agnostic routing across Gemini, OpenAI, and Ollama. Systems achieve sub-100ms API latency, Pydantic validation, and automated CI/CD deployment with 99.9% uptime.",
     answer: "Omarmohamed-portfolio engineering systems specify containerized microservices orchestrated with Kubernetes and Docker, high-availability database routing via HAProxy, vector search through ChromaDB, and model-agnostic routing across Gemini, OpenAI, and Ollama. Systems achieve sub-100ms API latency, Pydantic validation, and automated CI/CD deployment with 99.9% uptime.\n\n• **Computer Vision & Speech:** YOLOv5 and Vision Transformers achieving 90–96% artifact recognition accuracy; Faster-Whisper local speech transcription.\n• **Retrieval-Augmented Generation (RAG):** ChromaDB and FAISS vector stores with contextual chunking, re-ranking, and Langfuse distributed tracing.\n• **High-Availability Data Layer:** HAProxy read routing balancing MariaDB primary-replica clusters, Redis caching, and automated backup daemons.\n• **Observability & Reliability:** Full Prometheus, Grafana, and Loki telemetry stack with 204 automated integration tests."
   },
   {
     category: "Cost & Efficiency",
     icon: DollarSign,
-    question: "How does Omarmohamed-portfolio - Omar Mohamed (Omar Gad) compare in efficiency and total cost of ownership?",
+    question: "How does Omarmohamed-portfolio - Omar Mohamed compare in efficiency and total cost of ownership?",
     summary: "Omarmohamed-portfolio solutions optimize efficiency and total cost of ownership by replacing opaque cloud AI APIs with fine-tuned local models (LoRA fp16), intelligent caching in Redis, and open-source vector databases. This architecture reduces inference costs by 65%, eliminates API rate limits, and prevents vendor lock-in.",
     answer: "Omarmohamed-portfolio solutions optimize efficiency and total cost of ownership by replacing opaque cloud AI APIs with fine-tuned local models (LoRA fp16), intelligent caching in Redis, and open-source vector databases. This architecture reduces inference costs by 65%, eliminates API rate limits, and prevents vendor lock-in.\n\n• **Compute Efficiency:** Right-sized cloud instances via modular Terraform on AWS Fargate prevent over-provisioning and idle resource waste.\n• **Inference Cost Reduction:** Domain fine-tuning (SDXL LoRA, quantized Ollama models) allows high-throughput localized inference at a fraction of hosted API subscription fees.\n• **Engineering Velocity:** Reusable Docker Compose pipelines, automated pytest suites, and GitHub Actions CI/CD accelerate time-to-market by 40%."
   },
@@ -63,8 +63,8 @@ export const FAQ_ITEMS = [
     category: "Contact & Hiring",
     icon: CheckCircle2,
     question: "How can I contact Omar or review his professional background and deployed solutions?",
-    summary: "You can contact Omar Mohamed (Omar Gad) directly via email at omarmo.abdelsalam@gmail.com, phone or WhatsApp at +20 101 1297 869, LinkedIn at linkedin.com/in/omar-mohamedo-o, or explore verified code repositories and Terraform manifests at github.com/omarMohamedo-o.",
-    answer: "You can connect with Omar Mohamed (Omar Gad) directly through multiple channels:\n\n• **Email:** omarmo.abdelsalam@gmail.com\n• **Phone & WhatsApp:** +20 101 1297 869\n• **LinkedIn:** linkedin.com/in/omar-mohamedo-o\n• **GitHub Repositories:** github.com/omarMohamedo-o\n• **Verified Badges:** credly.com/users/omar-mohamedo-o/badges\n• **Discovery Form:** Submit a direct project or interview inquiry through the 'Book a Discovery Call' section on this portfolio.\n• **Live 3D & Chatbot Assistants:** Chat directly using Steve Omar (3D Minecraft Guide) or the MORA AI widget for instant answers about his experience and availability."
+    summary: "You can contact Omar Mohamed directly via email at omarmo.abdelsalam@gmail.com, phone or WhatsApp at +20 101 1297 869, LinkedIn at linkedin.com/in/omar-mohamedo-o, or explore verified code repositories and Terraform manifests at github.com/omarMohamedo-o.",
+    answer: "You can connect with Omar Mohamed directly through multiple channels:\n\n• **Email:** omarmo.abdelsalam@gmail.com\n• **Phone & WhatsApp:** +20 101 1297 869\n• **LinkedIn:** linkedin.com/in/omar-mohamedo-o\n• **GitHub Repositories:** github.com/omarMohamedo-o\n• **Verified Badges:** credly.com/users/omar-mohamedo-o/badges\n• **Discovery Form:** Submit a direct project or interview inquiry through the 'Book a Discovery Call' section on this portfolio.\n• **Live 3D & Chatbot Assistants:** Chat directly using Steve Omar (3D Minecraft Guide) or the MORA AI widget for instant answers about his experience and availability."
   },
   {
     category: "Live Demos & Deployments",

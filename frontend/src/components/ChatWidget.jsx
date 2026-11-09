@@ -52,7 +52,7 @@ export default function ChatWidget() {
         {
             id: 1,
             from: 'bot',
-            text: "👋 Hi! I'm **MORA**, Omar Gad's personal AI Assistant.\n\nAsk me anything about Omar's live production work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse** (A+) project, his **MLOps & LLM skills**, education, or how to contact him!"
+            text: "👋 Hi! I'm **MORA**, Omar Mohamed's personal AI Assistant.\n\nAsk me anything about Omar's live production work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse** (A+) project, his **MLOps & LLM skills**, education, or how to contact him!"
         }
     ]);
     const [isLoading, setIsLoading] = useState(false);
@@ -150,7 +150,7 @@ export default function ChatWidget() {
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
                 from: 'bot',
-                text: "I'm MORA, Omar Gad's AI Assistant. Feel free to ask about his projects, skills, or experience!"
+                text: "I'm MORA, Omar Mohamed's AI Assistant. Feel free to ask about his projects, skills, or experience!"
             }]);
             setLastMessageSender('bot');
         } finally {

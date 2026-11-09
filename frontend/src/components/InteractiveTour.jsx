@@ -5,10 +5,10 @@ import { Compass, Sparkles, ChevronRight, ChevronLeft, X, CheckCircle, Bot, Arro
 const TOUR_STEPS = [
   {
     targetId: 'home',
-    title: 'Welcome to Omar Gad\'s Portfolio',
+    title: 'Welcome to Omar Mohamed\'s Portfolio',
     badge: 'Overview',
     description: 'Omar is a Computer Engineer & M.Sc. candidate (CGPA 4.0) specializing in AI, LLMs & RAG, and MLOps & Cloud. You can switch between "DevOps & MLOps" and "AI & ML" modes anytime to tailor the view!',
-    itemHighlights: ['Omar Gad • Computer Engineer', 'M.Sc. Candidate (CGPA 4.0)', 'DevOps/MLOps & AI/ML Mode Switcher']
+    itemHighlights: ['Omar Mohamed • Computer Engineer', 'M.Sc. Candidate (CGPA 4.0)', 'DevOps/MLOps & AI/ML Mode Switcher']
   },
   {
     targetId: 'about',
@@ -267,7 +267,7 @@ export default function InteractiveTour({ onTourToggle }) {
                     <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
                       Interactive Guide
                     </span>
-                    <span className="text-xs text-gray-400">Omar Gad Portfolio</span>
+                    <span className="text-xs text-gray-400">Omar Mohamed Portfolio</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
                     Welcome! Take a Quick Tour?
@@ -276,7 +276,7 @@ export default function InteractiveTour({ onTourToggle }) {
               </div>
 
               <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-6">
-                I'm <strong className="text-cyan-300 font-semibold">MORA</strong>, your portfolio AI guide. Would you like a brief interactive walkthrough of Omar Gad's background, production AI systems (<span className="text-purple-300 font-medium">PlayerHub</span>, <span className="text-cyan-300 font-medium">CliniSoft</span>, <span className="text-amber-300 font-medium">HistoryVerse</span>), skills, and experience?
+                I'm <strong className="text-cyan-300 font-semibold">MORA</strong>, your portfolio AI guide. Would you like a brief interactive walkthrough of Omar Mohamed's background, production AI systems (<span className="text-purple-300 font-medium">PlayerHub</span>, <span className="text-cyan-300 font-medium">CliniSoft</span>, <span className="text-amber-300 font-medium">HistoryVerse</span>), skills, and experience?
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-end gap-3">

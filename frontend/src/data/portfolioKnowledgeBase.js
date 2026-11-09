@@ -6,7 +6,7 @@
  * - Domain scope guardrails & refusal handling
  * - Multi-turn conversational memory & entity resolution
  * - Grounded verified citations & performance metrics
- * - Persona: MORA (Omar Gad's Autonomous Technical Representative)
+ * - Persona: MORA (Omar Mohamed's Autonomous Technical Representative)
  */
 
 // =============================================================================
@@ -78,11 +78,11 @@ export function checkOutOfDomain(query = '') {
     for (const pattern of OUT_OF_DOMAIN_PATTERNS) {
         if (pattern.test(query)) {
             if (isArabic) {
-                return `أنا **MORA**، المساعد التقني الخاص بالمهندس **عمر جاد**.
+                return `أنا **MORA**، المساعد التقني الخاص بالمهندس **عمر محمد**.
 أنا متخصص فقط في كل ما يتعلق بمسيرة عمر الهندسية، مشاريعه المتقدمة في الذكاء الاصطناعي (مثل **HistoryVerse** و**SDXL LoRA**)، خبراته في **PlayerHub.GG** و**CliniSoft**، مهاراته في السحابة وMLOps، وطرق التواصل والتوظيف.
 يسعدني جداً أن تسألني عن أي من هذه المجالات! 🚀`;
             }
-            return `I'm **MORA**, the technical assistant dedicated to **Omar Gad**'s engineering portfolio.
+            return `I'm **MORA**, the technical assistant dedicated to **Omar Mohamed**'s engineering portfolio.
 My focus is strictly on Omar's professional work, including his live systems at **PlayerHub.GG** and **CliniSoft**, his **HistoryVerse** (A+) AI/AR platform, his MLOps/LLM stack, and collaboration inquiries.
 Feel free to ask me anything about his projects, skills, or experience! 🚀`;
         }
@@ -96,7 +96,7 @@ Feel free to ask me anything about his projects, skills, or experience! 🚀`;
 
 export const PORTFOLIO_KNOWLEDGE = {
     profile: {
-        name: "Omar Gad",
+        name: "Omar Mohamed",
         fullName: "Omar Mohamed Abdelsalam",
         title: "Computer Engineer | AI & Machine Learning | LLMs & RAG | MLOps & Cloud",
         location: "Alexandria, Egypt",
@@ -386,8 +386,8 @@ export function queryLocalKnowledge(userQuery = '', conversationHistory = []) {
     // Natural Conversational Greetings (like ChatGPT)
     if (/^(hi|hello|hey|yo|howdy|sup|good\s*morning|good\s*evening|greetings|ازيك|مرحبا|سلام|اهلا|صباح الخير|مساء الخير|هاي|هلو)[\s!.]*$/i.test(rawLower)) {
         return isArabic
-            ? "👋 أهلاً بك! أنا **MORA**، المساعد الذكي الخاص بالمهندس **عمر جاد**.\n\nكيف يمكنني مساعدتك اليوم؟ يسعدني أن تسألني عن خبرات عمر في **PlayerHub.GG** و**CliniSoft**، أو مشروعه المميز **HistoryVerse (+A)**، مهاراته في MLOps و Cloud، أو كيفية التواصل معه وتوظيفه! 🚀"
-            : "👋 Hey there! I'm **MORA**, Omar Gad's personal AI Assistant.\n\nHow can I help you today? Ask me anything about Omar's work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse (A+)** AI/AR platform, his **MLOps & LLM skills**, or how to get in touch!";
+            ? "👋 أهلاً بك! أنا **MORA**، المساعد الذكي الخاص بالمهندس **عمر محمد**.\n\nكيف يمكنني مساعدتك اليوم؟ يسعدني أن تسألني عن خبرات عمر في **PlayerHub.GG** و**CliniSoft**، أو مشروعه المميز **HistoryVerse (+A)**، مهاراته في MLOps و Cloud، أو كيفية التواصل معه وتوظيفه! 🚀"
+            : "👋 Hey there! I'm **MORA**, Omar Mohamed's personal AI Assistant.\n\nHow can I help you today? Ask me anything about Omar's work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse (A+)** AI/AR platform, his **MLOps & LLM skills**, or how to get in touch!";
     }
 
     // Friendly Check-ins
@@ -400,8 +400,8 @@ export function queryLocalKnowledge(userQuery = '', conversationHistory = []) {
     // Who are you / Identity
     if (/(who\s*are\s*you|what\s*is\s*your\s*name|tell\s*me\s*about\s*yourself|انت مين|اسمك ايه|عرف نفسك|مين انت)/i.test(rawLower)) {
         return isArabic
-            ? "أنا **MORA**، الممثل التقني الذكي والمساعد الرسمي للمهندس **عمر جاد**.\nأنا مصمم للإجابة عن كل ما يتعلق بخبرات عمر، مشاريعه (مثل **HistoryVerse** و**SDXL LoRA**)، وبنيته التحتية في **PlayerHub.GG**. يمكنك سؤالي عن أي مهارة أو أداة!"
-            : "I'm **MORA**, the official autonomous AI representative and technical assistant for **Omar Gad** (Omar Mohamed Abdelsalam).\nI'm grounded in his verified portfolio, production systems, and resume. Feel free to quiz me on his skills, past companies, or graduation project!";
+            ? "أنا **MORA**، الممثل التقني الذكي والمساعد الرسمي للمهندس **عمر محمد**.\nأنا مصمم للإجابة عن كل ما يتعلق بخبرات عمر، مشاريعه (مثل **HistoryVerse** و**SDXL LoRA**)، وبنيته التحتية في **PlayerHub.GG**. يمكنك سؤالي عن أي مهارة أو أداة!"
+            : "I'm **MORA**, the official autonomous AI representative and technical assistant for **Omar Mohamed** (Omar Mohamed Abdelsalam).\nI'm grounded in his verified portfolio, production systems, and resume. Feel free to quiz me on his skills, past companies, or graduation project!";
     }
 
     // What can you do
@@ -522,7 +522,7 @@ Omar worked as an **AI & ML Engineer**:
     // 6. Experience overview / Career
     if (q.includes('experience') || q.includes('work') || q.includes('job') || q.includes('career') || q.includes('خبره') || q.includes('خبرات') || q.includes('وظائف') || q.includes('شغل')) {
         if (isArabic) {
-            return `**المسيرة المهنية لعمر جاد:**
+            return `**المسيرة المهنية لعمر محمد:**
 1. **PlayerHub.GG** (سبتمبر 2026 – الآن): MLOps & AI Infrastructure Engineer (دبي، الإمارات · عن بُعد).
 2. **CliniSoft** (أبريل 2026 – أغسطس 2026): AI & ML Engineer للأنظمة الطبية والتوثيق السريري.
 3. **EYouth** (أبريل 2026 – سبتمبر 2026): مدرب برمجة وذكاء اصطناعي وروبوتات.
@@ -530,7 +530,7 @@ Omar worked as an **AI & ML Engineer**:
 5. **ChloroMaster** (يونيو 2025 – أبريل 2026): Software & DevOps Engineer (بنية AWS، Kubernetes، Terraform).
 6. **Black Horse Courses** (يناير 2025 – ديسمبر 2025): مدرب بايثون وذكاء اصطناعي (درب 50+ طالباً بمعدل رضا 95%).`;
         }
-        return `**Omar Gad's Professional Experience:**
+        return `**Omar Mohamed's Professional Experience:**
 1. **PlayerHub.GG** (Sep 2026 – Present) · *MLOps & AI Infrastructure Engineer* (Dubai, UAE · Remote)
 2. **CliniSoft** (Apr 2026 – Aug 2026) · *AI & ML Engineer* (Alexandria · Healthcare AI, LLMs & Speech)
 3. **EYouth** (Apr 2026 – Sep 2026) · *Programming Instructor* (Python, AI & Robotics)
@@ -547,7 +547,7 @@ Omar worked as an **AI & ML Engineer**:
 • **دبلومة هندسة البرمجيات (ICC):** معهد تكنولوجيا المعلومات (ITI) – مارس 2025 حتى أغسطس 2025.
 • **بكالوريوس هندسة الحاسب:** المعهد العالي للهندسة والتكنولوجيا (BHI) – سبتمبر 2019 حتى يوليو 2024 (تقدير جيد جداً B+ بمعدل 3.2 / 4.0، ومشروع التخرج امتياز مرتفع +A).`;
         }
-        return `**Omar Gad's Academic Credentials:**
+        return `**Omar Mohamed's Academic Credentials:**
 • **Master of Science in Computer Engineering:** Arab Academy for Science, Technology and Maritime Transport (AASTMT) · Feb 2026 – Present · **CGPA: 4.0 / 4.0**
 • **Diploma in Software Engineering (Intensive Code Camp):** Information Technology Institute (ITI) · Mar 2025 – Aug 2025
 • **Bachelor of Engineering in Computer Engineering:** Higher Institute of Engineering & Technology (BHI) · Sep 2019 – Jul 2024 · **CGPA: 3.2 / 4.0 (Very Good – B+)** · Graduation Project Grade: **A+**`;
@@ -556,14 +556,14 @@ Omar worked as an **AI & ML Engineer**:
     // 8. Technical Skills & Tools
     if (q.includes('skill') || q.includes('stack') || q.includes('tech') || q.includes('tools') || q.includes('مهارات') || q.includes('تقنيات') || q.includes('ادوات')) {
         if (isArabic) {
-            return `**الترسانة التقنية للمهندس عمر جاد:**
+            return `**الترسانة التقنية للمهندس عمر محمد:**
 • **LLMs & Generative AI:** أنظمة RAG، الوكلاء متعددو المهام (Multi-Agent Systems)، بروتوكول MCP، LangChain، ChromaDB، FAISS، تخصيص LoRA، وتكميم GPTQ.
 • **تعلم الآلة ومعالجة اللغات (ML & NLP):** PyTorch، TensorFlow، Scikit-learn، Hugging Face Transformers، spaCy، YOLOv5، Faster-Whisper.
 • **عمليات النماذج والاختبار (LLMOps):** MLflow، Langfuse tracing، تقييم Ragas، تحققات Pydantic، واختبارات pytest.
 • **MLOps & السحابة:** FastAPI، Docker، Kubernetes، GitHub Actions CI/CD، Terraform، Ansible، Helm، AWS (Fargate، S3، EC2)، Prometheus، Grafana، Vault، Trivy.
 • **لغات البرمجة:** Python، C++، Java، Bash · قواعد البيانات: PostgreSQL، MySQL، Redis، MongoDB.`;
         }
-        return `**Omar Gad's Core Technical Skills:**
+        return `**Omar Mohamed's Core Technical Skills:**
 • **LLMs & Generative AI:** RAG architectures, Multi-Agent Systems, MCP (Model Context Protocol), LangChain, ChromaDB, FAISS, LoRA Fine-Tuning, GPTQ Quantization, Gemini API, Llama 3 / Ollama.
 • **ML & NLP:** PyTorch, TensorFlow, scikit-learn, Hugging Face Transformers, Diffusers, spaCy, YOLOv5, Faster-Whisper, Google TTS.
 • **LLMOps & Evaluation:** MLflow, Langfuse tracing, Ragas evaluation, Pydantic validation, pytest.
@@ -582,7 +582,7 @@ Omar worked as an **AI & ML Engineer**:
 5. **AWS Academy Cloud Foundations:** شركة Amazon Web Services – أبريل 2025 [موثق].
 6. **Jenkins Course Completion:** منصة KodeKloud – سبتمبر 2024 [موثق].`;
         }
-        return `**Omar Gad's Verified Certifications & Honors:**
+        return `**Omar Mohamed's Verified Certifications & Honors:**
 1. **Aspire Leaders Program:** Aspire Institute (Founded at Harvard University) · Sep 2026 [Verified]
 2. **Red Hat Certified System Administrator (RHCSA):** Red Hat · May 2025 [Verified - Cert ID: 250-068-707]
 3. **HCCDA-Tech Essentials Huawei Cloud Developer:** Huawei · Jul 2025 [Verified]
@@ -594,14 +594,14 @@ Omar worked as an **AI & ML Engineer**:
     // 10. Contact / Collaboration
     if (q.includes('contact') || q.includes('email') || q.includes('phone') || q.includes('whatsapp') || q.includes('hire') || q.includes('reach') || q.includes('تواصل') || q.includes('ايميل') || q.includes('واتساب') || q.includes('رقم') || q.includes('تليفون')) {
         if (isArabic) {
-            return `**قنوات التواصل المباشر مع المهندس عمر جاد:**
+            return `**قنوات التواصل المباشر مع المهندس عمر محمد:**
 • **البريد الإلكتروني:** [omarmo.abdelsalam@gmail.com](mailto:omarmo.abdelsalam@gmail.com)
 • **الهاتف وواتساب:** [+20 101 1297 869](https://wa.me/201011297869)
 • **لينكد إن:** [linkedin.com/in/omar-mohamedo-o](https://linkedin.com/in/omar-mohamedo-o)
 • **جيت هاب:** [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o)
 • **الموقع:** الإسكندرية، مصر (متاح للعمل عن بُعد ولعقود التوظيف والمشاريع الاستشارية).`;
         }
-        return `**Get in Touch with Omar Gad:**
+        return `**Get in Touch with Omar Mohamed:**
 • **Email:** [omarmo.abdelsalam@gmail.com](mailto:omarmo.abdelsalam@gmail.com)
 • **Phone & WhatsApp:** [+20 101 1297 869](https://wa.me/201011297869)
 • **LinkedIn:** [linkedin.com/in/omar-mohamedo-o](https://linkedin.com/in/omar-mohamedo-o)
@@ -612,7 +612,7 @@ Omar worked as an **AI & ML Engineer**:
     // 11. Greetings & Introduction
     if (q.includes('who') || q.includes('hello') || q.includes('hi') || q.includes('hey') || q.includes('مين') || q.includes('من انت') || q.includes('اهلا') || q.includes('مرحبا') || q.includes('سلام')) {
         if (isArabic) {
-            return `أهلاً بك! أنا **MORA**، المساعد الذكي المعتمد للمهندس **عمر جاد** (Omar Gad).
+            return `أهلاً بك! أنا **MORA**، المساعد الذكي المعتمد للمهندس **عمر محمد** (Omar Mohamed).
 عمر مهندس حاسب آلي وباحث ماجستير (بمعدل 4.0 / 4.0 في الأكاديمية العربية) متخصص في:
 • **الذكاء الاصطناعي التوليدي ونماذج اللغة (Generative AI & LLMs/RAG)**
 • **هندسة البنية التحتية والعمليات (MLOps & Cloud DevOps)**
@@ -620,7 +620,7 @@ Omar worked as an **AI & ML Engineer**:
 يعمل حالياً كـ **MLOps & AI Infrastructure Engineer** في شركة **PlayerHub.GG** بدبي، وعمل سابقاً في **CliniSoft** و**ChloroMaster**.
 يمكنك سؤالي عن مشاريعه (مثل HistoryVerse وSDXL LoRA)، خبراته، شهاداته، أو كيفية التواصل معه!`;
         }
-        return `Hello! I'm **MORA**, the personal AI assistant for **Omar Gad** (Omar Mohamed Abdelsalam).
+        return `Hello! I'm **MORA**, the personal AI assistant for **Omar Mohamed** (Omar Mohamed Abdelsalam).
 Omar is a Computer Engineer and M.Sc. candidate (CGPA 4.0 / 4.0 at Arab Academy) specialized in:
 • **Artificial Intelligence & Machine Learning**
 • **LLMs, RAG, & Multi-Agent Systems**
@@ -632,7 +632,7 @@ Feel free to ask me anything about his projects, tech stack, production experien
 
     // Fallback general guidance
     if (isArabic) {
-        return `أنا هنا لمساعدتك في كل ما يخص المهندس عمر جاد!
+        return `أنا هنا لمساعدتك في كل ما يخص المهندس عمر محمد!
 يمكنك سؤالي عن:
 • **الخبرة المهنية:** عمله في PlayerHub.GG، CliniSoft، أو ChloroMaster.
 • **المشاريع الهندسية:** مشروع التخرج HistoryVerse (امتياز +A على AWS Fargate) أو تدريب SDXL LoRA.
@@ -641,7 +641,7 @@ Feel free to ask me anything about his projects, tech stack, production experien
 • **التواصل:** عبر البريد أو واتساب مباشرة.`;
     }
 
-    return `I can answer any question about Omar Gad's background, production projects, and engineering experience!
+    return `I can answer any question about Omar Mohamed's background, production projects, and engineering experience!
 Here are some great topics to ask:
 • **Professional Experience:** His MLOps work at PlayerHub.GG, healthcare AI at CliniSoft, or cloud engineering at ChloroMaster.
 • **Featured Projects:** HistoryVerse (A+ Multilingual Museum AI/AR Guide with YOLOv5 & AWS Fargate) or SDXL LoRA Fine-Tuning.

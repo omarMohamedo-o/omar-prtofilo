@@ -1248,7 +1248,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
         { label: "🐙 GitHub Projects", text: "Tell me about Omar's GitHub repositories and open-source projects" },
         { label: "🏥 CliniSoft Healthcare", text: "Tell me about Omar's healthcare AI work at CliniSoft" },
         { label: "📜 Certifications & RHCSA", text: "What certifications does Omar hold?" },
-        { label: "📬 How to Contact", text: "How can I contact or hire Omar Gad?" }
+        { label: "📬 How to Contact", text: "How can I contact or hire Omar Mohamed?" }
     ];
 
     if (!isOpen) {
@@ -1385,7 +1385,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
                             onClick={() => {
                                 animStateRef.current.mode = 'wave';
                                 setActionBadge('Waving');
-                                speakText("Hello! Welcome to Omar Gad's engineering portfolio!");
+                                speakText("Hello! Welcome to Omar Mohamed's engineering portfolio!");
                                 setTimeout(() => {
                                     animStateRef.current.mode = 'idle';
                                     setActionBadge('Idle');

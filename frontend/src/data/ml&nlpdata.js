@@ -1,7 +1,7 @@
 /**
  * ML & NLP Engineer Portfolio Data
  * ==================================
- * Data specific to ML & NLP Engineer mode - Omar Gad
+ * Data specific to ML & NLP Engineer mode - Omar Mohamed
  */
 
 export const mlnlpPersonalInfo = {

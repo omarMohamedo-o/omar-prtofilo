@@ -1,11 +1,11 @@
 /**
- * Shared Portfolio Data - Omar Gad (Omar Mohamed Abdelsalam)
- * ==========================================================
+ * Shared Portfolio Data - Omar Mohamed (Omar Mohamed Abdelsalam)
+ * ==============================================================
  * Common data shared across all portfolio modes
  */
 
 export const personalInfo = {
-    name: "Omar Gad",
+    name: "Omar Mohamed",
     fullName: "Omar Mohamed Abdelsalam",
     title: "Computer Engineer | AI & Machine Learning | LLMs & RAG | MLOps & Cloud",
     tagline: "Computer Engineering graduate and M.Sc. candidate (CGPA 4.0 / 4.0) with experience building LLM, RAG, NLP, and speech systems and running them in production.",

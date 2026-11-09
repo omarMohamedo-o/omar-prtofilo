@@ -8,7 +8,7 @@ const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VI
  * System prompt injected with full portfolio knowledge and domain persona
  * (Architected after HistoryVerse-Chatbot TemplatedAgent design)
  */
-const SYSTEM_PROMPT = `You are MORA, the official autonomous AI representative and technical assistant for Omar Gad (Omar Mohamed Abdelsalam).
+const SYSTEM_PROMPT = `You are MORA, the official autonomous AI representative and technical assistant for Omar Mohamed (Omar Mohamed Abdelsalam).
 Omar is a Computer Engineer and M.Sc. candidate (CGPA: 4.0 / 4.0 at Arab Academy for Science, Technology and Maritime Transport).
 Key Facts to Ground Every Answer:
 - Current Role: MLOps & AI Infrastructure Engineer at PlayerHub.GG (Dubai, UAE - Full-time, Remote, Sep 2026 - Present), operating AI agent systems, scraping pipelines, HAProxy read routing, MariaDB replication, self-healing daemons (autoheal, smartheal), and Prometheus/Grafana/Loki.
@@ -48,7 +48,7 @@ async function callGeminiDirectly(userMessage, conversationHistory = []) {
         },
         {
             role: "model",
-            parts: [{ text: "Understood. I am MORA, Omar Gad's personal AI Assistant, grounded in his verified portfolio facts." }]
+            parts: [{ text: "Understood. I am MORA, Omar Mohamed's personal AI Assistant, grounded in his verified portfolio facts." }]
         }
     ];
 
@@ -97,7 +97,7 @@ async function callGeminiDirectly(userMessage, conversationHistory = []) {
  */
 export async function sendTextMessage(message, conversationHistory = [], stream = false) {
     const trimmed = (message || '').trim();
-    if (!trimmed) return { Answer: 'Please ask a question about Omar Gad!' };
+    if (!trimmed) return { Answer: 'Please ask a question about Omar Mohamed!' };
 
     // Layer 1: Attempt backend /api/chat with conversation history
     try {
@@ -133,7 +133,7 @@ export async function sendTextMessage(message, conversationHistory = [], stream 
     }
 
     return {
-        Answer: `I'm MORA, Omar Gad's AI Assistant. You can ask me about his work at PlayerHub.GG, CliniSoft, or ChloroMaster, his flagship projects like HistoryVerse (A+), his MLOps & LLM skills, or his contact information!`
+        Answer: `I'm MORA, Omar Mohamed's AI Assistant. You can ask me about his work at PlayerHub.GG, CliniSoft, or ChloroMaster, his flagship projects like HistoryVerse (A+), his MLOps & LLM skills, or his contact information!`
     };
 }
 

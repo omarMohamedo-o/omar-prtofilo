@@ -1,7 +1,7 @@
 /**
  * DevOps & MLOps Engineer Portfolio Data
  * ========================================
- * Data specific to DevOps Engineer mode - Omar Gad
+ * Data specific to DevOps Engineer mode - Omar Mohamed
  */
 
 export const devopsPersonalInfo = {
