@@ -32,13 +32,6 @@ const TOUR_STEPS = [
     itemHighlights: ['DEPI • DevOps & Cloud Infrastructure', 'Telecom Egypt • AI & NLP Chatbots']
   },
   {
-    targetId: 'volunteering',
-    title: 'Volunteer & Mentorship',
-    badge: 'Academic Recognition',
-    description: 'Remote Technical Mentor at Palestine Polytechnic University advising students on deep learning for retinal OCT disease diagnosis; officially acknowledged in the published graduation thesis.',
-    itemHighlights: ['Palestine Polytechnic University • Technical Mentor', 'AI Retinal OCT Diagnosis • Official Thesis Acknowledgement']
-  },
-  {
     targetId: 'skills',
     title: 'Core Technical Skills',
     badge: 'Tech Stack',
@@ -65,13 +58,6 @@ const TOUR_STEPS = [
     badge: 'Verified Honors',
     description: 'Industry-recognized credentials including the Aspire Leaders Program, Red Hat Certified System Administrator (RHCSA), Huawei Cloud Developer (HCCDA), and IBM Docker Essentials.',
     itemHighlights: ['Aspire Leaders Program (Aspire Institute)', 'RHCSA (Red Hat Certified)', 'HCCDA Huawei Cloud Developer', 'Docker Essentials (IBM)']
-  },
-  {
-    targetId: 'faq',
-    title: 'Key Questions & Direct Answers',
-    badge: 'AEO / FAQ',
-    description: 'Direct-answer snippets addressing core engineering inquiries, live deployments, scalable architecture, tech stack, and collaboration workflows.',
-    itemHighlights: ['Featured Projects & Metrics', 'Production Architecture & Scaling', 'Verified Live Deployments', 'Direct Contact Channels']
   },
   {
     targetId: 'contact',

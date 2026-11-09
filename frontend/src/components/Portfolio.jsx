@@ -19,9 +19,7 @@ import UpArrowButton from './UpArrowButton';
 import DiscoveryForm from './DiscoveryForm';
 import SpaceBackground from './SpaceBackground';
 import InteractiveTour from './InteractiveTour';
-import FAQ from './FAQ';
 import MinecraftGuide3D from './MinecraftGuide3D';
-import Volunteering from './Volunteering';
 
 // Import data with mode support
 import { MODES, getPortfolioData } from '../data/data';
@@ -352,9 +350,6 @@ export default function Portfolio() {
       {/* Internships Section */}
       <Internships isVisible={isVisible} internships={portfolioData.internships} themeColor={themeColor} />
 
-      {/* Volunteer & Mentorship Section */}
-      <Volunteering isVisible={isVisible} volunteering={portfolioData.volunteering} themeColor={themeColor} />
-
       {/* Skills Section */}
       <Skills isVisible={isVisible} skills={portfolioData.skills} themeColor={themeColor} />
 
@@ -383,9 +378,6 @@ export default function Portfolio() {
       {portfolioData.languages && portfolioData.languages.length > 0 && (
         <Languages isVisible={isVisible} languages={portfolioData.languages} themeColor={themeColor} />
       )}
-
-      {/* Frequently Asked Questions (FAQ) Section */}
-      <FAQ isVisible={isVisible} themeColor={themeColor} />
 
       {/* Discovery Form Section */}
       <DiscoveryForm isVisible={isVisible} themeColor={themeColor} />

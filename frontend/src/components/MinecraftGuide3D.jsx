@@ -719,12 +719,10 @@ export default function MinecraftGuide3D({ onStartTour }) {
             { id: 'about', title: 'About Omar Mohamed', tech: 'M.Sc. CGPA 4.0 • Applied ML' },
             { id: 'experience', title: 'PlayerHub & CliniSoft', tech: 'High-Availability MLOps' },
             { id: 'internships', title: 'Engineering Internships', tech: 'DEPI • Telecom Egypt' },
-            { id: 'volunteering', title: 'Volunteer & Mentorship', tech: 'Palestine Polytechnic • AI' },
             { id: 'skills', title: 'LLMs, RAG & Cloud', tech: 'Kubernetes • Docker • PyTorch' },
             { id: 'projects', title: 'HistoryVerse (Grade: A+)', tech: 'YOLOv5 • AWS Fargate' },
             { id: 'education', title: 'Academic Honors', tech: 'AASTMT • ITI • BHI' },
             { id: 'certifications', title: 'RHCSA #250-068-707', tech: 'Red Hat Certified Admin' },
-            { id: 'faq', title: 'AEO / Direct Answers', tech: '10 Q&A Pairs • Knowledge' },
             { id: 'contact', title: 'Get In Touch', tech: 'Hire • Consult • Collaborate' }
         ];
 
