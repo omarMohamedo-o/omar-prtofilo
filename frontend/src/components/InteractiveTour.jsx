@@ -87,12 +87,43 @@ export default function InteractiveTour({ onTourToggle }) {
 
     if (onTourToggle) onTourToggle(true);
 
+    // Notify unified 3D Guide window of active tour step
+    window.dispatchEvent(new CustomEvent('portfolio-tour-step', {
+      detail: {
+        stepIndex: currentStep,
+        totalSteps: tourSteps.length,
+        title: activeStep.title,
+        description: activeStep.description,
+        badge: activeStep.badge,
+        targetId: activeStep.targetId
+      }
+    }));
+
     return () => {
       if (previousHighlightRef.current) {
         previousHighlightRef.current.classList.remove('tour-focused-element');
       }
     };
   }, [tourActive, currentStep, scrollToTarget, onTourToggle, tourSteps]);
+
+  // Listen for navigation events from the unified 3D Guide window
+  useEffect(() => {
+    if (!tourActive) return;
+
+    const onNext = () => handleNext();
+    const onPrev = () => handlePrev();
+    const onClose = () => handleCloseTour();
+
+    window.addEventListener('portfolio-tour-next', onNext);
+    window.addEventListener('portfolio-tour-prev', onPrev);
+    window.addEventListener('portfolio-tour-close', onClose);
+
+    return () => {
+      window.removeEventListener('portfolio-tour-next', onNext);
+      window.removeEventListener('portfolio-tour-prev', onPrev);
+      window.removeEventListener('portfolio-tour-close', onClose);
+    };
+  }, [tourActive, handleNext, handlePrev, handleCloseTour]);
 
   // Cleanup on unmount or tour deactivation
   useEffect(() => {
@@ -251,116 +282,6 @@ export default function InteractiveTour({ onTourToggle }) {
                 </button>
               </div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* 2. Floating Interactive Tour Card during active guide */}
-      <AnimatePresence>
-        {tourActive && (
-          <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 30, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[92vw] max-w-xl"
-          >
-            <div className="relative rounded-2xl bg-[#0d1021]/95 backdrop-blur-xl border border-cyan-500/40 shadow-2xl shadow-cyan-500/20 p-5 sm:p-6 text-white overflow-hidden">
-              {/* Progress bar */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gray-800">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progressPercent}%` }}
-                  transition={{ duration: 0.3 }}
-                />
-              </div>
-
-              {/* Header row */}
-              <div className="flex items-center justify-between gap-2 mb-3 pt-1">
-                <div className="flex items-center gap-2">
-                  <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold text-xs">
-                    {currentStep + 1}/{tourSteps.length}
-                  </span>
-                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 uppercase tracking-wider">
-                    {step.badge}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    onClick={handleCloseTour}
-                    className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/60 transition-colors"
-                    aria-label={t('tourExitTitle')}
-                    title={t('tourExitTitle')}
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Title & Body */}
-              <h4 className="text-lg sm:text-xl font-bold text-white mb-2 flex items-center gap-2">
-                <span>{step.title}</span>
-              </h4>
-
-              <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-4">
-                {step.description}
-              </p>
-
-              {/* Highlights pills */}
-              <div className="flex flex-wrap gap-1.5 mb-5">
-                {step.itemHighlights && step.itemHighlights.map((highlight, idx) => (
-                  <span
-                    key={idx}
-                    className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-cyan-950/60 text-cyan-200 border border-cyan-800/50 flex items-center gap-1"
-                  >
-                    <span className="text-cyan-400 font-bold">▹</span>
-                    <span>{highlight}</span>
-                  </span>
-                ))}
-              </div>
-
-              {/* Navigation buttons */}
-              <div className="flex items-center justify-between pt-2 border-t border-gray-800/80">
-                <button
-                  type="button"
-                  onClick={handleCloseTour}
-                  className="text-xs font-medium text-gray-400 hover:text-gray-200 transition-colors py-1 px-2"
-                >
-                  {t('tourSkip')}
-                </button>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={handlePrev}
-                    disabled={currentStep === 0}
-                    className={`px-3 py-1.5 rounded-xl border border-gray-700 text-xs font-medium flex items-center gap-1 transition-all ${currentStep === 0
-                      ? 'opacity-40 cursor-not-allowed text-gray-500'
-                      : 'text-gray-300 hover:text-white hover:border-gray-500 active:scale-95'
-                      }`}
-                  >
-                    <ChevronLeft className="w-3.5 h-3.5" />
-                    <span>{t('tourBack')}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleNext}
-                    className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-semibold shadow-md shadow-cyan-500/25 hover:shadow-cyan-500/40 active:scale-95 transition-all flex items-center gap-1.5"
-                  >
-                    <span>{currentStep === tourSteps.length - 1 ? t('tourFinish') : t('tourNext')}</span>
-                    {currentStep === tourSteps.length - 1 ? (
-                      <CheckCircle className="w-3.5 h-3.5 text-white" />
-                    ) : (
-                      <ChevronRight className="w-3.5 h-3.5 text-white" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>

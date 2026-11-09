@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     Sparkles, MessageSquare, Volume2, VolumeX, X, Minimize2,
     Maximize2, Send, Mic, MicOff, RefreshCw, Compass, ShieldCheck,
-    Cpu, Award, Briefcase, ChevronRight, Play
+    Cpu, Award, Briefcase, ChevronRight, ChevronLeft, CheckCircle, Play
 } from 'lucide-react';
 import { sendTextMessage } from '../services/chatbotService';
 
@@ -485,6 +485,8 @@ export default function MinecraftGuide3D({ onStartTour }) {
     const [voiceEnabled, setVoiceEnabled] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [actionBadge, setActionBadge] = useState('Idle');
+    const [tourData, setTourData] = useState(null);
+    const [tourChatMode, setTourChatMode] = useState(false);
     const chatEndRef = useRef(null);
 
     // Speech synthesis helper
@@ -662,6 +664,12 @@ export default function MinecraftGuide3D({ onStartTour }) {
             const detail = e.detail;
             if (!detail) return;
 
+            setIsOpen(true);
+            setIsMinimized(false);
+            setTourData(detail);
+            setTourChatMode(false);
+            setActionBadge(`Tour ${detail.stepIndex + 1}/${detail.totalSteps}`);
+
             // Pull laptop from backpack and open it projecting this section/project!
             showLaptopProject(
                 detail.title,
@@ -669,15 +677,22 @@ export default function MinecraftGuide3D({ onStartTour }) {
                 `${detail.title}. ${detail.description}`
             );
 
-            const stepNotice = `🧭 **[Step ${detail.stepIndex + 1}/${detail.totalSteps}] ${detail.title}:**\n${detail.description}`;
-            setMessages(prev => [...prev.slice(-8), {
-                id: `tour-${Date.now()}`,
-                from: 'steve',
-                text: stepNotice
-            }]);
+            // Animate Steve: walk then wave
+            animStateRef.current.mode = 'walk';
+            setTimeout(() => {
+                animStateRef.current.mode = 'wave';
+                setTimeout(() => {
+                    animStateRef.current.mode = 'idle';
+                }, 1500);
+            }, 600);
+
+            // Read aloud if voice is enabled
+            speakText(`${detail.title}. ${detail.description}`);
         };
 
         const handleTourEnd = () => {
+            setTourData(null);
+            setTourChatMode(false);
             animStateRef.current.mode = 'idle';
             setActionBadge('Idle');
         };
@@ -1308,7 +1323,12 @@ export default function MinecraftGuide3D({ onStartTour }) {
                             {isMinimized ? <Maximize2 size={14} /> : <Minimize2 size={14} />}
                         </button>
                         <button
-                            onClick={() => setIsOpen(false)}
+                            onClick={() => {
+                                if (tourData) {
+                                    window.dispatchEvent(new CustomEvent('portfolio-tour-close'));
+                                }
+                                setIsOpen(false);
+                            }}
                             className="p-1.5 rounded-lg bg-slate-800/80 border border-slate-700 text-slate-400 hover:text-red-400 hover:border-red-500/40 transition-colors"
                             title="Close"
                         >
@@ -1316,6 +1336,16 @@ export default function MinecraftGuide3D({ onStartTour }) {
                         </button>
                     </div>
                 </div>
+
+                {/* Progress bar across top of window during active tour */}
+                {tourData && (
+                    <div className="w-full h-1 bg-slate-800">
+                        <div
+                            className="h-full bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 transition-all duration-300"
+                            style={{ width: `${((tourData.stepIndex + 1) / tourData.totalSteps) * 100}%` }}
+                        />
+                    </div>
+                )}
 
                 {/* 3D Character Stage & Speech Bubble */}
                 <div className="relative bg-gradient-to-b from-[#0a192f] via-[#091424] to-[#0f172a] p-3 flex flex-col items-center justify-center border-b border-cyan-500/20 overflow-hidden">
@@ -1326,7 +1356,9 @@ export default function MinecraftGuide3D({ onStartTour }) {
                     <div className="relative z-10 w-full mb-1">
                         <div className="bg-[#1e293b]/90 border border-cyan-400/40 rounded-xl px-3 py-2 text-xs text-slate-100 shadow-lg relative">
                             <p className="line-clamp-2 leading-relaxed">
-                                {messages[messages.length - 1]?.text?.replace(/[*_#`[\]()•]/g, ' ') || "Ask me about Omar's engineering work!"}
+                                {tourData
+                                    ? `🧭 Step ${tourData.stepIndex + 1}/${tourData.totalSteps}: ${tourData.title}`
+                                    : (messages[messages.length - 1]?.text?.replace(/[*_#`[\]()•]/g, ' ') || "Ask me about Omar's engineering work!")}
                             </p>
                             {/* Speech bubble pointer notch */}
                             <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#1e293b] border-r border-b border-cyan-400/40 rotate-45" />
@@ -1397,10 +1429,93 @@ export default function MinecraftGuide3D({ onStartTour }) {
                     </div>
                 </div>
 
-                {/* Expanded Chat Log & Controls (Hidden when minimized) */}
+                {/* Expanded Section: Unified Tour Guide Panel OR Chat Log (Hidden when minimized) */}
                 {!isMinimized && (
-                    <div className="flex flex-col h-[230px] bg-slate-950/90">
-                        {/* Quick Prompts Chips Carousel */}
+                    tourData && !tourChatMode ? (
+                        <div className="flex flex-col h-[230px] bg-slate-950/95 p-3.5 justify-between border-t border-cyan-500/20">
+                            <div className="flex flex-col gap-2">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold text-xs">
+                                            Step {tourData.stepIndex + 1} / {tourData.totalSteps}
+                                        </span>
+                                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 uppercase tracking-wider">
+                                            {tourData.badge}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <button
+                                            type="button"
+                                            onClick={() => setTourChatMode(true)}
+                                            className="text-[10px] text-cyan-400 hover:text-cyan-200 px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 transition-colors border border-cyan-500/30"
+                                            title="Chat with Steve during tour"
+                                        >
+                                            💬 Chat
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => window.dispatchEvent(new CustomEvent('portfolio-tour-close'))}
+                                            className="text-[10px] text-slate-400 hover:text-white px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 transition-colors"
+                                            title="Exit Tour"
+                                        >
+                                            Exit ✕
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <h4 className="text-sm font-bold text-white leading-tight mt-1">
+                                    {tourData.title}
+                                </h4>
+
+                                <p className="text-xs text-slate-300 leading-relaxed max-h-24 overflow-y-auto pr-1">
+                                    {tourData.description}
+                                </p>
+                            </div>
+
+                            <div className="flex items-center gap-2 pt-2 border-t border-slate-800">
+                                <button
+                                    type="button"
+                                    onClick={() => window.dispatchEvent(new CustomEvent('portfolio-tour-prev'))}
+                                    disabled={tourData.stepIndex === 0}
+                                    className={`flex-1 py-2 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${tourData.stepIndex === 0
+                                        ? 'opacity-30 cursor-not-allowed border-slate-800 text-slate-600'
+                                        : 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 active:scale-95'
+                                        }`}
+                                >
+                                    <ChevronLeft size={14} />
+                                    <span>Previous</span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (tourData.stepIndex === tourData.totalSteps - 1) {
+                                            window.dispatchEvent(new CustomEvent('portfolio-tour-close'));
+                                        } else {
+                                            window.dispatchEvent(new CustomEvent('portfolio-tour-next'));
+                                        }
+                                    }}
+                                    className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white text-xs font-bold shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-1.5 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                                >
+                                    <span>{tourData.stepIndex === tourData.totalSteps - 1 ? 'Finish Tour' : 'Next Step'}</span>
+                                    {tourData.stepIndex === tourData.totalSteps - 1 ? <CheckCircle size={14} /> : <ChevronRight size={14} />}
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col h-[230px] bg-slate-950/90">
+                            {tourData && tourChatMode && (
+                                <div className="px-3 py-1.5 bg-cyan-950/70 border-b border-cyan-500/30 flex items-center justify-between text-[11px] text-cyan-300">
+                                    <span>🧭 Tour active (chat mode)</span>
+                                    <button
+                                        onClick={() => setTourChatMode(false)}
+                                        className="font-bold underline hover:text-white"
+                                    >
+                                        Return to Tour Step {tourData.stepIndex + 1} →
+                                    </button>
+                                </div>
+                            )}
+                            {/* Quick Prompts Chips Carousel */}
                         <div className="p-2 border-b border-slate-800/80 flex items-center gap-1.5 overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-700/50">
                             {QUICK_PROMPTS.map((p, idx) => (
                                 <button
@@ -1467,7 +1582,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
                             </button>
                         </form>
                     </div>
-                )}
+                ))}
             </div>
         </motion.div>
     );
