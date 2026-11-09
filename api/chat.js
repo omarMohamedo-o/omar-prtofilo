@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
-    const { user_input } = req.body || {};
+    const { user_input, history } = req.body || {};
     const query = (user_input || '').trim();
 
     if (!query) {
@@ -26,32 +26,63 @@ export default async function handler(req, res) {
 
     const apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || "AIzaSyA6PLtRxa883bHj-x6LfR3L35cpQea1YDs";
 
-    const SYSTEM_PROMPT = `You are MORA, the personal AI assistant for Omar Gad (Omar Mohamed Abdelsalam), an outstanding Computer Engineer specialized in AI, LLMs & RAG, and MLOps & Cloud.
-Omar is currently an M.Sc. candidate in Computer Engineering with a perfect 4.0 / 4.0 CGPA at the Arab Academy for Science, Technology and Maritime Transport.
-He works as an MLOps & AI Infrastructure Engineer at PlayerHub.GG (Dubai, UAE - Full-time, Remote), managing autonomous AI agent systems, scraping pipelines, and high-availability multi-cloud infrastructure.
-He was previously an AI & ML Engineer at CliniSoft (Alexandria), developing production healthcare AI for clinical documentation, and a Software & DevOps Engineer at ChloroMaster.
-His graduation project, HistoryVerse, achieved an A+ grade, featuring 90-96% artifact recognition accuracy with YOLOv5 and Vision Transformers, 25+ REST endpoints with ChromaDB RAG, and deployment to AWS Fargate with modular Terraform.
-He holds the Red Hat Certified System Administrator (RHCSA), Huawei Cloud Developer (HCCDA), and completed the Aspire Leaders Program.
-Always respond warmly, clearly, accurately, and informatively. Match the user's language (English or Arabic).`;
+    const SYSTEM_PROMPT = `You are MORA, the official autonomous AI representative and technical assistant for Omar Gad (Omar Mohamed Abdelsalam).
+Omar is a Computer Engineer and M.Sc. candidate (CGPA: 4.0 / 4.0 at Arab Academy for Science, Technology and Maritime Transport).
+Key Facts to Ground Every Answer:
+- Current Role: MLOps & AI Infrastructure Engineer at PlayerHub.GG (Dubai, UAE - Full-time, Remote, Sep 2026 - Present), operating AI agent systems, scraping pipelines, HAProxy read routing, MariaDB replication, self-healing daemons (autoheal, smartheal), and Prometheus/Grafana/Loki.
+- Previous Role: AI & ML Engineer at CliniSoft (Alexandria, Apr 2026 - Aug 2026), built production healthcare AI with LLMs, NLP, and Faster-Whisper speech automation for clinical documentation, served via FastAPI.
+- Teaching: EYouth (Apr 2026 - Sep 2026) and Black Horse Courses (Jan 2025 - Dec 2025, 50+ students, 95% satisfaction).
+- Volunteer: Palestine Polytechnic University (advised student team on AI retinal OCT diagnosis, acknowledged in thesis).
+- Previous Role: Software & DevOps Engineer at ChloroMaster (AWS, Kubernetes, Terraform, Vault, Trivy).
+- Flagship Graduation Project: HistoryVerse (Grade: A+) — Multilingual AI/AR Museum Guide with 90-96% artifact accuracy using YOLOv5 & Transformers, 25+ REST endpoints with ChromaDB RAG, and AWS Fargate deployment with 204 passing automated tests.
+- SDXL LoRA Fine-Tuning: Sultan Hassan Mosque, Cairo (Hugging Face diffusers, rank 32 fp16, MLflow).
+- Credentials: Aspire Leaders Program (Harvard-founded Aspire Institute, Sep 2026), Red Hat Certified System Administrator (RHCSA Cert #250-068-707), Huawei Cloud Developer (HCCDA), IBM Docker Essentials, AWS Academy Cloud Foundations.
+- Contact: Email: omarmo.abdelsalam@gmail.com | Phone/WhatsApp: +20 101 1297 869 | Alexandria, Egypt.
+
+Guidelines:
+1. Always maintain a professional, energetic, and helpful technical tone.
+2. Ground every factual claim in Omar's actual portfolio data.
+3. Automatically match the user's language (English or Arabic/Egyptian dialect).
+4. If asked about off-topic subjects (sports, recipes, general coding help unrelated to Omar), politely and wittily redirect them to Omar's engineering work and availability.`;
 
     if (apiKey) {
         try {
             const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+            const contents = [
+                {
+                    role: 'user',
+                    parts: [{ text: `${SYSTEM_PROMPT}\n\nPlease acknowledge your role as MORA.` }]
+                },
+                {
+                    role: 'model',
+                    parts: [{ text: "Understood. I am MORA, Omar Gad's personal AI Assistant, grounded in his verified portfolio facts." }]
+                }
+            ];
+
+            // Append conversational history if provided
+            if (Array.isArray(history)) {
+                for (const turn of history.slice(-6)) {
+                    contents.push({
+                        role: turn.role === 'assistant' ? 'model' : 'user',
+                        parts: [{ text: turn.content || '' }]
+                    });
+                }
+            }
+
+            contents.push({
+                role: 'user',
+                parts: [{ text: query }]
+            });
+
             const response = await fetch(geminiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [
-                        {
-                            role: 'user',
-                            parts: [
-                                { text: `${SYSTEM_PROMPT}\n\nUser Question: ${query}` }
-                            ]
-                        }
-                    ],
+                    contents,
                     generationConfig: {
                         temperature: 0.7,
-                        maxOutputTokens: 800
+                        maxOutputTokens: 900
                     }
                 })
             });

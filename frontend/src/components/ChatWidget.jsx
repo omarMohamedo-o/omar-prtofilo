@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaPaperPlane, FaRobot, FaWhatsapp, FaPaperclip, FaMicrophone, FaStop, FaPlay, FaPause, FaTrash, FaUser } from 'react-icons/fa';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Copy, Check, RotateCcw } from 'lucide-react';
 import { sendTextMessage, sendImageMessage, uploadFile, transcribeAudio } from '../services/chatbotService';
 import SpeakerButton from './ChatTTS';
 import DownArrowButton from './DownArrowButton';
@@ -78,12 +78,14 @@ export default function ChatWidget() {
     const [showScrollDown, setShowScrollDown] = useState(false);
     const prevScrollTop = useRef(0);
     const [lastMessageSender, setLastMessageSender] = useState(null);
+    const [copiedId, setCopiedId] = useState(null);
 
     const send = async () => {
         if (!value.trim()) return;
         console.debug('ChatWidget: Sending message', value);
         const userMsg = { id: Date.now(), from: 'user', text: value.trim() };
-        setMessages(prev => [...prev, userMsg]);
+        const updatedHistory = [...messages, userMsg];
+        setMessages(updatedHistory);
         setLastMessageSender('user');
         const userQuery = value.trim();
         setValue('');
@@ -98,8 +100,8 @@ export default function ChatWidget() {
                 response = await sendImageMessage(imageUrl, userQuery, 'text', null, false);
                 setUploadedFile(null); // Clear uploaded file after use
             } else {
-                // Regular text conversation
-                response = await sendTextMessage(userQuery, false);
+                // Regular text conversation with conversational memory
+                response = await sendTextMessage(userQuery, updatedHistory, false);
             }
 
             // Extract answer from response
@@ -113,7 +115,6 @@ export default function ChatWidget() {
             setLastMessageSender('bot');
 
             console.debug('ChatWidget: Bot answer received', botAnswer);
-            // NOTE: TTS playback is only triggered by user interaction (speaker button).
         } catch (error) {
             console.error('Error communicating with chatbot:', error);
             setMessages(prev => [...prev, {
@@ -130,12 +131,13 @@ export default function ChatWidget() {
     const handleSuggestedPrompt = async (queryText) => {
         if (isLoading) return;
         const userMsg = { id: Date.now(), from: 'user', text: queryText };
-        setMessages(prev => [...prev, userMsg]);
+        const updatedHistory = [...messages, userMsg];
+        setMessages(updatedHistory);
         setLastMessageSender('user');
         setIsLoading(true);
 
         try {
-            const response = await sendTextMessage(queryText, false);
+            const response = await sendTextMessage(queryText, updatedHistory, false);
             const botAnswer = response.Answer || response.answer || 'Sorry, I could not process your request.';
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
@@ -840,8 +842,25 @@ export default function ChatWidget() {
                 )}
                 <div ref={panelRef} className={`chat-panel ${open ? 'open' : ''}`} role="dialog" aria-label="Chat widget">
                     <div className="chat-header">
-                        <div className="chat-title">MORA</div>
-                        <button className="chat-close" onClick={() => setOpen(false)}>✕</button>
+                        <div className="flex items-center gap-2">
+                            <div className="chat-title">MORA</div>
+                            <span className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-medium">
+                                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                                <span>AI Agent</span>
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <button
+                                type="button"
+                                onClick={() => setMessages([messages[0]])}
+                                className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/60 transition-colors"
+                                title="Reset conversation history"
+                                aria-label="Reset conversation"
+                            >
+                                <RotateCcw size={14} />
+                            </button>
+                            <button className="chat-close" onClick={() => setOpen(false)}>✕</button>
+                        </div>
                     </div>
 
                     <div ref={chatBodyRef} className="chat-body">
@@ -855,7 +874,23 @@ export default function ChatWidget() {
                                             <FormattedMessageText text={m.text} />
                                         </div>
                                         {m.from === 'bot' && (
-                                            <SpeakerButton text={m.text} />
+                                            <div className="chat-msg-actions flex items-center gap-1 mt-1 justify-end opacity-75 hover:opacity-100 transition-opacity">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const clean = m.text.replace(/[*_#`]/g, '');
+                                                        navigator.clipboard?.writeText(clean);
+                                                        setCopiedId(m.id);
+                                                        setTimeout(() => setCopiedId(null), 1500);
+                                                    }}
+                                                    className="p-1 rounded text-gray-400 hover:text-cyan-300 hover:bg-gray-800/60 transition-colors"
+                                                    title={copiedId === m.id ? "Copied!" : "Copy message"}
+                                                    aria-label="Copy message"
+                                                >
+                                                    {copiedId === m.id ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+                                                </button>
+                                                <SpeakerButton text={m.text} />
+                                            </div>
                                         )}
                                     </>
                                 )}
