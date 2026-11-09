@@ -29,6 +29,20 @@ build/
 __pycache__/
 *.pyc
 
+# Vercel artifacts
+.vercel
+.vercel_build_output
+.vercel/*
+vercel.json
+
+# Ignore local Vercel caches and runtime files
+.vercel/project.json
+.vercel/locations.json
+.vercel/global.json
+.vercel/cache/
+.vercel/build-cache/
+.vercel/.cache
+
 # Logs
 *.log
 logs/

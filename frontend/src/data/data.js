@@ -4,7 +4,6 @@
  * Combines shared data with mode-specific data
  */
 
-// Import shared data as a namespace to avoid named-export resolution issues
 import * as shared from './shareddata';
 
 // Import DevOps-specific data
@@ -35,12 +34,12 @@ export const MODES = shared.MODES;
 // Mode information for UI
 export const modeInfo = {
     [MODES.DEVOPS]: {
-        label: 'DevOps',
-        description: 'DevOps Engineer'
+        label: 'DevOps & MLOps',
+        description: 'MLOps & Cloud DevOps Engineer'
     },
     [MODES.MLNLP]: {
-        label: 'ML/NLP',
-        description: 'ML & NLP Engineer'
+        label: 'AI & ML',
+        description: 'AI & Machine Learning Engineer'
     }
 };
 
@@ -50,7 +49,6 @@ export const modeInfo = {
  * @returns {object} Complete portfolio data
  */
 export function getPortfolioData(mode = MODES.DEVOPS) {
-    // Base data shared across all modes
     const baseData = {
         personalInfo: { ...shared.personalInfo },
         experiences: [...shared.Experiences],
@@ -59,7 +57,6 @@ export function getPortfolioData(mode = MODES.DEVOPS) {
         languages: [...shared.languages]
     };
 
-    // Mode-specific data
     switch (mode) {
         case MODES.MLNLP:
             return {
@@ -68,8 +65,9 @@ export function getPortfolioData(mode = MODES.DEVOPS) {
                     ...baseData.personalInfo,
                     ...mlnlpPersonalInfo
                 },
-                // Remove System Administration and DevOps internships from ML view
-                internships: baseData.internships.filter(i => i.title !== 'System Administration Intern' && i.title !== 'DevOps Engineer Intern'),
+                // All experiences are relevant to AI/ML & Engineering
+                experiences: baseData.experiences,
+                internships: baseData.internships.filter(i => i.title !== 'System Administration Intern'),
                 aboutMe: mlnlpAboutMe,
                 skills: mlnlpSkills,
                 softSkills: mlnlpSoftSkills,
@@ -87,7 +85,7 @@ export function getPortfolioData(mode = MODES.DEVOPS) {
                     ...baseData.personalInfo,
                     ...devopsPersonalInfo
                 },
-                // Remove Artificial Intelligence intern from DevOps view
+                experiences: baseData.experiences,
                 internships: baseData.internships.filter(i => i.title !== 'Artificial Intelligence Engineer Intern'),
                 aboutMe: devopsAboutMe,
                 skills: devopsSkills,

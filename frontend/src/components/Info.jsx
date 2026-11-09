@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Linkedin, Mail, Phone, MapPin, FileText, Server, Brain, ChevronDown } from 'lucide-react';
+import { Linkedin, Mail, Phone, MapPin, FileText, Infinity, Brain, ChevronDown, Sparkles } from 'lucide-react';
 import { MODES, modeInfo } from '../data/data';
 import { getOptimizedImagePath } from '../utils/imageOptimization';
 import ButtonCard from './ButtonCard';
@@ -31,7 +31,7 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
             aria-haspopup="listbox"
             aria-expanded={showModeDropdown}
           >
-            {currentMode === MODES.DEVOPS ? <Server size={18} /> : <Brain size={18} />}
+            {currentMode === MODES.DEVOPS ? <Infinity size={18} /> : <Brain size={18} />}
             <span>View as</span>
             <ChevronDown size={14} className={`transition-transform duration-300 ${showModeDropdown ? 'rotate-180' : ''}`} />
           </button>
@@ -52,7 +52,7 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
                   : 'bg-gray-800/60 text-gray-300 hover:bg-gray-700/70 hover:text-white focus-visible:ring-gray-500'
                   }`}
               >
-                {mode === MODES.DEVOPS ? <Server size={16} /> : <Brain size={16} />}
+                {mode === MODES.DEVOPS ? <Infinity size={16} /> : <Brain size={16} />}
                 <span>{info.label}</span>
               </button>
             ))}
@@ -148,12 +148,24 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
           >
             <ButtonCard
               href="#"
-              className={`${bgAccent} ${bgAccentHover} text-gray-900 min-w-[200px]`}
+              className={`${bgAccent} ${bgAccentHover} text-gray-900 min-w-[190px]`}
               onClick={() => scrollToSection('discovery')}
               variants={itemVariant}
             >
               <FileText size={18} className="sm:w-5 sm:h-5" />
               <span className="whitespace-nowrap">Book a Discovery Call</span>
+            </ButtonCard>
+            <ButtonCard
+              href="#"
+              className="border border-cyan-500/40 hover:border-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 min-w-[150px]"
+              onClick={(e) => {
+                e.preventDefault();
+                if (window.startPortfolioTour) window.startPortfolioTour();
+              }}
+              variants={itemVariant}
+            >
+              <Sparkles size={18} className="sm:w-5 sm:h-5 text-cyan-400" />
+              <span className="whitespace-nowrap">Guided Tour</span>
             </ButtonCard>
             {personalInfo.resume && (
               <ButtonCard href={personalInfo.resume} external className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white" variants={itemVariant}>

@@ -1,67 +1,24 @@
 /**
- * Enhanced Sequential Scroll Animation System
- * with Orbital / Planetary Motion Effects
+ * High-Performance Smooth Animation System
+ * with Snappy Orbital / Planetary Motion Effects
  *
- * 2-Phase Animation Architecture:
- * - Phase 1: Title appears first (standalone, priority animation)
- * - Phase 2: Content elements appear sequentially after title
- *
- * Motion Philosophy:
- * - Elements don't just fade in, they "orbit into place"
- * - Curved motion paths (x + y combined) for natural feel
- * - Depth effects via scale for premium touch
- * - Alternating directions avoid robotic feel
- *
- * This creates a "guided storytelling" UX where the user's eye
- * is led through the content step-by-step.
+ * Optimized for 60-120fps responsiveness and zero jank.
  */
 
-// =============================================================================
-// PREMIUM EASING CURVES
-// =============================================================================
-
-/**
- * Custom cubic-bezier easings for orbital feel
- * These create smooth, physics-inspired motion
- */
-export const orbitalEasing = [0.22, 1, 0.36, 1];      // Smooth settle
-export const smoothEasing = [0.25, 0.1, 0.25, 1];    // Natural ease
-export const bounceEasing = [0.34, 1.56, 0.64, 1];   // Slight overshoot
+// Snappy cubic-bezier easings
+export const orbitalEasing = [0.16, 1, 0.3, 1];   // Fast, butter-smooth settle
+export const smoothEasing = [0.25, 0.1, 0.25, 1]; // Natural ease
+export const bounceEasing = [0.34, 1.4, 0.64, 1]; // Crisp overshoot
 
 // =============================================================================
-// PHASE 1: TITLE ANIMATIONS (Standalone - appears first)
+// PHASE 1: TITLE ANIMATIONS
 // =============================================================================
 
-/**
- * Desktop title variant - orbital sweep from left with depth
- */
 export const titleVariant = {
   hidden: {
     opacity: 0,
-    y: 40,
-    x: -20,
-    scale: 0.97
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-    x: 0,
-    scale: 1,
-    transition: {
-      duration: 0.7,
-      ease: orbitalEasing,
-    },
-  },
-};
-
-/**
- * Mobile title variant - lighter, faster orbital
- */
-export const titleVariantMobile = {
-  hidden: {
-    opacity: 0,
-    y: 25,
-    x: -10,
+    y: 24,
+    x: -12,
     scale: 0.98
   },
   show: {
@@ -70,46 +27,56 @@ export const titleVariantMobile = {
     x: 0,
     scale: 1,
     transition: {
-      duration: 0.5,
+      duration: 0.38,
+      ease: orbitalEasing,
+    },
+  },
+};
+
+export const titleVariantMobile = {
+  hidden: {
+    opacity: 0,
+    y: 16,
+    x: -6,
+    scale: 0.99
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    x: 0,
+    scale: 1,
+    transition: {
+      duration: 0.28,
       ease: orbitalEasing,
     },
   },
 };
 
 // =============================================================================
-// PHASE 2: CONTAINER ANIMATIONS (Delayed start after title)
+// PHASE 2: CONTAINER ANIMATIONS
 // =============================================================================
 
-/**
- * Desktop container - waits for title, then staggers children with orbital timing
- */
 export const containerVariant = {
   hidden: {},
   show: {
     transition: {
-      delayChildren: 0.4,        // Wait for title animation
-      staggerChildren: 0.18,     // Sequential orbital reveal
+      delayChildren: 0.1,        // Fast start right after title
+      staggerChildren: 0.07,     // Snappy sequential reveal
     },
   },
 };
 
-/**
- * Mobile container - faster timing for performance
- */
 export const containerVariantMobile = {
   hidden: {},
   show: {
     transition: {
-      delayChildren: 0.25,
-      staggerChildren: 0.12,
+      delayChildren: 0.06,
+      staggerChildren: 0.05,
     },
   },
 };
 
-/**
- * Container with custom timing
- */
-export const createContainerVariant = (delayChildren = 0.5, staggerChildren = 0.15) => ({
+export const createContainerVariant = (delayChildren = 0.1, staggerChildren = 0.06) => ({
   hidden: {},
   show: {
     transition: {
@@ -120,40 +87,14 @@ export const createContainerVariant = (delayChildren = 0.5, staggerChildren = 0.
 });
 
 // =============================================================================
-// CHILD ITEM ANIMATIONS - ORBITAL MOTION
+// CHILD ITEM ANIMATIONS
 // =============================================================================
 
-/**
- * Standard item orbital animation (curves from bottom-left)
- * Creates planetary motion feel
- */
 export const itemVariant = {
   hidden: {
     opacity: 0,
-    y: 50,
-    x: -25,
-    scale: 0.95
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-    x: 0,
-    scale: 1,
-    transition: {
-      duration: 0.65,
-      ease: orbitalEasing,
-    },
-  },
-};
-
-/**
- * Mobile item variant - lighter orbital movement
- */
-export const itemVariantMobile = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-    x: -12,
+    y: 28,
+    x: -14,
     scale: 0.97
   },
   show: {
@@ -162,21 +103,37 @@ export const itemVariantMobile = {
     x: 0,
     scale: 1,
     transition: {
-      duration: 0.5,
+      duration: 0.36,
       ease: orbitalEasing,
     },
   },
 };
 
-/**
- * Orbital slide from left animation
- */
+export const itemVariantMobile = {
+  hidden: {
+    opacity: 0,
+    y: 18,
+    x: -8,
+    scale: 0.98
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    x: 0,
+    scale: 1,
+    transition: {
+      duration: 0.26,
+      ease: orbitalEasing,
+    },
+  },
+};
+
 export const itemSlideLeftVariant = {
   hidden: {
     opacity: 0,
-    x: -50,
-    y: 20,
-    scale: 0.96
+    x: -28,
+    y: 12,
+    scale: 0.98
   },
   show: {
     opacity: 1,
@@ -184,21 +141,18 @@ export const itemSlideLeftVariant = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.6,
+      duration: 0.34,
       ease: orbitalEasing,
     },
   },
 };
 
-/**
- * Orbital slide from right animation
- */
 export const itemSlideRightVariant = {
   hidden: {
     opacity: 0,
-    x: 50,
-    y: 20,
-    scale: 0.96
+    x: 28,
+    y: 12,
+    scale: 0.98
   },
   show: {
     opacity: 1,
@@ -206,42 +160,35 @@ export const itemSlideRightVariant = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.6,
+      duration: 0.34,
       ease: orbitalEasing,
     },
   },
 };
 
-/**
- * Scale-in with subtle orbital drift
- */
 export const itemScaleVariant = {
   hidden: {
     opacity: 0,
-    scale: 0.88,
-    y: 15
+    scale: 0.92,
+    y: 10
   },
   show: {
     opacity: 1,
     scale: 1,
     y: 0,
     transition: {
-      duration: 0.55,
+      duration: 0.32,
       ease: orbitalEasing,
     },
   },
 };
 
-/**
- * Create alternating orbital slide variant based on index
- * Elements alternate coming from left/right for organic feel
- */
 export const getAlternatingSlideVariant = (index) => ({
   hidden: {
     opacity: 0,
-    x: index % 2 === 0 ? -35 : 35,
-    y: 40,
-    scale: 0.95
+    x: index % 2 === 0 ? -20 : 20,
+    y: 22,
+    scale: 0.97
   },
   show: {
     opacity: 1,
@@ -249,20 +196,12 @@ export const getAlternatingSlideVariant = (index) => ({
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.65,
+      duration: 0.36,
       ease: orbitalEasing,
     },
   },
 });
 
-/**
- * Create orbital item variant for specific index
- * Full planetary motion with alternating directions
- *
- * @param {number} index - Item index for direction alternation
- * @param {boolean} isMobile - Use mobile-optimized values
- * @returns Framer Motion variant object
- */
 export const getOrbitalItemVariant = (index, isMobile = false) => {
   const direction = index % 2 === 0 ? -1 : 1;
 
@@ -270,9 +209,9 @@ export const getOrbitalItemVariant = (index, isMobile = false) => {
     return {
       hidden: {
         opacity: 0,
-        y: 30,
-        x: direction * 15,
-        scale: 0.97
+        y: 18,
+        x: direction * 10,
+        scale: 0.98
       },
       show: {
         opacity: 1,
@@ -280,7 +219,7 @@ export const getOrbitalItemVariant = (index, isMobile = false) => {
         x: 0,
         scale: 1,
         transition: {
-          duration: 0.5,
+          duration: 0.28,
           ease: orbitalEasing,
         },
       },
@@ -290,9 +229,9 @@ export const getOrbitalItemVariant = (index, isMobile = false) => {
   return {
     hidden: {
       opacity: 0,
-      y: 55,
-      x: direction * 30,
-      scale: 0.94
+      y: 30,
+      x: direction * 18,
+      scale: 0.96
     },
     show: {
       opacity: 1,
@@ -300,7 +239,7 @@ export const getOrbitalItemVariant = (index, isMobile = false) => {
       x: 0,
       scale: 1,
       transition: {
-        duration: 0.7,
+        duration: 0.38,
         ease: orbitalEasing,
       },
     },
@@ -311,53 +250,57 @@ export const getOrbitalItemVariant = (index, isMobile = false) => {
 // VIEWPORT OPTIONS
 // =============================================================================
 
-/**
- * Standard viewport settings for scroll-triggered animations
- */
 export const viewportOptions = {
   once: true,
-  margin: "-100px",
+  margin: "-60px",
 };
 
-/**
- * Mobile-optimized viewport settings
- */
 export const viewportOptionsMobile = {
   once: true,
-  margin: "-50px",
+  margin: "-30px",
 };
 
 // =============================================================================
-// HOVER & FLOATING ANIMATIONS (Premium enhancements)
+// HOVER & FLOATING ANIMATIONS
 // =============================================================================
 
-/**
- * Card hover with orbital lift effect
- */
 export const cardHoverScale = {
   scale: 1.02,
   y: -3,
-  transition: { duration: 0.3, ease: smoothEasing },
+  transition: { duration: 0.2, ease: smoothEasing },
 };
 
-/**
- * Card hover lift with subtle glow
- */
 export const cardHoverLift = {
-  y: -6,
-  transition: { duration: 0.35, ease: smoothEasing },
+  y: -5,
+  transition: { duration: 0.2, ease: smoothEasing },
 };
 
-/**
- * Subtle floating animation props
- * Use with animate prop for continuous motion after appear
- *
- * Usage:
- * <motion.div {...floatingAnimation} />
- */
 export const floatingAnimation = {
   animate: {
+    y: [0, -5, 0],
+  },
+  transition: {
+    duration: 3.5,
+    repeat: Infinity,
+    ease: "easeInOut",
+  },
+};
+
+export const pulseAnimation = {
+  animate: {
+    scale: [1, 1.02, 1],
+  },
+  transition: {
+    duration: 2.5,
+    repeat: Infinity,
+    ease: "easeInOut",
+  },
+};
+
+export const heroFloatingAnimation = {
+  animate: {
     y: [0, -6, 0],
+    scale: [1, 1.01, 1],
   },
   transition: {
     duration: 4,
@@ -366,43 +309,6 @@ export const floatingAnimation = {
   },
 };
 
-/**
- * Gentle pulse animation for emphasis
- */
-export const pulseAnimation = {
-  animate: {
-    scale: [1, 1.02, 1],
-  },
-  transition: {
-    duration: 3,
-    repeat: Infinity,
-    ease: "easeInOut",
-  },
-};
-
-/**
- * Combined floating + pulse for hero elements
- */
-export const heroFloatingAnimation = {
-  animate: {
-    y: [0, -8, 0],
-    scale: [1, 1.01, 1],
-  },
-  transition: {
-    duration: 5,
-    repeat: Infinity,
-    ease: "easeInOut",
-  },
-};
-
-// =============================================================================
-// RESPONSIVE HELPER
-// =============================================================================
-
-/**
- * Get responsive animation variants based on screen width
- * Usage: const { title, container, item, orbital } = getResponsiveVariants(isMobile);
- */
 export const getResponsiveVariants = (isMobile = false) => ({
   title: isMobile ? titleVariantMobile : titleVariant,
   container: isMobile ? containerVariantMobile : containerVariant,
@@ -411,58 +317,33 @@ export const getResponsiveVariants = (isMobile = false) => ({
   getOrbital: (index) => getOrbitalItemVariant(index, isMobile),
 });
 
-// =============================================================================
-// SECTION WRAPPER COMPONENT HELPERS
-// =============================================================================
-
-/**
- * Default section animation props with orbital timing
- * Use on the outermost section/motion.section element
- */
 export const sectionAnimationProps = {
   initial: "hidden",
   whileInView: "show",
   viewport: viewportOptions,
 };
 
-/**
- * Create animation props with custom viewport
- */
 export const createSectionAnimationProps = (customViewport = viewportOptions) => ({
   initial: "hidden",
   whileInView: "show",
   viewport: customViewport,
 });
 
-// =============================================================================
-// ADVANCED ORBITAL PATTERNS
-// =============================================================================
-
-/**
- * Create a grid item variant with position-based orbital direction
- * Items orbit in from different angles based on their grid position
- *
- * @param {number} index - Item index
- * @param {number} columns - Number of columns in grid
- * @returns Framer Motion variant object
- */
 export const getGridOrbitalVariant = (index, columns = 3) => {
   const row = Math.floor(index / columns);
   const col = index % columns;
 
-  // Determine direction based on position
-  // Left items come from left, right items from right, center from bottom
   let xOffset;
-  if (col === 0) xOffset = -35;
-  else if (col === columns - 1) xOffset = 35;
-  else xOffset = (row % 2 === 0 ? -15 : 15);
+  if (col === 0) xOffset = -20;
+  else if (col === columns - 1) xOffset = 20;
+  else xOffset = (row % 2 === 0 ? -10 : 10);
 
   return {
     hidden: {
       opacity: 0,
-      y: 50,
+      y: 28,
       x: xOffset,
-      scale: 0.94
+      scale: 0.96
     },
     show: {
       opacity: 1,
@@ -470,31 +351,23 @@ export const getGridOrbitalVariant = (index, columns = 3) => {
       x: 0,
       scale: 1,
       transition: {
-        duration: 0.65,
+        duration: 0.36,
         ease: orbitalEasing,
       },
     },
   };
 };
 
-/**
- * Radial orbital variant - items orbit in from a center point
- * Creates a "starburst" effect
- *
- * @param {number} index - Item index
- * @param {number} total - Total number of items
- * @returns Framer Motion variant object
- */
 export const getRadialOrbitalVariant = (index, total) => {
-  const angle = (index / total) * Math.PI * 2; // Distribute around circle
-  const distance = 60;
+  const angle = (index / total) * Math.PI * 2;
+  const distance = 40;
 
   return {
     hidden: {
       opacity: 0,
       x: Math.cos(angle) * distance,
-      y: Math.sin(angle) * distance + 30, // Add downward offset
-      scale: 0.9
+      y: Math.sin(angle) * distance + 20,
+      scale: 0.93
     },
     show: {
       opacity: 1,
@@ -502,7 +375,7 @@ export const getRadialOrbitalVariant = (index, total) => {
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.7,
+        duration: 0.38,
         ease: orbitalEasing,
       },
     },

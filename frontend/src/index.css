@@ -1606,6 +1606,47 @@ body {
     }
 }
 
+/* Navigation-specific: keep nav links text-only (no background square) */
+nav .max-w-7xl .glow-btn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+nav .max-w-7xl .glow-btn:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+nav .max-w-7xl .glow-btn:focus {
+    box-shadow: none !important;
+}
+
+/* Broader header rule: remove background/border/shadow for any button or link in the main header row */
+nav .max-w-7xl button,
+nav .max-w-7xl a,
+nav .max-w-7xl .relative>button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: inherit !important;
+}
+
+/* Preserve hover text accent but avoid visual transform or glow in header */
+nav .max-w-7xl button:hover,
+nav .max-w-7xl a:hover,
+nav .max-w-7xl .relative>button:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Ensure dropdown toggle stays visually accessible without filled background */
+nav .max-w-7xl .relative>button {
+    padding-left: 0.6rem !important;
+    padding-right: 0.6rem !important;
+}
+
 /* make ds-card feel cosmic */
 .ds-card {
     background: linear-gradient(180deg, rgba(10, 12, 20, 0.6), rgba(8, 10, 18, 0.5));

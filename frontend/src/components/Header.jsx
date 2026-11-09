@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { ChevronDown, Server, Brain, Menu, X } from 'lucide-react';
+import { ChevronDown, Infinity, Brain, Menu, X, Sparkles } from 'lucide-react';
 import { MODES, modeInfo } from '../data/data';
 import { getOptimizedImagePath } from '../utils/imageOptimization';
 
@@ -165,7 +165,7 @@ export default function Header({
                                                 : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 focus:ring-gray-500'
                                                 }`}
                                         >
-                                            {mode === MODES.DEVOPS ? <Server size={16} /> : <Brain size={16} />}
+                                            {mode === MODES.DEVOPS ? <Infinity size={16} /> : <Brain size={16} />}
                                             <span>{info.label}</span>
                                         </button>
                                     ))}
@@ -178,6 +178,17 @@ export default function Header({
                                 </div>
                             )}
                         </div>
+
+                        {/* Interactive Tour Guide button */}
+                        <button
+                            type="button"
+                            onClick={() => window.startPortfolioTour && window.startPortfolioTour()}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/10 hover:bg-cyan-500/20 ${accentColor} border border-cyan-500/30 transition-all hover:scale-105 active:scale-95`}
+                            title="Start Guided Interactive Tour"
+                        >
+                            <Sparkles size={14} className={accentColor} />
+                            <span>Tour Guide</span>
+                        </button>
 
                         {/* Book a Discovery Call */}
                         <button
@@ -243,15 +254,26 @@ export default function Header({
                                         : 'bg-gray-800/50 text-gray-300 active:bg-gray-700/50'
                                         }`}
                                 >
-                                    {mode === MODES.DEVOPS ? <Server size={16} className="xs:w-[18px] xs:h-[18px]" /> : <Brain size={16} className="xs:w-[18px] xs:h-[18px]" />}
+                                    {mode === MODES.DEVOPS ? <Infinity size={16} className="xs:w-[18px] xs:h-[18px]" /> : <Brain size={16} className="xs:w-[18px] xs:h-[18px]" />}
                                     <span>{info.label}</span>
                                 </button>
                             ))}
                         </div>
                     </div>
 
-                    {/* Book Discovery Call - safe bottom padding for mobile */}
-                    <div className="px-4 xs:px-6 py-4 mt-auto mb-6 xs:mb-8 pb-safe">
+                    {/* Tour Guide & Book Discovery Call */}
+                    <div className="px-4 xs:px-6 py-4 mt-auto mb-6 xs:mb-8 pb-safe flex flex-col gap-2">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setMobileMenuOpen(false);
+                                if (window.startPortfolioTour) window.startPortfolioTour();
+                            }}
+                            className={`w-full py-2.5 rounded-lg border border-cyan-500/40 text-cyan-300 bg-cyan-500/10 font-semibold text-sm flex items-center justify-center gap-2 active:scale-95`}
+                        >
+                            <Sparkles size={16} />
+                            <span>Start Guided Tour</span>
+                        </button>
                         <button
                             onClick={() => handleNavClick('discovery')}
                             className={`w-full py-2.5 xs:py-3 ${bgAccent} text-gray-900 rounded-lg font-semibold text-sm xs:text-base text-center touch-manipulation active:opacity-90`}

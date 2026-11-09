@@ -54,8 +54,21 @@ export default function Education({ isVisible, education = [], themeColor = 'cya
               )}
               {edu.program && <div className="text-gray-400 text-xs sm:text-sm mb-1">{edu.program}</div>}
               <div className="text-gray-400 text-xs sm:text-sm mb-2">{edu.location} • {edu.period}</div>
-              {(edu.cgpa || edu.gpa) && <div className="text-gray-300 text-xs sm:text-sm">CGPA: {edu.cgpa || edu.gpa}</div>}
-              {edu.project && <div className="text-gray-300 text-xs sm:text-sm mt-2">Graduation Project: {edu.project}</div>}
+              {(edu.cgpa || edu.gpa) && (
+                <div className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${themeColor === 'purple' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'} mb-2`}>
+                  CGPA: {edu.cgpa || edu.gpa}
+                </div>
+              )}
+              {edu.highlights && <div className="text-gray-300 text-xs sm:text-sm mt-1 mb-1">{edu.highlights}</div>}
+              {edu.project && <div className="text-gray-300 text-xs sm:text-sm mt-1"><strong className="text-white">Graduation Project:</strong> {edu.project}</div>}
+              {edu.coursework && (
+                <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                  <span className="text-xs text-gray-400">Coursework:</span>
+                  {edu.coursework.map((c, i) => (
+                    <span key={i} className="text-[11px] px-2 py-0.5 rounded bg-gray-800/80 text-gray-300 border border-gray-700/50">{c}</span>
+                  ))}
+                </div>
+              )}
             </motion.div>
           ))}
         </motion.div>

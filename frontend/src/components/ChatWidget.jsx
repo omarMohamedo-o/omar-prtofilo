@@ -1,14 +1,60 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaPaperPlane, FaRobot, FaWhatsapp, FaPaperclip, FaMicrophone, FaStop, FaPlay, FaPause, FaTrash, FaUser } from 'react-icons/fa';
+import { Sparkles } from 'lucide-react';
 import { sendTextMessage, sendImageMessage, uploadFile, transcribeAudio } from '../services/chatbotService';
 import SpeakerButton from './ChatTTS';
 import DownArrowButton from './DownArrowButton';
+
+function FormattedMessageText({ text }) {
+    if (!text) return null;
+    const lines = text.split('\n');
+    return (
+        <div className="space-y-1.5 leading-relaxed">
+            {lines.map((line, i) => {
+                const trimmed = line.trim();
+                if (!trimmed) return <div key={i} className="h-1.5" />;
+                const isBullet = trimmed.startsWith('•') || trimmed.startsWith('-') || trimmed.startsWith('* ');
+                const cleanLine = isBullet ? trimmed.replace(/^[•\-\*]\s*/, '') : line;
+                const parts = cleanLine.split(/(\*\*.*?\*\*)/g);
+
+                return (
+                    <div key={i} className={isBullet ? 'flex items-start gap-1.5 pl-1 text-[13px]' : 'text-[13px]'}>
+                        {isBullet && <span className="text-cyan-400 font-bold flex-shrink-0 mt-0.5">▹</span>}
+                        <div>
+                            {parts.map((part, pIdx) => {
+                                if (part.startsWith('**') && part.endsWith('**')) {
+                                    return <strong key={pIdx} className="font-semibold text-cyan-300">{part.slice(2, -2)}</strong>;
+                                }
+                                return part;
+                            })}
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
+const SUGGESTED_PROMPTS = [
+    { label: "🏢 PlayerHub & CliniSoft", query: "Tell me about Omar's experience at PlayerHub and CliniSoft" },
+    { label: "🏛️ HistoryVerse (A+)", query: "What is HistoryVerse and what technologies does it use?" },
+    { label: "⚡ AI & MLOps Skills", query: "What are Omar's core AI, LLM, and MLOps skills?" },
+    { label: "🎓 Education & RHCSA", query: "Tell me about Omar's education, GPA, and certifications" },
+    { label: "📬 Contact Omar", query: "How can I contact Omar?" },
+    { label: "🇪🇬 تحدث بالعربية", query: "حدثني عن خبرات عمر جاد ومشاريع الذكاء الاصطناعي" }
+];
 
 export default function ChatWidget() {
     const [open, setOpen] = useState(false);
     const [showNotice, setShowNotice] = useState(true);
     const [value, setValue] = useState('');
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([
+        {
+            id: 1,
+            from: 'bot',
+            text: "👋 Hi! I'm **MORA**, Omar Gad's personal AI Assistant.\n\nAsk me anything about Omar's live production work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse** (A+) project, his **MLOps & LLM skills**, education, or how to contact him!"
+        }
+    ]);
     const [isLoading, setIsLoading] = useState(false);
     const [uploadedFile, setUploadedFile] = useState(null);
     const [recording, setRecording] = useState(false);
@@ -74,6 +120,35 @@ export default function ChatWidget() {
                 id: Date.now() + 1,
                 from: 'bot',
                 text: 'Sorry, I\'m having trouble connecting. Please try again later.'
+            }]);
+            setLastMessageSender('bot');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleSuggestedPrompt = async (queryText) => {
+        if (isLoading) return;
+        const userMsg = { id: Date.now(), from: 'user', text: queryText };
+        setMessages(prev => [...prev, userMsg]);
+        setLastMessageSender('user');
+        setIsLoading(true);
+
+        try {
+            const response = await sendTextMessage(queryText, false);
+            const botAnswer = response.Answer || response.answer || 'Sorry, I could not process your request.';
+            setMessages(prev => [...prev, {
+                id: Date.now() + 1,
+                from: 'bot',
+                text: botAnswer
+            }]);
+            setLastMessageSender('bot');
+        } catch (error) {
+            console.error('Error communicating with chatbot:', error);
+            setMessages(prev => [...prev, {
+                id: Date.now() + 1,
+                from: 'bot',
+                text: "I'm MORA, Omar Gad's AI Assistant. Feel free to ask about his projects, skills, or experience!"
             }]);
             setLastMessageSender('bot');
         } finally {
@@ -776,7 +851,9 @@ export default function ChatWidget() {
                                     <VoiceMessagePlayer msg={m} />
                                 ) : (
                                     <>
-                                        <div className="chat-text">{m.text}</div>
+                                        <div className="chat-text">
+                                            <FormattedMessageText text={m.text} />
+                                        </div>
                                         {m.from === 'bot' && (
                                             <SpeakerButton text={m.text} />
                                         )}
@@ -795,6 +872,21 @@ export default function ChatWidget() {
                                 </div>
                             </div>
                         )}
+                    </div>
+
+                    {/* Quick suggested prompt chips */}
+                    <div className="chat-suggested-chips flex items-center gap-1.5 px-3 py-2 overflow-x-auto no-scrollbar border-t border-gray-800/80 bg-[#080b18]">
+                        {SUGGESTED_PROMPTS.map((sp, idx) => (
+                            <button
+                                key={idx}
+                                type="button"
+                                onClick={() => handleSuggestedPrompt(sp.query)}
+                                disabled={isLoading}
+                                className="whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-medium bg-gray-800/70 hover:bg-cyan-950/80 text-gray-300 hover:text-cyan-300 border border-gray-700/60 hover:border-cyan-500/50 transition-all flex-shrink-0 active:scale-95 cursor-pointer"
+                            >
+                                {sp.label}
+                            </button>
+                        ))}
                     </div>
 
                     <div className="chat-input">

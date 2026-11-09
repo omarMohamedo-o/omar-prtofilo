@@ -103,27 +103,25 @@ services:
         max-file: "5"
 
   # ==========================================
-  # Frontend Mailer Service (Discovery Form)
+  # Backend Mailer Service (Discovery Form)
   # ==========================================
-  frontend-mailer:
+  backend:
     build:
-      context: ./frontend/mailer
+      context: ./backend
       dockerfile: Dockerfile
-    image: mora-portfolio/frontend-mailer:latest
-    container_name: mora-frontend-mailer
+    image: mora-portfolio/backend:latest
+    container_name: mora-backend
     restart: unless-stopped
     networks:
       - mora-network
+    env_file:
+      - ./backend/.env
     environment:
       - NODE_ENV=production
-      - PORT=8787
-      - SENDGRID_API_KEY=${SENDGRID_API_KEY:-}
-      - FROM_EMAIL=${FROM_EMAIL:-no-reply@example.com}
-      - TO_EMAIL=${TO_EMAIL:-}
-      - TEST_EMAIL_MODE=1
-    # Mailer listens on container port defined by PORT (default 8787)
+      - PORT=8000
+    # Mailer listens on container port 8000
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8787/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -171,10 +169,8 @@ services:
       # - ./nginx/ssl:/etc/nginx/ssl:ro
       - nginx_logs:/var/log/nginx
     depends_on:
-      frontend:
-        condition: service_healthy
-      frontend-mailer:
-        condition: service_healthy
+      - frontend
+      - backend
       # `morabot` is intentionally optional so the frontend can still load
       # when the chatbot is down or restarting.
     # Nginx serves on container port 80; check that endpoint internally.

@@ -18,6 +18,7 @@ import ChatWidget from './ChatWidget';
 import UpArrowButton from './UpArrowButton';
 import DiscoveryForm from './DiscoveryForm';
 import SpaceBackground from './SpaceBackground';
+import InteractiveTour from './InteractiveTour';
 
 // Import data with mode support
 import { MODES, getPortfolioData } from '../data/data';
@@ -142,9 +143,9 @@ const styles = `
   .stagger-11 { animation-delay: 0.75s; }
   .stagger-12 { animation-delay: 0.82s; }
 
-  /* Smooth transitions (excluding transforms which are handled by animations) */
-  * {
-    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  /* Scoped smooth transitions on interactive controls only (avoids global reflow jank) */
+  a, button, input, textarea, select, .glow-btn, .ds-card {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
   
   /* Ensure cards start invisible before animation */
@@ -388,6 +389,9 @@ export default function Portfolio() {
 
       {/* Up arrow (above chat widget) */}
       <UpArrowButton />
+
+      {/* Interactive Animated Guide & Tour */}
+      <InteractiveTour />
 
       {/* Chat Widget */}
       <ChatWidget />
