@@ -15,10 +15,11 @@ export default function UpArrowButton({ className = '' }) {
         }
     };
 
+    // Position UpArrowButton cleanly above the WhatsApp FAB on the left side with 0 overlap
     const arrowStyle = {
-        left: isRTL ? 'auto' : 24,
-        right: isRTL ? 24 : 'auto',
-        bottom: 24,
+        left: 24,
+        right: 'auto',
+        bottom: 92, // 24px (FAB bottom) + 56px (FAB height) + 12px (clean gap) = 92px
         transition: 'opacity .25s, transform .2s'
     };
 

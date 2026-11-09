@@ -1093,13 +1093,13 @@ export default function ChatWidget() {
                                             ⚙️
                                         </div>
                                     </div>
-                                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-white dark:border-slate-900 animate-pulse" />
+                                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-slate-900 animate-pulse" />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight">
+                                    <span className="text-sm font-bold text-slate-100 tracking-tight">
                                         {t('needHelpTitle')}
                                     </span>
-                                    <span className="text-[10px] text-slate-500 dark:text-cyan-400/80 font-medium">
+                                    <span className="text-[10px] text-cyan-400 font-medium">
                                         {t('needHelpSubtitle')}
                                     </span>
                                 </div>
@@ -1108,7 +1108,7 @@ export default function ChatWidget() {
                             <button
                                 type="button"
                                 onClick={() => window.dispatchEvent(new CustomEvent('start-portfolio-tour'))}
-                                className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30 font-semibold transition-colors"
+                                className="text-[10px] px-2.5 py-0.5 rounded-full bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-400/40 font-semibold transition-colors shadow-sm"
                                 title={t('tourGuide')}
                             >
                                 {t('needHelpTourBtn')}
@@ -1121,10 +1121,10 @@ export default function ChatWidget() {
                             <button
                                 type="button"
                                 onClick={() => setOpen(true)}
-                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full border border-teal-600/50 dark:border-cyan-400/60 bg-teal-50/60 dark:bg-cyan-950/40 hover:bg-teal-100/70 dark:hover:bg-cyan-900/50 text-teal-700 dark:text-cyan-300 font-semibold text-xs transition-all shadow-sm group/ask"
+                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full border border-cyan-400/50 bg-cyan-950/60 hover:bg-cyan-900/60 text-cyan-300 font-semibold text-xs transition-all shadow-sm group/ask"
                                 title={t('needHelpAskTitle')}
                             >
-                                <FaPhoneAlt size={10} className="text-teal-600 dark:text-cyan-400 -rotate-12 group-hover/ask:rotate-0 transition-transform" />
+                                <FaPhoneAlt size={10} className="text-cyan-400 -rotate-12 group-hover/ask:rotate-0 transition-transform" />
                                 <span>{t('needHelpAskAnything')}</span>
                             </button>
 
@@ -1133,7 +1133,7 @@ export default function ChatWidget() {
                                 type="button"
                                 ref={fabRef}
                                 onClick={() => setOpen(true)}
-                                className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-cyan-300 flex items-center justify-center transition-transform hover:scale-110 shadow-sm"
+                                className="w-9 h-9 rounded-full border border-slate-700 bg-slate-800/90 hover:bg-slate-700 text-cyan-300 flex items-center justify-center transition-transform hover:scale-110 shadow-sm"
                                 title={t('needHelpChatAria')}
                                 aria-label={t('needHelpChatAria')}
                             >
@@ -1146,7 +1146,7 @@ export default function ChatWidget() {
                                 onClick={() => {
                                     window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: true } }));
                                 }}
-                                className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-cyan-300 flex items-center justify-center transition-transform hover:scale-110 shadow-sm text-sm"
+                                className="w-9 h-9 rounded-full border border-slate-700 bg-slate-800/90 hover:bg-slate-700 text-cyan-300 flex items-center justify-center transition-transform hover:scale-110 shadow-sm text-sm"
                                 title={t('needHelp3DGuideAria')}
                                 aria-label={t('needHelp3DGuideAria')}
                             >
