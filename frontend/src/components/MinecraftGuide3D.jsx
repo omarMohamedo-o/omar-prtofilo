@@ -1261,9 +1261,8 @@ export default function MinecraftGuide3D({ onStartTour }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.92 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className={`fixed bottom-6 right-6 z-50 flex flex-col font-mono transition-all duration-300 ${
-                isMinimized ? 'w-[280px]' : 'w-[360px] sm:w-[410px]'
-            }`}
+            className={`fixed bottom-6 right-6 z-50 flex flex-col font-mono transition-all duration-300 ${isMinimized ? 'w-[280px]' : 'w-[360px] sm:w-[410px]'
+                }`}
         >
             {/* Minecraft Window Container with authentic retro pixel styling */}
             <div className="relative rounded-2xl bg-[#0f172a]/95 border-2 border-cyan-500/50 shadow-[0_12px_45px_rgba(6,182,212,0.25),0_0_0_1px_rgba(255,255,255,0.06)] backdrop-blur-xl overflow-hidden flex flex-col">
@@ -1293,11 +1292,10 @@ export default function MinecraftGuide3D({ onStartTour }) {
                     <div className="flex items-center gap-1">
                         <button
                             onClick={() => setVoiceEnabled(!voiceEnabled)}
-                            className={`p-1.5 rounded-lg border transition-colors ${
-                                voiceEnabled
-                                    ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300'
-                                    : 'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-slate-200'
-                            }`}
+                            className={`p-1.5 rounded-lg border transition-colors ${voiceEnabled
+                                ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300'
+                                : 'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-slate-200'
+                                }`}
                             title={voiceEnabled ? 'Mute Speech' : 'Enable Speech Voice'}
                         >
                             {voiceEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
@@ -1428,11 +1426,10 @@ export default function MinecraftGuide3D({ onStartTour }) {
                                         </div>
                                     )}
                                     <div
-                                        className={`rounded-xl px-3 py-2 max-w-[85%] leading-relaxed ${
-                                            m.from === 'user'
-                                                ? 'bg-cyan-600 text-white rounded-tr-none'
-                                                : 'bg-slate-900/90 border border-cyan-500/20 text-slate-200 rounded-tl-none'
-                                        }`}
+                                        className={`rounded-xl px-3 py-2 max-w-[85%] leading-relaxed ${m.from === 'user'
+                                            ? 'bg-cyan-600 text-white rounded-tr-none'
+                                            : 'bg-slate-900/90 border border-cyan-500/20 text-slate-200 rounded-tl-none'
+                                            }`}
                                     >
                                         <p className="whitespace-pre-wrap">{m.text}</p>
                                     </div>

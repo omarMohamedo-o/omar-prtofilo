@@ -125,7 +125,7 @@ export default function Header({
                     {/* Left: Logo */}
                     <div className="flex items-center">
                         <img
-                            src={getOptimizedImagePath(currentMode === MODES.DEVOPS ? "/images/me/OmarsLogo-dev.svg" : currentMode === MODES.MLNLP ? "/images/me/OmarsLogo-ml.svg" : "/images/me/Omar'sLogo.svg")}
+                            src={getOptimizedImagePath(currentMode === MODES.DEVOPS ? "/images/me/OmarsLogo-dev.svg" : currentMode === MODES.MLNLP ? "/images/me/OmarsLogo-ml.svg" : "/images/me/OmarsLogo.svg")}
                             alt={currentMode === MODES.DEVOPS ? "Omar - DevOps Logo" : currentMode === MODES.MLNLP ? "Omar - ML Logo" : "Omar's Logo"}
                             className="h-8 md:h-10 cursor-pointer nav-logo object-contain"
                             onClick={() => handleNavClick('home')}

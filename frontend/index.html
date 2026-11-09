@@ -532,15 +532,235 @@
     </script>
 
     <style>
-        @keyframes spinLoader {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* ========================================================
+           Water Filling Logo / Cup Loading Animation Styles
+           ======================================================== */
+        @keyframes fillCupWater {
+            0% { height: 0%; }
+            12% { height: 14%; }
+            28% { height: 35%; }
+            48% { height: 58%; }
+            68% { height: 78%; }
+            86% { height: 92%; }
+            100% { height: 100%; }
         }
-        @keyframes progressPulse {
-            0% { transform: translateX(-100%); }
-            50% { transform: translateX(0); }
-            100% { transform: translateX(100%); }
+
+        @keyframes waveMoveFront {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
+
+        @keyframes waveMoveBack {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes streamWobble {
+            0% { transform: scaleX(1) translateX(0); opacity: 0.95; }
+            50% { transform: scaleX(0.85) translateX(0.5px); opacity: 1; }
+            100% { transform: scaleX(1.1) translateX(-0.5px); opacity: 0.9; }
+        }
+
+        @keyframes streamFadeOut {
+            0%, 75% { opacity: 1; transform: scaleY(1); }
+            92% { opacity: 0.5; transform: scaleY(0.6); }
+            100% { opacity: 0; transform: scaleY(0); }
+        }
+
+        @keyframes splashRipple {
+            0% { transform: translateX(-50%) scale(0.6); opacity: 0.9; }
+            50% { transform: translateX(-50%) scale(1.15); opacity: 1; }
+            100% { transform: translateX(-50%) scale(0.8); opacity: 0.85; }
+        }
+
+        @keyframes bubbleFloat {
+            0% { transform: translateY(100%) scale(0.5); opacity: 0; }
+            30% { opacity: 0.85; }
+            80% { opacity: 0.9; }
+            100% { transform: translateY(-40px) scale(1.1); opacity: 0; }
+        }
+
+        @keyframes cupGlowPulse {
+            0%, 100% { box-shadow: 0 12px 35px -5px rgba(2, 132, 199, 0.35), inset 0 0 25px rgba(6, 182, 212, 0.15), 0 0 18px rgba(6, 182, 212, 0.25); }
+            50% { box-shadow: 0 14px 45px -4px rgba(2, 132, 199, 0.5), inset 0 0 35px rgba(6, 182, 212, 0.25), 0 0 28px rgba(56, 189, 248, 0.4); }
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.15); }
+        }
+
+        .water-cup-wrapper {
+            position: relative;
+            width: 210px;
+            height: 185px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 22px;
+        }
+
+        .water-cup-glass {
+            position: absolute;
+            inset: 0;
+            border-radius: 14px 14px 44px 44px;
+            border: 2px solid rgba(56, 189, 248, 0.45);
+            border-top: 2px solid rgba(56, 189, 248, 0.8);
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            animation: cupGlowPulse 2.4s ease-in-out infinite;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .cup-glass-highlight {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            width: 5px;
+            height: 110px;
+            border-radius: 9999px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 80%, transparent 100%);
+            z-index: 12;
+            pointer-events: none;
+        }
+
+        .water-stream-pour {
+            position: relative;
+            width: 6px;
+            height: 65px;
+            margin-bottom: -6px;
+            z-index: 20;
+        }
+
+        .water-stream-line {
+            width: 100%;
+            height: 100%;
+            border-radius: 9999px;
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0) 0%, rgba(56, 189, 248, 0.85) 30%, #06b6d4 75%, #38bdf8 100%);
+            box-shadow: 0 0 14px rgba(6, 182, 212, 0.95);
+            animation: streamWobble 0.7s ease-in-out infinite alternate, streamFadeOut 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .logo-dry-layer {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .logo-cup-img {
+            width: 155px;
+            height: auto;
+            max-height: 125px;
+            object-fit: contain;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .logo-dry-layer .logo-cup-img {
+            opacity: 0.18;
+            filter: grayscale(100%) brightness(0.65) drop-shadow(0 0 2px rgba(6, 182, 212, 0.3));
+        }
+
+        .liquid-fill-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+            border-radius: 0 0 42px 42px;
+            height: 0%;
+            animation: fillCupWater 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .liquid-tint-body {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.32) 0%, rgba(6, 182, 212, 0.48) 50%, rgba(3, 105, 161, 0.75) 100%);
+        }
+
+        .wave-surface-box {
+            position: absolute;
+            top: -14px;
+            left: 0;
+            width: 200%;
+            height: 28px;
+            pointer-events: none;
+            z-index: 8;
+        }
+
+        .wave-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .wave-svg.wave-back {
+            fill: rgba(6, 182, 212, 0.7);
+            animation: waveMoveBack 2.8s linear infinite;
+        }
+
+        .wave-svg.wave-front {
+            fill: rgba(56, 189, 248, 0.9);
+            animation: waveMoveFront 1.8s linear infinite;
+        }
+
+        .stream-splash-ring {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 26px;
+            height: 9px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.95) 0%, rgba(56, 189, 248, 0.75) 40%, transparent 80%);
+            filter: blur(0.5px);
+            z-index: 9;
+            animation: splashRipple 0.35s ease-in-out infinite alternate;
+        }
+
+        .logo-wet-layer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 210px;
+            height: 185px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .logo-wet-layer .logo-cup-img {
+            opacity: 1;
+            filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.95)) drop-shadow(0 0 25px rgba(6, 182, 212, 0.75)) brightness(1.25);
+        }
+
+        /* Micro Bubbles */
+        .bubble-item {
+            position: absolute;
+            bottom: -8px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(56, 189, 248, 0.5));
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.9);
+            pointer-events: none;
+            z-index: 6;
+        }
+        .b-1 { left: 22%; width: 6px; height: 6px; animation: bubbleFloat 2.1s ease-in infinite 0.2s; }
+        .b-2 { left: 45%; width: 9px; height: 9px; animation: bubbleFloat 2.6s ease-in infinite 0.7s; }
+        .b-3 { left: 68%; width: 5px; height: 5px; animation: bubbleFloat 1.9s ease-in infinite 0.4s; }
+        .b-4 { left: 82%; width: 8px; height: 8px; animation: bubbleFloat 2.4s ease-in infinite 1.1s; }
+        .b-5 { left: 34%; width: 7px; height: 7px; animation: bubbleFloat 2.2s ease-in infinite 1.5s; }
     </style>
 </head>
 
@@ -550,30 +770,124 @@
       Contains over 4,500 words of rich technical context, case studies, comparative analysis matrices, how-to guides, glossary, and direct Q&A answers.
       React mounts on #root and hydrates client-side interactions.
     -->
-    <div id="root">
-        <!-- Instant Branded Pre-hydration Loading State (Visible to human visitors while React/3D bundle compiles) -->
-        <div id="app-loading-screen" style="position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #030712; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; z-index: 99999;">
-            <!-- Background subtle glow -->
-            <div style="position: absolute; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, transparent 70%); filter: blur(50px); pointer-events: none;"></div>
-            
-            <!-- Animated Logo / Spinner -->
-            <div style="position: relative; width: 72px; height: 72px; margin-bottom: 22px; display: flex; align-items: center; justify-content: center;">
-                <div style="position: absolute; inset: 0; border-radius: 50%; border: 2.5px solid rgba(6, 182, 212, 0.15); border-top-color: #06b6d4; animation: spinLoader 0.9s linear infinite;"></div>
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #0891b2, #0284c7); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; color: #ffffff; box-shadow: 0 0 25px rgba(6, 182, 212, 0.45); letter-spacing: -0.03em;">
-                    OM
+
+    <!-- Instant Branded Pre-hydration Loading State (Water pouring into cup with Omar's Logo) -->
+    <div id="app-loading-screen" style="position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #030712; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; z-index: 999999; overflow: hidden;">
+        <!-- Background subtle radial glow -->
+        <div style="position: absolute; width: 440px; height: 440px; border-radius: 50%; background: radial-gradient(circle, rgba(6, 182, 212, 0.16) 0%, rgba(2, 132, 199, 0.08) 50%, transparent 70%); filter: blur(60px); pointer-events: none;"></div>
+
+        <!-- Water Stream being poured into the cup from above -->
+        <div class="water-stream-pour">
+            <div class="water-stream-line"></div>
+        </div>
+
+        <!-- The Glass Cup / Vessel Holding Omar's Logo -->
+        <div class="water-cup-wrapper">
+            <!-- Glass cup highlight & reflection -->
+            <div class="cup-glass-highlight"></div>
+
+            <!-- Dry / Unfilled Logo (Dimmed Outline Silhouette) -->
+            <div class="logo-dry-layer">
+                <img src="/images/me/OmarsLogo.svg" alt="Omar Mohamed" class="logo-cup-img" />
+            </div>
+
+            <!-- Rising Water / Liquid Layer -->
+            <div class="liquid-fill-container">
+                <!-- Liquid gradient body tint -->
+                <div class="liquid-tint-body"></div>
+
+                <!-- Rising micro-bubbles -->
+                <div class="bubble-item b-1"></div>
+                <div class="bubble-item b-2"></div>
+                <div class="bubble-item b-3"></div>
+                <div class="bubble-item b-4"></div>
+                <div class="bubble-item b-5"></div>
+
+                <!-- Moving Wave Crests at the liquid surface -->
+                <div class="wave-surface-box">
+                    <svg class="wave-svg wave-back" viewBox="0 0 1000 120" preserveAspectRatio="none">
+                        <path d="M 0,35 C 150,75 350,0 500,35 C 650,70 850,5 1000,35 L 1000,120 L 0,120 Z"></path>
+                    </svg>
+                    <svg class="wave-svg wave-front" viewBox="0 0 1000 120" preserveAspectRatio="none">
+                        <path d="M 0,20 C 180,-15 320,60 520,20 C 720,-15 860,60 1000,20 L 1000,120 L 0,120 Z"></path>
+                    </svg>
+                </div>
+
+                <!-- Splash ripple at stream contact point -->
+                <div class="stream-splash-ring"></div>
+
+                <!-- Wet / Submerged Glowing Logo (revealed as water rises) -->
+                <div class="logo-wet-layer">
+                    <img src="/images/me/OmarsLogo.svg" alt="Omar Mohamed" class="logo-cup-img" />
                 </div>
             </div>
-            
-            <!-- Title & Subtitle -->
-            <div style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #f8fafc; margin-bottom: 5px;">Omar Mohamed</div>
-            <div style="font-size: 12.5px; font-weight: 600; color: #38bdf8; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 22px;">AI & MLOps Specialist</div>
-            
-            <!-- High-tech Progress Bar -->
-            <div style="width: 190px; height: 3px; background-color: rgba(255, 255, 255, 0.08); border-radius: 9999px; overflow: hidden; position: relative;">
-                <div style="position: absolute; inset: 0; background: linear-gradient(90deg, #06b6d4, #38bdf8); border-radius: 9999px; animation: progressPulse 1.4s ease-in-out infinite;"></div>
-            </div>
-            <div style="margin-top: 14px; font-size: 11px; font-family: monospace; color: #64748b; letter-spacing: 0.03em;">Initializing neural workspace...</div>
+
+            <!-- Glass Cup Outer Rim and Beaker Border -->
+            <div class="water-cup-glass"></div>
         </div>
+
+        <!-- Title & Subtitle -->
+        <div style="font-size: 23px; font-weight: 700; letter-spacing: -0.02em; color: #f8fafc; margin-bottom: 5px;">Omar Mohamed</div>
+        <div style="font-size: 12.5px; font-weight: 600; color: #38bdf8; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 22px;">AI & MLOps Specialist</div>
+
+        <!-- High-tech Liquid Progress Bar -->
+        <div style="width: 210px; height: 3.5px; background-color: rgba(255, 255, 255, 0.08); border-radius: 9999px; overflow: hidden; position: relative;">
+            <div class="loader-progress-fill" style="position: absolute; top: 0; bottom: 0; left: 0; width: 0%; background: linear-gradient(90deg, #06b6d4, #38bdf8); border-radius: 9999px; box-shadow: 0 0 12px rgba(6, 182, 212, 0.85); transition: width 0.05s linear;"></div>
+        </div>
+
+        <!-- Loading Status with Live Percentage -->
+        <div style="margin-top: 14px; font-size: 11.5px; font-family: monospace; color: #94a3b8; letter-spacing: 0.04em; display: flex; align-items: center; gap: 8px;">
+            <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: #38bdf8; box-shadow: 0 0 8px #38bdf8; animation: pulseDot 1.2s ease-in-out infinite;"></span>
+            <span>Pouring neural workspace... <span id="loader-percent" style="color: #38bdf8; font-weight: 700;">0%</span></span>
+        </div>
+    </div>
+
+    <!-- Smooth Dismiss Script: ensures full 2.2s water fill before graceful fade-out -->
+    <script>
+        (function() {
+            var startTime = Date.now();
+            var minDisplayTime = 2200;
+            var percentEl = document.getElementById('loader-percent');
+            var progressFill = document.querySelector('.loader-progress-fill');
+
+            var interval = setInterval(function() {
+                var elapsed = Date.now() - startTime;
+                var pct = Math.min(100, Math.round((elapsed / 2200) * 100));
+                if (percentEl) percentEl.textContent = pct + '%';
+                if (progressFill) progressFill.style.width = pct + '%';
+                if (pct >= 100) clearInterval(interval);
+            }, 35);
+
+            function dismissLoader() {
+                var loader = document.getElementById('app-loading-screen');
+                if (!loader || loader.getAttribute('data-dismissed')) return;
+                loader.setAttribute('data-dismissed', 'true');
+                var elapsed = Date.now() - startTime;
+                var remaining = Math.max(0, minDisplayTime - elapsed);
+                setTimeout(function() {
+                    if (percentEl) percentEl.textContent = '100%';
+                    if (progressFill) progressFill.style.width = '100%';
+                    loader.style.transition = 'opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1), transform 0.65s cubic-bezier(0.4, 0, 0.2, 1)';
+                    loader.style.opacity = '0';
+                    loader.style.transform = 'scale(1.03)';
+                    setTimeout(function() {
+                        if (loader && loader.parentNode) {
+                            loader.parentNode.removeChild(loader);
+                        }
+                    }, 700);
+                }, remaining);
+            }
+
+            if (document.readyState === 'complete') {
+                dismissLoader();
+            } else {
+                window.addEventListener('load', dismissLoader);
+                setTimeout(dismissLoader, 4500);
+            }
+        })();
+    </script>
+
+    <div id="root">
 
         <!-- Pre-rendered Semantic HTML for AI Engine Crawlers & AEO/GEO Indexers (Off-screen, 100% crawlable) -->
         <div style="position: absolute; left: -9999px; top: 0; width: 1px; height: 1px; overflow: hidden;" aria-hidden="false">

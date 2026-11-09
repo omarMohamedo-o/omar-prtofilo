@@ -851,16 +851,16 @@ export default function ChatWidget() {
             </a>
 
             <div className="chat-widget" aria-hidden={false} ref={widgetRef}>
-            {/* Small notification bubble above the widget */}
-            {showNotice && !open && (
-                <div className="chat-notice" role="status" aria-live="polite">
-                    <div className="chat-notice-inner">
-                        <div className="chat-notice-title">{t('chatNoticeTitle')}</div>
-                        <div className="chat-notice-body">{t('chatNoticeBody')}</div>
+                {/* Small notification bubble above the widget */}
+                {showNotice && !open && (
+                    <div className="chat-notice" role="status" aria-live="polite">
+                        <div className="chat-notice-inner">
+                            <div className="chat-notice-title">{t('chatNoticeTitle')}</div>
+                            <div className="chat-notice-body">{t('chatNoticeBody')}</div>
+                        </div>
+                        <button className="chat-notice-close" aria-label={t('closeChatTitle')} onClick={() => setShowNotice(false)}>✕</button>
                     </div>
-                    <button className="chat-notice-close" aria-label={t('closeChatTitle')} onClick={() => setShowNotice(false)}>✕</button>
-                </div>
-            )}
+                )}
                 <div ref={panelRef} className={`chat-panel ${open ? 'open' : ''}`} role="dialog" aria-label="Chat widget">
                     <div className="chat-header">
                         <div className="flex items-center gap-2">
