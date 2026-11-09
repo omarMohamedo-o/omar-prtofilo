@@ -32,53 +32,62 @@ Guidelines:
  */
 async function callGeminiDirectly(userMessage, conversationHistory = []) {
     if (!GEMINI_API_KEY) return null;
-    try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const candidateModels = [
+        import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.0-flash-lite',
+        'gemini-2.0-flash',
+        'gemini-1.5-flash',
+        'gemini-1.5-flash-latest',
+        'gemini-1.5-flash-8b'
+    ];
 
-        // Format multi-turn contents for Gemini
-        const contents = [
-            {
-                role: "user",
-                parts: [{ text: `${SYSTEM_PROMPT}\n\nPlease acknowledge your role as MORA.` }]
-            },
-            {
-                role: "model",
-                parts: [{ text: "Understood. I am MORA, Omar Gad's personal AI Assistant, grounded in his verified portfolio facts." }]
-            }
-        ];
-
-        // Append recent conversation history (up to last 6 messages)
-        const recentHistory = (conversationHistory || []).slice(-6);
-        for (const msg of recentHistory) {
-            const role = msg.from === 'bot' ? 'model' : 'user';
-            const text = msg.text || '';
-            if (text && !text.startsWith('📎') && !text.startsWith('🎤')) {
-                contents.push({
-                    role,
-                    parts: [{ text }]
-                });
-            }
-        }
-
-        contents.push({
+    // Format multi-turn contents for Gemini
+    const contents = [
+        {
             role: "user",
-            parts: [{ text: userMessage }]
-        });
-
-        const response = await axios.post(url, {
-            contents,
-            generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 900
-            }
-        }, { timeout: 8500 });
-
-        const candidateText = response?.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (candidateText) {
-            return candidateText.trim();
+            parts: [{ text: `${SYSTEM_PROMPT}\n\nPlease acknowledge your role as MORA.` }]
+        },
+        {
+            role: "model",
+            parts: [{ text: "Understood. I am MORA, Omar Gad's personal AI Assistant, grounded in his verified portfolio facts." }]
         }
-    } catch (err) {
-        console.warn('Gemini direct API call failed or timed out:', err?.message);
+    ];
+
+    // Append recent conversation history (up to last 6 messages)
+    const recentHistory = (conversationHistory || []).slice(-6);
+    for (const msg of recentHistory) {
+        const role = msg.from === 'bot' ? 'model' : 'user';
+        const text = msg.text || '';
+        if (text && !text.startsWith('📎') && !text.startsWith('🎤')) {
+            contents.push({
+                role,
+                parts: [{ text }]
+            });
+        }
+    }
+
+    contents.push({
+        role: "user",
+        parts: [{ text: userMessage }]
+    });
+
+    for (const modelName of candidateModels) {
+        try {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+            const response = await axios.post(url, {
+                contents,
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 900
+                }
+            }, { timeout: 6000 });
+
+            const candidateText = response?.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (candidateText) {
+                return candidateText.trim();
+            }
+        } catch (err) {
+            console.warn(`Gemini direct API call with ${modelName} failed or timed out:`, err?.message);
+        }
     }
     return null;
 }

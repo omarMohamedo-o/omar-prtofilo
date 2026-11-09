@@ -364,6 +364,79 @@ function createLegTexture() {
     return canvasToTexture(canvas);
 }
 
+/**
+ * Generate 64x64 Laptop Keyboard texture with key rows, spacebar & trackpad
+ */
+function createKeyboardTexture() {
+    const { canvas, ctx } = createPixelCanvas(64, 64);
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(0, 0, 64, 64);
+
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(4, 4, 56, 36);
+
+    ctx.fillStyle = '#334155';
+    for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 8; col++) {
+            ctx.fillRect(6 + col * 6.5, 6 + row * 7.5, 5, 5.5);
+        }
+    }
+    ctx.fillStyle = '#475569';
+    ctx.fillRect(20, 31, 24, 6);
+
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(20, 44, 24, 16);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(20, 44, 24, 16);
+
+    return canvasToTexture(canvas);
+}
+
+/**
+ * Generate Holographic Projector Canvas for Laptop screen & floating hologram
+ */
+function createHologramCanvas(title = 'HistoryVerse (Grade: A+)', status = 'AWS Fargate • 204 Tests') {
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#02182b';
+    ctx.fillRect(0, 0, 256, 128);
+
+    ctx.strokeStyle = '#06b6d4';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(4, 4, 248, 120);
+
+    for (let y = 10; y < 120; y += 8) {
+        ctx.fillStyle = 'rgba(6, 182, 212, 0.08)';
+        ctx.fillRect(6, y, 244, 4);
+    }
+
+    ctx.fillStyle = '#22c55e';
+    ctx.font = 'bold 12px monospace';
+    ctx.fillText('>_ PROJECT_INSPECTOR //', 14, 24);
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 13px monospace';
+    ctx.fillText(title.slice(0, 26), 14, 52);
+
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = '11px monospace';
+    ctx.fillText(`• ${status.slice(0, 28)}`, 14, 76);
+    ctx.fillStyle = '#a855f7';
+    ctx.fillText('• 204 Tests • 99.9% Uptime', 14, 98);
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.fillRect(230, 16, 6, 10);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.magFilter = THREE.NearestFilter;
+    texture.minFilter = THREE.NearestFilter;
+    return { canvas, ctx, texture };
+}
+
 // =============================================================================
 // MAIN 3D MINECRAFT COMPONENT
 // =============================================================================
@@ -380,10 +453,17 @@ export default function MinecraftGuide3D({ onStartTour }) {
     const leftLegGroupRef = useRef(null);
     const rightLegGroupRef = useRef(null);
     const torchMeshRef = useRef(null);
+    const torchGroupRef = useRef(null);
+    const backpackLaptopMeshRef = useRef(null);
+    const heldLaptopGroupRef = useRef(null);
+    const laptopScreenHingeRef = useRef(null);
+    const hologramCanvasRef = useRef(null);
+    const hologramGroupRef = useRef(null);
+    const laptopTimeoutRef = useRef(null);
 
     // Animation state refs
     const animStateRef = useRef({
-        mode: 'idle', // 'idle' | 'walk' | 'wave' | 'talk' | 'jump'
+        mode: 'idle', // 'idle' | 'walk' | 'wave' | 'talk' | 'jump' | 'laptop_open'
         targetLook: { x: 0, y: 0 },
         jumpProgress: 0,
         talkTimer: 0
@@ -437,6 +517,55 @@ export default function MinecraftGuide3D({ onStartTour }) {
 
         window.speechSynthesis.speak(utterance);
     }, [voiceEnabled]);
+
+    // Pull laptop from backpack and project section / project specs
+    const showLaptopProject = useCallback((title, subtitle = 'Production Deployed', speechMessage) => {
+        if (hologramCanvasRef.current) {
+            const { ctx, texture } = hologramCanvasRef.current;
+            ctx.fillStyle = '#02182b';
+            ctx.fillRect(0, 0, 256, 128);
+            ctx.strokeStyle = '#06b6d4';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(4, 4, 248, 120);
+
+            for (let y = 10; y < 120; y += 8) {
+                ctx.fillStyle = 'rgba(6, 182, 212, 0.08)';
+                ctx.fillRect(6, y, 244, 4);
+            }
+
+            ctx.fillStyle = '#22c55e';
+            ctx.font = 'bold 12px monospace';
+            ctx.fillText('>_ PROJECT_INSPECTOR //', 14, 24);
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = 'bold 13px monospace';
+            ctx.fillText(title.slice(0, 26), 14, 52);
+
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = '11px monospace';
+            ctx.fillText(`• ${subtitle.slice(0, 28)}`, 14, 76);
+            ctx.fillStyle = '#a855f7';
+            ctx.fillText('• 204 Tests • 99.9% Uptime', 14, 98);
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(230, 16, 6, 10);
+
+            texture.needsUpdate = true;
+        }
+
+        animStateRef.current.mode = 'laptop_open';
+        setActionBadge(`Inspecting: ${title.slice(0, 16)}`);
+
+        if (speechMessage) {
+            speakText(speechMessage);
+        }
+
+        if (laptopTimeoutRef.current) clearTimeout(laptopTimeoutRef.current);
+        laptopTimeoutRef.current = setTimeout(() => {
+            animStateRef.current.mode = 'idle';
+            setActionBadge('Idle');
+        }, 7000);
+    }, [speakText]);
 
     // Handle user message submission
     const handleSend = async (customPrompt) => {
@@ -532,8 +661,13 @@ export default function MinecraftGuide3D({ onStartTour }) {
         const handleTourStep = (e) => {
             const detail = e.detail;
             if (!detail) return;
-            animStateRef.current.mode = 'walk';
-            setActionBadge(`Guiding: ${detail.badge || 'Section'}`);
+
+            // Pull laptop from backpack and open it projecting this section/project!
+            showLaptopProject(
+                detail.title,
+                detail.badge || 'Guided Tour Step',
+                `${detail.title}. ${detail.description}`
+            );
 
             const stepNotice = `🧭 **[Step ${detail.stepIndex + 1}/${detail.totalSteps}] ${detail.title}:**\n${detail.description}`;
             setMessages(prev => [...prev.slice(-8), {
@@ -541,16 +675,6 @@ export default function MinecraftGuide3D({ onStartTour }) {
                 from: 'steve',
                 text: stepNotice
             }]);
-
-            speakText(`${detail.title}. ${detail.description}`);
-
-            setTimeout(() => {
-                animStateRef.current.mode = 'wave';
-                setTimeout(() => {
-                    animStateRef.current.mode = 'idle';
-                    setActionBadge('Idle');
-                }, 1500);
-            }, 1200);
         };
 
         const handleTourEnd = () => {
@@ -581,7 +705,48 @@ export default function MinecraftGuide3D({ onStartTour }) {
             window.removeEventListener('portfolio-tour-ended', handleTourEnd);
             window.removeEventListener('toggle-3d-minecraft-guide', handleToggleGuide);
         };
-    }, [speakText]);
+    }, [showLaptopProject]);
+
+    // Section transition observer: when user scrolls through sections, Steve opens laptop to inspect the section
+    useEffect(() => {
+        const sections = [
+            { id: 'home', title: 'Omarmohamed-portfolio', tech: 'AI & MLOps Showcase' },
+            { id: 'about', title: 'About Omar Mohamed', tech: 'M.Sc. CGPA 4.0 • Applied ML' },
+            { id: 'experience', title: 'PlayerHub & CliniSoft', tech: 'High-Availability MLOps' },
+            { id: 'skills', title: 'LLMs, RAG & Cloud', tech: 'Kubernetes • Docker • PyTorch' },
+            { id: 'projects', title: 'HistoryVerse (Grade: A+)', tech: 'YOLOv5 • AWS Fargate' },
+            { id: 'education', title: 'Academic Honors', tech: 'AASTMT • ITI • BHI' },
+            { id: 'certifications', title: 'RHCSA #250-068-707', tech: 'Red Hat Certified Admin' },
+            { id: 'faq', title: 'AEO / Direct Answers', tech: '10 Q&A Pairs • Knowledge' },
+            { id: 'contact', title: 'Get In Touch', tech: 'Hire • Consult • Collaborate' }
+        ];
+
+        let lastActiveSection = '';
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
+                        const secId = entry.target.id;
+                        if (secId && secId !== lastActiveSection) {
+                            lastActiveSection = secId;
+                            const sec = sections.find(s => s.id === secId);
+                            if (sec) {
+                                showLaptopProject(sec.title, sec.tech);
+                            }
+                        }
+                    }
+                }
+            },
+            { threshold: 0.45 }
+        );
+
+        sections.forEach(s => {
+            const el = document.getElementById(s.id);
+            if (el) observer.observe(el);
+        });
+
+        return () => observer.disconnect();
+    }, [showLaptopProject]);
 
     // =========================================================================
     // THREE.JS SETUP & VOXEL RIGGING
@@ -668,6 +833,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
         laptopMesh.position.set(0, 0.62, -0.06);
         laptopMesh.rotation.x = -0.16; // Tilted back resting in sleeve
         backpackGroup.add(laptopMesh);
+        backpackLaptopMeshRef.current = laptopMesh;
 
         // C. Illuminated Green Power LED on laptop corner
         const ledGeo = new THREE.BoxGeometry(0.06, 0.06, 0.06);
@@ -722,6 +888,73 @@ export default function MinecraftGuide3D({ onStartTour }) {
         chestClip.position.set(0, 0.15, 0.32);
         torsoMesh.add(chestClip);
 
+        // =====================================================================
+        // HELD LAPTOP & HOLOGRAPHIC PROJECTOR RIGGING
+        // =====================================================================
+        const heldLaptopGroup = new THREE.Group();
+        heldLaptopGroup.position.set(0, 0.38, 0.54);
+        heldLaptopGroup.visible = false;
+        torsoMesh.add(heldLaptopGroup);
+        heldLaptopGroupRef.current = heldLaptopGroup;
+
+        // Base with keyboard & trackpad
+        const keyboardTex = createKeyboardTexture();
+        const keyboardMat = new THREE.MeshLambertMaterial({ map: keyboardTex });
+        const baseGeo = new THREE.BoxGeometry(0.76, 0.05, 0.52);
+        const baseMesh = new THREE.Mesh(baseGeo, keyboardMat);
+        heldLaptopGroup.add(baseMesh);
+
+        // Screen Hinge Group (rotates from 0 closed to -1.85 rad open)
+        const screenHinge = new THREE.Group();
+        screenHinge.position.set(0, 0.025, -0.25);
+        heldLaptopGroup.add(screenHinge);
+        laptopScreenHingeRef.current = screenHinge;
+
+        // Screen Lid (back face with glowing GitHub logo)
+        const lidGeo = new THREE.BoxGeometry(0.76, 0.52, 0.04);
+        const lidMesh = new THREE.Mesh(lidGeo, laptopMat);
+        lidMesh.position.set(0, 0.26, 0.02);
+        screenHinge.add(lidMesh);
+
+        // Screen LCD Display
+        const holoData = createHologramCanvas();
+        hologramCanvasRef.current = holoData;
+        const displayGeo = new THREE.PlaneGeometry(0.70, 0.46);
+        const displayMat = new THREE.MeshBasicMaterial({ map: holoData.texture });
+        const displayMesh = new THREE.Mesh(displayGeo, displayMat);
+        displayMesh.position.set(0, 0.26, -0.021);
+        displayMesh.rotation.y = Math.PI; // Face the user
+        screenHinge.add(displayMesh);
+
+        // Floating Holographic Display above laptop
+        const hologramGroup = new THREE.Group();
+        hologramGroup.position.set(0, 0.88, -0.15);
+        heldLaptopGroup.add(hologramGroup);
+        hologramGroupRef.current = hologramGroup;
+
+        const holoPlaneGeo = new THREE.PlaneGeometry(0.95, 0.50);
+        const holoPlaneMat = new THREE.MeshBasicMaterial({
+            map: holoData.texture,
+            transparent: true,
+            opacity: 0.90,
+            side: THREE.DoubleSide
+        });
+        const holoPlaneMesh = new THREE.Mesh(holoPlaneGeo, holoPlaneMat);
+        hologramGroup.add(holoPlaneMesh);
+
+        // Glowing cyber-beam from screen to hologram
+        const beamGeo = new THREE.ConeGeometry(0.55, 0.75, 4, 1, true);
+        const beamMat = new THREE.MeshBasicMaterial({
+            color: 0x06b6d4,
+            transparent: true,
+            opacity: 0.22,
+            wireframe: true
+        });
+        const beamMesh = new THREE.Mesh(beamGeo, beamMat);
+        beamMesh.position.set(0, 0.40, -0.15);
+        beamMesh.rotation.x = Math.PI;
+        heldLaptopGroup.add(beamMesh);
+
         // 2. Head Group & Mesh (Pivots at neck)
         const headGroup = new THREE.Group();
         headGroup.position.set(0, 1.38, 0);
@@ -771,6 +1004,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
         torchGroup.position.set(0, -1.0, 0.35);
         torchGroup.rotation.x = Math.PI / 4;
         rightArmGroup.add(torchGroup);
+        torchGroupRef.current = torchGroup;
 
         // 5. Left Leg Group (Pivots at hip)
         const leftLegGroup = new THREE.Group();
@@ -884,16 +1118,71 @@ export default function MinecraftGuide3D({ onStartTour }) {
                     }
                     break;
 
+                case 'laptop_open':
+                    // Steve withdraws laptop from backpack, hinges open screen, and types actively!
+                    if (backpackLaptopMeshRef.current) backpackLaptopMeshRef.current.visible = false;
+                    if (torchGroupRef.current) torchGroupRef.current.visible = false;
+                    if (heldLaptopGroupRef.current) heldLaptopGroupRef.current.visible = true;
+
+                    // Smoothly open screen hinge to -1.85 radians
+                    if (laptopScreenHingeRef.current) {
+                        laptopScreenHingeRef.current.rotation.x += (-1.85 - laptopScreenHingeRef.current.rotation.x) * 0.16;
+                    }
+
+                    // Body and head: slight lean forward to focus on screen
+                    if (characterGroupRef.current) {
+                        characterGroupRef.current.position.y = -0.2 + Math.sin(time * 3) * 0.02;
+                    }
+                    if (headGroupRef.current) {
+                        headGroupRef.current.rotation.x += (0.38 - headGroupRef.current.rotation.x) * 0.14;
+                    }
+
+                    // Active typing motions on the keyboard
+                    if (leftArmGroupRef.current) {
+                        leftArmGroupRef.current.rotation.x = -1.18 + Math.sin(time * 26) * 0.14;
+                        leftArmGroupRef.current.rotation.y = 0.38;
+                        leftArmGroupRef.current.rotation.z = 0.22;
+                    }
+                    if (rightArmGroupRef.current) {
+                        rightArmGroupRef.current.rotation.x = -1.18 + Math.cos(time * 28) * 0.14;
+                        rightArmGroupRef.current.rotation.y = -0.38;
+                        rightArmGroupRef.current.rotation.z = -0.22;
+                    }
+
+                    // Hologram gentle floating & rotation
+                    if (hologramGroupRef.current) {
+                        hologramGroupRef.current.position.y = 0.88 + Math.sin(time * 4) * 0.05;
+                        hologramGroupRef.current.rotation.y = Math.sin(time * 2) * 0.10;
+                    }
+                    break;
+
                 case 'idle':
                 default:
+                    // Gracefully close laptop if returning to idle
+                    if (heldLaptopGroupRef.current && heldLaptopGroupRef.current.visible) {
+                        if (laptopScreenHingeRef.current) {
+                            laptopScreenHingeRef.current.rotation.x += (0 - laptopScreenHingeRef.current.rotation.x) * 0.22;
+                            if (Math.abs(laptopScreenHingeRef.current.rotation.x) < 0.08) {
+                                heldLaptopGroupRef.current.visible = false;
+                                if (backpackLaptopMeshRef.current) backpackLaptopMeshRef.current.visible = true;
+                                if (torchGroupRef.current) torchGroupRef.current.visible = true;
+                            }
+                        }
+                    }
+
                     // Subtle breathing and swaying
                     if (characterGroupRef.current) {
                         characterGroupRef.current.position.y = -0.2 + Math.sin(time * 2.2) * 0.05;
                         characterGroupRef.current.rotation.y = Math.sin(time * 0.8) * 0.06;
                     }
-                    if (leftArmGroupRef.current) leftArmGroupRef.current.rotation.x = Math.sin(time * 2.2) * 0.08;
+                    if (leftArmGroupRef.current) {
+                        leftArmGroupRef.current.rotation.x = Math.sin(time * 2.2) * 0.08;
+                        leftArmGroupRef.current.rotation.y = 0;
+                        leftArmGroupRef.current.rotation.z = 0;
+                    }
                     if (rightArmGroupRef.current) {
                         rightArmGroupRef.current.rotation.x = -0.2 - Math.sin(time * 2.2) * 0.08;
+                        rightArmGroupRef.current.rotation.y = 0;
                         rightArmGroupRef.current.rotation.z = 0;
                     }
                     if (leftLegGroupRef.current) leftLegGroupRef.current.rotation.x = 0;
@@ -939,11 +1228,20 @@ export default function MinecraftGuide3D({ onStartTour }) {
     // Quick prompt buttons
     const QUICK_PROMPTS = [
         { label: "🧭 Tour Portfolio", action: handleLaunchTour },
-        { label: "💻 Laptop & Tech Stack", text: "What tech stack, tools, and laptop environment do you use?" },
+        {
+            label: "💻 Open Laptop (3D)",
+            action: () => showLaptopProject("Developer Workstation", "Linux • Docker • K8s", "Pulling my developer laptop from my tactical backpack!")
+        },
+        {
+            label: "🏛️ Inspect HistoryVerse",
+            action: () => showLaptopProject("HistoryVerse (Grade: A+)", "AWS Fargate • 204 Tests", "Inspecting HistoryVerse: Multilingual AI/AR platform with 204 passing tests!")
+        },
+        {
+            label: "🏢 Inspect PlayerHub",
+            action: () => showLaptopProject("PlayerHub.GG Dubai", "HAProxy • MariaDB • K8s", "Inspecting PlayerHub.GG high availability MLOps infrastructure!")
+        },
         { label: "🐙 GitHub Projects", text: "Tell me about Omar's GitHub repositories and open-source projects" },
-        { label: "🏢 PlayerHub (Dubai)", text: "What does Omar do at PlayerHub.GG in Dubai?" },
         { label: "🏥 CliniSoft Healthcare", text: "Tell me about Omar's healthcare AI work at CliniSoft" },
-        { label: "🏛️ HistoryVerse (A+)", text: "What is HistoryVerse and what technologies did Omar use?" },
         { label: "📜 Certifications & RHCSA", text: "What certifications does Omar hold?" },
         { label: "📬 How to Contact", text: "How can I contact or hire Omar Gad?" }
     ];
@@ -1082,10 +1380,23 @@ export default function MinecraftGuide3D({ onStartTour }) {
                     <div className="relative z-10 w-full flex items-center justify-between gap-1.5 pt-1">
                         <button
                             onClick={handleLaunchTour}
-                            className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-md shadow-cyan-600/30 transition-all border border-cyan-300/40"
+                            className="flex-1 flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-md shadow-cyan-600/30 transition-all border border-cyan-300/40"
                         >
-                            <Compass size={14} className="animate-spin-slow" />
-                            <span>Tour Guide</span>
+                            <Compass size={13} className="animate-spin-slow" />
+                            <span>Tour</span>
+                        </button>
+                        <button
+                            onClick={() => {
+                                showLaptopProject(
+                                    "Developer Workstation",
+                                    "Linux • Docker • K8s",
+                                    "Pulling my developer laptop from my tactical backpack!"
+                                );
+                            }}
+                            className="px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition-all flex items-center gap-1 shadow-sm"
+                            title="Withdraw Laptop from Backpack"
+                        >
+                            💻 Laptop
                         </button>
                         <button
                             onClick={() => {
@@ -1097,7 +1408,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
                                     setActionBadge('Idle');
                                 }, 2000);
                             }}
-                            className="px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition-all"
+                            className="px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition-all"
                             title="Make Steve Wave"
                         >
                             👋 Wave
