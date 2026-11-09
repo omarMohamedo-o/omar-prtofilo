@@ -337,11 +337,10 @@ export default function InteractiveTour({ onTourToggle }) {
                     type="button"
                     onClick={handlePrev}
                     disabled={currentStep === 0}
-                    className={`px-3 py-1.5 rounded-xl border border-gray-700 text-xs font-medium flex items-center gap-1 transition-all ${
-                      currentStep === 0
-                        ? 'opacity-40 cursor-not-allowed text-gray-500'
-                        : 'text-gray-300 hover:text-white hover:border-gray-500 active:scale-95'
-                    }`}
+                    className={`px-3 py-1.5 rounded-xl border border-gray-700 text-xs font-medium flex items-center gap-1 transition-all ${currentStep === 0
+                      ? 'opacity-40 cursor-not-allowed text-gray-500'
+                      : 'text-gray-300 hover:text-white hover:border-gray-500 active:scale-95'
+                      }`}
                   >
                     <ChevronLeft className="w-3.5 h-3.5" />
                     <span>{t('tourBack')}</span>

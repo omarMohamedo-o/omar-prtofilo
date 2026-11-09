@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Mail, Phone, MapPin, FileText, Infinity, Brain, ChevronDown } from 'lucide-react';
 import { MODES, modeInfo } from '../data/data';
@@ -9,7 +9,33 @@ import { useLanguage } from '../context/LanguageContext';
 
 export default function Info({ isVisible = () => false, personalInfo = {}, themeColor = 'cyan', currentMode = MODES.DEVOPS, onModeChange = () => { }, scrollToSection = () => { } }) {
   const [showModeDropdown, setShowModeDropdown] = useState(false);
+  const dropdownRef = useRef(null);
   const { t, isRTL } = useLanguage();
+
+  // Handle smooth outside click and Escape key without fragile onBlur timers
+  useEffect(() => {
+    if (!showModeDropdown) return;
+
+    const handlePointerDown = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowModeDropdown(false);
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowModeDropdown(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showModeDropdown]);
 
   const accentColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
   const bgAccent = themeColor === 'purple' ? 'bg-purple-500' : 'bg-cyan-500';
@@ -22,13 +48,16 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
   return (
     <section id="home" className="min-h-svh flex flex-col lg:flex-row items-center justify-center relative px-4 sm:px-6 md:px-8 pt-[var(--header-height,100px)] lg:pt-0 pb-8 sm:pb-12 lg:pb-16 overflow-hidden" style={{ scrollMarginTop: '6rem' }}>
 
-      {/* Floating Mode Switcher - Desktop Only */}
-      <div className={`hidden lg:block absolute top-28 ${isRTL ? 'left-8' : 'right-8'} z-40 mode-switcher-float`}>
+      {/* Floating Mode Switcher - Desktop Only (Smooth & Uncluttered) */}
+      <div ref={dropdownRef} className={`hidden lg:block absolute top-28 ${isRTL ? 'left-8' : 'right-8'} z-40 mode-switcher-float`}>
         <div className="relative">
           <button
-            onClick={() => setShowModeDropdown(!showModeDropdown)}
-            onBlur={() => setTimeout(() => setShowModeDropdown(false), 200)}
-            className={`mode-switcher-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${showModeDropdown ? 'mode-switcher-btn-open' : ''}`}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowModeDropdown((prev) => !prev);
+            }}
+            className={`mode-switcher-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${showModeDropdown ? 'mode-switcher-btn-open' : ''}`}
             aria-label="Switch portfolio view mode"
             aria-haspopup="listbox"
             aria-expanded={showModeDropdown}
@@ -39,18 +68,28 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
           </button>
 
           {/* Dropdown */}
-          <div className={`absolute top-full ${isRTL ? 'left-0' : 'right-0'} mt-3 mode-switcher-dropdown rounded-xl p-2 min-w-[180px] transition-all duration-300 ${showModeDropdown ? 'mode-switcher-dropdown-open' : 'mode-switcher-dropdown-closed'}`} role="listbox">
+          <div className={`absolute top-full ${isRTL ? 'left-0' : 'right-0'} mt-3 mode-switcher-dropdown rounded-xl p-2 min-w-[190px] transition-all duration-300 ${showModeDropdown ? 'mode-switcher-dropdown-open' : 'mode-switcher-dropdown-closed'}`} role="listbox">
             {Object.entries(modeInfo).map(([mode, info]) => (
               <button
                 key={mode}
+                type="button"
                 role="option"
                 aria-selected={currentMode === mode}
-                onClick={() => { onModeChange(mode); setShowModeDropdown(false); }}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onModeChange(mode); setShowModeDropdown(false); } }}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${currentMode === mode
+                onClick={() => {
+                  onModeChange(mode);
+                  setShowModeDropdown(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onModeChange(mode);
+                    setShowModeDropdown(false);
+                  }
+                }}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${currentMode === mode
                   ? mode === MODES.DEVOPS
-                    ? 'bg-cyan-500 text-gray-900 shadow-lg shadow-cyan-500/40 focus-visible:ring-cyan-400'
-                    : 'bg-purple-500 text-white shadow-lg shadow-purple-500/40 focus-visible:ring-purple-400'
+                    ? 'bg-cyan-500 text-gray-900 shadow-lg shadow-cyan-500/40 focus-visible:ring-cyan-400 font-bold'
+                    : 'bg-purple-500 text-white shadow-lg shadow-purple-500/40 focus-visible:ring-purple-400 font-bold'
                   : 'bg-gray-800/60 text-gray-300 hover:bg-gray-700/70 hover:text-white focus-visible:ring-gray-500'
                   }`}
               >

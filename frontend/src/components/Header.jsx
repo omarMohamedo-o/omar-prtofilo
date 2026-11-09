@@ -179,50 +179,6 @@ export default function Header({
                         >
                             {t('bookDiscoveryCall')}
                         </button>
-
-                        {/* View as Dropdown */}
-                        <div className="relative">
-                            <button
-                                onClick={() => setShowModeDropdown(!showModeDropdown)}
-                                onBlur={() => setTimeout(() => setShowModeDropdown(false), 150)}
-                                className={`flex items-center gap-2 px-3 py-2 border ${borderAccent} rounded-lg text-sm font-medium ${accentColor} glow-btn transition-all duration-300`}
-                                aria-label="Switch portfolio view mode"
-                                aria-haspopup="listbox"
-                                aria-expanded={showModeDropdown}
-                            >
-                                <span>{t('viewAs')}</span>
-                                <ChevronDown size={14} className={`text-gray-400 transition-transform duration-200 ${showModeDropdown ? 'rotate-180' : ''}`} />
-                            </button>
-
-                            {showModeDropdown && (
-                                <div className="absolute top-full right-0 mt-2 bg-gray-900/95 backdrop-blur-md rounded-xl p-2 border border-gray-700 shadow-xl min-w-[170px] z-50" role="listbox">
-                                    {Object.entries(modeInfo).map(([mode, info]) => (
-                                        <button
-                                            key={mode}
-                                            role="option"
-                                            aria-selected={currentMode === mode}
-                                            onClick={() => { onModeChange(mode); setShowModeDropdown(false); }}
-                                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { onModeChange(mode); setShowModeDropdown(false); } }}
-                                            className={`w-full flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 ${currentMode === mode
-                                                ? mode === MODES.DEVOPS
-                                                    ? 'bg-cyan-500 text-gray-900 shadow-lg shadow-cyan-500/30 focus:ring-cyan-400'
-                                                    : 'bg-purple-500 text-white shadow-lg shadow-purple-500/30 focus:ring-purple-400'
-                                                : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 focus:ring-gray-500'
-                                                }`}
-                                        >
-                                            {mode === MODES.DEVOPS ? <Infinity size={16} /> : <Brain size={16} />}
-                                            <span>{isRTL ? (info.labelAr || info.label) : info.label}</span>
-                                        </button>
-                                    ))}
-                                    <div className={`mt-2 text-center text-xs px-3 py-1 rounded-full ${currentMode === MODES.DEVOPS
-                                        ? 'bg-cyan-500/20 text-cyan-400'
-                                        : 'bg-purple-500/20 text-purple-400'
-                                        }`}>
-                                        {isRTL ? (modeInfo[currentMode]?.descriptionAr || modeInfo[currentMode]?.description) : modeInfo[currentMode]?.description}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
                     </div>
 
                     {/* Mobile: Hamburger Menu Button */}
