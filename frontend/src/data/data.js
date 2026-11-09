@@ -52,6 +52,7 @@ export function getPortfolioData(mode = MODES.DEVOPS) {
     const baseData = {
         personalInfo: { ...shared.personalInfo },
         experiences: [...shared.Experiences],
+        volunteering: [...shared.Volunteering],
         internships: [...shared.Intern],
         education: [...shared.education],
         languages: [...shared.languages]

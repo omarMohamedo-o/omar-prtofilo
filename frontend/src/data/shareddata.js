@@ -104,18 +104,6 @@ export const Experiences = [
         ]
     },
     {
-        title: "Remote Technical Mentor (Volunteer)",
-        company: "Palestine Polytechnic University",
-        link: "https://www.ppu.edu/",
-        location: "Palestine",
-        period: "2025 – 2026",
-        type: "Volunteer, Remote",
-        achievements: [
-            "Advised a university research team building an AI-powered retinal OCT disease diagnosis deep learning system.",
-            "Officially acknowledged in the published academic graduation thesis for remote guidance, model evaluation, and technical expertise."
-        ]
-    },
-    {
         title: "Software & DevOps Engineer",
         company: "ChloroMaster",
         link: "https://chloromaster.com/",
@@ -138,6 +126,22 @@ export const Experiences = [
         achievements: [
             "Trained 50+ students in Python programming, machine learning algorithms, and cloud model deployment.",
             "Achieved a 95% student satisfaction rating through hands-on labs, OOP principles, and real-world projects."
+        ]
+    }
+];
+
+export const Volunteering = [
+    {
+        title: "Remote Technical Mentor (Volunteer)",
+        company: "Palestine Polytechnic University",
+        link: "https://www.ppu.edu/",
+        location: "Palestine",
+        period: "2025 – 2026",
+        type: "Volunteer, Remote",
+        badge: "Official Thesis Acknowledgement",
+        achievements: [
+            "Advised a university research team building an AI-powered retinal OCT disease diagnosis deep learning system.",
+            "Officially acknowledged in the published academic graduation thesis for remote guidance, model evaluation, and technical expertise."
         ]
     }
 ];

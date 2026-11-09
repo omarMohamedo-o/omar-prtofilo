@@ -21,6 +21,7 @@ import SpaceBackground from './SpaceBackground';
 import InteractiveTour from './InteractiveTour';
 import FAQ from './FAQ';
 import MinecraftGuide3D from './MinecraftGuide3D';
+import Volunteering from './Volunteering';
 
 // Import data with mode support
 import { MODES, getPortfolioData } from '../data/data';
@@ -350,6 +351,9 @@ export default function Portfolio() {
 
       {/* Internships Section */}
       <Internships isVisible={isVisible} internships={portfolioData.internships} themeColor={themeColor} />
+
+      {/* Volunteer & Mentorship Section */}
+      <Volunteering isVisible={isVisible} volunteering={portfolioData.volunteering} themeColor={themeColor} />
 
       {/* Skills Section */}
       <Skills isVisible={isVisible} skills={portfolioData.skills} themeColor={themeColor} />

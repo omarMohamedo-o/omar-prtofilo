@@ -32,6 +32,13 @@ const TOUR_STEPS = [
     itemHighlights: ['DEPI • DevOps & Cloud Infrastructure', 'Telecom Egypt • AI & NLP Chatbots']
   },
   {
+    targetId: 'volunteering',
+    title: 'Volunteer & Mentorship',
+    badge: 'Academic Recognition',
+    description: 'Remote Technical Mentor at Palestine Polytechnic University advising students on deep learning for retinal OCT disease diagnosis; officially acknowledged in the published graduation thesis.',
+    itemHighlights: ['Palestine Polytechnic University • Technical Mentor', 'AI Retinal OCT Diagnosis • Official Thesis Acknowledgement']
+  },
+  {
     targetId: 'skills',
     title: 'Core Technical Skills',
     badge: 'Tech Stack',
