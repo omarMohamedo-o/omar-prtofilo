@@ -4,6 +4,7 @@ import { Sparkles, Copy, Check, RotateCcw } from 'lucide-react';
 import { sendTextMessage, sendImageMessage, uploadFile, transcribeAudio } from '../services/chatbotService';
 import SpeakerButton from './ChatTTS';
 import DownArrowButton from './DownArrowButton';
+import { useLanguage } from '../context/LanguageContext';
 
 function FormattedMessageText({ text }) {
     if (!text) return null;
@@ -35,26 +36,28 @@ function FormattedMessageText({ text }) {
     );
 }
 
-const SUGGESTED_PROMPTS = [
-    { label: "🏢 PlayerHub & CliniSoft", query: "Tell me about Omar's experience at PlayerHub and CliniSoft" },
-    { label: "🏛️ HistoryVerse (A+)", query: "What is HistoryVerse and what technologies does it use?" },
-    { label: "⚡ AI & MLOps Skills", query: "What are Omar's core AI, LLM, and MLOps skills?" },
-    { label: "🎓 Education & RHCSA", query: "Tell me about Omar's education, GPA, and certifications" },
-    { label: "📬 Contact Omar", query: "How can I contact Omar?" },
-    { label: "🇪🇬 تحدث بالعربية", query: "حدثني عن خبرات عمر جاد ومشاريع الذكاء الاصطناعي" }
-];
-
 export default function ChatWidget() {
+    const { t, currentLocale, language } = useLanguage();
+    const suggestedPrompts = currentLocale?.chatSuggestedPrompts || [];
     const [open, setOpen] = useState(false);
     const [showNotice, setShowNotice] = useState(true);
     const [value, setValue] = useState('');
-    const [messages, setMessages] = useState([
+    const [messages, setMessages] = useState(() => [
         {
             id: 1,
             from: 'bot',
-            text: "👋 Hi! I'm **MORA**, Omar Mohamed's personal AI Assistant.\n\nAsk me anything about Omar's live production work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse** (A+) project, his **MLOps & LLM skills**, education, or how to contact him!"
+            text: t('chatBotWelcome')
         }
     ]);
+
+    useEffect(() => {
+        setMessages(prev => {
+            if (prev.length === 1 && prev[0].from === 'bot') {
+                return [{ id: 1, from: 'bot', text: t('chatBotWelcome') }];
+            }
+            return prev;
+        });
+    }, [language]);
     const [isLoading, setIsLoading] = useState(false);
     const [uploadedFile, setUploadedFile] = useState(null);
     const [recording, setRecording] = useState(false);
@@ -105,7 +108,7 @@ export default function ChatWidget() {
             }
 
             // Extract answer from response
-            const botAnswer = response.Answer || response.answer || 'Sorry, I could not process your request.';
+            const botAnswer = response.Answer || response.answer || t('chatBotError');
 
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
@@ -120,7 +123,7 @@ export default function ChatWidget() {
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
                 from: 'bot',
-                text: 'Sorry, I\'m having trouble connecting. Please try again later.'
+                text: t('chatBotError')
             }]);
             setLastMessageSender('bot');
         } finally {
@@ -138,7 +141,7 @@ export default function ChatWidget() {
 
         try {
             const response = await sendTextMessage(queryText, updatedHistory, false);
-            const botAnswer = response.Answer || response.answer || 'Sorry, I could not process your request.';
+            const botAnswer = response.Answer || response.answer || t('chatBotError');
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
                 from: 'bot',
@@ -150,7 +153,7 @@ export default function ChatWidget() {
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
                 from: 'bot',
-                text: "I'm MORA, Omar Mohamed's AI Assistant. Feel free to ask about his projects, skills, or experience!"
+                text: t('chatBotWelcome')
             }]);
             setLastMessageSender('bot');
         } finally {
@@ -599,7 +602,7 @@ export default function ChatWidget() {
                 )));
 
                 const response = await sendTextMessage(transcribedText, false);
-                const botAnswer = response?.Answer || response?.answer || 'Sorry, I could not process your request.';
+                const botAnswer = response?.Answer || response?.answer || t('chatBotError');
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     from: 'bot',
@@ -621,7 +624,7 @@ export default function ChatWidget() {
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     from: 'bot',
-                    text: 'Sorry, I could not understand the audio. Please try again or type your message.'
+                    text: t('chatVoiceError')
                 }]);
                 setLastMessageSender('bot');
             }
@@ -630,7 +633,7 @@ export default function ChatWidget() {
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
                 from: 'bot',
-                text: 'Failed to process voice message. Please try again.'
+                text: t('chatVoiceFailed')
             }]);
             setLastMessageSender('bot');
         } finally {
@@ -676,21 +679,21 @@ export default function ChatWidget() {
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     from: 'bot',
-                    text: 'Image received! Ask me anything about this image.'
+                    text: t('chatImageReceived')
                 }]);
                 setLastMessageSender('bot');
             } else if (file.type === 'application/pdf') {
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     from: 'bot',
-                    text: 'PDF received! Ask me questions about the document.'
+                    text: t('chatPdfReceived')
                 }]);
                 setLastMessageSender('bot');
             } else {
                 setMessages(prev => [...prev, {
                     id: Date.now() + 1,
                     from: 'bot',
-                    text: 'File received!'
+                    text: t('chatFileReceived')
                 }]);
                 setLastMessageSender('bot');
             }
@@ -839,8 +842,8 @@ export default function ChatWidget() {
                 href="https://wa.me/201011297869"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Contact Omar on WhatsApp"
-                title="Contact Omar on WhatsApp"
+                aria-label={t('chatWhatsAppTitle')}
+                title={t('chatWhatsAppTitle')}
             >
                 <span className="whatsapp-fab-icon" aria-hidden>
                     <FaWhatsapp className="text-white" />
@@ -852,10 +855,10 @@ export default function ChatWidget() {
             {showNotice && !open && (
                 <div className="chat-notice" role="status" aria-live="polite">
                     <div className="chat-notice-inner">
-                        <div className="chat-notice-title">MORA – Your Guide to Omar</div>
-                        <div className="chat-notice-body">Ask me anything about Omar's skills, production systems at PlayerHub, or HistoryVerse (A+). <strong>Ask me now!</strong></div>
+                        <div className="chat-notice-title">{t('chatNoticeTitle')}</div>
+                        <div className="chat-notice-body">{t('chatNoticeBody')}</div>
                     </div>
-                    <button className="chat-notice-close" aria-label="Close" onClick={() => setShowNotice(false)}>✕</button>
+                    <button className="chat-notice-close" aria-label={t('closeChatTitle')} onClick={() => setShowNotice(false)}>✕</button>
                 </div>
             )}
                 <div ref={panelRef} className={`chat-panel ${open ? 'open' : ''}`} role="dialog" aria-label="Chat widget">
@@ -864,7 +867,7 @@ export default function ChatWidget() {
                             <div className="chat-title">MORA</div>
                             <span className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-medium">
                                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-                                <span>AI Agent</span>
+                                <span>{t('chatAgentBadge')}</span>
                             </span>
                         </div>
                         <div className="flex items-center gap-1.5">
@@ -872,12 +875,12 @@ export default function ChatWidget() {
                                 type="button"
                                 onClick={() => setMessages([messages[0]])}
                                 className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/60 transition-colors"
-                                title="Reset conversation history"
-                                aria-label="Reset conversation"
+                                title={t('chatResetTitle')}
+                                aria-label={t('chatResetTitle')}
                             >
                                 <RotateCcw size={14} />
                             </button>
-                            <button className="chat-close" onClick={() => setOpen(false)}>✕</button>
+                            <button className="chat-close" aria-label={t('closeChatTitle')} onClick={() => setOpen(false)}>✕</button>
                         </div>
                     </div>
 
@@ -902,8 +905,8 @@ export default function ChatWidget() {
                                                         setTimeout(() => setCopiedId(null), 1500);
                                                     }}
                                                     className="p-1 rounded text-gray-400 hover:text-cyan-300 hover:bg-gray-800/60 transition-colors"
-                                                    title={copiedId === m.id ? "Copied!" : "Copy message"}
-                                                    aria-label="Copy message"
+                                                    title={copiedId === m.id ? t('chatCopied') : t('chatCopyTitle')}
+                                                    aria-label={t('chatCopyTitle')}
                                                 >
                                                     {copiedId === m.id ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
                                                 </button>
@@ -929,7 +932,7 @@ export default function ChatWidget() {
 
                     {/* Quick suggested prompt chips */}
                     <div className="chat-suggested-chips flex items-center gap-1.5 px-3 py-2 overflow-x-auto no-scrollbar border-t border-gray-800/80 bg-[#080b18]">
-                        {SUGGESTED_PROMPTS.map((sp, idx) => (
+                        {suggestedPrompts.map((sp, idx) => (
                             <button
                                 key={idx}
                                 type="button"
@@ -1039,29 +1042,29 @@ export default function ChatWidget() {
                                 <div className="chat-input-wrapper">
                                     <button
                                         onClick={() => fileInputRef.current?.click()}
-                                        aria-label="Attach file"
+                                        aria-label={t('chatAttachAria')}
                                         className="chat-attach-btn-inside"
-                                        title="Attach file"
+                                        title={t('chatAttachAria')}
                                     >
                                         <FaPaperclip />
                                     </button>
                                     <input
                                         value={value}
                                         onChange={e => setValue(e.target.value)}
-                                        placeholder="Type your message..."
+                                        placeholder={t('chatPlaceholder')}
                                         onKeyDown={e => { if (e.key === 'Enter') send(); }}
                                         className="chat-text-input"
                                     />
                                     <button
                                         className="chat-record-btn"
-                                        aria-label="Start recording"
-                                        title="Start recording"
+                                        aria-label={t('chatRecordStartAria')}
+                                        title={t('chatRecordStartAria')}
                                         onClick={startRecording}
                                     >
                                         <FaMicrophone />
                                     </button>
                                 </div>
-                                <button onClick={send} aria-label="Send" className="chat-send-btn"><FaPaperPlane /></button>
+                                <button onClick={send} aria-label={t('chatSendAria')} className="chat-send-btn"><FaPaperPlane /></button>
                             </>
                         )}
                     </div>
@@ -1094,10 +1097,10 @@ export default function ChatWidget() {
                                 </div>
                                 <div className="flex flex-col">
                                     <span className="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight">
-                                        Need help?
+                                        {t('needHelpTitle')}
                                     </span>
                                     <span className="text-[10px] text-slate-500 dark:text-cyan-400/80 font-medium">
-                                        AI Assistant & 3D Guide
+                                        {t('needHelpSubtitle')}
                                     </span>
                                 </div>
                             </div>
@@ -1106,9 +1109,9 @@ export default function ChatWidget() {
                                 type="button"
                                 onClick={() => window.dispatchEvent(new CustomEvent('start-portfolio-tour'))}
                                 className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30 font-semibold transition-colors"
-                                title="Start Guided Tour"
+                                title={t('tourGuide')}
                             >
-                                🧭 Tour
+                                {t('needHelpTourBtn')}
                             </button>
                         </div>
 
@@ -1119,10 +1122,10 @@ export default function ChatWidget() {
                                 type="button"
                                 onClick={() => setOpen(true)}
                                 className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full border border-teal-600/50 dark:border-cyan-400/60 bg-teal-50/60 dark:bg-cyan-950/40 hover:bg-teal-100/70 dark:hover:bg-cyan-900/50 text-teal-700 dark:text-cyan-300 font-semibold text-xs transition-all shadow-sm group/ask"
-                                title="Ask MORA AI anything"
+                                title={t('needHelpAskTitle')}
                             >
                                 <FaPhoneAlt size={10} className="text-teal-600 dark:text-cyan-400 -rotate-12 group-hover/ask:rotate-0 transition-transform" />
-                                <span>Ask anything</span>
+                                <span>{t('needHelpAskAnything')}</span>
                             </button>
 
                             {/* 2. Chat Icon Button */}
@@ -1131,8 +1134,8 @@ export default function ChatWidget() {
                                 ref={fabRef}
                                 onClick={() => setOpen(true)}
                                 className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-cyan-300 flex items-center justify-center transition-transform hover:scale-110 shadow-sm"
-                                title="Open MORA AI Chat"
-                                aria-label="Open Chat"
+                                title={t('needHelpChatAria')}
+                                aria-label={t('needHelpChatAria')}
                             >
                                 <FaCommentDots size={15} />
                             </button>
@@ -1144,8 +1147,8 @@ export default function ChatWidget() {
                                     window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: true } }));
                                 }}
                                 className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-cyan-300 flex items-center justify-center transition-transform hover:scale-110 shadow-sm text-sm"
-                                title="Open 3D Minecraft Guide (Steve Omar)"
-                                aria-label="Open 3D Guide"
+                                title={t('needHelp3DGuideAria')}
+                                aria-label={t('needHelp3DGuideAria')}
                             >
                                 ⛏️
                             </button>
@@ -1156,8 +1159,8 @@ export default function ChatWidget() {
                         ref={fabRef}
                         className="chat-fab glow-btn"
                         onClick={() => setOpen(false)}
-                        aria-label="Close chat"
-                        title="Close chat"
+                        aria-label={t('closeChatTitle')}
+                        title={t('closeChatTitle')}
                     >
                         <span className="chat-fab-icon text-white text-lg font-bold" aria-hidden>
                             ✕

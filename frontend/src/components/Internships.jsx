@@ -73,25 +73,25 @@ export default function Internships({ isVisible, internships = [], themeColor = 
 
               {/* Badges/images: absolute on md+; inline row on mobile for better layout */}
               <div className="absolute bottom-4 right-4 flex items-end gap-2 hidden md:flex">
-                {internship.company && internship.company.toLowerCase().includes('information technology institute') && (
+                {internship.company && (internship.company.toLowerCase().includes('information technology institute') || internship.company.includes('معهد تكنولوجيا المعلومات')) && (
                   <PreviewableImage
                     src={getOptimizedImagePath("/images/certifications/ITI-certified-system-administration.jpg")}
-                    alt="ITI Certificate"
+                    alt={`${internship.company} - ${t('verified')}`}
                     className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
                   />
                 )}
 
-                {internship.company && internship.company.toLowerCase().includes('depi') && (
+                {internship.company && (internship.company.toLowerCase().includes('depi') || internship.company.includes('رواد مصر الرقمية')) && (
                   <PreviewableImage
                     src={getOptimizedImagePath("/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.jpg")}
-                    alt="DEPI Badge"
+                    alt={`${internship.company} - ${t('verified')}`}
                     className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
                   />
                 )}
-                {internship.title && internship.title.toLowerCase().includes('artificial intelligence') && (
+                {internship.title && (internship.title.toLowerCase().includes('artificial intelligence') || internship.title.includes('ذكاء اصطناعي')) && (
                   <PreviewableImage
                     src={getOptimizedImagePath("/images/certifications/we-certified-artificial-intelligence.jpg")}
-                    alt="WE Certificate"
+                    alt={`${internship.company} - ${t('verified')}`}
                     className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
                   />
                 )}
@@ -99,25 +99,25 @@ export default function Internships({ isVisible, internships = [], themeColor = 
 
               {/* Mobile: show badges inline below content to avoid overflow; right-justify to match desktop edge */}
               <div className="mt-4 flex items-center gap-2 md:hidden justify-end">
-                {internship.company && internship.company.toLowerCase().includes('information technology institute') && (
+                {internship.company && (internship.company.toLowerCase().includes('information technology institute') || internship.company.includes('معهد تكنولوجيا المعلومات')) && (
                   <PreviewableImage
                     src={getOptimizedImagePath("/images/certifications/ITI-certified-system-administration.jpg")}
-                    alt="ITI Certificate"
+                    alt={`${internship.company} - ${t('verified')}`}
                     className="w-20 xs:w-24 h-14 xs:h-16 object-contain bg-black/20"
                   />
                 )}
 
-                {internship.company && internship.company.toLowerCase().includes('depi') && (
+                {internship.company && (internship.company.toLowerCase().includes('depi') || internship.company.includes('رواد مصر الرقمية')) && (
                   <PreviewableImage
                     src={getOptimizedImagePath("/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.jpg")}
-                    alt="DEPI Badge"
+                    alt={`${internship.company} - ${t('verified')}`}
                     className="w-20 xs:w-24 h-14 xs:h-16 object-contain bg-black/20"
                   />
                 )}
-                {internship.title && internship.title.toLowerCase().includes('artificial intelligence') && (
+                {internship.title && (internship.title.toLowerCase().includes('artificial intelligence') || internship.title.includes('ذكاء اصطناعي')) && (
                   <PreviewableImage
                     src={getOptimizedImagePath("/images/certifications/we-certified-artificial-intelligence.jpg")}
-                    alt="WE Certificate"
+                    alt={`${internship.company} - ${t('verified')}`}
                     className="w-20 xs:w-24 h-14 xs:h-16 object-contain bg-black/20"
                   />
                 )}

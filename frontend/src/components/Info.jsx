@@ -85,8 +85,8 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
           {/* Brand Identity & Authority Badge */}
           <div className="mb-3 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono shadow-sm">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-            <span className="font-bold tracking-wide">Omarmohamed-portfolio</span>
-            <span className="text-slate-400 hidden sm:inline">• Official AI & MLOps Showcase</span>
+            <span className="font-bold tracking-wide">{t('brandBadgeText')}</span>
+            <span className="text-slate-400 hidden sm:inline">• {t('brandBadgeSub')}</span>
           </div>
 
           {/* Desktop: small title above name (keeps existing appearance) */}

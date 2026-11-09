@@ -113,7 +113,7 @@ export function Certifications({ isVisible, certifications = [], themeColor = 'c
                         <motion.div variants={containerVariant} className="mt-3 sm:mt-0 sm:ml-4 flex items-center gap-2">
                             {cert.pdf && (
                                 <ButtonCard variants={itemVariant} href={cert.pdf} external className="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/20 px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold">
-                                    PDF 📄
+                                    {t('pdfBadge')}
                                 </ButtonCard>
                             )}
                             {cert.verified && (
@@ -189,11 +189,11 @@ export function Courses({ isVisible, courses = [], themeColor = 'cyan' }) {
                             <div className="text-surface/70 text-xs sm:text-sm">{course.date}</div>
                             {course.verified && (
                                 <ButtonCard href={course.link} external className="bg-green-500/10 text-green-300 px-2 py-1 rounded-full text-xs font-semibold">
-                                    ✓ Verified
+                                    {t('verified')}
                                 </ButtonCard>
                             )}
                         </div>
-                        {course.platform && <div className="text-gray-400 text-xs mt-2">on {course.platform}</div>}
+                        {course.platform && <div className="text-gray-400 text-xs mt-2">{t('onPlatform')} {course.platform}</div>}
                     </div>
                 </motion.div>
             ))}

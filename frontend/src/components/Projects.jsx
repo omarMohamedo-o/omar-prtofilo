@@ -55,14 +55,14 @@ const Projects = function Projects({ isVisible, projects = [], themeColor = 'cya
                 {project.title}
                 {project.github && project.github !== "#" && !(project.link && project.link !== "#") ? (
                   <span className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -mr-2">
-                    <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} GitHub`} className="cursor-pointer p-2">
+                    <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} - ${t('githubRepo')}`} title={t('githubRepo')} className="cursor-pointer p-2">
                       <Github size={18} />
                     </a>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -mr-2">
                     {project.github && project.github !== "#" ? (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} GitHub`} className="cursor-pointer p-2">
+                      <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} - ${t('githubRepo')}`} title={t('githubRepo')} className="cursor-pointer p-2">
                         <Github size={18} />
                       </a>
                     ) : (
@@ -71,7 +71,7 @@ const Projects = function Projects({ isVisible, projects = [], themeColor = 'cya
                       </span>
                     )}
                     {project.link && project.link !== "#" ? (
-                      <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} Live`} className="cursor-pointer p-2">
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} - ${t('liveDemo')}`} title={t('liveDemo')} className="cursor-pointer p-2">
                         <ExternalLink size={18} />
                       </a>
                     ) : (

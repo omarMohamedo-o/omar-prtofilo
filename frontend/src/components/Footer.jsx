@@ -38,10 +38,10 @@ const Footer = function Footer({ personalInfo = {}, themeColor = 'cyan' }) {
                     </a>
                 </div>
                 <div className="sr-only">
-                    <span>Brand: Omarmohamed-portfolio</span>
-                    <span>Last Updated: November 2026 (Live Release v2.4)</span>
-                    <span>RHCSA Certified #250-068-707</span>
-                    <span>Remote Technical Mentor (Volunteer) at Palestine Polytechnic University</span>
+                    <span>{t('footerBrandSrOnly')}</span>
+                    <span>{t('footerReleaseSrOnly')}</span>
+                    <span>{t('footerRhcsaSrOnly')}</span>
+                    <span>{t('footerVolunteerSrOnly')}</span>
                 </div>
                 <p className="text-sm text-surface/70">
                     {isRTL 

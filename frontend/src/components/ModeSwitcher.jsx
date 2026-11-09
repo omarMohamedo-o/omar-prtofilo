@@ -1,12 +1,15 @@
 import React from 'react';
 import { Infinity, Brain } from 'lucide-react';
 import { MODES, modeInfo } from '../data/data';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ModeSwitcher({ currentMode, onModeChange }) {
+  const { t, isRTL } = useLanguage();
+
   return (
     <div className="fixed top-20 right-6 z-40 flex flex-col gap-2">
       <div className="bg-gray-800/90 backdrop-blur-lg rounded-xl p-2 border border-gray-700 shadow-xl">
-        <div className="text-xs text-gray-400 text-center mb-2 px-2">View as</div>
+        <div className="text-xs text-gray-400 text-center mb-2 px-2">{t('viewAs')}</div>
         <div className="flex flex-col gap-1">
           {Object.entries(modeInfo).map(([mode, info]) => (
             <button
@@ -24,7 +27,7 @@ export default function ModeSwitcher({ currentMode, onModeChange }) {
               ) : (
                 <Brain size={16} />
               )}
-              <span>{info.label}</span>
+              <span>{isRTL ? (info.labelAr || info.label) : info.label}</span>
             </button>
           ))}
         </div>
@@ -35,7 +38,7 @@ export default function ModeSwitcher({ currentMode, onModeChange }) {
         ? 'bg-cyan-500/20 text-cyan-400'
         : 'bg-purple-500/20 text-purple-400'
         }`}>
-        {modeInfo[currentMode]?.description}
+        {isRTL ? (modeInfo[currentMode]?.descriptionAr || modeInfo[currentMode]?.description) : modeInfo[currentMode]?.description}
       </div>
     </div>
   );

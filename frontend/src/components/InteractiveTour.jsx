@@ -1,78 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, Sparkles, ChevronRight, ChevronLeft, X, CheckCircle, Bot, ArrowDown } from 'lucide-react';
-
-const TOUR_STEPS = [
-  {
-    targetId: 'home',
-    title: 'Welcome to Omar Mohamed\'s Portfolio',
-    badge: 'Overview',
-    description: 'Omar is a Computer Engineer & M.Sc. candidate (CGPA 4.0) specializing in AI, LLMs & RAG, and MLOps & Cloud. You can switch between "DevOps & MLOps" and "AI & ML" modes anytime to tailor the view!',
-    itemHighlights: ['Omar Mohamed • Computer Engineer', 'M.Sc. Candidate (CGPA 4.0)', 'DevOps/MLOps & AI/ML Mode Switcher']
-  },
-  {
-    targetId: 'about',
-    title: 'About Omar',
-    badge: 'Background',
-    description: 'Learn about Omar\'s journey, research interests in applied ML, generative AI, and multilingual conversational systems, and his experience bridging research into production-grade systems.',
-    itemHighlights: ['Applied ML & Multilingual Systems', 'Production-first Engineering', 'Academic Excellence']
-  },
-  {
-    targetId: 'experience',
-    title: 'Professional Experience',
-    badge: 'Production Roles',
-    description: 'Explore live enterprise engineering work, including MLOps & AI Infrastructure Engineer at PlayerHub.GG (Dubai), AI & ML Engineer at CliniSoft (Alexandria), ChloroMaster, and instructional roles at EYouth and Black Horse.',
-    itemHighlights: ['PlayerHub.GG • MLOps & AI Infra', 'CliniSoft • Clinical Healthcare AI', 'ChloroMaster • Cloud & DevOps', 'EYouth & Black Horse • Teaching 50+ Students']
-  },
-  {
-    targetId: 'internships',
-    title: 'Engineering Internships',
-    badge: 'Hands-on Training',
-    description: 'High-impact internships including DEPI (Delivered 5 DevOps projects with Terraform, Ansible, K8s, 99.5% uptime) and Telecom Egypt (Enterprise NLP pipelines & PyTorch vision models).',
-    itemHighlights: ['DEPI • DevOps & Cloud Infrastructure', 'Telecom Egypt • AI & NLP Chatbots']
-  },
-  {
-    targetId: 'skills',
-    title: 'Core Technical Skills',
-    badge: 'Tech Stack',
-    description: 'A deep, production-tested toolkit spanning LLMs & Generative AI (RAG, Multi-agent, MCP, LoRA), ML/NLP frameworks, MLOps & Cloud (Docker, Kubernetes, Terraform, AWS, Azure, GCP), and High Availability Databases.',
-    itemHighlights: ['LLMs, RAG, Multi-Agent & MCP', 'PyTorch, Transformers, YOLOv5, Whisper', 'Docker, Kubernetes, Terraform, Helm', 'HashiCorp Vault, Prometheus & Grafana']
-  },
-  {
-    targetId: 'projects',
-    title: 'Featured Projects',
-    badge: 'Flagship Systems',
-    description: 'Explore flagship systems: HistoryVerse (A+ Multilingual AI/AR Museum Guide on AWS Fargate with YOLOv5), SDXL LoRA Fine-tuning pipeline (MLflow & Diffusers), and PlayerHub live gaming infrastructure.',
-    itemHighlights: ['HistoryVerse (Grade: A+, 204 tests, AWS Fargate)', 'SDXL LoRA Mosque Fine-Tuning', 'PlayerHub Production Infrastructure', 'MORA Portfolio AI Assistant']
-  },
-  {
-    targetId: 'education',
-    title: 'Education & Academics',
-    badge: 'Academics',
-    description: 'M.Sc. in Computer Engineering at Arab Academy (CGPA 4.0 / 4.0), Software Engineering Code Camp at ITI, and B.Sc. in Computer Engineering with Very Good (B+) honors.',
-    itemHighlights: ['M.Sc. Computer Engineering (CGPA 4.0 / 4.0)', 'ITI Intensive Code Camp Diploma', 'B.Sc. in Computer Engineering (Grade: Very Good)']
-  },
-  {
-    targetId: 'certifications',
-    title: 'Certifications & Credentials',
-    badge: 'Verified Honors',
-    description: 'Industry-recognized credentials including the Aspire Leaders Program, Red Hat Certified System Administrator (RHCSA), Huawei Cloud Developer (HCCDA), and IBM Docker Essentials.',
-    itemHighlights: ['Aspire Leaders Program (Aspire Institute)', 'RHCSA (Red Hat Certified)', 'HCCDA Huawei Cloud Developer', 'Docker Essentials (IBM)']
-  },
-  {
-    targetId: 'contact',
-    title: 'Connect & Chat with MORA',
-    badge: 'Get in Touch',
-    description: 'Ready to collaborate? Reach out directly via the Discovery form, WhatsApp, Email, or chat live with MORA — Omar\'s AI assistant in the bottom-right corner, ready to answer questions about any project or skill!',
-    itemHighlights: ['Interactive Discovery Inquiry Form', 'Direct WhatsApp & Email', 'MORA AI Chatbot with Voice & RAG']
-  }
-];
+import { Compass, Sparkles, ChevronRight, ChevronLeft, X, CheckCircle } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function InteractiveTour({ onTourToggle }) {
+  const { t, currentLocale } = useLanguage();
+  const tourSteps = currentLocale?.tourSteps || [];
+
   const [showPrompt, setShowPrompt] = useState(false);
   const [tourActive, setTourActive] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [isMinimized, setIsMinimized] = useState(false);
   const previousHighlightRef = useRef(null);
 
   // Check if first-time user on mount
@@ -103,48 +40,63 @@ export default function InteractiveTour({ onTourToggle }) {
     };
   }, []);
 
-  // Scroll to and highlight current step target
+  // Smooth scroll helper
   const scrollToTarget = useCallback((targetId) => {
-    // Clean up previous highlight
+    if (!targetId) return;
+
+    if (targetId === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    const element = document.getElementById(targetId);
+    if (!element) return;
+
+    const nav = document.querySelector('nav');
+    const navOffset = nav ? nav.offsetHeight + 20 : 80;
+    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+    const offsetPosition = Math.max(0, elementPosition - navOffset);
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }, []);
+
+  // Sync scroll & spotlight highlight
+  useEffect(() => {
+    if (!tourActive || !tourSteps.length) return;
+
+    const activeStep = tourSteps[currentStep] || tourSteps[0];
+    if (!activeStep) return;
+
+    scrollToTarget(activeStep.targetId);
+
     if (previousHighlightRef.current) {
       previousHighlightRef.current.classList.remove('tour-focused-element');
     }
 
-    const element = document.getElementById(targetId);
-    if (element) {
-      const headerOffset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    const targetEl = activeStep.targetId === 'home'
+      ? document.getElementById('home') || document.querySelector('.hero-section')
+      : document.getElementById(activeStep.targetId);
 
-      window.scrollTo({
-        top: Math.max(0, offsetPosition),
-        behavior: 'smooth'
-      });
-
-      element.classList.add('tour-focused-element');
-      previousHighlightRef.current = element;
+    if (targetEl) {
+      targetEl.classList.add('tour-focused-element');
+      previousHighlightRef.current = targetEl;
     }
-  }, []);
 
-  // Trigger scroll on step change and dispatch tour step event
+    if (onTourToggle) onTourToggle(true);
+
+    return () => {
+      if (previousHighlightRef.current) {
+        previousHighlightRef.current.classList.remove('tour-focused-element');
+      }
+    };
+  }, [tourActive, currentStep, scrollToTarget, onTourToggle, tourSteps]);
+
+  // Cleanup on unmount or tour deactivation
   useEffect(() => {
-    if (tourActive) {
-      const currentStepData = TOUR_STEPS[currentStep];
-      const targetId = currentStepData.targetId;
-      scrollToTarget(targetId);
-      if (onTourToggle) onTourToggle(true);
-
-      // Notify external 3D guide character
-      window.dispatchEvent(new CustomEvent('portfolio-tour-step', {
-        detail: {
-          stepIndex: currentStep,
-          totalSteps: TOUR_STEPS.length,
-          title: currentStepData.title,
-          badge: currentStepData.badge,
-          description: currentStepData.description
-        }
-      }));
-    } else {
+    if (!tourActive) {
       if (previousHighlightRef.current) {
         previousHighlightRef.current.classList.remove('tour-focused-element');
         previousHighlightRef.current = null;
@@ -152,7 +104,7 @@ export default function InteractiveTour({ onTourToggle }) {
       if (onTourToggle) onTourToggle(false);
       window.dispatchEvent(new CustomEvent('portfolio-tour-ended'));
     }
-  }, [tourActive, currentStep, scrollToTarget, onTourToggle]);
+  }, [tourActive, onTourToggle]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -170,7 +122,7 @@ export default function InteractiveTour({ onTourToggle }) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [tourActive, currentStep]);
+  }, [tourActive, currentStep, tourSteps.length]);
 
   const handleStartTour = () => {
     setShowPrompt(false);
@@ -184,7 +136,7 @@ export default function InteractiveTour({ onTourToggle }) {
   };
 
   const handleNext = () => {
-    if (currentStep < TOUR_STEPS.length - 1) {
+    if (currentStep < tourSteps.length - 1) {
       setCurrentStep(prev => prev + 1);
     } else {
       handleCompleteTour();
@@ -210,8 +162,10 @@ export default function InteractiveTour({ onTourToggle }) {
     handleCloseTour();
   };
 
-  const step = TOUR_STEPS[currentStep];
-  const progressPercent = ((currentStep + 1) / TOUR_STEPS.length) * 100;
+  if (!tourSteps.length) return null;
+
+  const step = tourSteps[currentStep] || tourSteps[0];
+  const progressPercent = ((currentStep + 1) / tourSteps.length) * 100;
 
   return (
     <>
@@ -265,18 +219,18 @@ export default function InteractiveTour({ onTourToggle }) {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                      Interactive Guide
+                      {t('tourInteractiveGuide')}
                     </span>
-                    <span className="text-xs text-gray-400">Omar Mohamed Portfolio</span>
+                    <span className="text-xs text-gray-400">{t('tourPortfolioSub')}</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
-                    Welcome! Take a Quick Tour?
+                    {t('tourModalTitle')}
                   </h3>
                 </div>
               </div>
 
               <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-6">
-                I'm <strong className="text-cyan-300 font-semibold">MORA</strong>, your portfolio AI guide. Would you like a brief interactive walkthrough of Omar Mohamed's background, production AI systems (<span className="text-purple-300 font-medium">PlayerHub</span>, <span className="text-cyan-300 font-medium">CliniSoft</span>, <span className="text-amber-300 font-medium">HistoryVerse</span>), skills, and experience?
+                {t('tourModalDesc')}
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-end gap-3">
@@ -285,7 +239,7 @@ export default function InteractiveTour({ onTourToggle }) {
                   onClick={handleDeclinePrompt}
                   className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-700 hover:border-gray-500 text-gray-300 hover:text-white font-medium text-sm transition-colors duration-200"
                 >
-                  No thanks, explore freely
+                  {t('tourModalDecline')}
                 </button>
                 <button
                   type="button"
@@ -293,7 +247,7 @@ export default function InteractiveTour({ onTourToggle }) {
                   className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white font-semibold text-sm shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>Start Guided Tour</span>
+                  <span>{t('tourModalStart')}</span>
                 </button>
               </div>
             </motion.div>
@@ -326,7 +280,7 @@ export default function InteractiveTour({ onTourToggle }) {
               <div className="flex items-center justify-between gap-2 mb-3 pt-1">
                 <div className="flex items-center gap-2">
                   <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold text-xs">
-                    {currentStep + 1}/{TOUR_STEPS.length}
+                    {currentStep + 1}/{tourSteps.length}
                   </span>
                   <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 uppercase tracking-wider">
                     {step.badge}
@@ -338,8 +292,8 @@ export default function InteractiveTour({ onTourToggle }) {
                     type="button"
                     onClick={handleCloseTour}
                     className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/60 transition-colors"
-                    aria-label="Exit tour"
-                    title="Exit tour (Esc)"
+                    aria-label={t('tourExitTitle')}
+                    title={t('tourExitTitle')}
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -357,7 +311,7 @@ export default function InteractiveTour({ onTourToggle }) {
 
               {/* Highlights pills */}
               <div className="flex flex-wrap gap-1.5 mb-5">
-                {step.itemHighlights.map((highlight, idx) => (
+                {step.itemHighlights && step.itemHighlights.map((highlight, idx) => (
                   <span
                     key={idx}
                     className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-cyan-950/60 text-cyan-200 border border-cyan-800/50 flex items-center gap-1"
@@ -375,7 +329,7 @@ export default function InteractiveTour({ onTourToggle }) {
                   onClick={handleCloseTour}
                   className="text-xs font-medium text-gray-400 hover:text-gray-200 transition-colors py-1 px-2"
                 >
-                  Skip Tour
+                  {t('tourSkip')}
                 </button>
 
                 <div className="flex items-center gap-2">
@@ -390,7 +344,7 @@ export default function InteractiveTour({ onTourToggle }) {
                     }`}
                   >
                     <ChevronLeft className="w-3.5 h-3.5" />
-                    <span>Back</span>
+                    <span>{t('tourBack')}</span>
                   </button>
 
                   <button
@@ -398,8 +352,8 @@ export default function InteractiveTour({ onTourToggle }) {
                     onClick={handleNext}
                     className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-semibold shadow-md shadow-cyan-500/25 hover:shadow-cyan-500/40 active:scale-95 transition-all flex items-center gap-1.5"
                   >
-                    <span>{currentStep === TOUR_STEPS.length - 1 ? 'Finish Tour' : 'Next'}</span>
-                    {currentStep === TOUR_STEPS.length - 1 ? (
+                    <span>{currentStep === tourSteps.length - 1 ? t('tourFinish') : t('tourNext')}</span>
+                    {currentStep === tourSteps.length - 1 ? (
                       <CheckCircle className="w-3.5 h-3.5 text-white" />
                     ) : (
                       <ChevronRight className="w-3.5 h-3.5 text-white" />

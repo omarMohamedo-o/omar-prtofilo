@@ -1,18 +1,19 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { FaArrowDown } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function DownArrowButton({ visible = false, onClick = () => { }, className = '', inline = false }) {
+    const { isRTL, t } = useLanguage();
     if (!visible) return null;
 
-    // Inline mode: render a simple button to be placed inside the chat panel
     if (inline) {
         return (
             <button
                 key="down-arrow-inline"
                 onClick={(e) => { e?.preventDefault(); onClick(e); }}
-                aria-label={'Scroll to latest message'}
-                title={'Scroll to latest message'}
+                aria-label={t('scrollToLatestAria')}
+                title={t('scrollToLatestAria')}
                 role="button"
                 className={`chat-scroll-down ${className}`}
             >
@@ -20,11 +21,6 @@ export default function DownArrowButton({ visible = false, onClick = () => { }, 
             </button>
         );
     }
-
-    // Default portal-mounted floating button (keeps previous behavior)
-    // runtime-safe detection for RTL layouts
-    const lang = (typeof navigator !== 'undefined' && navigator.language) || (typeof document !== 'undefined' && document.documentElement?.lang) || 'en';
-    const isRTL = typeof document !== 'undefined' ? (document.dir === 'rtl' || String(lang).toLowerCase().startsWith('ar')) : String(lang).toLowerCase().startsWith('ar');
 
     let arrowStyle = { right: isRTL ? 'auto' : 16, left: isRTL ? 16 : 'auto', bottom: 24, transition: 'opacity .25s, transform .2s' };
     if (typeof document !== 'undefined') {
@@ -40,9 +36,7 @@ export default function DownArrowButton({ visible = false, onClick = () => { }, 
                 } else {
                     arrowStyle = { right: 24, left: 'auto', bottom: bottomOffset, transition: 'opacity .25s, transform .2s' };
                 }
-            } catch (e) {
-                // ignore and use default
-            }
+            } catch (e) {}
         }
     }
 
@@ -50,8 +44,8 @@ export default function DownArrowButton({ visible = false, onClick = () => { }, 
         <button
             key="down-arrow"
             onClick={(e) => { e?.preventDefault(); onClick(e); }}
-            aria-label={'Scroll to latest message'}
-            title={'Scroll to latest message'}
+            aria-label={t('scrollToLatestAria')}
+            title={t('scrollToLatestAria')}
             role="button"
             className={`down-arrow-button fixed z-[9999] p-2 sm:p-3 rounded-full bg-[#0B0B1A]/80 backdrop-blur-sm text-white shadow-lg hover:scale-105 active:scale-95 transform-gpu transition-all duration-200 ${className}`}
             style={arrowStyle}

@@ -152,11 +152,11 @@ export default function Header({
                             type="button"
                             onClick={toggleLanguage}
                             className={`flex items-center gap-1.5 px-3 py-2 border ${borderAccent} rounded-lg text-sm font-semibold ${accentColor} glow-btn transition-all duration-300 hover:scale-105`}
-                            title={language === 'en' ? "تبديل إلى اللغة العربية" : "Switch to English"}
-                            aria-label="Toggle language"
+                            title={t('switchLanguageTitle')}
+                            aria-label={t('switchLanguageTitle')}
                         >
                             <Globe size={15} />
-                            <span>{language === 'en' ? 'العربية' : 'English'}</span>
+                            <span>{t('languageToggleLabel')}</span>
                         </button>
 
                         {/* Unified Tour Guide button (no icons, original clean design) */}
@@ -261,9 +261,11 @@ export default function Header({
                                 setMobileMenuOpen(false);
                             }}
                             className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border ${borderAccent} text-sm font-semibold ${accentColor} glow-btn`}
+                            title={t('switchLanguageTitle')}
+                            aria-label={t('switchLanguageTitle')}
                         >
                             <Globe size={18} />
-                            <span>{language === 'en' ? 'التحويل إلى العربية (Arabic)' : 'Switch to English'}</span>
+                            <span>{t('switchLanguageTitle')}</span>
                         </button>
                     </div>
 
