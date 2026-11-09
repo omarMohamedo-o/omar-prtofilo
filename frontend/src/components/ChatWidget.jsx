@@ -930,21 +930,6 @@ export default function ChatWidget() {
                         )}
                     </div>
 
-                    {/* Quick suggested prompt chips */}
-                    <div className="chat-suggested-chips flex items-center gap-1.5 px-3 py-2 overflow-x-auto no-scrollbar border-t border-gray-800/80 bg-[#080b18]">
-                        {suggestedPrompts.map((sp, idx) => (
-                            <button
-                                key={idx}
-                                type="button"
-                                onClick={() => handleSuggestedPrompt(sp.query)}
-                                disabled={isLoading}
-                                className="whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-medium bg-gray-800/70 hover:bg-cyan-950/80 text-gray-300 hover:text-cyan-300 border border-gray-700/60 hover:border-cyan-500/50 transition-all flex-shrink-0 active:scale-95 cursor-pointer"
-                            >
-                                {sp.label}
-                            </button>
-                        ))}
-                    </div>
-
                     <div className="chat-input">
                         <input
                             type="file"
