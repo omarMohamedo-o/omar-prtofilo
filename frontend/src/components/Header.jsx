@@ -185,6 +185,10 @@ export default function Header({
                             const isActive = activeSection === item.id;
                             const isHovered = hoveredSection === item.id;
 
+                            const glowShadow = themeColor === 'purple'
+                                ? 'drop-shadow-[0_0_8px_rgba(168,85,247,0.7)]'
+                                : 'drop-shadow-[0_0_8px_rgba(6,182,212,0.75)]';
+
                             return (
                                 <button
                                     key={item.id}
@@ -196,8 +200,10 @@ export default function Header({
                                     onMouseLeave={() => setHoveredSection(null)}
                                     className={`relative px-3 py-1.5 rounded-lg text-xs xl:text-sm font-medium transition-all duration-200 whitespace-nowrap cursor-pointer ${
                                         isActive
-                                            ? `${accentColor} font-semibold`
-                                            : 'text-slate-300 hover:text-white hover:scale-105'
+                                            ? `${accentColor} font-semibold ${glowShadow}`
+                                            : isHovered
+                                            ? `${accentColor} font-medium ${glowShadow} scale-105`
+                                            : 'text-slate-300 hover:scale-105'
                                     }`}
                                 >
                                     {/* Active Glowing Animated Pill */}
@@ -206,8 +212,8 @@ export default function Header({
                                             layoutId="activeNavPill"
                                             className={`absolute inset-0 rounded-lg border ${borderAccent} ${
                                                 themeColor === 'purple'
-                                                    ? 'bg-purple-500/15 shadow-[0_0_12px_rgba(168,85,247,0.35)]'
-                                                    : 'bg-cyan-500/15 shadow-[0_0_12px_rgba(6,182,212,0.35)]'
+                                                    ? 'bg-purple-500/15 shadow-[0_0_14px_rgba(168,85,247,0.4)]'
+                                                    : 'bg-cyan-500/15 shadow-[0_0_14px_rgba(6,182,212,0.4)]'
                                             }`}
                                             transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                                         />
@@ -217,12 +223,20 @@ export default function Header({
                                     {!isActive && isHovered && (
                                         <motion.div
                                             layoutId="hoverNavPill"
-                                            className="absolute inset-0 rounded-lg bg-white/5 border border-white/10"
+                                            className={`absolute inset-0 rounded-lg border ${
+                                                themeColor === 'purple'
+                                                    ? 'border-purple-500/40 bg-purple-500/10 shadow-[0_0_12px_rgba(168,85,247,0.25)]'
+                                                    : 'border-cyan-500/40 bg-cyan-500/10 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
+                                            }`}
                                             transition={{ type: 'spring', stiffness: 450, damping: 35 }}
                                         />
                                     )}
 
-                                    <span className="relative z-10 flex items-center">
+                                    <span className={`relative z-10 flex items-center transition-all duration-200 ${
+                                        isActive || isHovered
+                                            ? `${accentColor} ${glowShadow}`
+                                            : `text-slate-300 ${hoverAccent}`
+                                    }`}>
                                         {item.label}
                                     </span>
                                 </button>
@@ -235,7 +249,11 @@ export default function Header({
                         {/* Book a Discovery Call */}
                         <button
                             onClick={() => scrollToSection('discovery')}
-                            className={`px-4 py-2 border ${borderAccent} rounded-lg text-sm font-medium ${accentColor} glow-btn`}
+                            className={`px-4 py-2 border ${borderAccent} rounded-lg text-sm font-medium ${accentColor} glow-btn transition-all duration-200 hover:scale-105 ${
+                                themeColor === 'purple'
+                                    ? 'hover:text-purple-300 hover:border-purple-300 hover:shadow-[0_0_16px_rgba(168,85,247,0.55)] hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.7)]'
+                                    : 'hover:text-cyan-300 hover:border-cyan-300 hover:shadow-[0_0_16px_rgba(6,182,212,0.55)] hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.75)]'
+                            }`}
                         >
                             {t('bookDiscoveryCall')}
                         </button>
@@ -378,14 +396,18 @@ export default function Header({
                     <div className="flex flex-col px-4 xs:px-6 py-2 gap-1.5">
                         {navItems.map((item) => {
                             const isActive = activeSection === item.id;
+                            const glowShadow = themeColor === 'purple'
+                                ? 'drop-shadow-[0_0_8px_rgba(168,85,247,0.7)]'
+                                : 'drop-shadow-[0_0_8px_rgba(6,182,212,0.75)]';
+
                             return (
                                 <button
                                     key={item.id}
                                     onClick={() => handleNavClick(item.id)}
                                     className={`${isRTL ? 'text-right' : 'text-left'} transition-all duration-200 text-sm xs:text-base font-medium py-2.5 px-3.5 rounded-xl touch-manipulation flex items-center justify-between ${
                                         isActive
-                                            ? `${accentColor} ${borderAccent} border bg-white/5 font-semibold shadow-sm`
-                                            : 'text-surface/90 hover:text-white hover:bg-white/5'
+                                            ? `${accentColor} ${borderAccent} border bg-white/5 font-semibold shadow-sm ${glowShadow}`
+                                            : `text-surface/90 ${hoverAccent} hover:bg-white/5 hover:${glowShadow}`
                                     }`}
                                 >
                                     <span>{item.label}</span>
