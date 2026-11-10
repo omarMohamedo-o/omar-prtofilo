@@ -15,11 +15,20 @@ export default function UpArrowButton({ className = '' }) {
         }
     };
 
+    const [isMobile, setIsMobile] = React.useState(false);
+
+    React.useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 640);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     // Position UpArrowButton cleanly above the WhatsApp FAB on the left side with 0 overlap
     const arrowStyle = {
-        left: 24,
+        left: isMobile ? 16 : 24,
         right: 'auto',
-        bottom: 92, // 24px (FAB bottom) + 56px (FAB height) + 12px (clean gap) = 92px
+        bottom: isMobile ? 74 : 92, // 16px bottom + 48px FAB + 10px gap on mobile
         transition: 'opacity .25s, transform .2s'
     };
 

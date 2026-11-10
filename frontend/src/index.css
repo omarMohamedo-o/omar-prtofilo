@@ -952,6 +952,18 @@ body {
     text-decoration: none
 }
 
+@media (max-width: 639px) {
+    .whatsapp-fab {
+        bottom: 16px;
+        left: 16px;
+        width: 48px;
+        height: 48px;
+    }
+    .whatsapp-fab-icon {
+        font-size: 24px;
+    }
+}
+
 .whatsapp-fab:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 16px rgba(37, 211, 102, 0.5)

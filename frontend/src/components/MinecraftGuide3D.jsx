@@ -1684,7 +1684,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
                     setIsOpen(true);
                     setIsMinimized(false);
                 }}
-                className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 px-3.5 py-2 rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-red-600 text-white shadow-xl shadow-amber-500/35 border-2 border-amber-300 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 font-mono text-xs font-bold touch-manipulation cursor-pointer"
+                className="fixed bottom-[68px] right-4 sm:bottom-6 sm:right-6 z-40 px-3.5 py-2 rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-red-600 text-white shadow-xl shadow-amber-500/35 border-2 border-amber-300 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 font-mono text-xs font-bold touch-manipulation cursor-pointer"
                 title="Open Monkey D. Luffy 3D Guide"
                 aria-label="Open Monkey D. Luffy 3D Guide"
             >
@@ -1702,7 +1702,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className={`fixed z-50 flex flex-col font-mono transition-all duration-300 ${
                 isMinimized
-                    ? 'bottom-4 right-4 sm:bottom-6 sm:right-6 w-[280px] xs:w-[320px]'
+                    ? 'bottom-[68px] right-4 sm:bottom-6 sm:right-6 w-[230px] xs:w-[270px]'
                     : 'bottom-2 sm:bottom-6 left-2 right-2 sm:left-auto sm:right-6 w-auto sm:w-[410px] max-w-[420px] mx-auto sm:mx-0'
             }`}
             style={{ maxHeight: isMinimized ? 'auto' : 'calc(100dvh - 16px)' }}

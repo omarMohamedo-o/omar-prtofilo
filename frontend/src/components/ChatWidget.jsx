@@ -1074,59 +1074,79 @@ export default function ChatWidget() {
 
                 {/* Unified "Need help?" Action Badge on the Right (hidden when Chat or 3D Guide is open) */}
                 {!open && !guideOpen ? (
-                    <div className="need-help-card shadow-2xl transition-all duration-300">
-                        {/* Header: Logo + "Need help?" */}
-                        <div className="flex items-center justify-between mb-2.5">
-                            <div className="flex items-center gap-2.5">
-                                {/* Circular Logo Badge with green online pulse */}
-                                <div className="relative">
-                                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-600 via-teal-500 to-blue-600 p-[1.5px] shadow-sm flex items-center justify-center">
-                                        <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-cyan-300 font-bold text-xs">
-                                            ⚙️
+                    <>
+                        {/* Desktop / Tablet Expanded Card (>= 640px) */}
+                        <div className="hidden sm:flex need-help-card shadow-2xl transition-all duration-300">
+                            {/* Header: Logo + "Need help?" */}
+                            <div className="flex items-center justify-between mb-2.5">
+                                <div className="flex items-center gap-2.5">
+                                    {/* Circular Logo Badge with green online pulse */}
+                                    <div className="relative">
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-600 via-teal-500 to-blue-600 p-[1.5px] shadow-sm flex items-center justify-center">
+                                            <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-cyan-300 font-bold text-xs">
+                                                ⚙️
+                                            </div>
                                         </div>
+                                        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-slate-900 animate-pulse" />
                                     </div>
-                                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-slate-900 animate-pulse" />
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-bold text-slate-100 tracking-tight">
+                                            {t('needHelpTitle')}
+                                        </span>
+                                        <span className="text-[10px] text-cyan-400 font-medium">
+                                            {t('needHelpSubtitle')}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col">
-                                    <span className="text-sm font-bold text-slate-100 tracking-tight">
-                                        {t('needHelpTitle')}
-                                    </span>
-                                    <span className="text-[10px] text-cyan-400 font-medium">
-                                        {t('needHelpSubtitle')}
-                                    </span>
-                                </div>
+                            </div>
+
+                            {/* Action Buttons Row: Single Chat Button + Single Unified 3D Tour Guide Button */}
+                            <div className="flex items-center gap-2">
+                                {/* 1. "Ask anything" Pill Button */}
+                                <button
+                                    type="button"
+                                    onClick={() => setOpen(true)}
+                                    className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full border border-cyan-400/50 bg-cyan-950/60 hover:bg-cyan-900/60 text-cyan-300 font-semibold text-xs transition-all shadow-sm group/ask"
+                                    title={t('needHelpAskTitle')}
+                                >
+                                    <FaCommentDots size={13} className="text-cyan-400 group-hover/ask:scale-110 transition-transform" />
+                                    <span>{t('needHelpAskAnything')}</span>
+                                </button>
+
+                                {/* 2. Unified 3D Tour Guide Button */}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (window.startPortfolioTour) window.startPortfolioTour();
+                                        else window.dispatchEvent(new CustomEvent('start-portfolio-tour'));
+                                    }}
+                                    className="flex items-center justify-center gap-1.5 py-1.5 px-3.5 rounded-full border border-cyan-400/40 bg-slate-800/90 hover:bg-cyan-950/70 text-cyan-300 font-semibold text-xs transition-transform hover:scale-105 shadow-sm"
+                                    title={t('tourGuide')}
+                                    aria-label={t('tourGuide')}
+                                >
+                                    <span>👒</span>
+                                    <span>{t('tourGuide')}</span>
+                                </button>
                             </div>
                         </div>
 
-                        {/* Action Buttons Row: Single Chat Button + Single Unified 3D Tour Guide Button */}
-                        <div className="flex items-center gap-2">
-                            {/* 1. "Ask anything" Pill Button */}
+                        {/* Mobile Compact Floating Button (< 640px) - Guaranteed Zero Overlap */}
+                        <div className="flex sm:hidden items-center">
                             <button
                                 type="button"
                                 onClick={() => setOpen(true)}
-                                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full border border-cyan-400/50 bg-cyan-950/60 hover:bg-cyan-900/60 text-cyan-300 font-semibold text-xs transition-all shadow-sm group/ask"
-                                title={t('needHelpAskTitle')}
+                                className="px-3.5 py-2 rounded-full bg-slate-900/95 border-2 border-cyan-400/70 shadow-xl shadow-cyan-500/25 text-cyan-300 hover:text-white flex items-center gap-2 font-mono text-xs font-bold active:scale-95 transition-all touch-manipulation cursor-pointer"
+                                aria-label="Open AI Assistant"
                             >
-                                <FaCommentDots size={13} className="text-cyan-400 group-hover/ask:scale-110 transition-transform" />
-                                <span>{t('needHelpAskAnything')}</span>
-                            </button>
-
-                            {/* 2. Unified 3D Minecraft Tour Guide Button */}
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    if (window.startPortfolioTour) window.startPortfolioTour();
-                                    else window.dispatchEvent(new CustomEvent('start-portfolio-tour'));
-                                }}
-                                className="flex items-center justify-center gap-1.5 py-1.5 px-3.5 rounded-full border border-cyan-400/40 bg-slate-800/90 hover:bg-cyan-950/70 text-cyan-300 font-semibold text-xs transition-transform hover:scale-105 shadow-sm"
-                                title={t('tourGuide')}
-                                aria-label={t('tourGuide')}
-                            >
-                                <span>⛏️</span>
-                                <span>{t('tourGuide')}</span>
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                                </span>
+                                <span className="text-sm">💬</span>
+                                <span>{t('needHelpTitle')}</span>
                             </button>
                         </div>
-                    </div>
+                    </>
                 ) : (
                     <button
                         ref={fabRef}
