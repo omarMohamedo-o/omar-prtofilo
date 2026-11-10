@@ -210,65 +210,72 @@ export const en = {
     tourSteps: [
         {
             targetId: "home",
-            title: "Welcome to Omar Mohamed's Portfolio",
-            badge: "Overview",
+            title: "East Blue Arc: Setting Sail on the Grand Line",
+            badge: "⛵ East Blue Arc",
             description: "Omar is a Computer Engineer & M.Sc. candidate (CGPA 4.0) specializing in AI, LLMs & RAG, and MLOps & Cloud. You can switch between 'DevOps & MLOps' and 'AI & ML' modes anytime to tailor the view!",
             itemHighlights: ["Omar Mohamed • Computer Engineer", "M.Sc. Candidate (CGPA 4.0)", "DevOps/MLOps & AI/ML Mode Switcher"]
         },
         {
             targetId: "about",
-            title: "About Omar",
-            badge: "Background",
+            title: "Baratie & Loguetown: Pirate Ambition & Engineering Philosophy",
+            badge: "🍖 Baratie Arc",
             description: "Learn about Omar's journey, research interests in applied ML, generative AI, and multilingual conversational systems, and his experience bridging research into production-grade systems.",
             itemHighlights: ["Applied ML & Multilingual Systems", "Production-first Engineering", "Academic Excellence"]
         },
         {
             targetId: "experience",
-            title: "Professional Experience",
-            badge: "Production Roles",
+            title: "Water 7 & Enies Lobby: Gear 2 High Concurrency Battles",
+            badge: "🚂 Water 7 Arc • Gear 2",
             description: "Explore live enterprise engineering work, including MLOps & AI Infrastructure Engineer at PlayerHub.GG (Dubai), AI & ML Engineer at CliniSoft (Alexandria), ChloroMaster, and instructional roles at EYouth and Black Horse.",
             itemHighlights: ["PlayerHub.GG • MLOps & AI Infra", "CliniSoft • Clinical Healthcare AI", "ChloroMaster • Cloud & DevOps", "EYouth & Black Horse • Teaching 50+ Students"]
         },
         {
             targetId: "internships",
-            title: "Engineering Internships",
-            badge: "Hands-on Training",
+            title: "Rusukaina 2-Year Training Arc: Haki Mastery with Rayleigh",
+            badge: "🏝️ Rusukaina Arc",
             description: "High-impact internships including DEPI (Delivered 5 DevOps projects with Terraform, Ansible, K8s, 99.5% uptime) and Telecom Egypt (Enterprise NLP pipelines & PyTorch vision models).",
             itemHighlights: ["DEPI • DevOps & Cloud Infrastructure", "Telecom Egypt • AI & NLP Chatbots"]
         },
         {
             targetId: "skills",
-            title: "Core Technical Skills",
-            badge: "Tech Stack",
+            title: "Whole Cake Island Arc: Advanced Observation Haki (Future AI)",
+            badge: "🍩 Whole Cake Island Arc",
             description: "A deep, production-tested toolkit spanning LLMs & Generative AI (RAG, Multi-agent, MCP, LoRA), ML/NLP frameworks, MLOps & Cloud (Docker, Kubernetes, Terraform, AWS, Azure, GCP), and High Availability Databases.",
             itemHighlights: ["LLMs, RAG, Multi-Agent & MCP", "PyTorch, Transformers, YOLOv5, Whisper", "Docker, Kubernetes, Terraform, Helm", "HashiCorp Vault, Prometheus & Grafana"]
         },
         {
             targetId: "projects",
-            title: "Featured Projects",
-            badge: "Flagship Systems",
+            title: "Wano Country Arc: Gear 5 Sun God Nika Awakening",
+            badge: "⚡ Wano Arc • Gear 5",
             description: "Explore flagship systems: HistoryVerse (A+ Multilingual AI/AR Museum Guide on AWS Fargate with YOLOv5), SDXL LoRA Fine-tuning pipeline (MLflow & Diffusers), and PlayerHub live gaming infrastructure.",
             itemHighlights: ["HistoryVerse (Grade: A+, 204 tests, AWS Fargate)", "SDXL LoRA Mosque Fine-Tuning", "PlayerHub Production Infrastructure", "MORA Portfolio AI Assistant"]
         },
         {
             targetId: "education",
-            title: "Education & Academics",
-            badge: "Academics",
+            title: "Egghead Island Arc: Dr. Vegapunk's Future Technology",
+            badge: "🔬 Egghead Arc",
             description: "M.Sc. in Computer Engineering at Arab Academy (CGPA 4.0 / 4.0), Software Engineering Code Camp at ITI, and B.Sc. in Computer Engineering with Very Good (B+) honors.",
             itemHighlights: ["M.Sc. Computer Engineering (CGPA 4.0 / 4.0)", "ITI Intensive Code Camp Diploma", "B.Sc. in Computer Engineering (Grade: Very Good)"]
         },
         {
             targetId: "certifications",
-            title: "Certifications & Credentials",
-            badge: "Verified Honors",
+            title: "Egghead Arc Credentials: Red Hat Certified System Administrator",
+            badge: "🎖️ Verified Credentials",
             description: "Industry-recognized credentials including the Aspire Leaders Program, Red Hat Certified System Administrator (RHCSA), Huawei Cloud Developer (HCCDA), and IBM Docker Essentials.",
             itemHighlights: ["Aspire Leaders Program (Aspire Institute)", "RHCSA (Red Hat Certified)", "HCCDA Huawei Cloud Developer", "Docker Essentials (IBM)"]
         },
         {
+            targetId: "faq",
+            title: "Laugh Tale Arc: The Poneglyphs of Engineering Truth",
+            badge: "📜 Laugh Tale Arc",
+            description: "Uncover answers to common questions about Omar's tech stack, production architecture, cloud deployments, and how he approaches engineering challenges.",
+            itemHighlights: ["Architecture & High Availability Answers", "Tech Stack Specifications", "Production Readiness FAQs"]
+        },
+        {
             targetId: "contact",
-            title: "Connect & Chat with MORA",
-            badge: "Get in Touch",
-            description: "Ready to collaborate? Reach out directly via the Discovery form, WhatsApp, Email, or chat live with MORA — Omar's AI assistant in the bottom-right corner, ready to answer questions about any project or skill!",
+            title: "Straw Hat Grand Fleet Arc: Join the Crew & Collaborate",
+            badge: "🏴‍☠️ Grand Fleet Arc",
+            description: "Ready to collaborate? Reach out directly via the Discovery form, WhatsApp, Email, or chat live with Captain Luffy & MORA — ready to answer questions about any project or skill!",
             itemHighlights: ["Interactive Discovery Inquiry Form", "Direct WhatsApp & Email", "MORA AI Chatbot with Voice & RAG"]
         }
     ]
