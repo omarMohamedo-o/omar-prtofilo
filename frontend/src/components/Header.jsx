@@ -168,21 +168,8 @@ export default function Header({
                         ))}
                     </div>
 
-                    {/* Desktop Right: Tour Guide, Discovery, and Language Dropdown (Far Right) */}
+                    {/* Desktop Right: Discovery and Language Dropdown (Far Right) */}
                     <div className="hidden lg:flex items-center gap-3">
-                        {/* Unified Tour Guide button (no icons, original clean design) */}
-                        <button
-                            type="button"
-                            onClick={() => {
-                                if (window.startPortfolioTour) window.startPortfolioTour();
-                                window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: true } }));
-                            }}
-                            className={`px-3 py-2 border ${borderAccent} rounded-lg text-sm font-medium ${accentColor} glow-btn transition-all duration-300`}
-                            title={t('tourGuide')}
-                        >
-                            {t('tourGuide')}
-                        </button>
-
                         {/* Book a Discovery Call */}
                         <button
                             onClick={() => scrollToSection('discovery')}
@@ -360,19 +347,8 @@ export default function Header({
                         </div>
                     </div>
 
-                    {/* Tour Guide & Book Discovery Call */}
+                    {/* Book Discovery Call */}
                     <div className="px-4 xs:px-6 py-4 mt-auto mb-6 xs:mb-8 pb-safe flex flex-col gap-2">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setMobileMenuOpen(false);
-                                if (window.startPortfolioTour) window.startPortfolioTour();
-                                window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: true } }));
-                            }}
-                            className={`w-full py-2.5 rounded-lg border ${borderAccent} text-sm font-medium ${accentColor} glow-btn text-center active:scale-95`}
-                        >
-                            {t('tourGuide')}
-                        </button>
                         <button
                             onClick={() => handleNavClick('discovery')}
                             className={`w-full py-2.5 xs:py-3 ${bgAccent} text-gray-900 rounded-lg font-semibold text-sm xs:text-base text-center touch-manipulation active:opacity-90`}
