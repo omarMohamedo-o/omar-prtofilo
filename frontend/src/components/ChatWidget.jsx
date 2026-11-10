@@ -806,17 +806,24 @@ export default function ChatWidget() {
     }, [messages, lastMessageSender]);
 
     // Listen for custom open/close events across the application
+    const [guideOpen, setGuideOpen] = useState(false);
+
     useEffect(() => {
         const handleCloseChat = () => setOpen(false);
         const handleOpenChat = () => {
             setOpen(true);
             setShowNotice(false);
         };
+        const handleGuideState = (e) => {
+            setGuideOpen(!!e?.detail?.open);
+        };
         window.addEventListener('close-chat-widget', handleCloseChat);
         window.addEventListener('open-chat-widget', handleOpenChat);
+        window.addEventListener('guide-open-state-change', handleGuideState);
         return () => {
             window.removeEventListener('close-chat-widget', handleCloseChat);
             window.removeEventListener('open-chat-widget', handleOpenChat);
+            window.removeEventListener('guide-open-state-change', handleGuideState);
         };
     }, []);
 
@@ -1065,8 +1072,8 @@ export default function ChatWidget() {
                     />
                 </div>
 
-                {/* Unified "Need help?" Action Badge on the Right */}
-                {!open ? (
+                {/* Unified "Need help?" Action Badge on the Right (hidden when Chat or 3D Guide is open) */}
+                {!open && !guideOpen ? (
                     <div className="need-help-card shadow-2xl transition-all duration-300">
                         {/* Header: Logo + "Need help?" */}
                         <div className="flex items-center justify-between mb-2.5">

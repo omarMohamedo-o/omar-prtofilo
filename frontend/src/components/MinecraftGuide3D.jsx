@@ -573,9 +573,12 @@ export default function MinecraftGuide3D({ onStartTour }) {
     const tourSteps = currentLocale?.tourSteps || [];
     const previousHighlightRef = useRef(null);
 
-    // Component UI state
+    // Mobile screen detection
+    const isMobileScreen = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+
+    // Component UI state: on small mobile devices, start minimized so it doesn't cover the screen
     const [isOpen, setIsOpen] = useState(true);
-    const [isMinimized, setIsMinimized] = useState(false);
+    const [isMinimized, setIsMinimized] = useState(isMobileScreen);
     const [currentArcIndex, setCurrentArcIndex] = useState(0);
     const [inputText, setInputText] = useState('');
     const [messages, setMessages] = useState([
@@ -926,6 +929,13 @@ export default function MinecraftGuide3D({ onStartTour }) {
         window.addEventListener('toggle-3d-minecraft-guide', handleToggleGuide);
         return () => window.removeEventListener('toggle-3d-minecraft-guide', handleToggleGuide);
     }, [activeArc]);
+
+    // Notify other widgets (e.g. ChatWidget) whether the 3D Guide is expanded
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('guide-open-state-change', {
+            detail: { open: isOpen && !isMinimized }
+        }));
+    }, [isOpen, isMinimized]);
 
     // Section transition observer: dynamically triggers the 9 One Piece Arcs!
     useEffect(() => {
@@ -1467,63 +1477,86 @@ export default function MinecraftGuide3D({ onStartTour }) {
     ];
 
     if (!isOpen) {
-        return null;
+        return (
+            <motion.button
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                onClick={() => {
+                    setIsOpen(true);
+                    setIsMinimized(false);
+                }}
+                className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 px-3.5 py-2 rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-red-600 text-white shadow-xl shadow-amber-500/35 border-2 border-amber-300 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 font-mono text-xs font-bold touch-manipulation cursor-pointer"
+                title="Open Monkey D. Luffy 3D Guide"
+                aria-label="Open Monkey D. Luffy 3D Guide"
+            >
+                <span className="text-xl">👒</span>
+                <span>{isRTL ? 'مرشد لوفي 3D' : 'Luffy 3D Guide'}</span>
+            </motion.button>
+        );
     }
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.92 }}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 40, scale: 0.92 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className={`fixed bottom-6 right-6 z-50 flex flex-col font-mono transition-all duration-300 ${isMinimized ? 'w-[280px]' : 'w-[360px] sm:w-[410px]'
-                }`}
+            exit={{ opacity: 0, y: 30, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className={`fixed z-50 flex flex-col font-mono transition-all duration-300 ${
+                isMinimized
+                    ? 'bottom-4 right-4 sm:bottom-6 sm:right-6 w-[280px] xs:w-[320px]'
+                    : 'bottom-2 sm:bottom-6 left-2 right-2 sm:left-auto sm:right-6 w-auto sm:w-[410px] max-w-[420px] mx-auto sm:mx-0'
+            }`}
+            style={{ maxHeight: isMinimized ? 'auto' : 'calc(100dvh - 16px)' }}
         >
             {/* One Piece Straw Hat Ship Cabin Window Container */}
-            <div className="relative rounded-2xl bg-[#091528]/95 border-2 border-amber-500/60 shadow-[0_12px_45px_rgba(245,158,11,0.25),0_0_0_1px_rgba(255,255,255,0.06)] backdrop-blur-xl overflow-hidden flex flex-col">
+            <div className="relative rounded-2xl bg-[#091528]/95 border-2 border-amber-500/60 shadow-[0_12px_45px_rgba(245,158,11,0.25),0_0_0_1px_rgba(255,255,255,0.06)] backdrop-blur-xl overflow-hidden flex flex-col max-h-[calc(100dvh-20px)] sm:max-h-none">
 
-                {/* Header Bar */}
-                <div className="flex items-center justify-between px-3.5 py-2.5 bg-gradient-to-r from-amber-950/80 via-[#0a1a33] to-slate-900 border-b border-amber-500/40">
-                    <div className="flex items-center gap-2">
+                {/* Sticky Header Bar - ALWAYS visible and accessible at the top */}
+                <div className="sticky top-0 z-30 flex items-center justify-between px-3 py-2 sm:px-3.5 sm:py-2.5 bg-gradient-to-r from-amber-950/90 via-[#0a1a33] to-slate-900 border-b border-amber-500/40 backdrop-blur-md flex-shrink-0">
+                    <div className="flex items-center gap-2 min-w-0">
                         {/* Straw Hat Pirate Avatar Icon */}
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-red-600 border border-amber-300/80 flex items-center justify-center text-base shadow-inner">
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-amber-500 to-red-600 border border-amber-300/80 flex items-center justify-center text-sm sm:text-base shadow-inner flex-shrink-0">
                             👒
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col min-w-0">
                             <div className="flex items-center gap-1.5">
-                                <span className="text-xs font-extrabold text-amber-300 tracking-wide">
+                                <span className="text-xs font-extrabold text-amber-300 tracking-wide truncate">
                                     Monkey D. Luffy
                                 </span>
-                                <span className="text-[9px] px-1.5 py-0.2 rounded bg-red-950/90 text-red-300 border border-red-500/50 font-bold uppercase">
+                                <span className="text-[9px] px-1.5 py-0.2 rounded bg-red-950/90 text-red-300 border border-red-500/50 font-bold uppercase flex-shrink-0">
                                     Captain
                                 </span>
                             </div>
-                            <span className="text-[10px] text-amber-200/80 flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                {actionBadge}
+                            <span className="text-[10px] text-amber-200/80 flex items-center gap-1 truncate">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0"></span>
+                                <span className="truncate">{actionBadge}</span>
                             </span>
                         </div>
                     </div>
 
                     {/* Window Controls */}
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 flex-shrink-0">
                         <button
                             onClick={() => setVoiceEnabled(!voiceEnabled)}
-                            className={`p-1.5 rounded-lg border transition-colors ${voiceEnabled
+                            className={`p-1.5 rounded-lg border transition-colors touch-manipulation cursor-pointer ${voiceEnabled
                                 ? 'bg-amber-500/20 border-amber-400 text-amber-300'
                                 : 'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-slate-200'
                                 }`}
                             title={voiceEnabled ? 'Mute Speech' : 'Enable Speech Voice'}
+                            aria-label={voiceEnabled ? 'Mute Speech' : 'Enable Speech Voice'}
                         >
                             {voiceEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
                         </button>
                         <button
                             onClick={() => setIsMinimized(!isMinimized)}
-                            className="p-1.5 rounded-lg bg-slate-800/80 border border-slate-700 text-slate-400 hover:text-slate-200 transition-colors"
+                            className="p-1.5 rounded-lg bg-slate-800/80 border border-slate-700 text-slate-300 hover:text-white transition-colors touch-manipulation cursor-pointer"
                             title={isMinimized ? 'Expand' : 'Minimize'}
+                            aria-label={isMinimized ? 'Expand' : 'Minimize'}
                         >
                             {isMinimized ? <Maximize2 size={14} /> : <Minimize2 size={14} />}
                         </button>
+                        {/* Prominent High-Contrast Close Button */}
                         <button
                             onClick={() => {
                                 if (tourData) {
@@ -1531,17 +1564,18 @@ export default function MinecraftGuide3D({ onStartTour }) {
                                 }
                                 setIsOpen(false);
                             }}
-                            className="p-1.5 rounded-lg bg-slate-800/80 border border-slate-700 text-slate-400 hover:text-red-400 hover:border-red-500/40 transition-colors"
-                            title="Close"
+                            className="p-1.5 rounded-lg bg-red-600/90 hover:bg-red-500 border border-red-400 text-white transition-all hover:scale-105 active:scale-95 shadow-md flex items-center justify-center min-w-[30px] min-h-[30px] touch-manipulation cursor-pointer ml-0.5"
+                            title="Close Window (X)"
+                            aria-label="Close Window"
                         >
-                            <X size={14} />
+                            <X size={16} className="text-white font-extrabold stroke-[2.5]" />
                         </button>
                     </div>
                 </div>
 
                 {/* Progress bar across top of window during active tour */}
                 {tourData && (
-                    <div className="w-full h-1 bg-slate-800">
+                    <div className="w-full h-1 bg-slate-800 flex-shrink-0">
                         <div
                             className="h-full bg-gradient-to-r from-amber-400 via-red-500 to-purple-500 transition-all duration-300"
                             style={{ width: `${((tourData.stepIndex + 1) / tourData.totalSteps) * 100}%` }}
@@ -1550,13 +1584,13 @@ export default function MinecraftGuide3D({ onStartTour }) {
                 )}
 
                 {/* 3D Luffy Stage & Speech Bubble */}
-                <div className="relative bg-gradient-to-b from-[#081324] via-[#091b35] to-[#0a1526] p-3 flex flex-col items-center justify-center border-b border-amber-500/20 overflow-hidden">
+                <div className="relative bg-gradient-to-b from-[#081324] via-[#091b35] to-[#0a1526] p-2 sm:p-3 flex flex-col items-center justify-center border-b border-amber-500/20 overflow-hidden flex-shrink-0">
                     {/* Golden straw subtle ambient grid */}
                     <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px]" />
 
                     {/* Speech bubble above Luffy */}
                     <div className="relative z-10 w-full mb-1">
-                        <div className="bg-[#0f2442]/90 border border-amber-400/50 rounded-xl px-3 py-2 text-xs text-slate-100 shadow-lg relative">
+                        <div className="bg-[#0f2442]/90 border border-amber-400/50 rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2 text-[11px] sm:text-xs text-slate-100 shadow-lg relative">
                             <div className="flex items-center justify-between text-[10px] text-amber-300/90 font-bold mb-0.5">
                                 <span>{activeArc.arcBadge}</span>
                                 <span className="text-[9px] text-red-400 font-bold uppercase">{activeArc.gear}</span>
@@ -1571,10 +1605,10 @@ export default function MinecraftGuide3D({ onStartTour }) {
                         </div>
                     </div>
 
-                    {/* Three.js Canvas Container */}
+                    {/* Three.js Canvas Container - Responsive height on small screens */}
                     <div
                         ref={canvasContainerRef}
-                        className="relative w-full h-[195px] cursor-pointer flex items-center justify-center select-none"
+                        className="relative w-full h-[145px] xs:h-[165px] sm:h-[195px] cursor-pointer flex items-center justify-center select-none"
                         onClick={() => {
                             playAnimeFanfare('gear5');
                             animStateRef.current.mode = 'jump';
@@ -1642,7 +1676,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
                 {/* Expanded Section: Unified Tour Guide Panel OR Chat Log */}
                 {!isMinimized && (
                     tourData && !tourChatMode ? (
-                        <div className="flex flex-col h-[230px] bg-slate-950/95 p-3.5 justify-between border-t border-amber-500/20">
+                        <div className="flex flex-col h-[175px] xs:h-[195px] sm:h-[230px] bg-slate-950/95 p-3 sm:p-3.5 justify-between border-t border-amber-500/20 overflow-hidden">
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
@@ -1715,7 +1749,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
                             </div>
                         </div>
                     ) : (
-                        <div className="flex flex-col h-[230px] bg-slate-950/90">
+                        <div className="flex flex-col h-[175px] xs:h-[195px] sm:h-[230px] bg-slate-950/90 overflow-hidden">
                             {tourData && tourChatMode && (
                                 <div className="px-3 py-1.5 bg-amber-950/70 border-b border-amber-500/30 flex items-center justify-between text-[11px] text-amber-300">
                                     <span>🧭 Log Pose Active (Chat Mode)</span>
