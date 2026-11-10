@@ -562,8 +562,8 @@
 
         .logo-loader-box {
             position: relative;
-            width: 250px;
-            height: 150px;
+            width: 220px;
+            height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -572,8 +572,8 @@
 
         @media (max-width: 640px) {
             .logo-loader-box {
-                width: 210px;
-                height: 125px;
+                width: 190px;
+                height: 120px;
             }
         }
 
@@ -583,37 +583,57 @@
             object-fit: contain;
             pointer-events: none;
             -webkit-user-drag: none;
+            display: block;
         }
 
-        .logo-dimmed-base {
+        .logo-base-silhouette {
             position: absolute;
             inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0.22;
-            filter: grayscale(100%) brightness(0.65);
+            opacity: 0.38;
+            filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.45)) brightness(0.9);
             pointer-events: none;
         }
 
-        .logo-liquid-fill {
+        .logo-liquid-container {
             position: absolute;
-            inset: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 0%;
+            overflow: hidden;
+            pointer-events: none;
+            will-change: height;
+        }
+
+        .logo-liquid-inner {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 220px;
+            height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
-            clip-path: inset(100% 0 0 0);
-            pointer-events: none;
-            overflow: visible;
-            transition: clip-path 0.05s linear;
+        }
+
+        @media (max-width: 640px) {
+            .logo-liquid-inner {
+                width: 190px;
+                height: 120px;
+            }
         }
 
         .logo-glow-active {
+            filter: drop-shadow(0 0 18px rgba(6, 182, 212, 1)) drop-shadow(0 0 38px rgba(56, 189, 248, 0.85)) brightness(1.25);
             animation: logoPulseGlow 2.2s ease-in-out infinite;
         }
 
         .loader-status-group {
-            margin-top: 28px;
+            margin-top: 24px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -639,7 +659,7 @@
             background: linear-gradient(90deg, #06b6d4, #38bdf8);
             border-radius: 9999px;
             box-shadow: 0 0 10px #38bdf8;
-            transition: width 0.05s linear;
+            will-change: width;
         }
 
         .loader-pct-text {
@@ -667,13 +687,15 @@
         <!-- The Central Logo Liquid Loader -->
         <div class="logo-loader-box">
             <!-- Dimmed Base Logo (unfilled silhouette) -->
-            <div class="logo-dimmed-base">
-                <img src="/images/me/OmarsLogo.svg" alt="Omar Mohamed" class="main-loader-logo" />
+            <div class="logo-base-silhouette">
+                <img src="data:image/webp;base64,UklGRpgFAABXRUJQVlA4WAoAAAAQAAAAVwIATQIAQUxQSMUAAAABcFPbthNR0VEhAT85lghACRJA3YRuRIwEMjsiJiDYosf/JrhJJdX6H37b1BYYvY4q8Zv/+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//nhF8jyph2h9U+J//+Z//+Z//+Z//+Z//+Z//+Z//+Z//+Z//+Z//+Z//+Z//KTo6rEyHleWwMvMf//Ef//Ef//Ef//Ef//Ef//Ef//Ef//Ef//Ef/z1cAwBWUDggrAQAAFBbAJ0BKlgCTgI+GQyFQiEEBkkBBABhLS3cLuwj+c9aK6T+QH4Z4r9rHwn/ivwr9oH8r/IDpHfyA4AH8A/nX9a/wHvh9IB+jXWAegB+uXpN/sz8F/6q/6r+1+yyUx3ySgZ7kPfbJyHvtk5D31hh4cI14Elf9Bf8pD7coP0sV6u2tL9PbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtWCmP3+WdKgWS7Xi5OQ99snIe+2ThRHYCTsmjhBdpUCyXa8XJyHvtk5D1gbPB6BOQ99snIe+2TkPfbJyHvrAH97NYra8XJyHvtk5D32ych77ZOFO3aVAsl2vFych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32rAAA/v/9IsFwSYgKY1Q3UCx/tsIdCdL+Rz6w6GLbhecGi9vCznbNNyhnHXvn/OW8DB/iU2Ljp9VH1QdYv4YOBgV7/4iullDBl5kKzyrMdwHZwQtYCHnj7B4jDT/UY/hly88py53hLIQW2BUnWhz5oSLIUIF/449oQ1cJ/6MnquKmgFibOBCtEyliCQVpeA0E71rN9FsvwEFH0iGOUdDt2IK/9BRUzyuY0AAAAAAAAQP+ky7nKX1/M378trdsNsjvLNQ2N9F/8FQ/XFINFb//rlghHuCLRQCTkbb4Dp+GWMzGf/6OBeE2NQFCn0f+D+uN6rxnhZ/hbxDjrHDk3G0WoWmD/6RlczPPmteaEoINqz2dgi/E+LfZ3hf4yiH4SH9lFQLhlaNLAlHPLda6AQF192zlrRL2cnU228bz30s2r6jmbezsg/hPgcRP4xGV88cziO1eW/79w/5zH4jP/8ewxG+iH3GC/kKaLxEqgbAJaSo3HrghQzXmiXAH1NrLO2BKlIZvrgbaiP/qH/miQcCZfmhJ7sRqBYtAYsuL8ylRCcbpjlXuJDsMsH/9adw9AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="Omar Mohamed" class="main-loader-logo" />
             </div>
 
             <!-- Liquid Fill Layer (reveals vibrant glowing filled logo rising from bottom to top) -->
-            <div class="logo-liquid-fill" id="logo-liquid-fill">
-                <img src="/images/me/OmarsLogo.svg" alt="Omar Mohamed" class="main-loader-logo logo-glow-active" />
+            <div class="logo-liquid-container" id="logo-liquid-fill">
+                <div class="logo-liquid-inner">
+                    <img src="data:image/webp;base64,UklGRpgFAABXRUJQVlA4WAoAAAAQAAAAVwIATQIAQUxQSMUAAAABcFPbthNR0VEhAT85lghACRJA3YRuRIwEMjsiJiDYosf/JrhJJdX6H37b1BYYvY4q8Zv/+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//nhF8jyph2h9U+J//+Z//+Z//+Z//+Z//+Z//+Z//+Z//+Z//+Z//+Z//+Z//KTo6rEyHleWwMvMf//Ef//Ef//Ef//Ef//Ef//Ef//Ef//Ef//Ef/z1cAwBWUDggrAQAAFBbAJ0BKlgCTgI+GQyFQiEEBkkBBABhLS3cLuwj+c9aK6T+QH4Z4r9rHwn/ivwr9oH8r/IDpHfyA4AH8A/nX9a/wHvh9IB+jXWAegB+uXpN/sz8F/6q/6r+1+yyUx3ySgZ7kPfbJyHvtk5D31hh4cI14Elf9Bf8pD7coP0sV6u2tL9PbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtWCmP3+WdKgWS7Xi5OQ99snIe+2ThRHYCTsmjhBdpUCyXa8XJyHvtk5D1gbPB6BOQ99snIe+2TkPfbJyHvrAH97NYra8XJyHvtk5D32ych77ZOFO3aVAsl2vFych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32rAAA/v/9IsFwSYgKY1Q3UCx/tsIdCdL+Rz6w6GLbhecGi9vCznbNNyhnHXvn/OW8DB/iU2Ljp9VH1QdYv4YOBgV7/4iullDBl5kKzyrMdwHZwQtYCHnj7B4jDT/UY/hly88py53hLIQW2BUnWhz5oSLIUIF/449oQ1cJ/6MnquKmgFibOBCtEyliCQVpeA0E71rN9FsvwEFH0iGOUdDt2IK/9BRUzyuY0AAAAAAAAQP+ky7nKX1/M378trdsNsjvLNQ2N9F/8FQ/XFINFb//rlghHuCLRQCTkbb4Dp+GWMzGf/6OBeE2NQFCn0f+D+uN6rxnhZ/hbxDjrHDk3G0WoWmD/6RlczPPmteaEoINqz2dgi/E+LfZ3hf4yiH4SH9lFQLhlaNLAlHPLda6AQF192zlrRL2cnU228bz30s2r6jmbezsg/hPgcRP4xGV88cziO1eW/79w/5zH4jP/8ewxG+iH3GC/kKaLxEqgbAJaSo3HrghQzXmiXAH1NrLO2BKlIZvrgbaiP/qH/miQcCZfmhJ7sRqBYtAYsuL8ylRCcbpjlXuJDsMsH/9adw9AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="Omar Mohamed" class="main-loader-logo logo-glow-active" />
+                </div>
             </div>
         </div>
 
@@ -688,50 +710,66 @@
         </div>
     </div>
 
-    <!-- Smooth Dismiss Script: ensures full liquid fill before graceful fade-out -->
+    <!-- Fast & Smooth Dismiss Script: instant base64 render, 850ms liquid fill, and graceful fade-out -->
     <script>
         (function() {
-            var startTime = Date.now();
-            var minDisplayTime = 2000;
+            var startTime = performance.now();
+            var duration = 850;
             var percentEl = document.getElementById('loader-percent');
             var progressFill = document.querySelector('.loader-progress-fill');
             var liquidFill = document.getElementById('logo-liquid-fill');
+            var loader = document.getElementById('app-loading-screen');
+            var isDismissed = false;
 
-            var interval = setInterval(function() {
-                var elapsed = Date.now() - startTime;
-                var pct = Math.min(100, Math.round((elapsed / minDisplayTime) * 100));
+            function update(now) {
+                var elapsed = now - startTime;
+                var progress = Math.min(1, elapsed / duration);
+                var pct = Math.min(100, Math.round(progress * 100));
+
                 if (percentEl) percentEl.textContent = pct + '%';
                 if (progressFill) progressFill.style.width = pct + '%';
-                if (liquidFill) liquidFill.style.clipPath = 'inset(' + (100 - pct) + '% 0 0 0)';
-                if (pct >= 100) clearInterval(interval);
-            }, 30);
+                if (liquidFill) liquidFill.style.height = pct + '%';
 
-            function dismissLoader() {
-                var loader = document.getElementById('app-loading-screen');
-                if (!loader || loader.getAttribute('data-dismissed')) return;
-                loader.setAttribute('data-dismissed', 'true');
-                var elapsed = Date.now() - startTime;
-                var remaining = Math.max(0, minDisplayTime - elapsed);
-                setTimeout(function() {
-                    if (percentEl) percentEl.textContent = '100%';
-                    if (progressFill) progressFill.style.width = '100%';
-                    if (liquidFill) liquidFill.style.clipPath = 'inset(0% 0 0 0)';
-                    loader.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                    loader.style.opacity = '0';
-                    loader.style.transform = 'scale(1.04)';
-                    setTimeout(function() {
-                        if (loader && loader.parentNode) {
-                            loader.parentNode.removeChild(loader);
-                        }
-                    }, 650);
-                }, remaining);
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    dismissLoader();
+                }
             }
 
+            requestAnimationFrame(update);
+
+            function dismissLoader() {
+                if (isDismissed || !loader) return;
+                isDismissed = true;
+                if (percentEl) percentEl.textContent = '100%';
+                if (progressFill) progressFill.style.width = '100%';
+                if (liquidFill) liquidFill.style.height = '100%';
+
+                loader.style.transition = 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                loader.style.opacity = '0';
+                loader.style.transform = 'scale(1.03)';
+                loader.style.pointerEvents = 'none';
+
+                setTimeout(function() {
+                    if (loader && loader.parentNode) {
+                        loader.parentNode.removeChild(loader);
+                    }
+                }, 450);
+            }
+
+            // Safety fallback: guaranteed dismissal within 1000ms max
+            setTimeout(dismissLoader, 1000);
+
             if (document.readyState === 'complete') {
-                dismissLoader();
+                setTimeout(dismissLoader, duration);
             } else {
-                window.addEventListener('load', dismissLoader);
-                setTimeout(dismissLoader, 4000);
+                window.addEventListener('load', function() {
+                    var elapsed = performance.now() - startTime;
+                    if (elapsed >= duration) {
+                        dismissLoader();
+                    }
+                });
             }
         })();
     </script>
