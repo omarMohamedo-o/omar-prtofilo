@@ -14,13 +14,37 @@ export default function Header({
     const [showModeDropdown, setShowModeDropdown] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState('');
+    const [hoveredSection, setHoveredSection] = useState(null);
     const navRef = useRef(null);
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 50);
-        onScroll();                                       // set correct state on mount
+        onScroll(); // set correct state on mount
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    // Scroll spy to dynamically track active section and colorize the nav buttons
+    useEffect(() => {
+        const sectionIds = ['about', 'experience', 'internships', 'skills', 'projects', 'education', 'certifications', 'contact'];
+        const handleScrollSpy = () => {
+            const scrollPos = window.scrollY + 220;
+            for (let i = sectionIds.length - 1; i >= 0; i--) {
+                const el = document.getElementById(sectionIds[i]);
+                if (el && el.offsetTop <= scrollPos) {
+                    setActiveSection(sectionIds[i]);
+                    return;
+                }
+            }
+            if (window.scrollY < 300) {
+                setActiveSection('');
+            }
+        };
+
+        window.addEventListener('scroll', handleScrollSpy, { passive: true });
+        handleScrollSpy();
+        return () => window.removeEventListener('scroll', handleScrollSpy);
     }, []);
 
     // Close mobile menu on resize to desktop
@@ -150,22 +174,60 @@ export default function Header({
                         <img
                             src={getOptimizedImagePath(currentMode === MODES.DEVOPS ? "/images/me/OmarsLogo-dev.svg" : currentMode === MODES.MLNLP ? "/images/me/OmarsLogo-ml.svg" : "/images/me/OmarsLogo.svg")}
                             alt={currentMode === MODES.DEVOPS ? "Omar - DevOps Logo" : currentMode === MODES.MLNLP ? "Omar - ML Logo" : "Omar's Logo"}
-                            className="h-8 md:h-10 cursor-pointer nav-logo object-contain"
+                            className="cursor-pointer nav-logo object-contain"
                             onClick={() => handleNavClick('home')}
                         />
                     </div>
 
-                    {/* Desktop Navigation with left padding on the About button to ensure zero overlap with logo */}
-                    <div className="hidden lg:flex items-center gap-3 xl:gap-5 2xl:gap-6 ps-6 xl:ps-10">
-                        {navItems.map((item, idx) => (
-                            <button
-                                key={item.id}
-                                onClick={() => scrollToSection(item.id)}
-                                className={`text-surface/90 ${hoverAccent} transition-all duration-300 text-xs xl:text-sm font-medium glow-btn whitespace-nowrap ${idx === 0 ? 'ps-3 xl:ps-5' : ''}`}
-                            >
-                                {item.label}
-                            </button>
-                        ))}
+                    {/* Desktop Navigation: Animated & Colorable Buttons */}
+                    <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 2xl:gap-3 ps-4 xl:ps-6">
+                        {navItems.map((item) => {
+                            const isActive = activeSection === item.id;
+                            const isHovered = hoveredSection === item.id;
+
+                            return (
+                                <button
+                                    key={item.id}
+                                    onClick={() => {
+                                        setActiveSection(item.id);
+                                        scrollToSection(item.id);
+                                    }}
+                                    onMouseEnter={() => setHoveredSection(item.id)}
+                                    onMouseLeave={() => setHoveredSection(null)}
+                                    className={`relative px-3 py-1.5 rounded-lg text-xs xl:text-sm font-medium transition-all duration-200 whitespace-nowrap cursor-pointer ${
+                                        isActive
+                                            ? `${accentColor} font-semibold`
+                                            : 'text-slate-300 hover:text-white hover:scale-105'
+                                    }`}
+                                >
+                                    {/* Active Glowing Animated Pill */}
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="activeNavPill"
+                                            className={`absolute inset-0 rounded-lg border ${borderAccent} ${
+                                                themeColor === 'purple'
+                                                    ? 'bg-purple-500/15 shadow-[0_0_12px_rgba(168,85,247,0.35)]'
+                                                    : 'bg-cyan-500/15 shadow-[0_0_12px_rgba(6,182,212,0.35)]'
+                                            }`}
+                                            transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                                        />
+                                    )}
+
+                                    {/* Hover Pill when not active */}
+                                    {!isActive && isHovered && (
+                                        <motion.div
+                                            layoutId="hoverNavPill"
+                                            className="absolute inset-0 rounded-lg bg-white/5 border border-white/10"
+                                            transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                                        />
+                                    )}
+
+                                    <span className="relative z-10 flex items-center">
+                                        {item.label}
+                                    </span>
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* Desktop Right: Discovery and Language Dropdown (Far Right) */}
@@ -313,16 +375,24 @@ export default function Header({
                     </div>
 
                     {/* Navigation Links - touch-friendly spacing */}
-                    <div className="flex flex-col px-4 xs:px-6 py-2 gap-1">
-                        {navItems.map((item) => (
-                            <button
-                                key={item.id}
-                                onClick={() => handleNavClick(item.id)}
-                                className={`${isRTL ? 'text-right' : 'text-left'} text-surface/90 ${hoverAccent} transition-all duration-300 text-base xs:text-lg font-medium py-3 xs:py-3.5 border-b border-gray-700/50 touch-manipulation active:bg-gray-800/50`}
-                            >
-                                {item.label}
-                            </button>
-                        ))}
+                    <div className="flex flex-col px-4 xs:px-6 py-2 gap-1.5">
+                        {navItems.map((item) => {
+                            const isActive = activeSection === item.id;
+                            return (
+                                <button
+                                    key={item.id}
+                                    onClick={() => handleNavClick(item.id)}
+                                    className={`${isRTL ? 'text-right' : 'text-left'} transition-all duration-200 text-sm xs:text-base font-medium py-2.5 px-3.5 rounded-xl touch-manipulation flex items-center justify-between ${
+                                        isActive
+                                            ? `${accentColor} ${borderAccent} border bg-white/5 font-semibold shadow-sm`
+                                            : 'text-surface/90 hover:text-white hover:bg-white/5'
+                                    }`}
+                                >
+                                    <span>{item.label}</span>
+                                    {isActive && <div className={`w-2 h-2 rounded-full ${bgAccent} shadow-[0_0_8px_currentColor]`} />}
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* Mode Switcher */}

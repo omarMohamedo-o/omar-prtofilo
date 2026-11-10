@@ -1769,78 +1769,54 @@ nav.scrolled {
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    min-width: 130px;
-    transition: min-width 0.34s ease, width 0.34s ease;
-}
-
-@media (min-width: 1024px) {
-    .nav-logo-wrapper {
-        min-width: 165px;
-    }
-}
-
-nav.scrolled .nav-logo-wrapper {
-    min-width: auto;
+    transition: margin 0.34s ease;
 }
 
 .nav-logo {
-    transition: height 300ms ease, margin 300ms ease, transform 300ms ease;
-    transform: scale(1);
-    transform-origin: left center;
+    display: block;
+    width: auto;
+    object-fit: contain;
+    transition: height 0.34s cubic-bezier(0.4, 0, 0.2, 1), filter 0.34s ease;
+    filter: drop-shadow(0 2px 10px rgba(6, 182, 212, 0.25));
 }
 
-/* RTL logo origin */
-[dir="rtl"] .nav-logo,
-html.rtl-mode .nav-logo {
-    transform-origin: right center !important;
+.nav-logo:hover {
+    filter: drop-shadow(0 0 14px rgba(6, 182, 212, 0.6)) drop-shadow(0 0 25px rgba(56, 189, 248, 0.4));
 }
 
 /* Mobile default (expanded) */
 .nav-logo {
-    height: 3rem;
-    /* visually enlarge without overflowing layout */
-    transform: scale(1.4);
-    transform-origin: left center;
+    height: 3.5rem; /* 56px - bold and prominent on mobile */
 }
 
-/* Larger visual scale on wider viewports, but keep layout height modest */
+/* Tablet expanded */
 @media (min-width: 640px) {
     .nav-logo {
-        height: 3.25rem;
-        margin: 0;
-        transform-origin: left center;
-        transform: scale(1.6);
-        transition: transform 0.34s ease, height 0.34s ease;
+        height: 4.25rem; /* 68px */
     }
 }
 
-/* Desktop-specific logo sizing */
+/* Desktop expanded: BIG & BOLD like the original showcase design! */
 @media (min-width: 1024px) {
     .nav-logo {
-        height: 3.5rem;
-        margin: 0;
-        transform-origin: left center;
-        transform: scale(1.75);
-        transition: transform 0.34s ease, height 0.34s ease;
+        height: 5.25rem; /* 84px tall - calligraphy stands out proudly! */
     }
 }
 
-/* Compact (scrolled) - return logo to natural size */
+/* Scrolled / Compact Header */
 nav.scrolled .nav-logo {
-    transform: scale(1) !important;
-    margin: 0 !important;
-    height: 2.75rem !important;
+    height: 2.5rem !important; /* 40px on mobile scrolled */
 }
 
 @media (min-width: 640px) {
     nav.scrolled .nav-logo {
-        height: 2.75rem !important;
+        height: 2.75rem !important; /* 44px on tablet scrolled */
     }
 }
 
 @media (min-width: 1024px) {
     nav.scrolled .nav-logo {
-        height: 3rem !important;
+        height: 3.25rem !important; /* 52px on desktop scrolled */
     }
 }
 
