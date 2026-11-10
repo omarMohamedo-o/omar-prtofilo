@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
     const apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || "AIzaSyA6PLtRxa883bHj-x6LfR3L35cpQea1YDs";
 
-    const SYSTEM_PROMPT = `You are MORA, the official autonomous AI representative and technical assistant for Omar Gad (Omar Mohamed Abdelsalam).
+    const SYSTEM_PROMPT = `You are MORA, the official autonomous AI representative and technical assistant for Omar Mohamed (Omar Mohamed Abdelsalam).
 Omar is a Computer Engineer and M.Sc. candidate (CGPA: 4.0 / 4.0 at Arab Academy for Science, Technology and Maritime Transport).
 Key Facts to Ground Every Answer:
 - Current Role: MLOps & AI Infrastructure Engineer at PlayerHub.GG (Dubai, UAE - Full-time, Remote, Sep 2026 - Present), operating AI agent systems, scraping pipelines, HAProxy read routing, MariaDB replication, self-healing daemons (autoheal, smartheal), and Prometheus/Grafana/Loki.
@@ -43,14 +43,15 @@ Guidelines:
 1. Always maintain a professional, energetic, and helpful technical tone.
 2. Ground every factual claim in Omar's actual portfolio data.
 3. Automatically match the user's language (English or Arabic/Egyptian dialect).
-4. If asked about off-topic subjects (sports, recipes, general coding help unrelated to Omar), politely and wittily redirect them to Omar's engineering work and availability.`;
+4. If asked general everyday questions (like the time, date, greetings), answer helpfully while smoothly relating to Omar's availability.
+5. If asked about off-topic subjects (sports, recipes, general coding help unrelated to Omar), politely and wittily redirect them to Omar's engineering work and availability.`;
 
     if (apiKey) {
         const candidateModels = [
-            process.env.GEMINI_MODEL || 'gemini-1.5-flash-latest',
+            process.env.GEMINI_MODEL || 'gemini-2.0-flash-lite',
+            'gemini-2.0-flash',
             'gemini-1.5-flash',
-            'gemini-2.0-flash-lite',
-            'gemini-1.5-flash-8b'
+            'gemini-1.5-flash-latest'
         ];
 
         const contents = [
@@ -60,7 +61,7 @@ Guidelines:
             },
             {
                 role: 'model',
-                parts: [{ text: "Understood. I am MORA, Omar Gad's personal AI Assistant, grounded in his verified portfolio facts." }]
+                parts: [{ text: "Understood. I am MORA, Omar Mohamed's personal AI Assistant, grounded in his verified portfolio facts." }]
             }
         ];
 
@@ -120,15 +121,30 @@ Guidelines:
     if (/^(hi|hello|hey|yo|howdy|sup|good\s*morning|good\s*evening|greetings|ازيك|مرحبا|سلام|اهلا|صباح الخير|مساء الخير|هاي|هلو)[\s!.]*$/i.test(normalized)) {
         if (isArabic) {
             return res.status(200).json({
-                Answer: "👋 أهلاً بك! أنا **MORA**، المساعد الذكي الخاص بالمهندس **عمر جاد**.\n\nكيف يمكنني مساعدتك اليوم؟ يسعدني أن تسألني عن خبرات عمر في **PlayerHub.GG** و**CliniSoft**، أو مشروعه المميز **HistoryVerse (+A)**، مهاراته في MLOps و Cloud، أو كيفية التواصل معه وتوظيفه! 🚀"
+                Answer: "👋 أهلاً بك! أنا **MORA**، المساعد الذكي الخاص بالمهندس **عمر محمد**.\n\nكيف يمكنني مساعدتك اليوم؟ يسعدني أن تسألني عن خبرات عمر في **PlayerHub.GG** و**CliniSoft**، أو مشروعه المميز **HistoryVerse (+A)**، مهاراته في MLOps و Cloud، أو كيفية التواصل معه وتوظيفه! 🚀"
             });
         }
         return res.status(200).json({
-            Answer: "👋 Hey there! I'm **MORA**, Omar Gad's personal AI Assistant.\n\nHow can I help you today? Ask me anything about Omar's work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse (A+)** AI/AR platform, his **MLOps & LLM skills**, or how to get in touch!"
+            Answer: "👋 Hey there! I'm **MORA**, Omar Mohamed's personal AI Assistant.\n\nHow can I help you today? Ask me anything about Omar's work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse (A+)** AI/AR platform, his **MLOps & LLM skills**, or how to get in touch!"
         });
     }
 
-    // 2. "How are you" / Friendly Check-ins
+    // 2. Real-Time Clock & Date
+    if (/(time|date|clock|current\s*time|what\s*time|الساعة|الوقت|تاريخ|النهارده|النهاردة)/i.test(normalized)) {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Cairo' });
+        const dateStr = now.toLocaleDateString(isArabic ? 'ar-EG' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Africa/Cairo' });
+        if (isArabic) {
+            return res.status(200).json({
+                Answer: `⏱️ الساعة الآن هي **${timeStr}** بتوقيت مصر (${dateStr}).\nيسعدني دائماً مساعدتك في استكشاف خبرات ومشاريع المهندس **عمر محمد** أو حجز مقابلة استكشافية معه!`
+            });
+        }
+        return res.status(200).json({
+            Answer: `⏱️ The current time is **${timeStr}** (Egypt Time / UTC+2) on **${dateStr}**.\nHow can I help you learn more about Omar Mohamed's engineering projects, tech stack, or availability?`
+        });
+    }
+
+    // 3. "How are you" / Friendly Check-ins
     if (/(how\s*are\s*you|how\s*is\s*it\s*going|how\s*do\s*you\s*do|عامل ايه|اخبارك|ازيك ايه الاخبار|كيف حالك)/i.test(normalized)) {
         if (isArabic) {
             return res.status(200).json({
@@ -140,19 +156,19 @@ Guidelines:
         });
     }
 
-    // 3. "Who are you" / "What is your name"
+    // 4. "Who are you" / "What is your name"
     if (/(who\s*are\s*you|what\s*is\s*your\s*name|tell\s*me\s*about\s*yourself|انت مين|اسمك ايه|عرف نفسك|مين انت)/i.test(normalized)) {
         if (isArabic) {
             return res.status(200).json({
-                Answer: "أنا **MORA**، الممثل التقني الذكي والمساعد الرسمي للمهندس **عمر جاد**.\nأنا مصمم للإجابة عن كل ما يتعلق بخبرات عمر، مشاريعه (مثل **HistoryVerse** و**SDXL LoRA**)، وبنيته التحتية في **PlayerHub.GG**. يمكنك سؤالي عن أي مهارة أو أداة!"
+                Answer: "أنا **MORA**، الممثل التقني الذكي والمساعد الرسمي للمهندس **عمر محمد**.\nأنا مصمم للإجابة عن كل ما يتعلق بخبرات عمر، مشاريعه (مثل **HistoryVerse** و**SDXL LoRA**)، وبنيته التحتية في **PlayerHub.GG**. يمكنك سؤالي عن أي مهارة أو أداة!"
             });
         }
         return res.status(200).json({
-            Answer: "I'm **MORA**, the official autonomous AI representative and technical assistant for **Omar Gad** (Omar Mohamed Abdelsalam).\nI'm grounded in his verified portfolio, production systems, and resume. Feel free to quiz me on his skills, past companies, or graduation project!"
+            Answer: "I'm **MORA**, the official autonomous AI representative and technical assistant for **Omar Mohamed** (Omar Mohamed Abdelsalam).\nI'm grounded in his verified portfolio, production systems, and resume. Feel free to quiz me on his skills, past companies, or graduation project!"
         });
     }
 
-    // 4. "What can you do"
+    // 5. "What can you do"
     if (/(what\s*can\s*you\s*do|help\s*me|capabilities|تقدر تعمل ايه|بتعمل ايه|مساعده)/i.test(normalized)) {
         if (isArabic) {
             return res.status(200).json({
@@ -164,7 +180,7 @@ Guidelines:
         });
     }
 
-    // 5. Thanks & Appreciation
+    // 6. Thanks & Appreciation
     if (/(thank\s*you|thanks|thx|شكرا|تسلم|جزاك الله خيرا|الف شكر)/i.test(normalized)) {
         if (isArabic) {
             return res.status(200).json({
@@ -176,7 +192,7 @@ Guidelines:
         });
     }
 
-    // 6. Goodbyes
+    // 7. Goodbyes
     if (/(bye|goodbye|see\s*you|مع السلامة|باي|اشوفك بعدين)/i.test(normalized)) {
         if (isArabic) {
             return res.status(200).json({
@@ -192,11 +208,11 @@ Guidelines:
     if (/(football|soccer|كورة|ماتش|طبخة|recipe|cooking|weather|طقس|crypto|bitcoin)/i.test(normalized)) {
         if (isArabic) {
             return res.status(200).json({
-                Answer: "أنا **MORA**، المساعد الذكي الخاص بالمهندس **عمر جاد**. أنا هنا للإجابة عن مشاريعه (مثل **HistoryVerse** و **SDXL LoRA**)، خبراته في **PlayerHub.GG** و **CliniSoft**، مهاراته في MLOps و Cloud، وفرص العمل والتعاون. يسعدني الإجابة عن أي سؤال في هذه المجالات! 🚀"
+                Answer: "أنا **MORA**، المساعد الذكي الخاص بالمهندس **عمر محمد**. أنا هنا للإجابة عن مشاريعه (مثل **HistoryVerse** و **SDXL LoRA**)، خبراته في **PlayerHub.GG** و **CliniSoft**، مهاراته في MLOps و Cloud، وفرص العمل والتعاون. يسعدني الإجابة عن أي سؤال في هذه المجالات! 🚀"
             });
         }
         return res.status(200).json({
-            Answer: "I am **MORA**, Omar Gad's personal AI representative. I specialize in answering questions about Omar's engineering career, AI projects (like **HistoryVerse** and **SDXL LoRA**), cloud/MLOps infrastructure, and job opportunities. How can I help you regarding Omar's work?"
+            Answer: "I am **MORA**, Omar Mohamed's personal AI representative. I specialize in answering questions about Omar's engineering career, AI projects (like **HistoryVerse** and **SDXL LoRA**), cloud/MLOps infrastructure, and job opportunities. How can I help you regarding Omar's work?"
         });
     }
 
@@ -204,11 +220,11 @@ Guidelines:
     if (/laptop|backbag|backpack|bag|شنطة|لابتوب|كمبيوتر|جيت هاب|github|tools|stack/i.test(normalized)) {
         if (isArabic) {
             return res.status(200).json({
-                Answer: "💻 **لابتوب وحقيبة المهندس عمر جاد:**\nفي حقيبتي التكتيكية ثلاثية الأبعاد (Laptop Backpack) والممهورة بشعار GitHub:\n• **بيئة العمل المتطورة:** لابتوب عالي الأداء مع بيئة Linux/Mac، وحاويات Docker و Kubernetes محلية للتطوير واختبار النماذج.\n• **حزمة أدوات AI & MLOps:** مكتبات PyTorch و Transformers و ChromaDB و Langfuse و MLflow.\n• **مستودعات GitHub:** يمكنك استكشاف مشاريعه مفتوحة المصدر وكود HistoryVerse و SDXL LoRA عبر: [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o) 🚀"
+                Answer: "💻 **لابتوب وحقيبة المهندس عمر محمد:**\nفي حقيبتي التكتيكية ثلاثية الأبعاد (Laptop Backpack) والممهورة بشعار GitHub:\n• **بيئة العمل المتطورة:** لابتوب عالي الأداء مع بيئة Linux/Mac، وحاويات Docker و Kubernetes محلية للتطوير واختبار النماذج.\n• **حزمة أدوات AI & MLOps:** مكتبات PyTorch و Transformers و ChromaDB و Langfuse و MLflow.\n• **مستودعات GitHub:** يمكنك استكشاف مشاريعه مفتوحة المصدر وكود HistoryVerse و SDXL LoRA عبر: [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o) 🚀"
             });
         }
         return res.status(200).json({
-            Answer: "💻 **Omar Gad's Developer Laptop & Backpack:**\nInside my 3D Minecraft tactical backpack (sporting the glowing GitHub logo):\n• **Development Environment:** High-performance Linux/Mac workstation with local Docker containers, Kubernetes clusters, and VS Code configured for high-velocity AI engineering.\n• **AI & MLOps Stack:** PyTorch, Hugging Face Transformers, ChromaDB RAG vectorstores, Langfuse tracing, and MLflow.\n• **GitHub Repositories:** Explore Omar's open-source projects including HistoryVerse, SDXL LoRA fine-tuning, and CI/CD pipelines at [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o) 🚀"
+            Answer: "💻 **Omar Mohamed's Developer Laptop & Backpack:**\nInside my 3D Minecraft tactical backpack (sporting the glowing GitHub logo):\n• **Development Environment:** High-performance Linux/Mac workstation with local Docker containers, Kubernetes clusters, and VS Code configured for high-velocity AI engineering.\n• **AI & MLOps Stack:** PyTorch, Hugging Face Transformers, ChromaDB RAG vectorstores, Langfuse tracing, and MLflow.\n• **GitHub Repositories:** Explore Omar's open-source projects including HistoryVerse, SDXL LoRA fine-tuning, and CI/CD pipelines at [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o) 🚀"
         });
     }
 
@@ -264,11 +280,11 @@ Guidelines:
     if (/contact|email|phone|whatsapp|hire|reach|ايميل|تواصل|تليفون|رقم|واتس|توظيف/i.test(normalized)) {
         if (isArabic) {
             return res.status(200).json({
-                Answer: "**معلومات التواصل مع عمر جاد:**\n• **البريد الإلكتروني:** omarmo.abdelsalam@gmail.com\n• **الهاتف / واتساب:** +20 101 1297 869\n• **لينكد إن:** [linkedin.com/in/omar-mohamedo-o](https://linkedin.com/in/omar-mohamedo-o)\n• **جيت هاب:** [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o)\n• **الموقع:** الإسكندرية، مصر (متاح للعمل عن بُعد ولعقود واستشارات AI/MLOps)."
+                Answer: "**معلومات التواصل مع عمر محمد:**\n• **البريد الإلكتروني:** omarmo.abdelsalam@gmail.com\n• **الهاتف / واتساب:** +20 101 1297 869\n• **لينكد إن:** [linkedin.com/in/omar-mohamedo-o](https://linkedin.com/in/omar-mohamedo-o)\n• **جيت هاب:** [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o)\n• **الموقع:** الإسكندرية، مصر (متاح للعمل عن بُعد ولعقود واستشارات AI/MLOps)."
             });
         }
         return res.status(200).json({
-            Answer: "**Contact Omar Gad:**\n• **Email:** omarmo.abdelsalam@gmail.com\n• **Phone / WhatsApp:** +20 101 1297 869\n• **LinkedIn:** [linkedin.com/in/omar-mohamedo-o](https://linkedin.com/in/omar-mohamedo-o)\n• **GitHub:** [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o)\n• **Location:** Alexandria, Egypt (Open to remote roles, full-time opportunities, and AI/MLOps consulting)."
+            Answer: "**Contact Omar Mohamed:**\n• **Email:** omarmo.abdelsalam@gmail.com\n• **Phone / WhatsApp:** +20 101 1297 869\n• **LinkedIn:** [linkedin.com/in/omar-mohamedo-o](https://linkedin.com/in/omar-mohamedo-o)\n• **GitHub:** [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o)\n• **Location:** Alexandria, Egypt (Open to remote roles, full-time opportunities, and AI/MLOps consulting)."
         });
     }
 
@@ -287,11 +303,11 @@ Guidelines:
     // General Summary Fallback
     if (isArabic) {
         return res.status(200).json({
-            Answer: "عمر جاد مهندس حاسب وباحث ماجستير (معدل 4.0) متخصص في **الذكاء الاصطناعي (LLMs & RAG)** وهندسة **MLOps والبنية السحابية**. يعمل حالياً في **PlayerHub.GG** (دبي)، وسبق له العمل في **CliniSoft** و **ChloroMaster**. من أبرز مشاريعه **HistoryVerse** (+A) و **SDXL LoRA**. للتواصل: omarmo.abdelsalam@gmail.com أو +20 101 1297 869."
+            Answer: "عمر محمد مهندس حاسب وباحث ماجستير (معدل 4.0) متخصص في **الذكاء الاصطناعي (LLMs & RAG)** وهندسة **MLOps والبنية السحابية**. يعمل حالياً في **PlayerHub.GG** (دبي)، وسبق له العمل في **CliniSoft** و **ChloroMaster**. من أبرز مشاريعه **HistoryVerse** (+A) و **SDXL LoRA**. للتواصل: omarmo.abdelsalam@gmail.com أو +20 101 1297 869."
         });
     }
 
     return res.status(200).json({
-        Answer: "Omar Gad is a Computer Engineer & M.Sc. candidate (CGPA 4.0) specializing in **AI & Machine Learning (LLMs, RAG, NLP)** and **MLOps & Cloud Infrastructure**. Currently an MLOps Engineer at **PlayerHub.GG** (Dubai, Remote), previously at **CliniSoft** and **ChloroMaster**. Flagship projects: **HistoryVerse** (A+) and **SDXL LoRA**. Contact him at omarmo.abdelsalam@gmail.com or +20 101 1297 869!"
+        Answer: "Omar Mohamed is a Computer Engineer & M.Sc. candidate (CGPA 4.0) specializing in **AI & Machine Learning (LLMs, RAG, NLP)** and **MLOps & Cloud Infrastructure**. Currently an MLOps Engineer at **PlayerHub.GG** (Dubai, Remote), previously at **CliniSoft** and **ChloroMaster**. Flagship projects: **HistoryVerse** (A+) and **SDXL LoRA**. Contact him at omarmo.abdelsalam@gmail.com or +20 101 1297 869!"
     });
 }

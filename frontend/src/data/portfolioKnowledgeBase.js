@@ -609,7 +609,18 @@ Omar worked as an **AI & ML Engineer**:
 • **Location:** Alexandria, Egypt (Open for full-time, remote, hybrid, and consultancy roles worldwide).`;
     }
 
-    // 11. Greetings & Introduction
+    // 11. Real-Time Clock & Date Queries
+    if (q.includes('time') || q.includes('date') || q.includes('clock') || q.includes('ساعه') || q.includes('ساعة') || q.includes('وقت') || q.includes('تاريخ') || q.includes('النهارده') || q.includes('النهاردة')) {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Cairo' });
+        const dateStr = now.toLocaleDateString(isArabic ? 'ar-EG' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Africa/Cairo' });
+        if (isArabic) {
+            return `⏱️ الساعة الآن هي **${timeStr}** بتوقيت مصر (${dateStr}).\nيسعدني دائماً إجابة أي استفسار حول مشاريع وخبرات المهندس **عمر محمد** أو حجز مقابلة استكشافية معه!`;
+        }
+        return `⏱️ The current time is **${timeStr}** (Egypt Time / UTC+2) on **${dateStr}**.\nHow can I help you learn more about Omar Mohamed's engineering projects, tech stack, or availability?`;
+    }
+
+    // 12. Greetings & Introduction
     if (q.includes('who') || q.includes('hello') || q.includes('hi') || q.includes('hey') || q.includes('مين') || q.includes('من انت') || q.includes('اهلا') || q.includes('مرحبا') || q.includes('سلام')) {
         if (isArabic) {
             return `أهلاً بك! أنا **MORA**، المساعد الذكي المعتمد للمهندس **عمر محمد** (Omar Mohamed).
