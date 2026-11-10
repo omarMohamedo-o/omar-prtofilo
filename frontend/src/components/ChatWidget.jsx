@@ -1068,7 +1068,7 @@ export default function ChatWidget() {
                 {/* Unified "Need help?" Action Badge on the Right */}
                 {!open ? (
                     <div className="need-help-card shadow-2xl transition-all duration-300">
-                        {/* Header: Logo + "Need help?" + Tour badge */}
+                        {/* Header: Logo + "Need help?" */}
                         <div className="flex items-center justify-between mb-2.5">
                             <div className="flex items-center gap-2.5">
                                 {/* Circular Logo Badge with green online pulse */}
@@ -1089,18 +1089,9 @@ export default function ChatWidget() {
                                     </span>
                                 </div>
                             </div>
-                            {/* Guided Tour Trigger Button */}
-                            <button
-                                type="button"
-                                onClick={() => window.dispatchEvent(new CustomEvent('start-portfolio-tour'))}
-                                className="text-[10px] px-2.5 py-0.5 rounded-full bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-400/40 font-semibold transition-colors shadow-sm"
-                                title={t('tourGuide')}
-                            >
-                                {t('needHelpTourBtn')}
-                            </button>
                         </div>
 
-                        {/* Action Buttons Row: Ask anything + Chat Icon + 3D Minecraft Guide */}
+                        {/* Action Buttons Row: Single Chat Button + Single Unified 3D Tour Guide Button */}
                         <div className="flex items-center gap-2">
                             {/* 1. "Ask anything" Pill Button */}
                             <button
@@ -1109,33 +1100,23 @@ export default function ChatWidget() {
                                 className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full border border-cyan-400/50 bg-cyan-950/60 hover:bg-cyan-900/60 text-cyan-300 font-semibold text-xs transition-all shadow-sm group/ask"
                                 title={t('needHelpAskTitle')}
                             >
-                                <FaPhoneAlt size={10} className="text-cyan-400 -rotate-12 group-hover/ask:rotate-0 transition-transform" />
+                                <FaCommentDots size={13} className="text-cyan-400 group-hover/ask:scale-110 transition-transform" />
                                 <span>{t('needHelpAskAnything')}</span>
                             </button>
 
-                            {/* 2. Chat Icon Button */}
-                            <button
-                                type="button"
-                                ref={fabRef}
-                                onClick={() => setOpen(true)}
-                                className="w-9 h-9 rounded-full border border-slate-700 bg-slate-800/90 hover:bg-slate-700 text-cyan-300 flex items-center justify-center transition-transform hover:scale-110 shadow-sm"
-                                title={t('needHelpChatAria')}
-                                aria-label={t('needHelpChatAria')}
-                            >
-                                <FaCommentDots size={15} />
-                            </button>
-
-                            {/* 3. 3D Minecraft Guide Button */}
+                            {/* 2. Unified 3D Minecraft Tour Guide Button */}
                             <button
                                 type="button"
                                 onClick={() => {
-                                    window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: true } }));
+                                    if (window.startPortfolioTour) window.startPortfolioTour();
+                                    else window.dispatchEvent(new CustomEvent('start-portfolio-tour'));
                                 }}
-                                className="w-9 h-9 rounded-full border border-slate-700 bg-slate-800/90 hover:bg-slate-700 text-cyan-300 flex items-center justify-center transition-transform hover:scale-110 shadow-sm text-sm"
-                                title={t('needHelp3DGuideAria')}
-                                aria-label={t('needHelp3DGuideAria')}
+                                className="flex items-center justify-center gap-1.5 py-1.5 px-3.5 rounded-full border border-cyan-400/40 bg-slate-800/90 hover:bg-cyan-950/70 text-cyan-300 font-semibold text-xs transition-transform hover:scale-105 shadow-sm"
+                                title={t('tourGuide')}
+                                aria-label={t('tourGuide')}
                             >
-                                ⛏️
+                                <span>⛏️</span>
+                                <span>{t('tourGuide')}</span>
                             </button>
                         </div>
                     </div>

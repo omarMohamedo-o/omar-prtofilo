@@ -7,6 +7,7 @@ import {
     Cpu, Award, Briefcase, ChevronRight, ChevronLeft, CheckCircle, Play
 } from 'lucide-react';
 import { sendTextMessage } from '../services/chatbotService';
+import { useLanguage } from '../context/LanguageContext';
 
 // =============================================================================
 // PROCEDURAL PIXEL TEXTURE GENERATORS (Pixel-perfect Minecraft aesthetic)
@@ -469,6 +470,10 @@ export default function MinecraftGuide3D({ onStartTour }) {
         talkTimer: 0
     });
 
+    const { t, currentLocale } = useLanguage();
+    const tourSteps = currentLocale?.tourSteps || [];
+    const previousHighlightRef = useRef(null);
+
     // Component UI state
     const [isOpen, setIsOpen] = useState(true);
     const [isMinimized, setIsMinimized] = useState(false);
@@ -628,8 +633,86 @@ export default function MinecraftGuide3D({ onStartTour }) {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages, isThinking]);
 
-    // Trigger walk and wave when tour is launched
-    const handleLaunchTour = () => {
+    // Smooth scroll helper for guided tour
+    const scrollToTarget = useCallback((targetId) => {
+        if (!targetId) return;
+        if (targetId === 'home') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+        const element = document.getElementById(targetId);
+        if (!element) return;
+        const nav = document.querySelector('nav');
+        const navOffset = nav ? nav.offsetHeight + 20 : 80;
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = Math.max(0, elementPosition - navOffset);
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }, []);
+
+    // End tour and clear spotlights
+    const endTour = useCallback(() => {
+        if (previousHighlightRef.current) {
+            previousHighlightRef.current.classList.remove('tour-focused-element');
+            previousHighlightRef.current = null;
+        }
+        setTourData(null);
+        setTourChatMode(false);
+        animStateRef.current.mode = 'idle';
+        setActionBadge('Idle');
+    }, []);
+
+    // Jump to specific tour step
+    const goToTourStep = useCallback((stepIndex) => {
+        if (!tourSteps || !tourSteps.length) return;
+        const idx = Math.max(0, Math.min(stepIndex, tourSteps.length - 1));
+        const step = tourSteps[idx];
+        if (!step) return;
+
+        setIsOpen(true);
+        setIsMinimized(false);
+        setTourChatMode(false);
+        setTourData({
+            stepIndex: idx,
+            totalSteps: tourSteps.length,
+            title: step.title,
+            description: step.description,
+            badge: step.badge,
+            targetId: step.targetId
+        });
+        setActionBadge(`Tour ${idx + 1}/${tourSteps.length}`);
+
+        scrollToTarget(step.targetId);
+
+        if (previousHighlightRef.current) {
+            previousHighlightRef.current.classList.remove('tour-focused-element');
+        }
+        const targetEl = step.targetId === 'home'
+            ? document.getElementById('home') || document.querySelector('.hero-section')
+            : document.getElementById(step.targetId);
+        if (targetEl) {
+            targetEl.classList.add('tour-focused-element');
+            previousHighlightRef.current = targetEl;
+        }
+
+        showLaptopProject(
+            step.title,
+            step.badge || 'Guided Tour Step',
+            `${step.title}. ${step.description}`
+        );
+
+        animStateRef.current.mode = 'walk';
+        setTimeout(() => {
+            animStateRef.current.mode = 'wave';
+            setTimeout(() => {
+                animStateRef.current.mode = 'idle';
+            }, 1500);
+        }, 600);
+
+        speakText(`${step.title}. ${step.description}`);
+    }, [tourSteps, scrollToTarget, speakText, showLaptopProject]);
+
+    // Launch tour starting from step 0
+    const handleLaunchTour = useCallback(() => {
         animStateRef.current.mode = 'walk';
         setActionBadge('Guiding Tour');
         setMessages(prev => [
@@ -640,63 +723,71 @@ export default function MinecraftGuide3D({ onStartTour }) {
                 text: "🚀 **Launching the Guided Tour!** Follow me as we explore Omar's engineering achievements section by section!"
             }
         ]);
-        speakText("Launching the portfolio tour! Follow me as we explore Omar's achievements!");
+        goToTourStep(0);
+    }, [goToTourStep]);
 
-        if (typeof onStartTour === 'function') {
-            onStartTour();
-        } else {
-            // Trigger window event for InteractiveTour
-            window.dispatchEvent(new CustomEvent('start-portfolio-tour'));
-        }
-
-        setTimeout(() => {
-            animStateRef.current.mode = 'wave';
-            setTimeout(() => {
-                animStateRef.current.mode = 'idle';
-                setActionBadge('Idle');
-            }, 1800);
-        }, 2000);
-    };
-
-    // Listen for live tour step events to synchronize 3D guide animations & voice
+    // Global listener for tour triggers and keyboard navigation
     useEffect(() => {
-        const handleTourStep = (e) => {
-            const detail = e.detail;
-            if (!detail) return;
-
-            setIsOpen(true);
-            setIsMinimized(false);
-            setTourData(detail);
-            setTourChatMode(false);
-            setActionBadge(`Tour ${detail.stepIndex + 1}/${detail.totalSteps}`);
-
-            // Pull laptop from backpack and open it projecting this section/project!
-            showLaptopProject(
-                detail.title,
-                detail.badge || 'Guided Tour Step',
-                `${detail.title}. ${detail.description}`
-            );
-
-            // Animate Steve: walk then wave
-            animStateRef.current.mode = 'walk';
-            setTimeout(() => {
-                animStateRef.current.mode = 'wave';
-                setTimeout(() => {
-                    animStateRef.current.mode = 'idle';
-                }, 1500);
-            }, 600);
-
-            // Read aloud if voice is enabled
-            speakText(`${detail.title}. ${detail.description}`);
+        window.startPortfolioTour = () => goToTourStep(0);
+        const onStart = () => goToTourStep(0);
+        const onClose = () => endTour();
+        const onNext = () => {
+            setTourData(prev => {
+                if (!prev) return null;
+                if (prev.stepIndex < prev.totalSteps - 1) {
+                    goToTourStep(prev.stepIndex + 1);
+                } else {
+                    endTour();
+                }
+                return prev;
+            });
+        };
+        const onPrev = () => {
+            setTourData(prev => {
+                if (!prev || prev.stepIndex <= 0) return prev;
+                goToTourStep(prev.stepIndex - 1);
+                return prev;
+            });
         };
 
-        const handleTourEnd = () => {
-            setTourData(null);
-            setTourChatMode(false);
-            animStateRef.current.mode = 'idle';
-            setActionBadge('Idle');
-        };
+        window.addEventListener('start-portfolio-tour', onStart);
+        window.addEventListener('portfolio-tour-close', onClose);
+        window.addEventListener('portfolio-tour-next', onNext);
+        window.addEventListener('portfolio-tour-prev', onPrev);
 
+        return () => {
+            delete window.startPortfolioTour;
+            window.removeEventListener('start-portfolio-tour', onStart);
+            window.removeEventListener('portfolio-tour-close', onClose);
+            window.removeEventListener('portfolio-tour-next', onNext);
+            window.removeEventListener('portfolio-tour-prev', onPrev);
+        };
+    }, [goToTourStep, endTour]);
+
+    // Keyboard navigation when tour is active
+    useEffect(() => {
+        if (!tourData) return;
+        const handleKeyDown = (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                if (tourData.stepIndex < tourData.totalSteps - 1) {
+                    goToTourStep(tourData.stepIndex + 1);
+                } else {
+                    endTour();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (tourData.stepIndex > 0) {
+                    goToTourStep(tourData.stepIndex - 1);
+                }
+            } else if (e.key === 'Escape') {
+                endTour();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [tourData, goToTourStep, endTour]);
+
+    // Listen for toggle guide event from external buttons
+    useEffect(() => {
         const handleToggleGuide = (e) => {
             const forceOpen = e?.detail?.open;
             setIsOpen(prev => (forceOpen !== undefined ? forceOpen : !prev));
@@ -716,16 +807,9 @@ export default function MinecraftGuide3D({ onStartTour }) {
             }
         };
 
-        window.addEventListener('portfolio-tour-step', handleTourStep);
-        window.addEventListener('portfolio-tour-ended', handleTourEnd);
         window.addEventListener('toggle-3d-minecraft-guide', handleToggleGuide);
-
-        return () => {
-            window.removeEventListener('portfolio-tour-step', handleTourStep);
-            window.removeEventListener('portfolio-tour-ended', handleTourEnd);
-            window.removeEventListener('toggle-3d-minecraft-guide', handleToggleGuide);
-        };
-    }, [showLaptopProject]);
+        return () => window.removeEventListener('toggle-3d-minecraft-guide', handleToggleGuide);
+    }, []);
 
     // Section transition observer: when user scrolls through sections, Steve opens laptop to inspect the section
     useEffect(() => {
@@ -1325,7 +1409,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
                         <button
                             onClick={() => {
                                 if (tourData) {
-                                    window.dispatchEvent(new CustomEvent('portfolio-tour-close'));
+                                    endTour();
                                 }
                                 setIsOpen(false);
                             }}
@@ -1454,7 +1538,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
                                         </button>
                                         <button
                                             type="button"
-                                            onClick={() => window.dispatchEvent(new CustomEvent('portfolio-tour-close'))}
+                                            onClick={endTour}
                                             className="text-[10px] text-slate-400 hover:text-white px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 transition-colors"
                                             title="Exit Tour"
                                         >
@@ -1475,7 +1559,9 @@ export default function MinecraftGuide3D({ onStartTour }) {
                             <div className="flex items-center gap-2 pt-2 border-t border-slate-800">
                                 <button
                                     type="button"
-                                    onClick={() => window.dispatchEvent(new CustomEvent('portfolio-tour-prev'))}
+                                    onClick={() => {
+                                        if (tourData.stepIndex > 0) goToTourStep(tourData.stepIndex - 1);
+                                    }}
                                     disabled={tourData.stepIndex === 0}
                                     className={`flex-1 py-2 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${tourData.stepIndex === 0
                                         ? 'opacity-30 cursor-not-allowed border-slate-800 text-slate-600'
@@ -1490,9 +1576,9 @@ export default function MinecraftGuide3D({ onStartTour }) {
                                     type="button"
                                     onClick={() => {
                                         if (tourData.stepIndex === tourData.totalSteps - 1) {
-                                            window.dispatchEvent(new CustomEvent('portfolio-tour-close'));
+                                            endTour();
                                         } else {
-                                            window.dispatchEvent(new CustomEvent('portfolio-tour-next'));
+                                            goToTourStep(tourData.stepIndex + 1);
                                         }
                                     }}
                                     className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white text-xs font-bold shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-1.5 transition-all hover:scale-[1.02] active:scale-[0.98]"

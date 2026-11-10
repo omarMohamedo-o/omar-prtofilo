@@ -3036,3 +3036,22 @@ html.rtl-mode {
     direction: ltr;
     unicode-bidi: isolate;
 }
+
+/* ── Guided Tour Spotlight & Focus Styling ── */
+.tour-focused-element {
+    position: relative !important;
+    z-index: 35 !important;
+    outline: 2px solid rgba(56, 189, 248, 0.8) !important;
+    box-shadow: 0 0 35px rgba(6, 182, 212, 0.35) !important;
+    border-radius: 1rem !important;
+    transition: outline 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.tour-backdrop-overlay {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 35%, rgba(3, 7, 18, 0.65) 90%);
+    z-index: 30;
+    transition: opacity 0.4s ease;
+}

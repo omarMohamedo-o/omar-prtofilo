@@ -18,7 +18,6 @@ import ChatWidget from './ChatWidget';
 import UpArrowButton from './UpArrowButton';
 import DiscoveryForm from './DiscoveryForm';
 import SpaceBackground from './SpaceBackground';
-import InteractiveTour from './InteractiveTour';
 import MinecraftGuide3D from './MinecraftGuide3D';
 
 // Import data with mode support
@@ -395,9 +394,6 @@ export default function Portfolio() {
 
       {/* 3D Minecraft Guide Character & LLM Companion */}
       <MinecraftGuide3D />
-
-      {/* Interactive Animated Guide & Tour */}
-      <InteractiveTour />
 
       {/* Chat Widget */}
       <ChatWidget />
