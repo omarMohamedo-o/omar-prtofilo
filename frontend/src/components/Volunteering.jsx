@@ -8,8 +8,10 @@ import {
   viewportOptions
 } from '../utils/animationVariants';
 import useIsMobile from '../hooks/useIsMobile';
+import { useLanguage } from '../context/LanguageContext';
 
 const Volunteering = function Volunteering({ isVisible, volunteering = [], themeColor = 'cyan' }) {
+  const { isRTL } = useLanguage();
   const isMobile = useIsMobile();
   const textColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
   const borderHover = themeColor === 'purple'
@@ -78,6 +80,20 @@ const Volunteering = function Volunteering({ isVisible, volunteering = [], theme
                   </li>
                 ))}
               </ul>
+
+              {/* 3D Interactive Volunteer Mentorship Thesis Button */}
+              <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-3d-book', { detail: { bookId: 'volunteer' } }))}
+                  className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-emerald-600/20 hover:from-emerald-500 hover:to-teal-500 hover:text-slate-950 text-emerald-300 border border-emerald-500/40 font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg hover:shadow-emerald-500/30 touch-manipulation group"
+                >
+                  <span className="text-base group-hover:scale-110 transition-transform">📖</span>
+                  <span>{isRTL ? 'تصفح كتاب أطروحة التطوع 3D (جامعة بوليتكنك فلسطين)' : 'Open 3D Volunteer Research Book'}</span>
+                </button>
+                <span className="text-[11px] font-mono text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-500/40 px-2 py-0.5 rounded-full">
+                  Thesis
+                </span>
+              </div>
             </motion.div>
           ))}
         </motion.div>

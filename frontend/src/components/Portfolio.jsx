@@ -20,6 +20,8 @@ import UpArrowButton from './UpArrowButton';
 import DiscoveryForm from './DiscoveryForm';
 import SpaceBackground from './SpaceBackground';
 import MinecraftGuide3D from './MinecraftGuide3D';
+import ThreeDBookModal from './ThreeDBookModal';
+import Volunteering from './Volunteering';
 
 // Import data with mode support
 import { MODES, getPortfolioData } from '../data/data';
@@ -361,6 +363,9 @@ export default function Portfolio() {
       {/* Projects Section */}
       <Projects isVisible={isVisible} projects={portfolioData.projects} themeColor={themeColor} />
 
+      {/* Volunteer & Mentorship Section */}
+      <Volunteering isVisible={isVisible} volunteering={portfolioData.volunteering} themeColor={themeColor} />
+
       {/* Education Section */}
       <Education isVisible={isVisible} education={portfolioData.education} themeColor={themeColor} />
 
@@ -396,8 +401,11 @@ export default function Portfolio() {
       {/* Up arrow (above chat widget) */}
       <UpArrowButton />
 
-      {/* 3D Minecraft Guide Character & LLM Companion */}
+      {/* 3D Luffy Anime Guide Character & LLM Companion */}
       <MinecraftGuide3D />
+
+      {/* 3D Interactive Books Modal (Graduation Project & Volunteer Thesis) */}
+      <ThreeDBookModal />
 
       {/* Chat Widget */}
       <ChatWidget />

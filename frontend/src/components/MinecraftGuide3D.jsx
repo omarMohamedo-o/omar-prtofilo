@@ -13,361 +13,445 @@ import { useLanguage } from '../context/LanguageContext';
 // PROCEDURAL PIXEL TEXTURE GENERATORS: MONKEY D. LUFFY (ONE PIECE)
 // =============================================================================
 
-function createPixelCanvas(width, height) {
+function createSmoothCanvas(width, height) {
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
     return { canvas, ctx };
 }
 
-function canvasToTexture(canvas) {
+function smoothCanvasToTexture(canvas) {
     const texture = new THREE.CanvasTexture(canvas);
-    texture.magFilter = THREE.NearestFilter;
-    texture.minFilter = THREE.NearestFilter;
-    texture.generateMipmaps = false;
+    texture.magFilter = THREE.LinearFilter;
+    texture.minFilter = THREE.LinearMipmapLinearFilter;
+    texture.generateMipmaps = true;
     return texture;
 }
 
 /**
- * Generate 64x64 Luffy Head Texture:
- * Sun-kissed tan skin, messy jet-black anime hair bangs, large expressive anime eyes,
- * left-eye stitch scar (under eye), and big signature confident "D." grin!
+ * Authentic High-Res Real Anime Luffy Face Texture (256x256):
+ * Smooth warm anime peach/tan skin, expressive hand-drawn anime eyes with catchlights,
+ * crisp left-eye stitch scar (under eye), and big signature confident "D." grin!
  */
-function createLuffyHeadTexture() {
-    const { canvas, ctx } = createPixelCanvas(64, 64);
+function createLuffyHeadTexture(isGear5 = false) {
+    const { canvas, ctx } = createSmoothCanvas(256, 256);
 
-    // Warm sun-kissed anime skin tone
-    ctx.fillStyle = '#fbd0a5';
-    ctx.fillRect(0, 0, 64, 64);
-
-    // Subtle anime shading under chin and hairline
-    ctx.fillStyle = '#f4be8e';
-    ctx.fillRect(0, 56, 64, 8);
-    ctx.fillRect(0, 20, 64, 4);
-
-    // Cute anime cheek blush
-    ctx.fillStyle = 'rgba(248, 113, 113, 0.45)';
-    ctx.fillRect(10, 42, 10, 4);
-    ctx.fillRect(44, 42, 10, 4);
-
-    // Jet black messy anime hair base
-    const hairTones = ['#09090b', '#18181b', '#111827', '#030712'];
-    for (let x = 0; x < 64; x += 8) {
-        for (let y = 0; y < 22; y += 8) {
-            ctx.fillStyle = hairTones[(x + y) % hairTones.length];
-            ctx.fillRect(x, y, 8, 8);
-        }
+    // Warm sun-kissed anime skin tone base
+    const skinGradient = ctx.createRadialGradient(128, 128, 20, 128, 128, 128);
+    if (isGear5) {
+        skinGradient.addColorStop(0, '#fef08a');
+        skinGradient.addColorStop(1, '#fde047');
+    } else {
+        skinGradient.addColorStop(0, '#fde0b4');
+        skinGradient.addColorStop(0.8, '#fed7aa');
+        skinGradient.addColorStop(1, '#fbd0a5');
     }
+    ctx.fillStyle = skinGradient;
+    ctx.fillRect(0, 0, 256, 256);
 
-    // Sideburn locks framing face
-    ctx.fillStyle = '#09090b';
-    ctx.fillRect(0, 22, 10, 22);
-    ctx.fillRect(54, 22, 10, 22);
-    ctx.fillRect(0, 44, 6, 8);
-    ctx.fillRect(58, 44, 6, 8);
-
-    // Spiky anime bangs dangling over forehead
-    ctx.fillRect(14, 22, 8, 10);
-    ctx.fillRect(18, 30, 4, 4); // Bang tip
-    ctx.fillRect(26, 22, 12, 8);
-    ctx.fillRect(30, 28, 4, 4); // Center bang tip
-    ctx.fillRect(42, 22, 8, 10);
-    ctx.fillRect(44, 30, 4, 4); // Right bang tip
-
-    // Sharp anime eyebrows
-    ctx.fillStyle = '#09090b';
-    ctx.fillRect(14, 26, 12, 3);
-    ctx.fillRect(38, 26, 12, 3);
-
-    // Anime Eyes: Big circular black rings, white sclera, dark iris & shiny catchlights
-    // Left eye (viewer's left)
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(14, 31, 12, 9);
-    ctx.fillStyle = '#09090b';
-    ctx.strokeRect(14, 31, 12, 9);
-    ctx.fillRect(18, 32, 7, 7); // Pupil
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(19, 33, 3, 3); // White catchlight gleam
-
-    // Right eye (viewer's right)
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(38, 31, 12, 9);
-    ctx.fillStyle = '#09090b';
-    ctx.strokeRect(38, 31, 12, 9);
-    ctx.fillRect(39, 32, 7, 7); // Pupil
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(40, 33, 3, 3); // White catchlight gleam
-
-    // Signature stitch scar under left eye (iconic Luffy feature!)
-    ctx.fillStyle = '#991b1b'; // Dark crimson scar line
-    ctx.fillRect(16, 42, 9, 2);
-    // Vertical stitch sutures
-    ctx.fillStyle = '#7f1d1d';
-    ctx.fillRect(18, 40, 2, 5);
-    ctx.fillRect(22, 40, 2, 5);
-
-    // Big signature confident "D." smile!
-    ctx.fillStyle = '#881337'; // Mouth interior dark ruby
+    // Soft rosy cheek blush
+    const blushColor = isGear5 ? 'rgba(239, 68, 68, 0.35)' : 'rgba(244, 63, 94, 0.35)';
+    ctx.fillStyle = blushColor;
     ctx.beginPath();
-    ctx.arc(32, 49, 11, 0, Math.PI, false);
+    ctx.ellipse(56, 172, 24, 14, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(200, 172, 24, 14, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Gleaming white teeth row
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(23, 49, 18, 5);
-    ctx.fillStyle = '#09090b';
-    ctx.strokeRect(23, 49, 18, 5);
-    // Tooth lines
-    ctx.fillRect(28, 49, 1, 5);
-    ctx.fillRect(32, 49, 1, 5);
-    ctx.fillRect(36, 49, 1, 5);
+    // Subtle forehead shadow under straw hat brim
+    const browShadow = ctx.createLinearGradient(0, 0, 0, 90);
+    browShadow.addColorStop(0, 'rgba(180, 83, 9, 0.20)');
+    browShadow.addColorStop(1, 'transparent');
+    ctx.fillStyle = browShadow;
+    ctx.fillRect(0, 0, 256, 90);
 
-    return canvasToTexture(canvas);
+    // Sharp anime eyebrows
+    ctx.strokeStyle = isGear5 ? '#f8fafc' : '#09090b';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    // Left eyebrow (arched confidently)
+    ctx.beginPath();
+    ctx.moveTo(50, 108);
+    ctx.quadraticCurveTo(75, 96, 105, 105);
+    ctx.stroke();
+    // Right eyebrow
+    ctx.beginPath();
+    ctx.moveTo(206, 108);
+    ctx.quadraticCurveTo(181, 96, 151, 105);
+    ctx.stroke();
+
+    // --- ANIME EYES ---
+    // Left Eye
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.ellipse(80, 132, 26, 22, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = isGear5 ? '#b91c1c' : '#09090b';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    // Left Pupil / Iris
+    ctx.fillStyle = isGear5 ? '#dc2626' : '#09090b';
+    ctx.beginPath();
+    ctx.ellipse(83, 133, 15, 16, 0, 0, Math.PI * 2);
+    ctx.fill();
+    if (isGear5) {
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+    }
+    // Specular reflections
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(88, 127, 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(77, 140, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Right Eye
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.ellipse(176, 132, 26, 22, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = isGear5 ? '#b91c1c' : '#09090b';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    // Right Pupil / Iris
+    ctx.fillStyle = isGear5 ? '#dc2626' : '#09090b';
+    ctx.beginPath();
+    ctx.ellipse(173, 133, 15, 16, 0, 0, Math.PI * 2);
+    ctx.fill();
+    if (isGear5) {
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+    }
+    // Specular reflections
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(178, 127, 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(167, 140, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- SIGNATURE STITCH SCAR UNDER LEFT EYE ---
+    ctx.strokeStyle = '#991b1b';
+    ctx.lineWidth = 3.5;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(60, 160);
+    ctx.quadraticCurveTo(80, 166, 100, 160);
+    ctx.stroke();
+    // Two stitch sutures
+    ctx.beginPath();
+    ctx.moveTo(70, 156);
+    ctx.lineTo(70, 167);
+    ctx.moveTo(88, 156);
+    ctx.lineTo(88, 167);
+    ctx.stroke();
+
+    // --- BIG SIGNATURE CONFIDENT "D." GRIN ---
+    // Mouth cavity
+    ctx.fillStyle = '#881337';
+    ctx.beginPath();
+    ctx.moveTo(74, 188);
+    ctx.quadraticCurveTo(128, 238, 182, 188);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#09090b';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    // Gleaming white teeth upper row
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.moveTo(76, 188);
+    ctx.lineTo(180, 188);
+    ctx.lineTo(176, 198);
+    ctx.quadraticCurveTo(128, 206, 80, 198);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // Tooth dividers
+    ctx.strokeStyle = 'rgba(15, 23, 42, 0.4)';
+    ctx.lineWidth = 1.5;
+    for (let x = 96; x < 165; x += 16) {
+        ctx.beginPath();
+        ctx.moveTo(x, 188);
+        ctx.lineTo(x, 202);
+        ctx.stroke();
+    }
+
+    return smoothCanvasToTexture(canvas);
 }
 
 /**
- * Generate 64x64 Luffy Torso Texture:
- * Open scarlet red pirate vest, exposed chest with Akainu X-scar,
- * bright golden yellow waist sash belt, and golden pirate vest buttons.
+ * Authentic High-Res Real Anime Luffy Torso Texture (256x256):
+ * Open scarlet red pirate vest, exposed athletic chest with Akainu X-scar,
+ * bright golden yellow waist sash, and gold pirate buttons.
  */
-function createLuffyTorsoTexture() {
-    const { canvas, ctx } = createPixelCanvas(64, 64);
+function createLuffyTorsoTexture(isGear5 = false) {
+    const { canvas, ctx } = createSmoothCanvas(256, 256);
 
-    // Warm sun-kissed skin base
-    ctx.fillStyle = '#fbd0a5';
-    ctx.fillRect(0, 0, 64, 64);
+    // Warm sun-kissed muscular skin tone base
+    const skinGrad = ctx.createLinearGradient(0, 0, 0, 256);
+    skinGrad.addColorStop(0, '#fde0b4');
+    skinGrad.addColorStop(1, '#fbd0a5');
+    ctx.fillStyle = skinGrad;
+    ctx.fillRect(0, 0, 256, 256);
 
-    // Defined pectoral and abs shadows
-    ctx.fillStyle = '#f4be8e';
-    ctx.fillRect(22, 16, 20, 2); // Collarbone
-    ctx.fillRect(31, 18, 2, 28); // Sternum line
-    ctx.fillRect(24, 28, 16, 2); // Pec line
-    ctx.fillRect(26, 36, 12, 2); // Upper abs
-    ctx.fillRect(27, 42, 10, 2); // Mid abs
+    // Defined collarbone and pectoral muscles
+    ctx.strokeStyle = '#f4be8e';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(90, 40);
+    ctx.lineTo(128, 52);
+    ctx.lineTo(166, 40);
+    ctx.stroke();
 
-    // --- ICONIC X-SCAR ON CHEST (from Akainu at Marineford) ---
-    ctx.fillStyle = '#991b1b'; // Deep crimson burned scar
-    // Slash 1: Top-left to bottom-right
-    for (let i = 0; i < 22; i++) {
-        ctx.fillRect(21 + i, 16 + i, 3, 3);
+    // Pectoral contours
+    ctx.beginPath();
+    ctx.arc(104, 88, 22, 0, Math.PI * 0.9, false);
+    ctx.arc(152, 88, 22, Math.PI * 0.1, Math.PI, false);
+    ctx.stroke();
+
+    // Sternum & abs line
+    ctx.beginPath();
+    ctx.moveTo(128, 52);
+    ctx.lineTo(128, 185);
+    ctx.stroke();
+
+    // --- ICONIC MARINEFORD X-SCAR (from Fleet Admiral Akainu) ---
+    ctx.strokeStyle = '#991b1b';
+    ctx.lineWidth = 11;
+    ctx.lineCap = 'round';
+    // Slash 1: Top-Left to Bottom-Right
+    ctx.beginPath();
+    ctx.moveTo(88, 62);
+    ctx.lineTo(168, 142);
+    ctx.stroke();
+    // Slash 2: Top-Right to Bottom-Left
+    ctx.beginPath();
+    ctx.moveTo(168, 62);
+    ctx.lineTo(88, 142);
+    ctx.stroke();
+
+    // Raised scar edge highlights
+    ctx.strokeStyle = '#fca5a5';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(90, 60);
+    ctx.lineTo(170, 140);
+    ctx.moveTo(170, 60);
+    ctx.lineTo(90, 140);
+    ctx.stroke();
+
+    // Center molten burn junction core
+    ctx.fillStyle = '#7f1d1d';
+    ctx.beginPath();
+    ctx.ellipse(128, 102, 14, 14, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- OPEN SCARLET RED PIRATE VEST FLAPS ---
+    const vestColor = isGear5 ? '#f8fafc' : '#dc2626';
+    const vestShadow = isGear5 ? '#e2e8f0' : '#b91c1c';
+
+    // Left vest flap
+    ctx.fillStyle = vestColor;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(76, 0);
+    ctx.quadraticCurveTo(84, 100, 72, 192);
+    ctx.lineTo(0, 192);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = vestShadow;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // Right vest flap
+    ctx.fillStyle = vestColor;
+    ctx.beginPath();
+    ctx.moveTo(256, 0);
+    ctx.lineTo(180, 0);
+    ctx.quadraticCurveTo(172, 100, 184, 192);
+    ctx.lineTo(256, 192);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // Gold brass buttons on left vest inner flap
+    for (const y of [75, 120, 160]) {
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath();
+        ctx.arc(68, y, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
     }
-    // Slash 2: Top-right to bottom-left
-    for (let i = 0; i < 22; i++) {
-        ctx.fillRect(41 - i, 16 + i, 3, 3);
-    }
-    // Highlight raised edges of scar
-    ctx.fillStyle = '#fca5a5';
-    ctx.fillRect(20, 16, 2, 2);
-    ctx.fillRect(42, 16, 2, 2);
-    ctx.fillRect(30, 26, 4, 3); // Center burn junction
-
-    // --- OPEN RED PIRATE VEST ---
-    // Left vest panel
-    ctx.fillStyle = '#dc2626'; // Vibrant scarlet red
-    ctx.fillRect(0, 0, 19, 48);
-    ctx.fillStyle = '#b91c1c'; // Shadow border
-    ctx.fillRect(17, 0, 2, 48);
-
-    // Right vest panel
-    ctx.fillStyle = '#dc2626';
-    ctx.fillRect(45, 0, 19, 48);
-    ctx.fillStyle = '#b91c1c';
-    ctx.fillRect(45, 0, 2, 48);
-
-    // Vest collar folds at top shoulders
-    ctx.fillStyle = '#ef4444';
-    ctx.fillRect(0, 0, 16, 8);
-    ctx.fillRect(48, 0, 16, 8);
-
-    // Golden brass vest buttons on inner flaps
-    ctx.fillStyle = '#fbbf24';
-    ctx.fillRect(14, 18, 3, 4);
-    ctx.fillRect(14, 30, 3, 4);
-    ctx.fillRect(14, 40, 3, 4);
-    ctx.fillStyle = '#f59e0b';
-    ctx.fillRect(15, 19, 1, 2);
-    ctx.fillRect(15, 31, 1, 2);
-    ctx.fillRect(15, 41, 1, 2);
 
     // --- BRIGHT GOLDEN YELLOW PIRATE WAIST SASH ---
-    const sashYellows = ['#f59e0b', '#fbbf24', '#d97706', '#fcd34d'];
-    for (let x = 0; x < 64; x += 8) {
-        for (let y = 48; y < 62; y += 4) {
-            ctx.fillStyle = sashYellows[(x + y) % sashYellows.length];
-            ctx.fillRect(x, y, 8, 4);
-        }
-    }
-    // Sash cloth wrinkles & hanging knot on left hip
-    ctx.fillStyle = '#b45309';
-    ctx.fillRect(0, 54, 64, 2);
-    ctx.fillRect(12, 52, 10, 12);
-    ctx.fillStyle = '#fde047';
-    ctx.fillRect(14, 54, 6, 10);
+    const sashGrad = ctx.createLinearGradient(0, 192, 0, 240);
+    sashGrad.addColorStop(0, '#f59e0b');
+    sashGrad.addColorStop(0.5, '#fbbf24');
+    sashGrad.addColorStop(1, '#d97706');
+    ctx.fillStyle = sashGrad;
+    ctx.fillRect(0, 192, 256, 48);
 
-    // Lower hem
-    ctx.fillStyle = '#1d4ed8'; // Blue shorts top rim peeking through
-    ctx.fillRect(0, 60, 64, 4);
+    // Sash fabric fold contours
+    ctx.strokeStyle = '#b45309';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(0, 206);
+    ctx.quadraticCurveTo(128, 218, 256, 206);
+    ctx.moveTo(0, 224);
+    ctx.quadraticCurveTo(128, 234, 256, 224);
+    ctx.stroke();
 
-    return canvasToTexture(canvas);
+    // Blue denim shorts top rim
+    ctx.fillStyle = '#2563eb';
+    ctx.fillRect(0, 240, 256, 16);
+
+    return smoothCanvasToTexture(canvas);
 }
 
 /**
- * Generate 32x64 Luffy Arm Texture:
- * Red sleeveless vest shoulder cuff, muscular sun-kissed skin arm,
- * and Left wrist holds the golden navigational Log Pose!
+ * Authentic High-Res Real Anime Luffy Arm Texture (128x256):
+ * Red sleeveless vest armhole cuff, athletic skin, and left wrist Log Pose.
  */
 function createLuffyArmTexture(isLeft = false) {
-    const { canvas, ctx } = createPixelCanvas(32, 64);
+    const { canvas, ctx } = createSmoothCanvas(128, 256);
 
-    // Top vest sleeve cuff in scarlet red
+    // Top vest armhole cuff in scarlet red
     ctx.fillStyle = '#dc2626';
-    ctx.fillRect(0, 0, 32, 12);
+    ctx.fillRect(0, 0, 128, 38);
     ctx.fillStyle = '#991b1b';
-    ctx.fillRect(0, 10, 32, 2);
+    ctx.fillRect(0, 34, 128, 4);
 
-    // Sun-kissed skin arm
-    ctx.fillStyle = '#fbd0a5';
-    ctx.fillRect(0, 12, 32, 52);
+    // Muscular skin tone arm
+    const skinGrad = ctx.createLinearGradient(0, 38, 0, 256);
+    skinGrad.addColorStop(0, '#fde0b4');
+    skinGrad.addColorStop(1, '#fbd0a5');
+    ctx.fillStyle = skinGrad;
+    ctx.fillRect(0, 38, 128, 218);
 
-    // Subtle muscle shadows
-    ctx.fillStyle = '#f4be8e';
-    ctx.fillRect(4, 22, 6, 18);
-    ctx.fillRect(22, 22, 6, 18);
+    // Muscle tone shadows
+    ctx.strokeStyle = '#f4be8e';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(34, 75);
+    ctx.quadraticCurveTo(20, 130, 34, 185);
+    ctx.moveTo(94, 75);
+    ctx.quadraticCurveTo(108, 130, 94, 185);
+    ctx.stroke();
 
     if (isLeft) {
         // --- LOG POSE ON LEFT WRIST ---
-        // Leather/brass wristband
         ctx.fillStyle = '#d97706';
-        ctx.fillRect(0, 36, 32, 10);
+        ctx.fillRect(0, 175, 128, 36);
         ctx.fillStyle = '#fbbf24';
-        ctx.fillRect(0, 38, 32, 6);
+        ctx.fillRect(0, 181, 128, 24);
 
         // Glass sphere dome of Log Pose
-        ctx.fillStyle = '#38bdf8';
-        ctx.fillRect(8, 34, 16, 14);
-        ctx.fillStyle = '#e0f2fe';
-        ctx.fillRect(10, 36, 6, 4); // Glass reflection gleam
+        const domeGrad = ctx.createRadialGradient(64, 193, 4, 64, 193, 28);
+        domeGrad.addColorStop(0, '#e0f2fe');
+        domeGrad.addColorStop(0.6, '#38bdf8');
+        domeGrad.addColorStop(1, '#0284c7');
+        ctx.fillStyle = domeGrad;
+        ctx.beginPath();
+        ctx.arc(64, 193, 26, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 3;
+        ctx.stroke();
 
-        // Floating compass needle pointing to next Grand Line Island!
-        ctx.fillStyle = '#dc2626';
-        ctx.fillRect(15, 37, 2, 4);
-        ctx.fillStyle = '#0f172a';
-        ctx.fillRect(15, 41, 2, 4);
-    } else {
-        // Right arm: clenched strong pirate fist
-        ctx.fillStyle = '#f4be8e';
-        ctx.fillRect(6, 46, 20, 4);
-        ctx.fillRect(10, 52, 12, 8);
+        // Compass needle pointing north towards Laugh Tale
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.moveTo(64, 175);
+        ctx.lineTo(60, 193);
+        ctx.lineTo(68, 193);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = '#f8fafc';
+        ctx.beginPath();
+        ctx.moveTo(64, 211);
+        ctx.lineTo(60, 193);
+        ctx.lineTo(68, 193);
+        ctx.closePath();
+        ctx.fill();
     }
 
-    return canvasToTexture(canvas);
+    return smoothCanvasToTexture(canvas);
 }
 
 /**
- * Generate 32x64 Luffy Leg Texture:
- * Denim blue shorts, fluffy rolled white cuffs, bare tan calves,
- * and straw woven sandals (waraji/zōri) with black straps.
+ * Authentic High-Res Real Anime Luffy Leg Texture (128x256):
+ * Blue denim pirate shorts, fluffy white turned-up fleece cuff, bare calves, and straw sandals.
  */
 function createLuffyLegTexture() {
-    const { canvas, ctx } = createPixelCanvas(32, 64);
+    const { canvas, ctx } = createSmoothCanvas(128, 256);
 
-    // Denim blue shorts
-    const denimBlues = ['#2563eb', '#1d4ed8', '#1e40af'];
-    for (let x = 0; x < 32; x += 8) {
-        for (let y = 0; y < 36; y += 8) {
-            ctx.fillStyle = denimBlues[(x + y) % denimBlues.length];
-            ctx.fillRect(x, y, 8, 8);
-        }
-    }
-    // Denim side seam
-    ctx.fillStyle = '#3b82f6';
-    ctx.fillRect(14, 0, 4, 36);
+    // Blue denim pirate shorts
+    const denimGrad = ctx.createLinearGradient(0, 0, 0, 110);
+    denimGrad.addColorStop(0, '#1d4ed8');
+    denimGrad.addColorStop(1, '#2563eb');
+    ctx.fillStyle = denimGrad;
+    ctx.fillRect(0, 0, 128, 110);
 
-    // Fluffy rolled white cuffs at shorts hem
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 36, 32, 8);
-    ctx.fillStyle = '#cbd5e1';
-    ctx.fillRect(0, 42, 32, 2);
+    // Denim seam stitch
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(64, 0);
+    ctx.lineTo(64, 108);
+    ctx.stroke();
+    ctx.setLineDash([]);
 
-    // Bare tan calves
-    ctx.fillStyle = '#fbd0a5';
-    ctx.fillRect(0, 44, 32, 12);
-    ctx.fillStyle = '#f4be8e';
-    ctx.fillRect(4, 46, 8, 8);
+    // Fluffy cloud-white fleece turned-up cuff at knee
+    ctx.fillStyle = '#f8fafc';
+    ctx.beginPath();
+    ctx.roundRect(4, 98, 120, 24, 8);
+    ctx.fill();
+    ctx.strokeStyle = '#cbd5e1';
+    ctx.lineWidth = 2;
+    ctx.stroke();
 
-    // Straw sandals (Waraji / Zōri)
-    ctx.fillStyle = '#d97706'; // Woven golden straw sole
-    ctx.fillRect(0, 56, 32, 8);
-    ctx.fillStyle = '#fbbf24';
-    ctx.fillRect(2, 58, 28, 4);
+    // Bare skin calf
+    const skinGrad = ctx.createLinearGradient(0, 122, 0, 215);
+    skinGrad.addColorStop(0, '#fde0b4');
+    skinGrad.addColorStop(1, '#fbd0a5');
+    ctx.fillStyle = skinGrad;
+    ctx.fillRect(0, 122, 128, 93);
 
-    // Black/red sandal thongs
-    ctx.fillStyle = '#09090b';
-    ctx.fillRect(10, 56, 4, 6);
-    ctx.fillRect(18, 56, 4, 6);
-    ctx.fillStyle = '#dc2626';
-    ctx.fillRect(14, 57, 4, 3);
+    // Straw woven sandal footbase
+    ctx.fillStyle = '#ca8a04';
+    ctx.fillRect(8, 215, 112, 28);
+    ctx.fillStyle = '#eab308';
+    ctx.fillRect(12, 217, 104, 20);
 
-    return canvasToTexture(canvas);
+    // Black thong sandal straps (Zori)
+    ctx.strokeStyle = '#09090b';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(30, 242);
+    ctx.lineTo(64, 222);
+    ctx.lineTo(98, 242);
+    ctx.stroke();
+
+    return smoothCanvasToTexture(canvas);
 }
 
-/**
- * Web Audio Synthesizer: Plays heroic anime chime fanfare chords
- */
-function playAnimeFanfare(type = 'chime') {
-    try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return;
-        const ctx = new AudioCtx();
-
-        if (type === 'gear5') {
-            // Drums of Liberation cheerful pentatonic arpeggio (C5, E5, G5, A5, C6)
-            const freqs = [523.25, 659.25, 783.99, 880.00, 1046.50];
-            freqs.forEach((freq, idx) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.08);
-
-                gain.gain.setValueAtTime(0.12, ctx.currentTime + idx * 0.08);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.08 + 0.35);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-
-                osc.start(ctx.currentTime + idx * 0.08);
-                osc.stop(ctx.currentTime + idx * 0.08 + 0.4);
-            });
-        } else {
-            // Quick friendly Grand Line chime (G4, C5, E5)
-            const freqs = [392.00, 523.25, 659.25];
-            freqs.forEach((freq, idx) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.09);
-
-                gain.gain.setValueAtTime(0.10, ctx.currentTime + idx * 0.09);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.09 + 0.3);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-
-                osc.start(ctx.currentTime + idx * 0.09);
-                osc.stop(ctx.currentTime + idx * 0.09 + 0.35);
-            });
-        }
-    } catch (e) {
-        // AudioContext policy suppression gracefully handled
-    }
-}
-
-/**
- * Generate Grand Line / One Piece Holographic Projector Canvas:
- * Displays current Arc, Gear status, Poneglyph runes, and production specs
- */
 function createOnePieceHologramCanvas(arcBadge = 'EAST BLUE ARC', title = 'Setting Sail on the Grand Line!', specs = 'Omar Mohamed • AI & MLOps Captain') {
     const canvas = document.createElement('canvas');
     canvas.width = 256;
@@ -555,6 +639,8 @@ export default function MinecraftGuide3D({ onStartTour }) {
     const leftLegGroupRef = useRef(null);
     const rightLegGroupRef = useRef(null);
     const meatPropRef = useRef(null);
+    const hairMatRef = useRef(null);
+    const cloudSashRef = useRef(null);
     const auraMeshRef = useRef(null);
     const heldLogPoseGroupRef = useRef(null);
     const hologramCanvasRef = useRef(null);
@@ -1053,56 +1139,130 @@ export default function MinecraftGuide3D({ onStartTour }) {
         characterGroup.add(auraMesh);
         auraMeshRef.current = auraMesh;
 
-        // 1. Torso (Open red vest & X-scar)
-        const torsoGeo = new THREE.BoxGeometry(1.0, 1.35, 0.55);
+        // 1. Torso (Athletic anime V-taper chest mapped with X-scar)
+        const torsoGeo = new THREE.CylinderGeometry(0.50, 0.38, 1.25, 24);
         const torsoMesh = new THREE.Mesh(torsoGeo, torsoMat);
         torsoMesh.position.y = 0.68;
         characterGroup.add(torsoMesh);
 
+        // 3D Red Pirate Vest Panels (Outer layer draped around back and sides)
+        const vestGeo = new THREE.CylinderGeometry(0.53, 0.41, 1.22, 24, 1, false, Math.PI * 0.28, Math.PI * 1.44);
+        const vestMat = new THREE.MeshLambertMaterial({ color: 0xdc2626 });
+        const vestMesh = new THREE.Mesh(vestGeo, vestMat);
+        torsoMesh.add(vestMesh);
+
+        // 3D Bright Golden Yellow Waist Sash Belt
+        const sashGeo = new THREE.TorusGeometry(0.43, 0.11, 16, 32);
+        const sashMat = new THREE.MeshLambertMaterial({ color: 0xeab308 });
+        const sashMesh = new THREE.Mesh(sashGeo, sashMat);
+        sashMesh.rotation.x = Math.PI / 2;
+        sashMesh.position.y = -0.48;
+        torsoMesh.add(sashMesh);
+
+        // Hanging Sash Knot Ribbons dangling on right hip
+        const knotRibbonGeo = new THREE.CylinderGeometry(0.04, 0.08, 0.42, 8);
+        const knotRibbon1 = new THREE.Mesh(knotRibbonGeo, sashMat);
+        knotRibbon1.position.set(0.38, -0.66, 0.18);
+        knotRibbon1.rotation.z = -0.35;
+        torsoMesh.add(knotRibbon1);
+        const knotRibbon2 = new THREE.Mesh(knotRibbonGeo, sashMat);
+        knotRibbon2.position.set(0.42, -0.62, 0.12);
+        knotRibbon2.rotation.z = -0.55;
+        torsoMesh.add(knotRibbon2);
+
+        // Celestial Cloud Sash for Gear 5 Sun God Nika
+        const cloudSashGeo = new THREE.TorusGeometry(0.92, 0.07, 16, 32);
+        const cloudSashMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 });
+        const cloudSashMesh = new THREE.Mesh(cloudSashGeo, cloudSashMat);
+        cloudSashMesh.rotation.x = Math.PI / 3;
+        cloudSashMesh.position.set(0, 0.35, 0);
+        cloudSashMesh.visible = false;
+        torsoMesh.add(cloudSashMesh);
+        cloudSashRef.current = cloudSashMesh;
+
         // =====================================================================
-        // 3D STRAW HAT (MUGIWARA) RIGGING
+        // REAL ANIME 3D HEAD & SCULPTED SPIKY HAIR RIGGING
         // =====================================================================
         const headGroup = new THREE.Group();
         headGroup.position.set(0, 1.38, 0);
         characterGroup.add(headGroup);
         headGroupRef.current = headGroup;
 
-        // Head Box Mesh
-        const headGeo = new THREE.BoxGeometry(0.95, 0.95, 0.95);
+        // Smooth Anime Head (Sphere scaled slightly into anime jawline)
+        const headGeo = new THREE.SphereGeometry(0.52, 32, 24);
         const headMesh = new THREE.Mesh(headGeo, headMat);
+        headMesh.scale.set(0.92, 1.06, 0.95);
         headMesh.position.set(0, 0.48, 0);
         headGroup.add(headMesh);
 
+        // Sculpted 3D Anime Ears
+        const earGeo = new THREE.SphereGeometry(0.12, 16, 16);
+        const leftEar = new THREE.Mesh(earGeo, headMat);
+        leftEar.scale.set(0.35, 1.1, 0.7);
+        leftEar.position.set(-0.48, 0.48, -0.05);
+        headGroup.add(leftEar);
+        const rightEar = new THREE.Mesh(earGeo, headMat);
+        rightEar.scale.set(0.35, 1.1, 0.7);
+        rightEar.position.set(0.48, 0.48, -0.05);
+        headGroup.add(rightEar);
+
+        // Sculpted 3D Spiky Anime Hair Locks (Jet Black, morphs white in Gear 5)
+        const hairMat = new THREE.MeshLambertMaterial({ color: 0x09090b });
+        hairMatRef.current = hairMat;
+        const hairGroup = new THREE.Group();
+        headGroup.add(hairGroup);
+
+        const hairConeGeo = new THREE.ConeGeometry(0.12, 0.44, 6);
+        const hairConfigs = [
+            // Front Bangs framing forehead & eyes
+            { pos: [-0.18, 0.72, 0.44], rot: [-0.3, 0.2, 0.1] },
+            { pos: [0.0, 0.68, 0.48], rot: [-0.35, 0, 0] },
+            { pos: [0.18, 0.72, 0.44], rot: [-0.3, -0.2, -0.1] },
+            // Side locks / Sideburns
+            { pos: [-0.44, 0.46, 0.22], rot: [0.1, 0.3, 0.4] },
+            { pos: [0.44, 0.46, 0.22], rot: [0.1, -0.3, -0.4] },
+            // Back & Temple Spikes protruding naturally from under straw hat
+            { pos: [-0.32, 0.50, -0.35], rot: [0.4, -0.3, -0.2] },
+            { pos: [0.32, 0.50, -0.35], rot: [0.4, 0.3, 0.2] },
+            { pos: [0.0, 0.52, -0.46], rot: [0.5, 0, 0] },
+        ];
+        hairConfigs.forEach(cfg => {
+            const spike = new THREE.Mesh(hairConeGeo, hairMat);
+            spike.position.set(...cfg.pos);
+            spike.rotation.set(...cfg.rot);
+            hairGroup.add(spike);
+        });
+
         // Mugiwara Straw Hat Group mounted to head
         const strawHatGroup = new THREE.Group();
-        strawHatGroup.position.set(0, 0.96, -0.04);
+        strawHatGroup.position.set(0, 0.94, -0.04);
         strawHatGroup.rotation.x = -0.16; // Tilted slightly back so his face & bangs show clearly!
         headGroup.add(strawHatGroup);
         strawHatGroupRef.current = strawHatGroup;
 
-        // Straw Hat Material (warm golden yellow woven straw)
+        // Straw Hat Material (warm golden woven straw & crimson ribbon)
         const strawMat = new THREE.MeshLambertMaterial({ color: 0xeab308 });
         const ribbonMat = new THREE.MeshLambertMaterial({ color: 0xdc2626 });
 
-        // 1. Wide circular straw brim
-        const brimGeo = new THREE.CylinderGeometry(1.06, 1.06, 0.05, 32);
+        // 1. Wide curved circular straw brim
+        const brimGeo = new THREE.CylinderGeometry(1.22, 1.26, 0.05, 48);
         const brimMesh = new THREE.Mesh(brimGeo, strawMat);
         strawHatGroup.add(brimMesh);
 
         // 2. Signature Scarlet Red Ribbon Band
-        const ribbonGeo = new THREE.CylinderGeometry(0.58, 0.58, 0.12, 32);
+        const ribbonGeo = new THREE.CylinderGeometry(0.66, 0.66, 0.13, 36);
         const ribbonMesh = new THREE.Mesh(ribbonGeo, ribbonMat);
         ribbonMesh.position.y = 0.08;
         strawHatGroup.add(ribbonMesh);
 
-        // 3. Straw Crown Dome
-        const crownGeo = new THREE.CylinderGeometry(0.53, 0.56, 0.32, 32);
+        // 3. Rounded Straw Crown Dome
+        const crownGeo = new THREE.SphereGeometry(0.63, 32, 16, 0, Math.PI * 2, 0, Math.PI * 0.52);
         const crownMesh = new THREE.Mesh(crownGeo, strawMat);
-        crownMesh.position.y = 0.28;
+        crownMesh.position.y = 0.08;
         strawHatGroup.add(crownMesh);
 
         // 4. Hat chinstrap string hanging behind neck
-        const stringGeo = new THREE.TorusGeometry(0.55, 0.02, 8, 24, Math.PI);
+        const stringGeo = new THREE.TorusGeometry(0.56, 0.022, 8, 24, Math.PI);
         const stringMat = new THREE.MeshBasicMaterial({ color: 0x18181b });
         const stringMesh = new THREE.Mesh(stringGeo, stringMat);
         stringMesh.position.set(0, -0.22, 0.15);
@@ -1132,18 +1292,25 @@ export default function MinecraftGuide3D({ onStartTour }) {
 
         // 2. Left Arm Group (holds Log Pose on wrist)
         const leftArmGroup = new THREE.Group();
-        leftArmGroup.position.set(-0.76, 1.28, 0);
+        leftArmGroup.position.set(-0.72, 1.28, 0);
         characterGroup.add(leftArmGroup);
         leftArmGroupRef.current = leftArmGroup;
 
-        const armGeo = new THREE.BoxGeometry(0.44, 1.3, 0.44);
+        const armGeo = new THREE.CylinderGeometry(0.16, 0.13, 1.22, 16);
         const leftArmMesh = new THREE.Mesh(armGeo, leftArmMat);
         leftArmMesh.position.set(0, -0.58, 0);
         leftArmGroup.add(leftArmMesh);
 
+        // 3D Glass Bubble Log Pose on left wrist
+        const poseDomeGeo = new THREE.SphereGeometry(0.12, 16, 16);
+        const poseDomeMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.75 });
+        const poseDome = new THREE.Mesh(poseDomeGeo, poseDomeMat);
+        poseDome.position.set(0, -0.92, 0.15);
+        leftArmGroup.add(poseDome);
+
         // 3. Right Arm Group (holds Meat)
         const rightArmGroup = new THREE.Group();
-        rightArmGroup.position.set(0.76, 1.28, 0);
+        rightArmGroup.position.set(0.72, 1.28, 0);
         characterGroup.add(rightArmGroup);
         rightArmGroupRef.current = rightArmGroup;
 
@@ -1188,18 +1355,26 @@ export default function MinecraftGuide3D({ onStartTour }) {
         beamMesh.rotation.x = Math.PI;
         heldLogPoseGroup.add(beamMesh);
 
-        // 5. Left Leg (Denim shorts & sandals)
+        // 5. Left Leg (Denim shorts, fluffy white cuffs & sandals)
         const leftLegGroup = new THREE.Group();
         leftLegGroup.position.set(-0.28, 0.05, 0);
         characterGroup.add(leftLegGroup);
         leftLegGroupRef.current = leftLegGroup;
 
-        const legGeo = new THREE.BoxGeometry(0.45, 1.35, 0.45);
+        const legGeo = new THREE.CylinderGeometry(0.18, 0.14, 1.30, 16);
         const leftLegMesh = new THREE.Mesh(legGeo, legMat);
         leftLegMesh.position.set(0, -0.65, 0);
         leftLegGroup.add(leftLegMesh);
 
-        // 6. Right Leg (Denim shorts & sandals)
+        // Fluffy white knee fleece cuff
+        const cuffGeo = new THREE.TorusGeometry(0.20, 0.05, 16, 24);
+        const cuffMat = new THREE.MeshLambertMaterial({ color: 0xf8fafc });
+        const leftCuff = new THREE.Mesh(cuffGeo, cuffMat);
+        leftCuff.rotation.x = Math.PI / 2;
+        leftCuff.position.set(0, -0.32, 0);
+        leftLegGroup.add(leftCuff);
+
+        // 6. Right Leg (Denim shorts, fluffy white cuffs & sandals)
         const rightLegGroup = new THREE.Group();
         rightLegGroup.position.set(0.28, 0.05, 0);
         characterGroup.add(rightLegGroup);
@@ -1208,6 +1383,11 @@ export default function MinecraftGuide3D({ onStartTour }) {
         const rightLegMesh = new THREE.Mesh(legGeo, legMat);
         rightLegMesh.position.set(0, -0.65, 0);
         rightLegGroup.add(rightLegMesh);
+
+        const rightCuff = new THREE.Mesh(cuffGeo, cuffMat);
+        rightCuff.rotation.x = Math.PI / 2;
+        rightCuff.position.set(0, -0.32, 0);
+        rightLegGroup.add(rightCuff);
 
         // Mouse Tracking
         const handleMouseMove = (e) => {
@@ -1238,6 +1418,24 @@ export default function MinecraftGuide3D({ onStartTour }) {
                 auraMeshRef.current.rotation.z = time * 0.5;
                 const auraScale = 1.0 + Math.sin(time * 3) * 0.08;
                 auraMeshRef.current.scale.set(auraScale, auraScale, 1);
+            }
+
+            // Gear 5 Sun God Nika Celestial Sash and Glowing White Hair
+            if (anim.mode === 'gear5') {
+                if (cloudSashRef.current) {
+                    cloudSashRef.current.visible = true;
+                    cloudSashRef.current.rotation.z = time * 1.8;
+                }
+                if (hairMatRef.current) {
+                    hairMatRef.current.color.set(0xffffff);
+                }
+            } else {
+                if (cloudSashRef.current) {
+                    cloudSashRef.current.visible = false;
+                }
+                if (hairMatRef.current) {
+                    hairMatRef.current.color.set(0x09090b);
+                }
             }
 
             // Head tracking lerp
@@ -1537,6 +1735,15 @@ export default function MinecraftGuide3D({ onStartTour }) {
 
                     {/* Window Controls */}
                     <div className="flex items-center gap-1 flex-shrink-0">
+                        <button
+                            onClick={() => window.dispatchEvent(new CustomEvent('open-3d-book', { detail: { bookId: 'graduation' } }))}
+                            className="px-2 py-1 rounded-lg bg-gradient-to-r from-amber-500/25 to-yellow-500/25 hover:from-amber-500 hover:to-yellow-500 hover:text-slate-950 border border-amber-400/50 text-amber-300 transition-all text-[10px] sm:text-[11px] font-bold flex items-center gap-1 cursor-pointer touch-manipulation"
+                            title="Open 3D Project Books"
+                            aria-label="Open 3D Books"
+                        >
+                            <span>📖</span>
+                            <span className="hidden xs:inline">{isRTL ? 'كتب 3D' : '3D Books'}</span>
+                        </button>
                         <button
                             onClick={() => setVoiceEnabled(!voiceEnabled)}
                             className={`p-1.5 rounded-lg border transition-colors touch-manipulation cursor-pointer ${voiceEnabled

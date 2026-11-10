@@ -11,7 +11,7 @@ import useIsMobile from '../hooks/useIsMobile';
 import { useLanguage } from '../context/LanguageContext';
 
 const Projects = function Projects({ isVisible, projects = [], themeColor = 'cyan' }) {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const isMobile = useIsMobile();
   const textColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
   const techColor = themeColor === 'purple' ? 'text-purple-300' : 'text-cyan-300';
@@ -109,6 +109,22 @@ const Projects = function Projects({ isVisible, projects = [], themeColor = 'cya
                   </span>
                 ))}
               </div>
+
+              {/* 3D Interactive Graduation Book Action Button */}
+              {(project.title?.toLowerCase().includes('historyverse') || project.description?.toLowerCase().includes('graduation')) && (
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                  <button
+                    onClick={() => window.dispatchEvent(new CustomEvent('open-3d-book', { detail: { bookId: 'graduation' } }))}
+                    className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-amber-600/20 hover:from-amber-500 hover:to-yellow-500 hover:text-slate-950 text-amber-300 border border-amber-500/40 font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg hover:shadow-amber-500/30 touch-manipulation group"
+                  >
+                    <span className="text-base group-hover:scale-110 transition-transform">📖</span>
+                    <span>{isRTL ? 'تصفح كتاب مشروع التخرج 3D (امتياز A+)' : 'Open 3D Graduation Book (Grade A+)'}</span>
+                  </button>
+                  <span className="text-[11px] font-mono text-amber-400 font-bold bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-full">
+                    A+
+                  </span>
+                </div>
+              )}
             </motion.div>
           ))}
         </motion.div>
