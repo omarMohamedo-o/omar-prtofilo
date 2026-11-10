@@ -5,8 +5,8 @@ import { useLanguage } from '../context/LanguageContext';
 
 function FAQ({ isVisible, themeColor = 'cyan' }) {
     const { t, isRTL } = useLanguage();
-    // Open the first item by default like typical FAQ showcases, or null
-    const [openIndex, setOpenIndex] = useState(0);
+    // All FAQ items closed by default
+    const [openIndex, setOpenIndex] = useState(null);
 
     const items = t('faqItems') || [];
 
