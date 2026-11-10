@@ -100,6 +100,39 @@ export const en = {
         "Other"
     ],
 
+    // FAQ Section
+    faqBadge: "FAQs",
+    faqTitle1: "Frequently Asked",
+    faqTitle2: "Questions",
+    faqHeading: "FAQS",
+    faqSubtitle: "Quick answers to common questions about my technical background, production projects, and engagement models.",
+    faqItems: [
+        {
+            q: "What roles and engagement models is Omar open to?",
+            a: "Omar is available for full-time engineering roles, contract MLOps/DevOps architecture, and technical consulting worldwide in AI/LLMs, RAG systems, and Cloud Infrastructure. Both remote and hybrid/onsite opportunities are welcome."
+        },
+        {
+            q: "What are Omar's core technical specializations?",
+            a: "Omar specializes in production AI/LLM Systems (RAG architectures, LangChain, ChromaDB, fine-tuning, Faster-Whisper, YOLOv5) and Enterprise MLOps/Cloud (Docker, Kubernetes, Helm, Terraform, AWS, Prometheus/Grafana/Loki, CI/CD, Vault secrets management)."
+        },
+        {
+            q: "What live production projects and verified deployments are featured?",
+            a: "Key featured systems include PlayerHub.GG (high-concurrency gaming marketplace infrastructure with HAProxy and MariaDB replication), HistoryVerse (A+ graduation AI/AR platform deployed on AWS Fargate with 204 automated tests), CliniSoft (clinical AI speech transcription with Faster-Whisper), and the live interactive 3D Minecraft & MORA AI assistants on this website."
+        },
+        {
+            q: "How do Omar's systems scale and maintain high availability?",
+            a: "Workloads are designed with zero-downtime rolling deployments, Kubernetes autoscaling, HAProxy read routing across database replicas, Redis caching clusters, automated health check daemons, and 24/7 telemetry using Prometheus and Grafana."
+        },
+        {
+            q: "How can I schedule an interview or book a discovery call?",
+            a: "You can use the 'Book a Discovery Call' form directly on this website, or connect via Email at omarmo.abdelsalam@gmail.com, WhatsApp (+20 101 1297 869), or LinkedIn (linkedin.com/in/omar-mohamedo-o)."
+        },
+        {
+            q: "Does Omar hold verified industry certifications?",
+            a: "Yes, Omar is an officially certified Red Hat Certified System Administrator (RHCSA) and Huawei Cloud Developer (HCCDA-Tech Essentials), with credentials verifiable on Credly."
+        }
+    ],
+
     // Contact Section
     contactSubtitle: "I'm always open to discussing new projects, opportunities, or collaborations.",
     locationLabel: "Location",

@@ -12,6 +12,7 @@ import Projects from './Projects';
 import Education from './Education';
 import { Certifications, Courses } from './Certificates';
 import Languages from './Languages';
+import FAQ from './FAQ';
 import Contact from './Contact';
 import Footer from './Footer';
 import ChatWidget from './ChatWidget';
@@ -379,6 +380,9 @@ export default function Portfolio() {
       {portfolioData.languages && portfolioData.languages.length > 0 && (
         <Languages isVisible={isVisible} languages={portfolioData.languages} themeColor={themeColor} />
       )}
+
+      {/* FAQ Section */}
+      <FAQ isVisible={isVisible} themeColor={themeColor} />
 
       {/* Discovery Form Section */}
       <DiscoveryForm isVisible={isVisible} themeColor={themeColor} />
