@@ -56,7 +56,7 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
     <section id="home" className="min-h-svh flex flex-col lg:flex-row items-center justify-center relative px-4 sm:px-6 md:px-8 pt-[var(--header-height,100px)] lg:pt-0 pb-8 sm:pb-12 lg:pb-16 overflow-hidden" style={{ scrollMarginTop: '6rem' }}>
 
       {/* Floating Mode Switcher - Desktop Only (Smooth & Uncluttered) */}
-      <div ref={dropdownRef} className={`hidden lg:block absolute top-28 ${isRTL ? 'left-8' : 'right-8'} z-40 mode-switcher-float`}>
+      <div ref={dropdownRef} className={`hidden lg:block absolute top-28 ${isRTL ? 'left-8' : 'right-8'} z-50 mode-switcher-float`}>
         <div className="relative">
           <button
             type="button"
@@ -69,9 +69,9 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
             aria-haspopup="listbox"
             aria-expanded={showModeDropdown}
           >
-            {currentMode === MODES.DEVOPS ? <Infinity size={18} /> : <Brain size={18} />}
-            <span>{t('viewAs')}</span>
-            <ChevronDown size={14} className={`transition-transform duration-300 ${showModeDropdown ? 'rotate-180' : ''}`} />
+            {currentMode === MODES.DEVOPS ? <Infinity size={18} className="pointer-events-none flex-shrink-0" /> : <Brain size={18} className="pointer-events-none flex-shrink-0" />}
+            <span className="pointer-events-none select-none">{t('viewAs')}</span>
+            <ChevronDown size={14} className={`pointer-events-none flex-shrink-0 transition-transform duration-300 ${showModeDropdown ? 'rotate-180' : ''}`} />
           </button>
 
           {/* Dropdown */}

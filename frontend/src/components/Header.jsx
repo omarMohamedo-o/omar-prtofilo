@@ -206,8 +206,8 @@ export default function Header({
                     borderColor: scrolled ? "rgba(31,41,55,0.5)" : "transparent"
                 }}
                 transition={{ duration: 0.34, ease: "easeOut" }}
-                className={`fixed top-0 w-full z-50 border-b text-surface transition-all duration-300 ${scrolled ? "scrolled shadow-lg" : "border-transparent"}`}>
-                <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+                className={`fixed top-0 w-full z-50 border-b text-surface transition-all duration-300 ${scrolled ? "scrolled shadow-lg pointer-events-auto" : "border-transparent pointer-events-none"}`}>
+                <div className="max-w-7xl mx-auto px-4 flex items-center justify-between pointer-events-auto">
                     {/* Left: Logo */}
                     <div className="flex items-center flex-shrink-0 nav-logo-wrapper">
                         <img
