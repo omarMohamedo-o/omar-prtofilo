@@ -3,11 +3,21 @@ import { createPortal } from 'react-dom';
 import useScrollVisibility from '../hooks/useScrollVisibility';
 import { useLanguage } from '../context/LanguageContext';
 
-export default function UpArrowButton({ className = '' }) {
+export default function UpArrowButton({ className = '', themeColor = 'cyan' }) {
     const { isRTL, t } = useLanguage();
     const show = useScrollVisibility(100);
     const [scrollProgress, setScrollProgress] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
+
+    // Color identity: Cyan (default) / Purple (alternate mode)
+    const isPurple = themeColor === 'purple';
+    const strokeColor = isPurple ? '#a855f7' : '#00e5ff';
+    const trackColor = isPurple ? 'rgba(168, 85, 247, 0.18)' : 'rgba(0, 229, 255, 0.18)';
+    const arrowColor = isPurple ? '#c084fc' : '#00f5ff';
+    const glowClass = isPurple
+        ? 'hover:shadow-[0_0_20px_rgba(168,85,247,0.55)]'
+        : 'hover:shadow-[0_0_20px_rgba(0,229,255,0.55)]';
+    const innerBorder = isPurple ? 'border-purple-500/40' : 'border-cyan-400/40';
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 640);
@@ -60,7 +70,7 @@ export default function UpArrowButton({ className = '' }) {
             aria-label={t('scrollToTopAria') || 'Scroll to top'}
             title={t('scrollToTopAria') || 'Scroll to top'}
             role="button"
-            className={`up-arrow-button group fixed z-[9999] flex items-center justify-center rounded-full shadow-lg hover:shadow-[0_0_18px_rgba(255,87,34,0.35)] hover:scale-105 active:scale-95 transform-gpu transition-all duration-200 cursor-pointer ${className}`}
+            className={`up-arrow-button group fixed z-[9999] flex items-center justify-center rounded-full shadow-lg ${glowClass} hover:scale-105 active:scale-95 transform-gpu transition-all duration-200 cursor-pointer ${className}`}
             style={arrowStyle}
         >
             {/* SVG Progress Ring */}
@@ -73,16 +83,16 @@ export default function UpArrowButton({ className = '' }) {
                     cx="24"
                     cy="24"
                     r={radius}
-                    stroke="#2E2E38"
+                    stroke={trackColor}
                     strokeWidth="2.5"
                     fill="none"
                 />
-                {/* Dynamic Progress Stroke */}
+                {/* Dynamic Progress Stroke in Brand Color */}
                 <circle
                     cx="24"
                     cy="24"
                     r={radius}
-                    stroke="#FF5722"
+                    stroke={strokeColor}
                     strokeWidth="2.5"
                     strokeDasharray={circumference}
                     strokeDashoffset={strokeDashoffset}
@@ -92,10 +102,11 @@ export default function UpArrowButton({ className = '' }) {
                 />
             </svg>
 
-            {/* Inner Dark Circle with Orange Up Arrow */}
-            <div className="absolute inset-0 m-auto w-[32px] h-[32px] sm:w-[35px] sm:h-[35px] rounded-full bg-[#151520] border border-[#2B2B38] flex items-center justify-center shadow-inner group-hover:bg-[#1A1A28] transition-colors">
+            {/* Inner Dark Circle with Brand Color Up Arrow */}
+            <div className={`absolute inset-0 m-auto w-[32px] h-[32px] sm:w-[35px] sm:h-[35px] rounded-full bg-[#080d1a]/95 backdrop-blur-md border ${innerBorder} flex items-center justify-center shadow-inner group-hover:bg-[#0c1427] transition-colors`}>
                 <svg
-                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#FF5722] transform group-hover:-translate-y-0.5 transition-transform duration-200"
+                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 transform group-hover:-translate-y-0.5 transition-transform duration-200"
+                    style={{ color: arrowColor }}
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"

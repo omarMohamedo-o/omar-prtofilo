@@ -402,7 +402,7 @@ export default function Portfolio() {
       <Footer personalInfo={portfolioData.personalInfo} themeColor={themeColor} />
 
       {/* Up arrow (above chat widget) */}
-      <UpArrowButton />
+      <UpArrowButton themeColor={themeColor} />
 
       {/* 3D Luffy Anime Guide Character & LLM Companion (Hidden for now as requested) */}
       {/* <MinecraftGuide3D /> */}
