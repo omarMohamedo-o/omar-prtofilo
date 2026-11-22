@@ -111,13 +111,13 @@ export function Certifications({ isVisible, certifications = [], themeColor = 'c
                         </motion.div>
 
                         <motion.div variants={containerVariant} className="mt-3 sm:mt-0 sm:ml-4 flex items-center gap-2">
-                            {cert.pdf && (
-                                <ButtonCard variants={itemVariant} href={cert.pdf} external className="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/20 px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold">
-                                    {t('pdfBadge')}
-                                </ButtonCard>
-                            )}
-                            {cert.verified && (
-                                <ButtonCard variants={itemVariant} href={cert.link} external className="bg-green-500/10 text-green-300 px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold">
+                            {(cert.verified || cert.pdf) && (
+                                <ButtonCard
+                                    variants={itemVariant}
+                                    href={cert.pdf || cert.link}
+                                    external
+                                    className="bg-green-500/10 text-green-300 border border-green-500/30 hover:bg-green-500/20 px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer"
+                                >
                                     {t('verified')}
                                 </ButtonCard>
                             )}
