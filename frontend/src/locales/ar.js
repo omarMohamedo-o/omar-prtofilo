@@ -8,6 +8,7 @@ export const ar = {
     navProjects: "المشاريع",
     navEducation: "التعليم",
     navCertifications: "الشهادات",
+    navRecommendations: "التوصيات",
     navContact: "تواصل معي",
     navDiscovery: "استشارة",
     tourGuide: "جولة إرشادية",

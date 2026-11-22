@@ -8,6 +8,7 @@ export const en = {
     navProjects: "Projects",
     navEducation: "Education",
     navCertifications: "Certifications",
+    navRecommendations: "Recommendations",
     navContact: "Contact",
     navDiscovery: "Discovery",
     tourGuide: "Tour Guide",

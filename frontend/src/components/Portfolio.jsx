@@ -18,6 +18,7 @@ import Footer from './Footer';
 import UpArrowButton from './UpArrowButton';
 import SpaceBackground from './SpaceBackground';
 import Volunteering from './Volunteering';
+import Testimonials from './Testimonials';
 
 // Lazy-loaded heavy off-screen modals and interactive widgets for instant initial page paint
 const ThreeDBookModal = React.lazy(() => import('./ThreeDBookModal'));
@@ -386,6 +387,9 @@ export default function Portfolio() {
       {portfolioData.languages && portfolioData.languages.length > 0 && (
         <Languages isVisible={isVisible} languages={portfolioData.languages} themeColor={themeColor} />
       )}
+
+      {/* Recommendations & Client Testimonials Section */}
+      <Testimonials isVisible={isVisible} themeColor={themeColor} />
 
       {/* FAQ Section */}
       <FAQ isVisible={isVisible} themeColor={themeColor} />
