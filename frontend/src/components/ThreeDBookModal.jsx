@@ -394,6 +394,16 @@ export default function ThreeDBookModal() {
     // Total Spreads: Math.ceil(totalBookPages / 2)
     const totalSpreads = Math.ceil(totalBookPages / 2);
 
+    const spreadIndexRef = useRef(spreadIndex);
+    useEffect(() => {
+        spreadIndexRef.current = spreadIndex;
+    }, [spreadIndex]);
+
+    const mobilePageRef = useRef(mobilePage);
+    useEffect(() => {
+        mobilePageRef.current = mobilePage;
+    }, [mobilePage]);
+
     useEffect(() => {
         const checkMobile = () => {
             const mobile = window.innerWidth < 768;
@@ -413,8 +423,12 @@ export default function ThreeDBookModal() {
 
     // Finish 3D flip animation smoothly with physics cubic ease-out
     const finishFlipAnimation = useCallback((direction, startP, targetP) => {
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = null;
+        }
         animatingRef.current = true;
-        const duration = 260; // ms
+        const duration = 240; // ms
         const startTime = performance.now();
 
         if (targetP === 1 && soundEnabled) {
@@ -438,6 +452,7 @@ export default function ThreeDBookModal() {
             if (t < 1) {
                 animationFrameRef.current = requestAnimationFrame(animate);
             } else {
+                animationFrameRef.current = null;
                 animatingRef.current = false;
                 setFlipState({ active: false, direction: null, progress: 0, source: 'idle' });
                 if (targetP === 1) {
@@ -460,18 +475,49 @@ export default function ThreeDBookModal() {
         animationFrameRef.current = requestAnimationFrame(animate);
     }, [soundEnabled, isMobile, totalBookPages, totalSpreads]);
 
+    // Master forward navigation
+    const turnNext = useCallback(() => {
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = null;
+        }
+        dragRef.current.active = false;
+        animatingRef.current = false;
+        setFlipState({ active: false, direction: null, progress: 0, source: 'idle' });
+
+        if (isMobile) {
+            if (mobilePageRef.current >= totalBookPages) return;
+            finishFlipAnimation('next', 0, 1);
+        } else {
+            if (spreadIndexRef.current >= totalSpreads - 1) return;
+            finishFlipAnimation('next', 0, 1);
+        }
+    }, [isMobile, totalBookPages, totalSpreads, finishFlipAnimation]);
+
+    // Master backward navigation
+    const turnPrev = useCallback(() => {
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = null;
+        }
+        dragRef.current.active = false;
+        animatingRef.current = false;
+        setFlipState({ active: false, direction: null, progress: 0, source: 'idle' });
+
+        if (isMobile) {
+            if (mobilePageRef.current <= 1) return;
+            finishFlipAnimation('prev', 0, 1);
+        } else {
+            if (spreadIndexRef.current <= 0) return;
+            finishFlipAnimation('prev', 0, 1);
+        }
+    }, [isMobile, finishFlipAnimation]);
+
     // Automated trigger for buttons / keyboard
     const startAutoFlip = useCallback((direction) => {
-        if (animatingRef.current || flipState.active) return;
-        if (isMobile) {
-            if (direction === 'next' && mobilePage >= totalBookPages) return;
-            if (direction === 'prev' && mobilePage <= 1) return;
-        } else {
-            if (direction === 'next' && spreadIndex >= totalSpreads - 1) return;
-            if (direction === 'prev' && spreadIndex <= 0) return;
-        }
-        finishFlipAnimation(direction, 0, 1);
-    }, [isMobile, mobilePage, totalBookPages, spreadIndex, totalSpreads, flipState.active, finishFlipAnimation]);
+        if (direction === 'next') turnNext();
+        else if (direction === 'prev') turnPrev();
+    }, [turnNext, turnPrev]);
 
     // Window-level mouse/touch drag handlers for fluid drag-to-turn
     const handlePointerMove = useCallback((e) => {
@@ -481,18 +527,22 @@ export default function ThreeDBookModal() {
         const deltaX = clientX - dragRef.current.startX;
         const deltaY = clientY - dragRef.current.startY;
 
-        if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
-            dragRef.current.moved = true;
+        if (!dragRef.current.moved) {
+            if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+                dragRef.current.moved = true;
+            } else {
+                return;
+            }
         }
 
         if (isMobile) {
             const width = dragRef.current.width || 320;
-            if (deltaX < 0 && mobilePage < totalBookPages) {
+            if (deltaX < 0 && mobilePageRef.current < totalBookPages) {
                 const p = Math.min(1, Math.max(0, -deltaX / (width * 0.75)));
                 dragRef.current.direction = 'next';
                 dragRef.current.progress = p;
                 setFlipState({ active: true, direction: 'next', progress: p, source: 'drag' });
-            } else if (deltaX > 0 && mobilePage > 1) {
+            } else if (deltaX > 0 && mobilePageRef.current > 1) {
                 const p = Math.min(1, Math.max(0, deltaX / (width * 0.75)));
                 dragRef.current.direction = 'prev';
                 dragRef.current.progress = p;
@@ -509,30 +559,37 @@ export default function ThreeDBookModal() {
             p = Math.min(1, Math.max(0, deltaX / halfWidth));
         }
         dragRef.current.progress = p;
-        setFlipState((prev) => ({ ...prev, progress: p }));
-    }, [isMobile, mobilePage, totalBookPages]);
+        setFlipState({
+            active: true,
+            direction: dragRef.current.direction,
+            progress: p,
+            source: 'drag'
+        });
+    }, [isMobile, totalBookPages]);
 
     const handlePointerUp = useCallback(() => {
         if (!dragRef.current.active) return;
-        const { direction, progress, moved } = dragRef.current;
+        const { direction, progress, moved, side } = dragRef.current;
         dragRef.current.active = false;
 
         if (!moved) {
-            // Click without drag
+            // Click without drag: immediately turn the page!
             setFlipState({ active: false, direction: null, progress: 0, source: 'idle' });
-            if (!isMobile && direction) {
-                startAutoFlip(direction);
+            if (side === 'right') {
+                turnNext();
+            } else if (side === 'left') {
+                turnPrev();
             }
             return;
         }
 
-        // Drag release: if dragged > 16% of width, complete page flip; otherwise spring back
-        if (progress > 0.16 && direction) {
+        // Drag release: if dragged > 14% of width, complete page flip; otherwise spring back
+        if (progress > 0.14 && direction) {
             finishFlipAnimation(direction, progress, 1);
         } else if (direction) {
             finishFlipAnimation(direction, progress, 0);
         }
-    }, [isMobile, startAutoFlip, finishFlipAnimation]);
+    }, [turnNext, turnPrev, finishFlipAnimation]);
 
     useEffect(() => {
         window.addEventListener('mousemove', handlePointerMove);
@@ -552,12 +609,12 @@ export default function ThreeDBookModal() {
 
     // Mouse down on book pages
     const handleMouseDownOnPage = (side) => (e) => {
-        if (e.button !== 0 || animatingRef.current) return;
+        if (e.button !== 0) return;
         const rect = bookRef.current?.getBoundingClientRect();
         if (!rect) return;
 
-        if (side === 'right' && spreadIndex >= totalSpreads - 1) return;
-        if (side === 'left' && spreadIndex <= 0) return;
+        if (side === 'right' && spreadIndexRef.current >= totalSpreads - 1) return;
+        if (side === 'left' && spreadIndexRef.current <= 0) return;
 
         dragRef.current = {
             active: true,
@@ -566,19 +623,14 @@ export default function ThreeDBookModal() {
             width: rect.width / 2,
             direction: side === 'right' ? 'next' : 'prev',
             progress: 0,
-            moved: false
+            moved: false,
+            side
         };
-        setFlipState({
-            active: true,
-            direction: side === 'right' ? 'next' : 'prev',
-            progress: 0,
-            source: 'drag'
-        });
     };
 
     // Touch start for mobile / touch devices
     const handleTouchStart = (e) => {
-        if (e.touches.length !== 1 || animatingRef.current) return;
+        if (e.touches.length !== 1) return;
         const touch = e.touches[0];
         const rect = bookRef.current?.getBoundingClientRect();
         if (!rect) return;
@@ -591,7 +643,8 @@ export default function ThreeDBookModal() {
                 width: rect.width,
                 direction: null,
                 progress: 0,
-                moved: false
+                moved: false,
+                side: null
             };
             return;
         }
@@ -600,8 +653,8 @@ export default function ThreeDBookModal() {
         const isRight = relX >= rect.width / 2;
         const side = isRight ? 'right' : 'left';
 
-        if (side === 'right' && spreadIndex >= totalSpreads - 1) return;
-        if (side === 'left' && spreadIndex <= 0) return;
+        if (side === 'right' && spreadIndexRef.current >= totalSpreads - 1) return;
+        if (side === 'left' && spreadIndexRef.current <= 0) return;
 
         dragRef.current = {
             active: true,
@@ -610,15 +663,34 @@ export default function ThreeDBookModal() {
             width: rect.width / 2,
             direction: side === 'right' ? 'next' : 'prev',
             progress: 0,
-            moved: false
+            moved: false,
+            side
         };
-        setFlipState({
-            active: true,
-            direction: side === 'right' ? 'next' : 'prev',
-            progress: 0,
-            source: 'drag'
-        });
     };
+
+    // Mouse wheel page flipping on book
+    useEffect(() => {
+        const bookEl = bookRef.current;
+        if (!bookEl || !isOpen || viewMode !== 'pages') return;
+
+        let lastWheel = 0;
+        const handleWheel = (e) => {
+            if (Math.abs(e.deltaY) < 15 && Math.abs(e.deltaX) < 15) return;
+            e.preventDefault();
+            const now = performance.now();
+            if (now - lastWheel < 380) return;
+            lastWheel = now;
+
+            if (e.deltaY > 0 || e.deltaX > 0) {
+                turnNext();
+            } else {
+                turnPrev();
+            }
+        };
+
+        bookEl.addEventListener('wheel', handleWheel, { passive: false });
+        return () => bookEl.removeEventListener('wheel', handleWheel);
+    }, [isOpen, viewMode, turnNext, turnPrev]);
 
     // Listen for custom trigger event
     useEffect(() => {
@@ -836,32 +908,40 @@ export default function ThreeDBookModal() {
                         >
                             {/* Outer Floating Navigation: Previous Spread */}
                             <button
-                                onClick={() => startAutoFlip('prev')}
+                                type="button"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    turnPrev();
+                                }}
                                 disabled={isMobile ? mobilePage <= 1 : spreadIndex <= 0}
-                                className={`absolute left-0 sm:-left-6 md:-left-10 z-50 p-2 sm:p-3 rounded-full bg-slate-900/90 border border-slate-700/80 text-white shadow-2xl transition-all cursor-pointer ${
+                                className={`absolute left-0 sm:-left-6 md:-left-12 z-50 p-2 sm:p-3.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-white shadow-2xl transition-all cursor-pointer ${
                                     (isMobile ? mobilePage <= 1 : spreadIndex <= 0)
                                         ? 'opacity-20 cursor-not-allowed pointer-events-none'
-                                        : 'hover:scale-110 active:scale-95 hover:bg-cyan-500 hover:text-slate-950'
+                                        : 'hover:scale-110 active:scale-95 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-400'
                                 }`}
                                 aria-label="Previous Page"
                                 title="Previous Page (◄ Arrow Left)"
                             >
-                                <ChevronLeft size={20} strokeWidth={2.5} />
+                                <ChevronLeft size={22} strokeWidth={2.5} />
                             </button>
 
                             {/* Outer Floating Navigation: Next Spread */}
                             <button
-                                onClick={() => startAutoFlip('next')}
+                                type="button"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    turnNext();
+                                }}
                                 disabled={isMobile ? mobilePage >= totalBookPages : spreadIndex >= totalSpreads - 1}
-                                className={`absolute right-0 sm:-right-6 md:-right-10 z-50 p-2 sm:p-3 rounded-full bg-slate-900/90 border border-slate-700/80 text-white shadow-2xl transition-all cursor-pointer ${
+                                className={`absolute right-0 sm:-right-6 md:-right-12 z-50 p-2 sm:p-3.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-white shadow-2xl transition-all cursor-pointer ${
                                     (isMobile ? mobilePage >= totalBookPages : spreadIndex >= totalSpreads - 1)
                                         ? 'opacity-20 cursor-not-allowed pointer-events-none'
-                                        : 'hover:scale-110 active:scale-95 hover:bg-cyan-500 hover:text-slate-950'
+                                        : 'hover:scale-110 active:scale-95 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-400'
                                 }`}
                                 aria-label="Next Page"
                                 title="Next Page (► Arrow Right)"
                             >
-                                <ChevronRight size={20} strokeWidth={2.5} />
+                                <ChevronRight size={22} strokeWidth={2.5} />
                             </button>
 
                             {/* PHYSICAL HARDCOVER BOOK SPREAD FRAME */}
@@ -914,7 +994,7 @@ export default function ThreeDBookModal() {
                                                 activeBook={activeBook}
                                                 formatPageSrc={formatPageSrc}
                                                 side="left"
-                                                isInteractive={!flipState.active && spreadIndex > 0}
+                                                isInteractive={spreadIndex > 0}
                                                 onMouseDown={handleMouseDownOnPage('left')}
                                                 isDragging={flipState.active && flipState.direction === 'prev'}
                                             />
@@ -960,7 +1040,7 @@ export default function ThreeDBookModal() {
                                                 activeBook={activeBook}
                                                 formatPageSrc={formatPageSrc}
                                                 side="right"
-                                                isInteractive={!flipState.active && spreadIndex < totalSpreads - 1}
+                                                isInteractive={spreadIndex < totalSpreads - 1}
                                                 onMouseDown={handleMouseDownOnPage('right')}
                                                 isDragging={flipState.active && flipState.direction === 'next'}
                                             />
@@ -1310,16 +1390,26 @@ export default function ThreeDBookModal() {
                     {/* Right: Quick Page Flippers */}
                     <div className="flex items-center gap-1.5">
                         <button
-                            onClick={() => startAutoFlip('prev')}
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                turnPrev();
+                            }}
                             disabled={isMobile ? mobilePage <= 1 : spreadIndex <= 0}
-                            className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-30 cursor-pointer font-bold"
+                            className="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-cyan-500 hover:text-slate-950 disabled:opacity-30 cursor-pointer font-bold transition-all text-xs"
+                            aria-label="Previous Page"
                         >
                             ◄
                         </button>
                         <button
-                            onClick={() => startAutoFlip('next')}
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                turnNext();
+                            }}
                             disabled={isMobile ? mobilePage >= totalBookPages : spreadIndex >= totalSpreads - 1}
-                            className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-30 cursor-pointer font-bold"
+                            className="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-cyan-500 hover:text-slate-950 disabled:opacity-30 cursor-pointer font-bold transition-all text-xs"
+                            aria-label="Next Page"
                         >
                             ►
                         </button>
