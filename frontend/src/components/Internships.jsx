@@ -32,6 +32,25 @@ function CompanyLogo({ logo, name, FallbackIcon = Briefcase }) {
   );
 }
 
+function getInternshipCert(internship) {
+  if (internship.certificate) return internship.certificate;
+  const comp = (internship.company || '').toLowerCase();
+  const title = (internship.title || '').toLowerCase();
+  if (comp.includes('clinisoft') || comp.includes('كلينيسوفت') || comp.includes('كليني سوفت')) {
+    return '/images/certifications/Clinisoft-certificate.webp';
+  }
+  if (comp.includes('information technology institute') || comp.includes('معهد تكنولوجيا المعلومات')) {
+    return '/images/certifications/ITI-certified-system-administration.webp';
+  }
+  if (comp.includes('depi') || comp.includes('رواد مصر الرقمية')) {
+    return '/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.webp';
+  }
+  if (comp.includes('telecom') || comp.includes('المصرية للاتصالات') || title.includes('artificial intelligence') || title.includes('ذكاء اصطناعي')) {
+    return '/images/certifications/we-certified-artificial-intelligence.webp';
+  }
+  return null;
+}
+
 export default function Internships({ isVisible, internships = [], themeColor = 'cyan' }) {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
@@ -92,56 +111,28 @@ export default function Internships({ isVisible, internships = [], themeColor = 
               </ul>
 
               {/* Badges/images: absolute on md+; inline row on mobile for better layout */}
-              <div className="absolute bottom-4 right-4 flex items-end gap-2 hidden md:flex">
-                {internship.company && (internship.company.toLowerCase().includes('information technology institute') || internship.company.includes('معهد تكنولوجيا المعلومات')) && (
-                  <PreviewableImage
-                    src={getOptimizedImagePath("/images/certifications/ITI-certified-system-administration.jpg")}
-                    alt={`${internship.company} - ${t('verified')}`}
-                    className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
-                  />
-                )}
-
-                {internship.company && (internship.company.toLowerCase().includes('depi') || internship.company.includes('رواد مصر الرقمية')) && (
-                  <PreviewableImage
-                    src={getOptimizedImagePath("/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.jpg")}
-                    alt={`${internship.company} - ${t('verified')}`}
-                    className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
-                  />
-                )}
-                {internship.title && (internship.title.toLowerCase().includes('artificial intelligence') || internship.title.includes('ذكاء اصطناعي')) && (
-                  <PreviewableImage
-                    src={getOptimizedImagePath("/images/certifications/we-certified-artificial-intelligence.jpg")}
-                    alt={`${internship.company} - ${t('verified')}`}
-                    className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
-                  />
-                )}
-              </div>
-
-              {/* Mobile: show badges inline below content to avoid overflow; right-justify to match desktop edge */}
-              <div className="mt-4 flex items-center gap-2 md:hidden justify-end">
-                {internship.company && (internship.company.toLowerCase().includes('information technology institute') || internship.company.includes('معهد تكنولوجيا المعلومات')) && (
-                  <PreviewableImage
-                    src={getOptimizedImagePath("/images/certifications/ITI-certified-system-administration.jpg")}
-                    alt={`${internship.company} - ${t('verified')}`}
-                    className="w-20 xs:w-24 h-14 xs:h-16 object-contain bg-black/20"
-                  />
-                )}
-
-                {internship.company && (internship.company.toLowerCase().includes('depi') || internship.company.includes('رواد مصر الرقمية')) && (
-                  <PreviewableImage
-                    src={getOptimizedImagePath("/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.jpg")}
-                    alt={`${internship.company} - ${t('verified')}`}
-                    className="w-20 xs:w-24 h-14 xs:h-16 object-contain bg-black/20"
-                  />
-                )}
-                {internship.title && (internship.title.toLowerCase().includes('artificial intelligence') || internship.title.includes('ذكاء اصطناعي')) && (
-                  <PreviewableImage
-                    src={getOptimizedImagePath("/images/certifications/we-certified-artificial-intelligence.jpg")}
-                    alt={`${internship.company} - ${t('verified')}`}
-                    className="w-20 xs:w-24 h-14 xs:h-16 object-contain bg-black/20"
-                  />
-                )}
-              </div>
+              {(() => {
+                const cert = getInternshipCert(internship);
+                if (!cert) return null;
+                return (
+                  <>
+                    <div className="absolute bottom-4 right-4 hidden md:flex items-end">
+                      <PreviewableImage
+                        src={getOptimizedImagePath(cert, 'webp')}
+                        alt={`${internship.company} - ${t('verified')}`}
+                        className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
+                      />
+                    </div>
+                    <div className="mt-4 flex items-center md:hidden justify-end">
+                      <PreviewableImage
+                        src={getOptimizedImagePath(cert, 'webp')}
+                        alt={`${internship.company} - ${t('verified')}`}
+                        className="w-20 xs:w-24 h-14 xs:h-16 object-contain bg-black/20"
+                      />
+                    </div>
+                  </>
+                );
+              })()}
             </motion.div>
           ))}
         </motion.div>

@@ -36,20 +36,6 @@ export const arabicExperiences = [
         ]
     },
     {
-        title: "مهندس ذكاء اصطناعي وتعلم الآلة",
-        company: "CliniSoft",
-        logo: "/images/companies/clinisoft.png",
-        link: "https://clinisoft.org/",
-        location: "الإسكندرية، مصر",
-        period: "أبريل 2026 – أغسطس 2026",
-        type: "دوام كامل، حضوري",
-        achievements: [
-            "تطوير حلول ذكاء اصطناعي طبية في بيئة الإنتاج باستخدام نماذج اللغة الكبيرة ومعالجة اللغات الطبيعية والتعرف على الصوت لأتمتة التوثيق السريري والتقارير الطبية.",
-            "بناء وخدمة خدمات مصغرة عالية السرعة وموثوقة عبر FastAPI مع تدقيق بيانات صارم باستخدام Pydantic لضمان أمان وسرعة الاستجابة الطبية.",
-            "نشر وتأمين نماذج الذكاء الاصطناعي وفق أفضل ممارسات هندسة MLOps والحاويات والبنية التحتية السحابية المحمية."
-        ]
-    },
-    {
         title: "مدرب برمجة وذكاء اصطناعي",
         company: "EYouth",
         logo: "/images/companies/eyouth.png",
@@ -102,9 +88,25 @@ export const arabicExperiences = [
 
 export const arabicInternships = [
     {
+        title: "متدرب هندسة الذكاء الاصطناعي وتعلم الآلة",
+        company: "CliniSoft",
+        logo: "/images/companies/clinisoft.png",
+        certificate: "/images/certifications/Clinisoft-certificate.webp",
+        link: "https://clinisoft.org/",
+        location: "الإسكندرية، مصر",
+        period: "أبريل 2026 – أغسطس 2026",
+        type: "دوام كامل، حضوري",
+        achievements: [
+            "تطوير حلول ذكاء اصطناعي طبية في بيئة الإنتاج باستخدام نماذج اللغة الكبيرة ومعالجة اللغات الطبيعية والتعرف على الصوت لأتمتة التوثيق السريري والتقارير الطبية.",
+            "بناء وخدمة خدمات مصغرة عالية السرعة وموثوقة عبر FastAPI مع تدقيق بيانات صارم باستخدام Pydantic لضمان أمان وسرعة الاستجابة الطبية.",
+            "نشر وتأمين نماذج الذكاء الاصطناعي وفق أفضل ممارسات هندسة MLOps والحاويات والبنية التحتية السحابية المحمية."
+        ]
+    },
+    {
         title: "متدرب هندسة DevOps والبنية التحتية",
         company: "مبادرة رواد مصر الرقمية (DEPI)",
         logo: "/images/companies/depi.png",
+        certificate: "/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.webp",
         link: "https://depi.gov.eg/",
         location: "الإسكندرية، مصر",
         period: "أبريل 2024 – أكتوبر 2024",
@@ -119,6 +121,7 @@ export const arabicInternships = [
         title: "متدرب ذكاء اصطناعي ومعالجة لغات طبيعية",
         company: "الشركة المصرية للاتصالات (Telecom Egypt)",
         logo: "/images/companies/telecom-egypt.png",
+        certificate: "/images/certifications/we-certified-artificial-intelligence.webp",
         link: "https://te.eg/",
         location: "الإسكندرية، مصر",
         period: "يوليو 2024 – أغسطس 2024",
@@ -132,6 +135,7 @@ export const arabicInternships = [
         title: "متدرب إدارة أنظمة وشبكات",
         company: "معهد تكنولوجيا المعلومات (ITI)",
         logo: "/images/companies/iti.png",
+        certificate: "/images/certifications/ITI-certified-system-administration.webp",
         link: "https://iti.gov.eg/",
         location: "الإسكندرية، مصر",
         period: "يوليو 2023 – أغسطس 2023",

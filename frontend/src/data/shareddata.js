@@ -22,9 +22,25 @@ export const personalInfo = {
 
 export const Intern = [
     {
+        title: "AI & ML Engineer Intern",
+        company: "CliniSoft",
+        logo: "/images/companies/clinisoft.png",
+        certificate: "/images/certifications/Clinisoft-certificate.webp",
+        link: "https://clinisoft.org/",
+        location: "Alexandria, Egypt",
+        period: "Apr 2026 – Aug 2026",
+        type: "Full-time, Onsite",
+        achievements: [
+            "Developed production healthcare AI using LLMs, NLP, and speech AI to automate clinical documentation and medical transcriptions.",
+            "Built and served robust microservices through FastAPI with strict Pydantic schemas and high throughput.",
+            "Deployed AI models following MLOps, containerization, and cloud infrastructure best practices."
+        ]
+    },
+    {
         title: "DevOps Engineer Intern",
         company: "Digital Egypt Pioneers Initiative (DEPI)",
         logo: "/images/companies/depi.png",
+        certificate: "/images/certifications/DEPI-R1-certified-devops-omar-mohamed-abdelsalam.webp",
         link: "https://depi.gov.eg/",
         location: "Alexandria, Egypt",
         period: "Apr 2024 – Oct 2024",
@@ -39,6 +55,7 @@ export const Intern = [
         title: "Artificial Intelligence Engineer Intern",
         company: "Telecom Egypt",
         logo: "/images/companies/telecom-egypt.png",
+        certificate: "/images/certifications/we-certified-artificial-intelligence.webp",
         link: "https://www.te.eg/",
         location: "Alexandria, Egypt",
         period: "Sep 2023 – Dec 2023",
@@ -53,6 +70,7 @@ export const Intern = [
         title: "System Administration Intern",
         company: "Information Technology Institute (ITI)",
         logo: "/images/companies/iti.png",
+        certificate: "/images/certifications/ITI-certified-system-administration.webp",
         link: "https://iti.gov.eg/",
         location: "Alexandria, Egypt",
         period: "Apr 2025 – Aug 2025",
@@ -79,20 +97,6 @@ export const Experiences = [
             "Own deployment and operations for AI agent systems, scraping pipelines, and production and dev/test environments across Docker, Kubernetes, hybrid and multi-cloud.",
             "Built GitHub Actions CI/CD pipelines, centralized logging and monitoring (Prometheus, Grafana, Loki/Promtail), and automated deployment workflows.",
             "Engineered a highly available setup with HAProxy read routing, DB replication (MariaDB primary + replica), self-healing workloads (autoheal, smartheal), and automated backups."
-        ]
-    },
-    {
-        title: "AI & ML Engineer",
-        company: "CliniSoft",
-        logo: "/images/companies/clinisoft.png",
-        link: "https://clinisoft.org/",
-        location: "Alexandria, Egypt",
-        period: "Apr 2026 – Aug 2026",
-        type: "Full-time, Onsite",
-        achievements: [
-            "Developed production healthcare AI using LLMs, NLP, and speech AI to automate clinical documentation and medical transcriptions.",
-            "Built and served robust microservices through FastAPI with strict Pydantic schemas and high throughput.",
-            "Deployed AI models following MLOps, containerization, and cloud infrastructure best practices."
         ]
     },
     {
