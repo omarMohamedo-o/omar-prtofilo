@@ -153,7 +153,7 @@ export const en = {
 
     // Chat Widget & Need Help Card
     needHelpTitle: "Need help?",
-    needHelpSubtitle: "AI Assistant & 3D Guide",
+    needHelpSubtitle: "AI Assistant",
     needHelpTourBtn: "🧭 Tour",
     needHelpAskAnything: "Ask anything",
     needHelpAskTitle: "Ask MORA AI anything",

@@ -401,8 +401,8 @@ export default function Portfolio() {
       {/* Up arrow (above chat widget) */}
       <UpArrowButton />
 
-      {/* 3D Luffy Anime Guide Character & LLM Companion */}
-      <MinecraftGuide3D />
+      {/* 3D Luffy Anime Guide Character & LLM Companion (Hidden for now as requested) */}
+      {/* <MinecraftGuide3D /> */}
 
       {/* 3D Interactive Books Modal (Graduation Project & Volunteer Thesis) */}
       <ThreeDBookModal />

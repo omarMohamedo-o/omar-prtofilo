@@ -153,7 +153,7 @@ export const ar = {
 
     // Chat Widget & Need Help Card
     needHelpTitle: "هل تحتاج مساعدة؟",
-    needHelpSubtitle: "مساعد الذكاء الاصطناعي ودليل ثلاثي الأبعاد",
+    needHelpSubtitle: "مساعد الذكاء الاصطناعي",
     needHelpTourBtn: "🧭 جولة",
     needHelpAskAnything: "اسأل أي سؤال",
     needHelpAskTitle: "اسأل مساعد الذكاء الاصطناعي مورا أي سؤال",

@@ -37,7 +37,7 @@ function FormattedMessageText({ text }) {
 }
 
 export default function ChatWidget() {
-    const { t, currentLocale, language } = useLanguage();
+    const { t, currentLocale, language, isRTL } = useLanguage();
     const suggestedPrompts = currentLocale?.chatSuggestedPrompts || [];
     const [open, setOpen] = useState(false);
     const [showNotice, setShowNotice] = useState(true);
@@ -806,24 +806,17 @@ export default function ChatWidget() {
     }, [messages, lastMessageSender]);
 
     // Listen for custom open/close events across the application
-    const [guideOpen, setGuideOpen] = useState(false);
-
     useEffect(() => {
         const handleCloseChat = () => setOpen(false);
         const handleOpenChat = () => {
             setOpen(true);
             setShowNotice(false);
         };
-        const handleGuideState = (e) => {
-            setGuideOpen(!!e?.detail?.open);
-        };
         window.addEventListener('close-chat-widget', handleCloseChat);
         window.addEventListener('open-chat-widget', handleOpenChat);
-        window.addEventListener('guide-open-state-change', handleGuideState);
         return () => {
             window.removeEventListener('close-chat-widget', handleCloseChat);
             window.removeEventListener('open-chat-widget', handleOpenChat);
-            window.removeEventListener('guide-open-state-change', handleGuideState);
         };
     }, []);
 
@@ -831,8 +824,6 @@ export default function ChatWidget() {
     useEffect(() => {
         if (open) {
             if (showNotice) setShowNotice(false);
-            // Close 3D Minecraft guide so they don't overlap on the right side
-            window.dispatchEvent(new CustomEvent('toggle-3d-minecraft-guide', { detail: { open: false } }));
             // force scroll to bottom when opening to show latest messages
             scrollToBottomIfNeeded(true);
             setShowScrollDown(false);
@@ -1072,94 +1063,22 @@ export default function ChatWidget() {
                     />
                 </div>
 
-                {/* Unified "Need help?" Action Badge on the Right (hidden when Chat or 3D Guide is open) */}
-                {!open && !guideOpen ? (
-                    <>
-                        {/* Desktop / Tablet Expanded Card (>= 640px) */}
-                        <div className="hidden sm:flex need-help-card shadow-2xl transition-all duration-300">
-                            {/* Header: Logo + "Need help?" */}
-                            <div className="flex items-center justify-between mb-2.5">
-                                <div className="flex items-center gap-2.5">
-                                    {/* Circular Logo Badge with green online pulse */}
-                                    <div className="relative">
-                                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-600 via-teal-500 to-blue-600 p-[1.5px] shadow-sm flex items-center justify-center">
-                                            <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-cyan-300 font-bold text-xs">
-                                                ⚙️
-                                            </div>
-                                        </div>
-                                        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-slate-900 animate-pulse" />
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <span className="text-sm font-bold text-slate-100 tracking-tight">
-                                            {t('needHelpTitle')}
-                                        </span>
-                                        <span className="text-[10px] text-cyan-400 font-medium">
-                                            {t('needHelpSubtitle')}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Action Buttons Row: Single Chat Button + Single Unified 3D Tour Guide Button */}
-                            <div className="flex items-center gap-2">
-                                {/* 1. "Ask anything" Pill Button */}
-                                <button
-                                    type="button"
-                                    onClick={() => setOpen(true)}
-                                    className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-full border border-cyan-400/50 bg-cyan-950/60 hover:bg-cyan-900/60 text-cyan-300 font-semibold text-xs transition-all shadow-sm group/ask"
-                                    title={t('needHelpAskTitle')}
-                                >
-                                    <FaCommentDots size={13} className="text-cyan-400 group-hover/ask:scale-110 transition-transform" />
-                                    <span>{t('needHelpAskAnything')}</span>
-                                </button>
-
-                                {/* 2. Unified 3D Tour Guide Button */}
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        if (window.startPortfolioTour) window.startPortfolioTour();
-                                        else window.dispatchEvent(new CustomEvent('start-portfolio-tour'));
-                                    }}
-                                    className="flex items-center justify-center gap-1.5 py-1.5 px-3.5 rounded-full border border-cyan-400/40 bg-slate-800/90 hover:bg-cyan-950/70 text-cyan-300 font-semibold text-xs transition-transform hover:scale-105 shadow-sm"
-                                    title={t('tourGuide')}
-                                    aria-label={t('tourGuide')}
-                                >
-                                    <span>👒</span>
-                                    <span>{t('tourGuide')}</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Mobile Compact Floating Button (< 640px) - Guaranteed Zero Overlap */}
-                        <div className="flex sm:hidden items-center">
-                            <button
-                                type="button"
-                                onClick={() => setOpen(true)}
-                                className="px-3.5 py-2 rounded-full bg-slate-900/95 border-2 border-cyan-400/70 shadow-xl shadow-cyan-500/25 text-cyan-300 hover:text-white flex items-center gap-2 font-mono text-xs font-bold active:scale-95 transition-all touch-manipulation cursor-pointer"
-                                aria-label="Open AI Assistant"
-                            >
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
-                                </span>
-                                <span className="text-sm">💬</span>
-                                <span>{t('needHelpTitle')}</span>
-                            </button>
-                        </div>
-                    </>
-                ) : (
-                    <button
-                        ref={fabRef}
-                        className="chat-fab glow-btn"
-                        onClick={() => setOpen(false)}
-                        aria-label={t('closeChatTitle')}
-                        title={t('closeChatTitle')}
-                    >
-                        <span className="chat-fab-icon text-white text-lg font-bold" aria-hidden>
-                            ✕
-                        </span>
-                    </button>
-                )}
+                {/* Circular Floating Chat Action Button (Classic Icon) */}
+                <button
+                    ref={fabRef}
+                    className="chat-fab glow-btn"
+                    onClick={() => setOpen(v => !v)}
+                    aria-label={open ? t('closeChatTitle') : (isRTL ? 'فتح محادثة MORA الذكية' : 'Open MORA AI Chat')}
+                    title={open ? t('closeChatTitle') : (isRTL ? 'تحدث مع MORA' : 'Chat with MORA AI')}
+                >
+                    <span className="chat-fab-icon" aria-hidden>
+                        {open ? (
+                            <span className="text-white text-xl font-bold leading-none">✕</span>
+                        ) : (
+                            <FaRobot className="text-white text-2xl" />
+                        )}
+                    </span>
+                </button>
             </div>
         </>
     );

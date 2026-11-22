@@ -13,8 +13,8 @@ export const translations = {
 
 const LanguageContext = createContext({
     language: LANGUAGES.EN,
-    setLanguage: () => {},
-    toggleLanguage: () => {},
+    setLanguage: () => { },
+    toggleLanguage: () => { },
     isRTL: false,
     t: (key, fallback) => '',
     currentLocale: en
@@ -32,12 +32,12 @@ export function LanguageProvider({ children }) {
     useEffect(() => {
         try {
             localStorage.setItem('portfolio_lang', language);
-        } catch (e) {}
+        } catch (e) { }
 
         const isArabic = language === LANGUAGES.AR;
         document.documentElement.lang = language;
         document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
-        
+
         if (isArabic) {
             document.documentElement.classList.add('rtl-mode');
         } else {

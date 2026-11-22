@@ -36,7 +36,7 @@ export default function DownArrowButton({ visible = false, onClick = () => { }, 
                 } else {
                     arrowStyle = { right: 24, left: 'auto', bottom: bottomOffset, transition: 'opacity .25s, transform .2s' };
                 }
-            } catch (e) {}
+            } catch (e) { }
         }
     }
 
