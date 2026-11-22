@@ -46,7 +46,7 @@ const Footer = function Footer({ personalInfo = {}, themeColor = 'cyan' }) {
                 <p className="text-sm text-surface/70">
                     {isRTL 
                         ? `© ${new Date().getFullYear()} محفظة عمر محمد الهندسية — ${personalInfo.name}. ${t('rightsReserved')}`
-                        : `© ${new Date().getFullYear()} Omarmohamed-portfolio — ${personalInfo.name} (${personalInfo.fullName || 'Omar Mohamed'}). ${t('rightsReserved')}`
+                        : `© ${new Date().getFullYear()} Omarmohamed-portfolio — ${personalInfo.name}. ${t('rightsReserved')}`
                     }
                 </p>
             </div>
