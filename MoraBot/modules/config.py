@@ -106,10 +106,10 @@ class Settings:
     source_directory: Path = field(default_factory=lambda: Path("SOURCE_DOCUMENTS/"))
     
     # Model settings
-    default_model: str = "models/gemini-2.5-flash"
-    vision_model: str = "models/gemini-2.5-flash"
-    embedding_model: str = "models/gemini-embedding-001"  # Google Gemini Embeddings
-    whisper_model_size: str = "small"
+    default_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "models/gemini-2.0-flash-lite"))
+    vision_model: str = field(default_factory=lambda: os.getenv("GEMINI_VISION_MODEL", os.getenv("GEMINI_MODEL", "models/gemini-2.0-flash-lite")))
+    embedding_model: str = field(default_factory=lambda: os.getenv("EMBEDDING_MODEL", "models/gemini-embedding-001"))
+    whisper_model_size: str = field(default_factory=lambda: os.getenv("WHISPER_MODEL_SIZE", "small"))
     
     # Generation config
     generation_config: GenerationConfig = field(default_factory=GenerationConfig)
