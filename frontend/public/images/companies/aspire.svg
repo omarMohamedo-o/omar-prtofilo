@@ -1,11 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24">
-  <defs>
-    <linearGradient id="asp-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#C41E3A" />
-      <stop offset="100%" stop-color="#800020" />
-    </linearGradient>
-  </defs>
-  <rect width="32" height="32" rx="7" fill="url(#asp-grad)" />
-  <path fill="#FFFFFF" d="M16 5.5l7 3.5v7c0 5-3.5 8.5-7 10.5-3.5-2-7-5.5-7-10.5v-7l7-3.5z" opacity="0.2"/>
-  <path fill="#FFFFFF" d="M16 7.5L10 23h3.5l1.3-3.8h4.4L20.5 23H24L18 7.5h-2zm1 4.5l1.6 4.8h-3.2L17 12z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <rect width="100" height="100" rx="22" fill="#F5EFE4"/>
+  <g fill="#A51C30">
+    <path d="M40.5 22.8H58.2L77.4 77.2H63.3L53.1 48H39.8L35.6 61.2C34.2 65.4 35.8 67 40.2 67.5V70H22.6V67.5C27 67 29.8 65 31.5 60.1L40.5 22.8ZM41.8 42.5H51.4L46.6 28.5L41.8 42.5Z"/>
+  </g>
 </svg>
