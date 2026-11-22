@@ -207,9 +207,9 @@ export default function Header({
                 }}
                 transition={{ duration: 0.34, ease: "easeOut" }}
                 className={`fixed top-0 w-full z-50 border-b text-surface transition-all duration-300 ${scrolled ? "scrolled shadow-lg pointer-events-auto" : "border-transparent pointer-events-none"}`}>
-                <div className="max-w-7xl mx-auto px-4 flex items-center justify-between pointer-events-auto">
+                <div className="max-w-7xl mx-auto px-4 flex items-center justify-between pointer-events-none">
                     {/* Left: Logo */}
-                    <div className="flex items-center flex-shrink-0 nav-logo-wrapper">
+                    <div className="flex items-center flex-shrink-0 nav-logo-wrapper pointer-events-auto">
                         <img
                             src={getOptimizedImagePath(currentMode === MODES.DEVOPS ? "/images/me/OmarsLogo-dev.svg" : currentMode === MODES.MLNLP ? "/images/me/OmarsLogo-ml.svg" : "/images/me/OmarsLogo.svg")}
                             alt={currentMode === MODES.DEVOPS ? "Omar - DevOps Logo" : currentMode === MODES.MLNLP ? "Omar - ML Logo" : "Omar's Logo"}
@@ -219,7 +219,7 @@ export default function Header({
                     </div>
 
                     {/* Desktop Navigation: Animated & Colorable Buttons */}
-                    <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 2xl:gap-3 ps-4 xl:ps-6">
+                    <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 2xl:gap-3 ps-4 xl:ps-6 pointer-events-auto">
                         {navItems.map((item) => {
                             const isActive = activeSection === item.id;
                             const isHovered = hoveredSection === item.id;
@@ -288,7 +288,7 @@ export default function Header({
                     </div>
 
                     {/* Desktop Right: Discovery and Language Dropdown (Far Right) */}
-                    <div className="hidden lg:flex items-center gap-3">
+                    <div className="hidden lg:flex items-center gap-3 pointer-events-auto">
                         {/* Book a Discovery Call */}
                         <button
                             onClick={() => scrollToSection('discovery')}
@@ -371,7 +371,7 @@ export default function Header({
 
                     {/* Mobile: Hamburger Menu Button */}
                     <button
-                        className="lg:hidden p-2 text-surface"
+                        className="lg:hidden p-2 text-surface pointer-events-auto"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         aria-label="Toggle menu"
                     >

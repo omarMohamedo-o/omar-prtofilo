@@ -56,10 +56,11 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
     <section id="home" className="min-h-svh flex flex-col lg:flex-row items-center justify-center relative px-4 sm:px-6 md:px-8 pt-[var(--header-height,100px)] lg:pt-0 pb-8 sm:pb-12 lg:pb-16 overflow-hidden" style={{ scrollMarginTop: '6rem' }}>
 
       {/* Floating Mode Switcher - Desktop Only (Smooth & Uncluttered) */}
-      <div ref={dropdownRef} className={`hidden lg:block absolute top-28 ${isRTL ? 'left-8' : 'right-8'} z-50 mode-switcher-float`}>
+      <div ref={dropdownRef} className={`hidden lg:block absolute top-36 ${isRTL ? 'left-8' : 'right-8'} z-50 mode-switcher-float`}>
         <div className="relative">
           <button
             type="button"
+            onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation();
               setShowModeDropdown((prev) => !prev);

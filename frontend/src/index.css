@@ -2831,26 +2831,33 @@ section[id] {
         0 4px 20px rgba(0, 0, 0, 0.4),
         0 0 30px rgba(6, 182, 212, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    transform: scale(1);
-    cursor: pointer;
+    cursor: pointer !important;
     user-select: none;
 }
 
-.mode-switcher-btn:hover {
-    transform: scale(1.05);
-    border-color: rgba(6, 182, 212, 0.4);
-    box-shadow:
-        0 6px 30px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(6, 182, 212, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+.mode-switcher-btn * {
+    cursor: pointer !important;
+    pointer-events: none !important;
 }
 
-.mode-switcher-btn-open {
+.mode-switcher-btn:hover {
     border-color: rgba(6, 182, 212, 0.5);
     box-shadow:
         0 6px 30px rgba(0, 0, 0, 0.5),
-        0 0 50px rgba(6, 182, 212, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 0 40px rgba(6, 182, 212, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.mode-switcher-btn:active {
+    transform: scale(0.97);
+}
+
+.mode-switcher-btn-open {
+    border-color: rgba(6, 182, 212, 0.6);
+    box-shadow:
+        0 6px 30px rgba(0, 0, 0, 0.5),
+        0 0 50px rgba(6, 182, 212, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* Focus styles for accessibility */
@@ -2875,19 +2882,23 @@ section[id] {
 }
 
 .space-theme-purple .mode-switcher-btn:hover {
-    border-color: rgba(168, 85, 247, 0.4);
-    box-shadow:
-        0 6px 30px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(168, 85, 247, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.space-theme-purple .mode-switcher-btn-open {
     border-color: rgba(168, 85, 247, 0.5);
     box-shadow:
         0 6px 30px rgba(0, 0, 0, 0.5),
-        0 0 50px rgba(168, 85, 247, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 0 40px rgba(168, 85, 247, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.space-theme-purple .mode-switcher-btn:active {
+    transform: scale(0.97);
+}
+
+.space-theme-purple .mode-switcher-btn-open {
+    border-color: rgba(168, 85, 247, 0.6);
+    box-shadow:
+        0 6px 30px rgba(0, 0, 0, 0.5),
+        0 0 50px rgba(168, 85, 247, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .space-theme-purple .mode-switcher-btn:focus-visible {
