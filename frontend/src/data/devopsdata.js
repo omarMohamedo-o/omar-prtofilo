@@ -27,14 +27,14 @@ export const devopsProjects = [
         title: "PlayerHub.GG — Production Game Platform & MLOps Infrastructure",
         description: "Live production gaming and AI platform infrastructure. Orchestrated a resilient containerized stack with Nginx edge, PHP-FPM (Laravel), HAProxy intelligent read routing, MariaDB primary-replica replication, and separated Redis caching clusters. Integrated Prometheus, Grafana, and Loki/Promtail observability, self-healing daemons (autoheal, smartheal), toxiproxy chaos engineering, and zero-downtime CI/CD deployment pipelines.",
         tech: ["Docker", "Kubernetes", "Nginx", "HAProxy", "MariaDB", "Redis", "Prometheus", "Grafana", "Loki", "GitHub Actions"],
-        github: "https://github.com/omarMohamedo-o/playerhub-infrastructure.git",
+        github: "",
         link: "https://www.playerhub.gg/en"
     },
     {
         title: "ChloroMaster — Production Cloud Microservices Platform",
         description: "Full-scale enterprise chemical & agricultural management platform deployed on AWS. Engineered end-to-end containerized microservices orchestration on Kubernetes with modular Terraform IaC, automated GitHub Actions CI/CD with HashiCorp Vault secrets management and Trivy security scanning, plus 24/7 Prometheus & Grafana alerting.",
         tech: ["AWS", "Kubernetes", "Docker", "Terraform", "GitHub Actions", "HashiCorp Vault", "Trivy", "Prometheus", "Grafana"],
-        github: "https://github.com/omarMohamedo-o/CloroMaster.git",
+        github: "",
         link: "https://chloromaster.com/"
     },
     {

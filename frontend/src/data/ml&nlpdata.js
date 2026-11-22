@@ -102,7 +102,7 @@ export const mlnlpProjects = [
         title: "PlayerHub.GG — AI Agents & Infrastructure Ops",
         description: "Production operations and deployment for autonomous AI agents, web scraping pipelines, and high-availability infrastructure supporting PlayerHub.GG. Implemented automated CI/CD, centralized logging (Loki, Grafana), and self-healing workloads.",
         tech: ["Docker", "Kubernetes", "AI Agents", "Python", "CI/CD", "Prometheus", "Grafana"],
-        github: "https://github.com/omarMohamedo-o/playerhub-infrastructure.git",
+        github: "",
         link: "https://www.playerhub.gg/en"
     },
     {

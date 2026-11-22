@@ -53,31 +53,31 @@ const Projects = function Projects({ isVisible, projects = [], themeColor = 'cya
             >
               <h3 className={`text-xl sm:text-2xl font-bold ${textColor} flex items-center justify-between`}>
                 {project.title}
-                {project.github && project.github !== "#" && !(project.link && project.link !== "#") ? (
-                  <span className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -mr-2">
-                    <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} - ${t('githubRepo')}`} title={t('githubRepo')} className="cursor-pointer p-2">
-                      <Github size={18} />
-                    </a>
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -mr-2">
-                    {project.github && project.github !== "#" ? (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} - ${t('githubRepo')}`} title={t('githubRepo')} className="cursor-pointer p-2">
+                {((project.github && project.github !== "#") || (project.link && project.link !== "#")) && (
+                  <span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -mr-2">
+                    {project.github && project.github !== "#" && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} - ${t('githubRepo')}`}
+                        title={t('githubRepo')}
+                        className="cursor-pointer p-2 hover:text-white transition-colors"
+                      >
                         <Github size={18} />
                       </a>
-                    ) : (
-                      <span className="p-2 opacity-30" aria-hidden>
-                        <Github size={18} />
-                      </span>
                     )}
-                    {project.link && project.link !== "#" ? (
-                      <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} - ${t('liveDemo')}`} title={t('liveDemo')} className="cursor-pointer p-2">
+                    {project.link && project.link !== "#" && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} - ${t('liveDemo')}`}
+                        title={t('liveDemo')}
+                        className="cursor-pointer p-2 hover:text-white transition-colors"
+                      >
                         <ExternalLink size={18} />
                       </a>
-                    ) : (
-                      <span className="p-2 opacity-30" aria-hidden>
-                        <ExternalLink size={18} />
-                      </span>
                     )}
                   </span>
                 )}
