@@ -45,6 +45,13 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
   const bgBlob2 = themeColor === 'purple' ? 'bg-pink-500/10' : 'bg-cyan-500/10';
   const gradientClasses = themeColor === 'purple' ? 'from-purple-400 via-pink-400 to-purple-500' : 'from-blue-400 via-cyan-400 to-blue-500';
 
+  const isPurple = themeColor === 'purple';
+  const badgeBg = isPurple ? 'bg-purple-500/10' : 'bg-cyan-500/10';
+  const badgeBorder = isPurple ? 'border-purple-500/30' : 'border-cyan-500/30';
+  const badgeText = isPurple ? 'text-purple-300' : 'text-cyan-300';
+  const badgeDot = isPurple ? 'bg-purple-400' : 'bg-cyan-400';
+  const badgeSubColor = isPurple ? 'text-purple-200/60' : 'text-slate-400';
+
   return (
     <section id="home" className="min-h-svh flex flex-col lg:flex-row items-center justify-center relative px-4 sm:px-6 md:px-8 pt-[var(--header-height,100px)] lg:pt-0 pb-8 sm:pb-12 lg:pb-16 overflow-hidden" style={{ scrollMarginTop: '6rem' }}>
 
@@ -122,10 +129,13 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           {/* Brand Identity & Authority Badge */}
-          <div className="mb-3 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <div className={`mb-3 inline-flex items-center gap-2 px-3.5 py-1 rounded-full ${badgeBg} border ${badgeBorder} ${badgeText} text-xs ${isRTL ? 'font-sans' : 'font-mono'} shadow-sm`}>
+            <span className={`w-2 h-2 rounded-full ${badgeDot} animate-pulse flex-shrink-0`}></span>
             <span className="font-bold tracking-wide">{t('brandBadgeText')}</span>
-            <span className="text-slate-400 hidden sm:inline">• {t('brandBadgeSub')}</span>
+            <span className={`${badgeSubColor} hidden sm:inline flex items-center gap-1`}>
+              <span>•</span>
+              <bdi>{t('brandBadgeSub')}</bdi>
+            </span>
           </div>
 
           {/* Desktop: small title above name (keeps existing appearance) */}

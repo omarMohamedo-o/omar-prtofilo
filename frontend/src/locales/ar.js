@@ -25,7 +25,7 @@ export const ar = {
 
     // Hero & Info Section
     brandBadgeText: "محفظة عمر محمد",
-    brandBadgeSub: "المعرض الرسمي للذكاء الاصطناعي و MLOps",
+    brandBadgeSub: "المعرض الرسمي للذكاء الاصطناعي وهندسة MLOps",
     resume: "السيرة الذاتية",
     availableForRoles: "متاح للوظائف بدوام كامل، العمل عن بُعد، والعقود الاستشارية عالمياً",
     locationEgypt: "الإسكندرية، مصر",
