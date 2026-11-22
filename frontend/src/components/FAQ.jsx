@@ -29,7 +29,15 @@ function FAQ({ isVisible, themeColor = 'cyan' }) {
                 {/* Section Header: FAQS */}
                 <div className="text-center mb-10 sm:mb-14">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight uppercase">
-                        FA<span className={accentText}>QS</span>
+                        {isRTL ? (
+                            <>
+                                <span className="text-white">{t('faqTitle1')}</span> <span className={accentText}>{t('faqTitle2')}</span>
+                            </>
+                        ) : (
+                            <>
+                                FA<span className={accentText}>QS</span>
+                            </>
+                        )}
                     </h2>
                     <p className="mt-3 text-slate-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
                         {t('faqSubtitle')}

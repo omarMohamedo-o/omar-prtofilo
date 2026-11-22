@@ -59,7 +59,7 @@ export function getPortfolioData(mode = MODES.DEVOPS, language = 'en') {
     const baseData = {
         personalInfo: isAr ? { ...shared.personalInfo, ...arabic.arabicPersonalInfo } : { ...shared.personalInfo },
         experiences: isAr ? [...arabic.arabicExperiences] : [...shared.Experiences],
-        volunteering: [...shared.Volunteering],
+        volunteering: isAr ? [...arabic.arabicVolunteering] : [...shared.Volunteering],
         internships: isAr ? [...arabic.arabicInternships] : [...shared.Intern],
         education: isAr ? [...arabic.arabicEducation] : [...shared.education],
         languages: isAr ? [...arabic.arabicLanguages] : [...shared.languages]
@@ -71,7 +71,8 @@ export function getPortfolioData(mode = MODES.DEVOPS, language = 'en') {
                 ...baseData,
                 personalInfo: {
                     ...baseData.personalInfo,
-                    ...(isAr ? arabic.arabicMlnlpData.personalInfo : mlnlpPersonalInfo)
+                    ...mlnlpPersonalInfo,
+                    ...(isAr ? arabic.arabicMlnlpData.personalInfo : {})
                 },
                 // All experiences are relevant to AI/ML & Engineering
                 experiences: baseData.experiences,
@@ -82,7 +83,7 @@ export function getPortfolioData(mode = MODES.DEVOPS, language = 'en') {
                 aboutMe: isAr ? arabic.arabicMlnlpData.aboutMe : mlnlpAboutMe,
                 skills: isAr ? arabic.arabicMlnlpData.skills : mlnlpSkills,
                 softSkills: isAr ? arabic.arabicMlnlpData.softSkills : mlnlpSoftSkills,
-                projects: mlnlpProjects,
+                projects: isAr ? arabic.arabicMlnlpProjects : mlnlpProjects,
                 certifications: mlnlpCertifications,
                 courses: mlnlpCourses,
                 themeColor: mlnlpPersonalInfo.themeColor
@@ -94,7 +95,8 @@ export function getPortfolioData(mode = MODES.DEVOPS, language = 'en') {
                 ...baseData,
                 personalInfo: {
                     ...baseData.personalInfo,
-                    ...(isAr ? arabic.arabicDevopsData.personalInfo : devopsPersonalInfo)
+                    ...devopsPersonalInfo,
+                    ...(isAr ? arabic.arabicDevopsData.personalInfo : {})
                 },
                 experiences: baseData.experiences,
                 internships: baseData.internships.filter(i => 
@@ -104,7 +106,7 @@ export function getPortfolioData(mode = MODES.DEVOPS, language = 'en') {
                 aboutMe: isAr ? arabic.arabicDevopsData.aboutMe : devopsAboutMe,
                 skills: isAr ? arabic.arabicDevopsData.skills : devopsSkills,
                 softSkills: isAr ? arabic.arabicDevopsData.softSkills : devopsSoftSkills,
-                projects: devopsProjects,
+                projects: isAr ? arabic.arabicDevopsProjects : devopsProjects,
                 certifications: devopsCertifications,
                 courses: devopsCourses,
                 themeColor: devopsPersonalInfo.themeColor

@@ -285,3 +285,110 @@ export const arabicMlnlpData = {
         "الابتكار والبحث": ["متابعة أحدث أوراق أبحاث الذكاء الاصطناعي", "تصميم الحلول الإبداعية", "الدمج بين الذكاء الاصطناعي والواقع المعزز", "التعلم الذاتي المستمر"]
     }
 };
+
+export const arabicVolunteering = [
+    {
+        title: "مرشد تقني عن بُعد (عمل تطوعي)",
+        company: "جامعة بوليتكنك فلسطين",
+        logo: "/images/companies/ppu.png",
+        link: "https://www.ppu.edu/",
+        location: "فلسطين",
+        period: "2025 – 2026",
+        type: "تطوعي، عن بُعد",
+        badge: "شكر رسمي في أطروحة التخرج",
+        achievements: [
+            "تقديم الإرشاد الهندسي والاستشاري لفريق بحثي جامعي في تطوير نظام ذكاء اصطناعي للتشخيص الطبي لشبكية العين باستخدام التعلم العميق (Retinal OCT).",
+            "الحصول على إشادة وتكريم رسمي في أطروحة التخرج الأكاديمية المنشورة تقديراً للدعم الفني وتقييم النماذج ونقل الخبرات التقنية."
+        ]
+    }
+];
+
+export const arabicDevopsProjects = [
+    {
+        title: "PlayerHub.GG — بنية تحتية سحابية لمنصة ألعاب وأنظمة MLOps",
+        description: "بنية تحتية حية متكاملة لبيئة إنتاج منصة ألعاب ونظم الذكاء الاصطناعي. تصميم بنية حاويات سحابية مرنة تشمل Nginx Edge، و PHP-FPM (Laravel)، وتوجيه ذكي للقراءة عبر HAProxy، ومزامنة قواعد بيانات MariaDB (Primary-Replica)، وعناقيد تخزين مؤقت مستقلة عبر Redis. تكامل مع أنظمة المراقبة الشاملة (Prometheus, Grafana, Loki/Promtail)، وحاويات التعافي الذاتي التلقائي (autoheal, smartheal)، واختبارات الفوضى بـ Toxiproxy، ومسارات نشر CI/CD مستمرة دون أي توقف.",
+        tech: ["Docker", "Kubernetes", "Nginx", "HAProxy", "MariaDB", "Redis", "Prometheus", "Grafana", "Loki", "GitHub Actions"],
+        github: "",
+        link: "https://www.playerhub.gg/en"
+    },
+    {
+        title: "ChloroMaster — منصة سحابية للخدمات المصغرة في الإنتاج",
+        description: "منصة مؤسسية متكاملة لإدارة الكيماويات والقطاع الزراعي منشورة على سحابة AWS. هندسة معمارية الخدمات المصغرة على Kubernetes باستخدام البنية التحتية ككود (Terraform IaC) المعيارية، وأتمتة مسارات CI/CD عبر GitHub Actions مع إدارة الأسرار الأمنية المشفرة بـ HashiCorp Vault، وفحص الثغرات بـ Trivy، مع مراقبة وتنبيهات حية 24/7 عبر Prometheus و Grafana.",
+        tech: ["AWS", "Kubernetes", "Docker", "Terraform", "GitHub Actions", "HashiCorp Vault", "Trivy", "Prometheus", "Grafana"],
+        github: "",
+        link: "https://chloromaster.com/"
+    },
+    {
+        title: "HistoryVerse — بنية تحتية معيارية بـ Terraform على AWS Fargate",
+        description: "البنية التحتية السحابية لمشروع التخرج (الحاصل على تقدير امتياز +A). تصميم بيئة سحابية معيارية بـ Terraform لنشر نظام الذكاء الاصطناعي متعدد الوكلاء على AWS Fargate، مع إعداد التوسع الأفقي التلقائي، وتتبع المسارات الموزعة عبر Langfuse، وتشغيل 204 فحوصات تكامل آلية ناجحة في مسار CI/CD.",
+        tech: ["AWS Fargate", "Terraform", "Docker", "Langfuse", "Pydantic", "pytest", "GitHub Actions"],
+        github: "https://github.com/omarMohamedo-o/HistoryVerse",
+        link: "#"
+    },
+    {
+        title: "منصة تصويت سحابية أصلية بالخدمات المصغرة",
+        description: "تطبيق تصويت بالخدمات المصغرة بمعايير الإنتاج منشور على Kubernetes مع أتمتة كاملة لـ CI/CD وتجهيز البنية التحتية. يشتمل على حاويات مصغرة، وبنية تحتية بـ Terraform، ومسارات GitHub Actions، وحزم Helm، ومراقبة عبر Prometheus/Grafana، وفحص أمني شامل بـ Snyk.",
+        tech: ["Kubernetes", "Docker", "Terraform", "GitHub Actions", "Helm", "PostgreSQL", "Redis"],
+        github: "https://github.com/omarMohamedo-o/Cloud-Native-Microservices-Voting-App.git",
+        link: "#"
+    },
+    {
+        title: "تطبيق مهام متعدد العقد مدفوع بنهج GitOps",
+        description: "تطبيق متكامل منشور على عنقود Kubernetes K3s ثلاثي العقد باستخدام التسليم المستمر بمنهجية GitOps. يشمل أتمتة الإعداد بـ Ansible، والنشر التعريفي عبر ArgoCD، وتكوين الخدمات بـ Docker Compose، والتكامل الآمن مع MongoDB Atlas.",
+        tech: ["K3s", "ArgoCD", "Ansible", "Docker Compose", "MongoDB", "GitHub Actions"],
+        github: "https://github.com/omarMohamedo-o/GitOps-Driven-Multi-Node-Todo-Application.git",
+        link: "#"
+    },
+    {
+        title: "مسار تكامل وتسليم مستمر (CI/CD) سحابي حديث",
+        description: "مسار DevOps متكامل لبناء وتغليف ونشر التطبيقات السحابية عبر تدفقات عمل مؤتمتة بالكامل. يتضمن تحسين صور Docker، وأتمتة دورة حياة CI/CD، وإدارة شبكات الحاويات، وتطبيق أفضل ممارسات التسليم المؤتمت دون تدخل يدوي.",
+        tech: ["Docker", "CI/CD", "GitHub Actions", "Containers", "DevOps"],
+        github: "https://github.com/omarMohamedo-o/cloud-native-devops-pipeline.git",
+        link: "#"
+    }
+];
+
+export const arabicMlnlpProjects = [
+    {
+        title: "HistoryVerse — مرشد متاحف ذكي ومتعدد اللغات بالذكاء الاصطناعي والواقع المعزز",
+        description: "مشروع التخرج (بتقدير امتياز +A) — منصة متكاملة لاستكشاف المتاحف بنظم الوكلاء الأذكياء والواقع المعزز. دقة تعرف على الآثار بلغت 90-96% باستخدام YOLOv5 ومحولات الرؤية (ViT)، مع أكثر من 25 واجهة برمجية وتوجيه ديناميكي للنماذج (Gemini, OpenAI, Llama)، ونظام RAG عبر ChromaDB، وصوت تفاعلي متعدد اللغات (Whisper, Google TTS)، ومجسمات ARCore ثلاثية الأبعاد، مع 204 فحوصات برمجية ناجحة ونشر على AWS Fargate.",
+        tech: ["YOLOv5", "Transformers", "RAG", "ChromaDB", "LangChain", "Whisper", "ARCore", "FastAPI", "AWS Fargate", "Terraform", "Langfuse", "Ragas"],
+        github: "https://github.com/omarMohamedo-o/HistoryVerse",
+        link: "#"
+    },
+    {
+        title: "مسار تدريب وتخصيص نماذج SDXL LoRA – مسجد السلطان حسن",
+        description: "بناء وتجهيز مجموعة بيانات معمارية متخصصة مع توصيف دقيق للصور، وتدريب نماذج التوليد الصوري Stable Diffusion XL LoRA عبر مكتبة Hugging Face Diffusers (rank 32, fp16). تتبع تحسين المعاملات الفائقة وتقارب دالة الخسارة بـ MLflow في بيئة Docker Compose قابلة لإعادة الإنتاج بدقة.",
+        tech: ["SDXL", "LoRA", "Hugging Face Diffusers", "PyTorch", "MLflow", "Docker Compose", "Computer Vision"],
+        github: "https://github.com/omarMohamedo-o/sdxl-lora-finetuning",
+        link: "#"
+    },
+    {
+        title: "CliniSoft — الذكاء الاصطناعي الطبي والتوثيق السريري الصوتي",
+        description: "حل ذكاء اصطناعي طبي للإنتاج يعتمد على نماذج اللغة الكبيرة (LLMs) ومعالجة اللغات الطبيعية (NLP) ونماذج الصوت لأتمتة كتابة التقارير والتوثيق السريري للأطباء. تم نشره عبر خدمات FastAPI المصغرة مع فحص صارم للبيانات بـ Pydantic، وحاويات Docker، ومراقبة مستمرة للأداء في بيئة العمل.",
+        tech: ["FastAPI", "LLMs", "NLP", "Faster-Whisper", "Docker", "MLOps", "Pydantic"],
+        github: "",
+        link: "https://clinisoft.org/"
+    },
+    {
+        title: "PlayerHub.GG — عمليات وكلاء الذكاء الاصطناعي والبنية التحتية",
+        description: "إدارة عمليات وتشغيل وكلاء الذكاء الاصطناعي المستقلين وخطوط استخراج البيانات والبنية السحابية عالية التوافر لمنصة PlayerHub.GG. تطبيق مسارات CI/CD مؤتمتة، ومركزية المراقبة وسجلات التشغيل (Loki, Grafana)، ومهام التعافي الذاتي للخدمات.",
+        tech: ["Docker", "Kubernetes", "AI Agents", "Python", "CI/CD", "Prometheus", "Grafana"],
+        github: "",
+        link: "https://www.playerhub.gg/en"
+    },
+    {
+        title: "MORA — المساعد الذكي التفاعلي ونظام RAG المتعدد الوسائط",
+        description: "وكيل ذكاء اصطناعي تفاعلي مبني بتقنية RAG خصيصاً لهذه المحفظة الهندسية. يتميز باسترجاع سياقي عميق لمشاريع وخبرات ومهارات وسيرة عمر المهنية، مع إمكانية التوليف الصوتي وتحليل الصور ومحادثة ذكية مدعومة بنماذج Gemini مع نظام محلي بديل.",
+        tech: ["RAG", "LangChain", "Gemini API", "ChromaDB", "FastAPI", "React", "Web Speech"],
+        github: "https://github.com/omarMohamedo-o/omar-prtofilo",
+        link: "#"
+    },
+    {
+        title: "التنبؤ بمغادرة عملاء الاتصالات والتحليلات البيانية",
+        description: "مسار تعلم آلي متكامل للتنبؤ بمعدل دوران عملاء قطاع الاتصالات باستخدام المصنفات التجميعية (Ensemble Classifiers). تحقيق دقة 92% مع هندسة متقدمة للمتغيرات، وضبط دقيق للمعاملات الفائقة، وتحليل قابلية التفسير باستخدام خوارزمية SHAP.",
+        tech: ["Scikit-learn", "XGBoost", "Pandas", "SHAP", "Matplotlib", "Python"],
+        github: "",
+        link: "#"
+    }
+];

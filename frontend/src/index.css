@@ -1998,13 +1998,21 @@ section[id] h3 .title-highlight {
     display: inline-block;
 }
 
-/* Ensure titles inside card components are left-aligned while
-   keeping main section headings centered. This overrides
-   section-wide centering for card content. */
+/* Ensure titles inside card components are left-aligned in LTR,
+   and right-aligned in RTL while keeping main section headings centered. */
 .ds-card h2,
 .ds-card h3,
 .ds-card .text-center {
     text-align: left !important;
+}
+
+[dir="rtl"] .ds-card h2,
+[dir="rtl"] .ds-card h3,
+[dir="rtl"] .ds-card .text-center,
+html.rtl-mode .ds-card h2,
+html.rtl-mode .ds-card h3,
+html.rtl-mode .ds-card .text-center {
+    text-align: right !important;
 }
 
 /* Fix for spacing inside cards (overrides section-wide margin-bottom on h3) */

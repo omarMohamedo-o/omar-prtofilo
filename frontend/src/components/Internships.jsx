@@ -52,7 +52,7 @@ function getInternshipCert(internship) {
 }
 
 export default function Internships({ isVisible, internships = [], themeColor = 'cyan' }) {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const isMobile = useIsMobile();
   const accentColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
   const borderHover = themeColor === 'purple' ? 'hover:border-purple-500/50' : 'hover:border-cyan-500/50';
@@ -116,14 +116,14 @@ export default function Internships({ isVisible, internships = [], themeColor = 
                 if (!cert) return null;
                 return (
                   <>
-                    <div className="absolute bottom-4 right-4 hidden md:flex items-end">
+                    <div className={`absolute bottom-4 ${isRTL ? 'left-4' : 'right-4'} hidden md:flex items-end`}>
                       <PreviewableImage
                         src={getOptimizedImagePath(cert, 'webp')}
                         alt={`${internship.company} - ${t('verified')}`}
                         className="w-24 lg:w-28 h-16 lg:h-20 object-contain bg-black/20"
                       />
                     </div>
-                    <div className="mt-4 flex items-center md:hidden justify-end">
+                    <div className={`mt-4 flex items-center md:hidden ${isRTL ? 'justify-start' : 'justify-end'}`}>
                       <PreviewableImage
                         src={getOptimizedImagePath(cert, 'webp')}
                         alt={`${internship.company} - ${t('verified')}`}

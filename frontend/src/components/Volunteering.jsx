@@ -31,7 +31,7 @@ function CompanyLogo({ logo, name, FallbackIcon = GraduationCap }) {
 }
 
 const Volunteering = function Volunteering({ isVisible, volunteering = [], themeColor = 'cyan' }) {
-  const { isRTL } = useLanguage();
+  const { isRTL, t } = useLanguage();
   const isMobile = useIsMobile();
   const textColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
   const borderHover = themeColor === 'purple'
@@ -54,7 +54,7 @@ const Volunteering = function Volunteering({ isVisible, volunteering = [], theme
           variants={titleVariant}
           className="section-title"
         >
-          <span className="text-surface">Volunteer &</span> <span className="highlight">Mentorship</span>
+          <span className="text-surface">{t('volunteeringTitle1')}</span> <span className="highlight">{t('volunteeringTitle2')}</span>
         </motion.h2>
 
         {/* Content container */}
@@ -117,7 +117,7 @@ const Volunteering = function Volunteering({ isVisible, volunteering = [], theme
                   title={isRTL ? 'عرض وتصفح الأطروحة الأكاديمية' : 'Open Published Academic Research Thesis'}
                 >
                   <BookOpen size={14} className="group-hover:scale-110 transition-transform" />
-                  <span>{isRTL ? 'الأطروحة الأكاديمية (Thesis)' : 'Thesis'}</span>
+                  <span>{isRTL ? 'تصفح الأطروحة الأكاديمية' : 'Thesis'}</span>
                 </button>
               </div>
             </motion.div>

@@ -43,6 +43,8 @@ export const ar = {
     softSkillsTitle2: "الشخصية",
     projectsTitle1: "أبرز",
     projectsTitle2: "المشاريع",
+    volunteeringTitle1: "العمل التطوعي و",
+    volunteeringTitle2: "الإرشاد التقني",
     educationTitle1: "المسيرة",
     educationTitle2: "الأكاديمية",
     certificationsTitle1: "الشهادات",

@@ -116,7 +116,7 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
 
         {/* Left: Text Content */}
         <motion.div
-          className="flex-1 lg:max-w-[70%] text-center lg:text-left order-2 lg:order-1 relative z-20 px-0"
+          className={`flex-1 lg:max-w-[70%] text-center ${isRTL ? 'lg:text-right' : 'lg:text-left'} order-2 lg:order-1 relative z-20 px-0`}
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}

@@ -43,6 +43,8 @@ export const en = {
     softSkillsTitle2: "Core Skills",
     projectsTitle1: "Featured",
     projectsTitle2: "Projects",
+    volunteeringTitle1: "Volunteer &",
+    volunteeringTitle2: "Mentorship",
     educationTitle1: "Education &",
     educationTitle2: "Academics",
     certificationsTitle1: "Verified",

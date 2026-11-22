@@ -50,10 +50,10 @@ export default function UpArrowButton({ className = '', themeColor = 'cyan' }) {
         }
     };
 
-    // Position cleanly above WhatsApp FAB with no overlap
+    // Position cleanly on the left (never overlapping chat widget on right)
     const arrowStyle = {
-        left: isRTL ? 'auto' : (isMobile ? 16 : 24),
-        right: isRTL ? (isMobile ? 16 : 24) : 'auto',
+        left: isMobile ? 16 : 24,
+        right: 'auto',
         bottom: isMobile ? 74 : 92,
         transition: 'opacity .25s, transform .2s'
     };
