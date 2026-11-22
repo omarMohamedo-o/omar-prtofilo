@@ -387,7 +387,7 @@ export function queryLocalKnowledge(userQuery = '', conversationHistory = []) {
     }
 
     // 2. Real-Time Clock & Date
-    if (/(time|date|clock|current\s*time|what\s*time|الساعة|الوقت|تاريخ|النهارده|النهاردة)/i.test(rawLower)) {
+    if (/(time|date|clock|current\s*time|what\s*time|ساع[ةه]|وقت|تاريخ|نهار[ده]|دلوقتي)/i.test(rawLower)) {
         const now = new Date();
         const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Cairo' });
         const dateStr = now.toLocaleDateString(isArabic ? 'ar-EG' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Africa/Cairo' });
