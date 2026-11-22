@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     BookOpen, X, ChevronRight, ChevronLeft, Download, Volume2,
     VolumeX, Award, Sparkles, CheckCircle2,
-    Layers, Cpu, ShieldCheck, Eye, ExternalLink, FileText, Bookmark
+    Layers, Cpu, ShieldCheck, Eye, ExternalLink, FileText, Bookmark,
+    MoveHorizontal
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -64,31 +65,9 @@ export const BOOKS_DATA = {
             prefix: 'page-',
             ext: '.webp'
         },
-        pages: [
+        chapters: [
             {
-                type: 'cover',
-                tagEn: 'Academic Research & Volunteer Mentorship',
-                tagAr: 'بحث أكاديمي وإشراف تقني تطوعي',
-                titleEn: 'DEEP LEARNING FOR RETINAL OCT DISEASE DIAGNOSIS',
-                titleAr: 'التعلم العميق لتشخيص أمراض شبكية العين',
-                subtitleEn: 'Engineering Graduation Thesis Mentorship & Technical Guidance at Palestine Polytechnic University (PPU)',
-                subtitleAr: 'الإشراف التقني والإرشاد البحثي لمشروع تخرج هندسي في جامعة بوليتكنك فلسطين',
-                metaEn: [
-                    { label: 'Remote Technical Mentor', value: 'Omar Mohamed Abdelsalam' },
-                    { label: 'Institution', value: 'Palestine Polytechnic University (PPU)' },
-                    { label: 'Location', value: 'Hebron, Palestine (Remote Mentorship)' },
-                    { label: 'Scope', value: 'Deep Learning, CNNs, Transformers & MLOps' },
-                    { label: 'Period', value: '2025 – 2026 Academic Year' }
-                ],
-                metaAr: [
-                    { label: 'المرشد والمشرف التقني عن بُعد', value: 'عمر محمد عبد السلام' },
-                    { label: 'الجامعة', value: 'جامعة بوليتكنك فلسطين (PPU)' },
-                    { label: 'المقر', value: 'الخليل، فلسطين (إشراف تقني عن بُعد)' },
-                    { label: 'المجال', value: 'التعلم العميق والشبكات العصبية و MLOps' },
-                    { label: 'الفترة', value: 'العام الأكاديمي 2025 – 2026' }
-                ]
-            },
-            {
+                id: 'ch1',
                 chapterEn: 'Chapter 1: The Clinical Challenge',
                 chapterAr: 'الفصل الأول: التحدي الطبي والسريري',
                 titleEn: 'Automated Retinal Pathology Detection',
@@ -113,6 +92,7 @@ In resource-constrained medical centers across Palestine, access to specialized 
                 ]
             },
             {
+                id: 'ch2',
                 chapterEn: 'Chapter 2: Technical Advisory Scope',
                 chapterAr: 'الفصل الثاني: نطاق الإشراف والدعم التقني',
                 titleEn: 'Architectural Guidance & Model Tuning',
@@ -134,6 +114,7 @@ In resource-constrained medical centers across Palestine, access to specialized 
                 ]
             },
             {
+                id: 'ch3',
                 chapterEn: 'Chapter 3: Benchmarks & Clinical Validation',
                 chapterAr: 'الفصل الثالث: نتائج الاختبار والتقييم السريري',
                 titleEn: 'Diagnostic Metrics & ROC Evaluation',
@@ -154,6 +135,7 @@ In resource-constrained medical centers across Palestine, access to specialized 
                 ]
             },
             {
+                id: 'ch4',
                 chapterEn: 'Chapter 4: Official Thesis Acknowledgement',
                 chapterAr: 'الفصل الرابع: خطاب الشكر والتقدير الرسمي',
                 titleEn: 'Official Academic Acknowledgement in Thesis',
@@ -192,34 +174,12 @@ This project stands as a testament to engineering solidarity, knowledge sharing,
         pageImages: {
             basePath: '/documents/historyverse-pages/',
             totalPages: 3,
-            prefix: 'page-0',
+            prefix: 'page-',
             ext: '.webp'
         },
-        pages: [
+        chapters: [
             {
-                type: 'cover',
-                tagEn: 'B.Sc. Graduation Project',
-                tagAr: 'مشروع تخرج البكالوريوس',
-                titleEn: 'HISTORYVERSE',
-                titleAr: 'هيستوري فيرس',
-                subtitleEn: 'AI-Powered Virtual Museum Tour with Multilingual Human-Like Interaction & AR Reconstruction',
-                subtitleAr: 'منصة متاحف ذكية مدعومة بالذكاء الاصطناعي التوليدي والواقع المعزز والتفاعل الصوتي متعدد اللغات',
-                metaEn: [
-                    { label: 'Student / AI Lead', value: 'Omar Mohamed Abdelsalam' },
-                    { label: 'Academic Supervisor', value: 'Dr. Mahmoud Gamal' },
-                    { label: 'Institution', value: 'Higher Institute of Engineering & Technology (BHI)' },
-                    { label: 'Evaluation Grade', value: 'A+ (Highest Distinction)' },
-                    { label: 'Defense Year', value: 'July 2024 · Alexandria, Egypt' }
-                ],
-                metaAr: [
-                    { label: 'الطالب ومطور الذكاء الاصطناعي', value: 'عمر محمد عبد السلام' },
-                    { label: 'المشرف الأكاديمي', value: 'د. محمود جمال' },
-                    { label: 'الجهة الأكاديمية', value: 'المعهد العالي للهندسة والتكنولوجيا (BHI)' },
-                    { label: 'التقدير النهائي', value: 'امتياز مرتفع A+' },
-                    { label: 'عام المناقشة', value: 'يوليو 2024 · الإسكندرية، مصر' }
-                ]
-            },
-            {
+                id: 'ch1',
                 chapterEn: 'Chapter 1: Problem Statement & Vision',
                 chapterAr: 'الفصل الأول: بيان المشكلة والرؤية',
                 titleEn: 'The Challenge of Traditional Museums',
@@ -237,6 +197,7 @@ HistoryVerse was architected to bridge this gap: turning passive sightseeing int
                 ]
             },
             {
+                id: 'ch2',
                 chapterEn: 'Chapter 2: System Architecture',
                 chapterAr: 'الفصل الثاني: البنية المعمارية للنظام',
                 titleEn: 'Decoupled Microservices & Cloud Stack',
@@ -252,6 +213,7 @@ HistoryVerse was architected to bridge this gap: turning passive sightseeing int
                 testMetric: '204 Passing Automated Tests · Zero Production Downtime'
             },
             {
+                id: 'ch3',
                 chapterEn: 'Chapter 3: Results, Defense & Evaluation',
                 chapterAr: 'الفصل الثالث: النتائج والمناقشة والتقييم',
                 titleEn: 'Final Evaluation: Grade A+ (Distinction)',
@@ -277,23 +239,160 @@ The project was officially awarded the top grade of A+ (Distinction) and recogni
     }
 };
 
+/**
+ * Single authentic book page rendering component
+ */
+function SinglePage({
+    pageNum,
+    totalBookPages,
+    activeBook,
+    formatPageSrc,
+    side, // 'left' | 'right'
+    isInteractive = false,
+    onClick,
+    onMouseDown,
+    isDragging = false
+}) {
+    if (!pageNum || pageNum > totalBookPages) {
+        // Authentic blank endpaper for the back inside cover
+        return (
+            <div className={`w-full h-full relative overflow-hidden bg-[#faf9f5] flex flex-col justify-between p-3 sm:p-5 md:p-6 select-none ${
+                side === 'left' ? 'border-r border-[#e2ded2]' : ''
+            }`}>
+                <div className="flex items-center justify-between pb-1.5 border-b border-black/10 text-[10px] sm:text-[11px] font-serif text-slate-400">
+                    <span>{activeBook?.titleEn}</span>
+                    <span>End of Document</span>
+                </div>
+                <div className="flex-1 flex flex-col items-center justify-center text-slate-400 font-serif text-xs gap-2">
+                    <BookOpen size={28} className="opacity-25" />
+                    <span className="italic">Official Academic Research Archive</span>
+                </div>
+                <div className="pt-1 border-t border-black/10 text-[9px] font-serif text-slate-400 text-center">
+                    Palestine Polytechnic University · 2025–2026
+                </div>
+            </div>
+        );
+    }
+
+    const src = formatPageSrc(pageNum);
+
+    return (
+        <div
+            onClick={onClick}
+            onMouseDown={onMouseDown}
+            className={`w-full h-full relative overflow-hidden bg-[#faf9f5] flex flex-col justify-between p-2 sm:p-4 md:p-5 select-none ${
+                side === 'left' ? 'border-r border-[#e2ded2]' : ''
+            } ${isInteractive ? (isDragging ? 'cursor-grabbing' : 'cursor-grab') : ''}`}
+            title={isInteractive ? (side === 'right' ? 'Drag or click to flip forward' : 'Drag or click to flip backward') : undefined}
+        >
+            {/* Top Academic Header */}
+            <div className="flex items-center justify-between pb-1 border-b border-black/10 text-[10px] sm:text-[11px] font-serif text-slate-600 select-none pointer-events-none">
+                {side === 'left' ? (
+                    <>
+                        <span className="truncate max-w-[80%] font-medium">
+                            {pageNum === 1 ? 'Palestine Polytechnic University · Title' : `Palestine Polytechnic University · Page ${pageNum}`}
+                        </span>
+                        <span className="font-semibold">{pageNum}</span>
+                    </>
+                ) : (
+                    <>
+                        <span className="font-semibold">{pageNum}</span>
+                        <span className="truncate max-w-[80%] font-medium">
+                            {pageNum === 1
+                                ? 'Thesis Cover & Title'
+                                : pageNum === 2
+                                ? '⭐ Official Thesis Acknowledgment Citation'
+                                : `Dept. of Computer Science · Page ${pageNum}`}
+                        </span>
+                    </>
+                )}
+            </div>
+
+            {/* Scanned Thesis Image Viewport */}
+            <div className="flex-1 w-full flex items-center justify-center overflow-hidden py-1 pointer-events-none">
+                <img
+                    src={src}
+                    alt={`Thesis Page ${pageNum}`}
+                    className="w-full h-full object-contain filter contrast-[1.02] shadow-sm select-none pointer-events-none"
+                    loading="eager"
+                    draggable={false}
+                />
+            </div>
+
+            {/* Bottom Academic Running Footer */}
+            <div className="pt-1 border-t border-black/10 flex items-center justify-between text-[9px] sm:text-[10px] font-serif text-slate-500 select-none pointer-events-none">
+                {side === 'left' ? (
+                    <>
+                        <span className="truncate max-w-[80%]">AI-Powered Retinal OCT Diagnosis</span>
+                        <span className="font-mono">{pageNum}</span>
+                    </>
+                ) : (
+                    <>
+                        <span className="font-mono">{pageNum}</span>
+                        <span className="truncate max-w-[80%]">{activeBook?.titleEn || 'Graduation Thesis'}</span>
+                    </>
+                )}
+            </div>
+
+            {/* Inner Spine Shadow Gradient */}
+            <div
+                className={`absolute top-0 bottom-0 ${
+                    side === 'left' ? 'right-0 w-8 bg-gradient-to-l' : 'left-0 w-8 bg-gradient-to-r'
+                } from-black/15 to-transparent pointer-events-none z-10`}
+            />
+
+            {/* Interactive Corner Hint Cue */}
+            {isInteractive && (
+                <div
+                    className={`absolute bottom-1 ${
+                        side === 'left' ? 'left-1' : 'right-1'
+                    } opacity-35 hover:opacity-100 transition-opacity pointer-events-none flex items-center gap-1 text-[8px] sm:text-[9px] font-sans font-medium text-slate-600 bg-black/5 hover:bg-black/10 px-1.5 py-0.5 rounded shadow-sm`}
+                >
+                    {side === 'left' ? '◄ Drag to flip' : 'Drag to flip ►'}
+                </div>
+            )}
+        </div>
+    );
+}
+
 export default function ThreeDBookModal() {
     const { isRTL } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const [selectedBookId, setSelectedBookId] = useState('volunteer');
-    const [viewMode, setViewMode] = useState('pages'); // 'pages' = authentic 2-page book spread, 'summary' = interactive chapter cards
-    const [spreadIndex, setSpreadIndex] = useState(0); // 0-based spread for 2-page layout
+    const [viewMode, setViewMode] = useState('pages'); // 'pages' = authentic 2-page book spread, 'summary' = chapter cards
+    const [spreadIndex, setSpreadIndex] = useState(0); // 0-based spread: Spread 0 = Pages 1 & 2
     const [mobilePage, setMobilePage] = useState(1);
     const [isMobile, setIsMobile] = useState(false);
     const [soundEnabled, setSoundEnabled] = useState(true);
-    const [isFlipping, setIsFlipping] = useState(false);
-    const [flipDirection, setFlipDirection] = useState('next');
-    const modalRef = useRef(null);
+    const [activeChapterIndex, setActiveChapterIndex] = useState(0);
+
+    // Interactive 3D drag & flip physics state
+    const [flipState, setFlipState] = useState({
+        active: false,
+        direction: null, // 'next' | 'prev'
+        progress: 0,     // 0 to 1
+        source: 'idle'   // 'drag' | 'auto'
+    });
+
+    const dragRef = useRef({
+        active: false,
+        startX: 0,
+        startY: 0,
+        width: 400,
+        direction: null,
+        progress: 0,
+        moved: false
+    });
+    const animatingRef = useRef(false);
+    const animationFrameRef = useRef(null);
+    const bookRef = useRef(null);
 
     const activeBook = BOOKS_DATA[selectedBookId];
     const totalBookPages = activeBook?.pageImages?.totalPages || 65;
-    // For 2-page spread: Spread 0 is Page 1 on right, Spread 1 is Page 2 & 3, Spread 2 is Page 4 & 5 ...
-    const totalSpreads = Math.ceil((totalBookPages + 1) / 2);
+    // Spread 0: Left = Page 1, Right = Page 2
+    // Spread 1: Left = Page 3, Right = Page 4
+    // Total Spreads: Math.ceil(totalBookPages / 2)
+    const totalSpreads = Math.ceil(totalBookPages / 2);
 
     useEffect(() => {
         const checkMobile = () => {
@@ -305,6 +404,222 @@ export default function ThreeDBookModal() {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    const formatPageSrc = useCallback((pageNum) => {
+        if (!pageNum || pageNum > totalBookPages) return null;
+        const prefix = activeBook?.pageImages?.prefix || 'page-';
+        const padded = String(pageNum).padStart(2, '0');
+        return `${activeBook.pageImages.basePath}${prefix}${padded}${activeBook.pageImages.ext}`;
+    }, [activeBook, totalBookPages]);
+
+    // Finish 3D flip animation smoothly with physics cubic ease-out
+    const finishFlipAnimation = useCallback((direction, startP, targetP) => {
+        animatingRef.current = true;
+        const duration = 260; // ms
+        const startTime = performance.now();
+
+        if (targetP === 1 && soundEnabled) {
+            playPageTurnSound();
+        }
+
+        const animate = (now) => {
+            const elapsed = now - startTime;
+            const t = Math.min(1, elapsed / duration);
+            // Smooth ease-out cubic
+            const ease = 1 - Math.pow(1 - t, 3);
+            const currentP = startP + (targetP - startP) * ease;
+
+            setFlipState({
+                active: true,
+                direction,
+                progress: currentP,
+                source: 'auto'
+            });
+
+            if (t < 1) {
+                animationFrameRef.current = requestAnimationFrame(animate);
+            } else {
+                animatingRef.current = false;
+                setFlipState({ active: false, direction: null, progress: 0, source: 'idle' });
+                if (targetP === 1) {
+                    if (isMobile) {
+                        if (direction === 'next') {
+                            setMobilePage((p) => Math.min(totalBookPages, p + 1));
+                        } else {
+                            setMobilePage((p) => Math.max(1, p - 1));
+                        }
+                    } else {
+                        if (direction === 'next') {
+                            setSpreadIndex((s) => Math.min(totalSpreads - 1, s + 1));
+                        } else {
+                            setSpreadIndex((s) => Math.max(0, s - 1));
+                        }
+                    }
+                }
+            }
+        };
+        animationFrameRef.current = requestAnimationFrame(animate);
+    }, [soundEnabled, isMobile, totalBookPages, totalSpreads]);
+
+    // Automated trigger for buttons / keyboard
+    const startAutoFlip = useCallback((direction) => {
+        if (animatingRef.current || flipState.active) return;
+        if (isMobile) {
+            if (direction === 'next' && mobilePage >= totalBookPages) return;
+            if (direction === 'prev' && mobilePage <= 1) return;
+        } else {
+            if (direction === 'next' && spreadIndex >= totalSpreads - 1) return;
+            if (direction === 'prev' && spreadIndex <= 0) return;
+        }
+        finishFlipAnimation(direction, 0, 1);
+    }, [isMobile, mobilePage, totalBookPages, spreadIndex, totalSpreads, flipState.active, finishFlipAnimation]);
+
+    // Window-level mouse/touch drag handlers for fluid drag-to-turn
+    const handlePointerMove = useCallback((e) => {
+        if (!dragRef.current.active) return;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const deltaX = clientX - dragRef.current.startX;
+        const deltaY = clientY - dragRef.current.startY;
+
+        if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+            dragRef.current.moved = true;
+        }
+
+        if (isMobile) {
+            const width = dragRef.current.width || 320;
+            if (deltaX < 0 && mobilePage < totalBookPages) {
+                const p = Math.min(1, Math.max(0, -deltaX / (width * 0.75)));
+                dragRef.current.direction = 'next';
+                dragRef.current.progress = p;
+                setFlipState({ active: true, direction: 'next', progress: p, source: 'drag' });
+            } else if (deltaX > 0 && mobilePage > 1) {
+                const p = Math.min(1, Math.max(0, deltaX / (width * 0.75)));
+                dragRef.current.direction = 'prev';
+                dragRef.current.progress = p;
+                setFlipState({ active: true, direction: 'prev', progress: p, source: 'drag' });
+            }
+            return;
+        }
+
+        const halfWidth = dragRef.current.width || 420;
+        let p = 0;
+        if (dragRef.current.direction === 'next') {
+            p = Math.min(1, Math.max(0, -deltaX / halfWidth));
+        } else if (dragRef.current.direction === 'prev') {
+            p = Math.min(1, Math.max(0, deltaX / halfWidth));
+        }
+        dragRef.current.progress = p;
+        setFlipState((prev) => ({ ...prev, progress: p }));
+    }, [isMobile, mobilePage, totalBookPages]);
+
+    const handlePointerUp = useCallback(() => {
+        if (!dragRef.current.active) return;
+        const { direction, progress, moved } = dragRef.current;
+        dragRef.current.active = false;
+
+        if (!moved) {
+            // Click without drag
+            setFlipState({ active: false, direction: null, progress: 0, source: 'idle' });
+            if (!isMobile && direction) {
+                startAutoFlip(direction);
+            }
+            return;
+        }
+
+        // Drag release: if dragged > 16% of width, complete page flip; otherwise spring back
+        if (progress > 0.16 && direction) {
+            finishFlipAnimation(direction, progress, 1);
+        } else if (direction) {
+            finishFlipAnimation(direction, progress, 0);
+        }
+    }, [isMobile, startAutoFlip, finishFlipAnimation]);
+
+    useEffect(() => {
+        window.addEventListener('mousemove', handlePointerMove);
+        window.addEventListener('mouseup', handlePointerUp);
+        window.addEventListener('touchmove', handlePointerMove, { passive: false });
+        window.addEventListener('touchend', handlePointerUp);
+        return () => {
+            window.removeEventListener('mousemove', handlePointerMove);
+            window.removeEventListener('mouseup', handlePointerUp);
+            window.removeEventListener('touchmove', handlePointerMove);
+            window.removeEventListener('touchend', handlePointerUp);
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
+    }, [handlePointerMove, handlePointerUp]);
+
+    // Mouse down on book pages
+    const handleMouseDownOnPage = (side) => (e) => {
+        if (e.button !== 0 || animatingRef.current) return;
+        const rect = bookRef.current?.getBoundingClientRect();
+        if (!rect) return;
+
+        if (side === 'right' && spreadIndex >= totalSpreads - 1) return;
+        if (side === 'left' && spreadIndex <= 0) return;
+
+        dragRef.current = {
+            active: true,
+            startX: e.clientX,
+            startY: e.clientY,
+            width: rect.width / 2,
+            direction: side === 'right' ? 'next' : 'prev',
+            progress: 0,
+            moved: false
+        };
+        setFlipState({
+            active: true,
+            direction: side === 'right' ? 'next' : 'prev',
+            progress: 0,
+            source: 'drag'
+        });
+    };
+
+    // Touch start for mobile / touch devices
+    const handleTouchStart = (e) => {
+        if (e.touches.length !== 1 || animatingRef.current) return;
+        const touch = e.touches[0];
+        const rect = bookRef.current?.getBoundingClientRect();
+        if (!rect) return;
+
+        if (isMobile) {
+            dragRef.current = {
+                active: true,
+                startX: touch.clientX,
+                startY: touch.clientY,
+                width: rect.width,
+                direction: null,
+                progress: 0,
+                moved: false
+            };
+            return;
+        }
+
+        const relX = touch.clientX - rect.left;
+        const isRight = relX >= rect.width / 2;
+        const side = isRight ? 'right' : 'left';
+
+        if (side === 'right' && spreadIndex >= totalSpreads - 1) return;
+        if (side === 'left' && spreadIndex <= 0) return;
+
+        dragRef.current = {
+            active: true,
+            startX: touch.clientX,
+            startY: touch.clientY,
+            width: rect.width / 2,
+            direction: side === 'right' ? 'next' : 'prev',
+            progress: 0,
+            moved: false
+        };
+        setFlipState({
+            active: true,
+            direction: side === 'right' ? 'next' : 'prev',
+            progress: 0,
+            source: 'drag'
+        });
+    };
+
     // Listen for custom trigger event
     useEffect(() => {
         const handleOpenBook = (e) => {
@@ -313,13 +628,13 @@ export default function ThreeDBookModal() {
                 setSelectedBookId(requestedBook);
             }
             if (typeof e?.detail?.pageIndex === 'number') {
-                setSpreadIndex(Math.floor(e.detail.pageIndex / 2));
-                setMobilePage(Math.max(1, e.detail.pageIndex));
+                const requestedPage = Math.max(1, e.detail.pageIndex);
+                setSpreadIndex(Math.floor((requestedPage - 1) / 2));
+                setMobilePage(requestedPage);
             } else {
                 setSpreadIndex(0);
                 setMobilePage(1);
             }
-            // Default to 'pages' mode for authentic open book experience matching user reference
             setViewMode('pages');
             setIsOpen(true);
             if (soundEnabled) playPageTurnSound();
@@ -334,101 +649,50 @@ export default function ThreeDBookModal() {
         if (!isOpen) return;
         const handleKeyDown = (e) => {
             if (e.key === 'ArrowRight') {
-                goNext();
+                startAutoFlip('next');
             } else if (e.key === 'ArrowLeft') {
-                goPrev();
+                startAutoFlip('prev');
             } else if (e.key === 'Escape') {
                 setIsOpen(false);
             }
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isOpen, spreadIndex, mobilePage, isMobile, totalSpreads, totalBookPages]);
-
-    const goNext = useCallback(() => {
-        if (isFlipping) return;
-        if (isMobile) {
-            if (mobilePage < totalBookPages) {
-                setIsFlipping(true);
-                setFlipDirection('next');
-                if (soundEnabled) playPageTurnSound();
-                setTimeout(() => {
-                    setMobilePage((prev) => Math.min(totalBookPages, prev + 1));
-                    setIsFlipping(false);
-                }, 220);
-            }
-        } else {
-            if (spreadIndex < totalSpreads - 1) {
-                setIsFlipping(true);
-                setFlipDirection('next');
-                if (soundEnabled) playPageTurnSound();
-                setTimeout(() => {
-                    setSpreadIndex((prev) => Math.min(totalSpreads - 1, prev + 1));
-                    setIsFlipping(false);
-                }, 220);
-            }
-        }
-    }, [isMobile, mobilePage, totalBookPages, spreadIndex, totalSpreads, isFlipping, soundEnabled]);
-
-    const goPrev = useCallback(() => {
-        if (isFlipping) return;
-        if (isMobile) {
-            if (mobilePage > 1) {
-                setIsFlipping(true);
-                setFlipDirection('prev');
-                if (soundEnabled) playPageTurnSound();
-                setTimeout(() => {
-                    setMobilePage((prev) => Math.max(1, prev - 1));
-                    setIsFlipping(false);
-                }, 220);
-            }
-        } else {
-            if (spreadIndex > 0) {
-                setIsFlipping(true);
-                setFlipDirection('prev');
-                if (soundEnabled) playPageTurnSound();
-                setTimeout(() => {
-                    setSpreadIndex((prev) => Math.max(0, prev - 1));
-                    setIsFlipping(false);
-                }, 220);
-            }
-        }
-    }, [isMobile, mobilePage, spreadIndex, isFlipping, soundEnabled]);
+    }, [isOpen, startAutoFlip]);
 
     const switchBook = (bookId) => {
         if (bookId !== selectedBookId) {
             setSelectedBookId(bookId);
             setSpreadIndex(0);
             setMobilePage(1);
+            setActiveChapterIndex(0);
             if (soundEnabled) playPageTurnSound();
         }
     };
 
     const jumpToAcknowledgment = () => {
-        // Page 2 is the official acknowledgment page
-        if (isMobile) {
-            setMobilePage(2);
-        } else {
-            setSpreadIndex(1); // Spread 1 has Left = Page 2, Right = Page 3
-        }
+        // Page 2 is the official acknowledgment page (on Spread 0, right side)
+        setSpreadIndex(0);
+        setMobilePage(2);
         if (soundEnabled) playPageTurnSound();
     };
 
     if (!isOpen) return null;
 
-    // Determine left and right page numbers for current spread
-    // Spread 0: Left = null (Inside Cover), Right = Page 1
-    // Spread 1: Left = Page 2, Right = Page 3
-    // Spread k: Left = 2k, Right = 2k + 1
-    const leftPageNum = spreadIndex === 0 ? null : spreadIndex * 2;
-    const rightPageNum = spreadIndex === 0 ? 1 : spreadIndex * 2 + 1;
+    // Spread calculations for authentic 2-page layout
+    // Spread 0: Left = Page 1, Right = Page 2
+    // Spread 1: Left = Page 3, Right = Page 4
+    // Spread s: Left = 2*s + 1, Right = 2*s + 2
+    const currentLeftPage = spreadIndex * 2 + 1;
+    const currentRightPage = spreadIndex * 2 + 2;
 
-    const formatPageSrc = (pageNum) => {
-        if (!pageNum || pageNum > totalBookPages) return null;
-        const prefix = activeBook.pageImages.prefix || 'page-';
-        const padded = String(pageNum).padStart(2, '0');
-        return `${activeBook.pageImages.basePath}${prefix}${padded}${activeBook.pageImages.ext}`;
-    };
+    const nextLeftPage = (spreadIndex + 1) * 2 + 1;
+    const nextRightPage = (spreadIndex + 1) * 2 + 2;
+
+    const prevLeftPage = (spreadIndex - 1) * 2 + 1;
+    const prevRightPage = (spreadIndex - 1) * 2 + 2;
+
+    const p = flipState.progress;
 
     return (
         <AnimatePresence>
@@ -474,6 +738,7 @@ export default function ThreeDBookModal() {
                             <span>🎓</span>
                             <span className="hidden sm:inline">HistoryVerse (Graduation A+)</span>
                             <span className="sm:hidden">HistoryVerse</span>
+                            <span className="text-[10px] bg-black/20 px-1.5 py-0.5 rounded font-mono">3p</span>
                         </button>
                     </div>
 
@@ -511,7 +776,7 @@ export default function ThreeDBookModal() {
                                 }`}
                             >
                                 <Sparkles size={13} />
-                                <span>Summary</span>
+                                <span>Executive Summary</span>
                             </button>
                         </div>
                     </div>
@@ -556,22 +821,24 @@ export default function ThreeDBookModal() {
                 </div>
 
                 {/* ============================================================= */}
-                {/* MAIN 3D OPEN BOOK STAGE (MATCHING USER'S REALISTIC BOOK SPREAD) */}
+                {/* MAIN 3D OPEN BOOK STAGE WITH REALISTIC MOUSE DRAGGING PHYSICS */}
                 {/* ============================================================= */}
                 <div
-                    ref={modalRef}
                     className="relative z-10 w-full max-w-6xl flex-1 flex items-center justify-center px-1 sm:px-4 py-1"
-                    style={{ perspective: '2000px' }}
+                    style={{ perspective: '2400px' }}
                 >
                     {viewMode === 'pages' ? (
-                        /* REAL 2-PAGE SPREAD PHYSICAL BOOK CONTAINER */
-                        <div className="relative w-full max-w-[1080px] h-[520px] xs:h-[560px] sm:h-[620px] md:h-[680px] lg:h-[720px] max-h-[calc(100dvh-140px)] flex items-center justify-center">
-
+                        /* REAL PHYSICAL HARDCOVER BOOK CONTAINER */
+                        <div
+                            ref={bookRef}
+                            onTouchStart={handleTouchStart}
+                            className="relative w-full max-w-[1080px] h-[520px] xs:h-[560px] sm:h-[620px] md:h-[680px] lg:h-[720px] max-h-[calc(100dvh-140px)] flex items-center justify-center"
+                        >
                             {/* Outer Floating Navigation: Previous Spread */}
                             <button
-                                onClick={goPrev}
+                                onClick={() => startAutoFlip('prev')}
                                 disabled={isMobile ? mobilePage <= 1 : spreadIndex <= 0}
-                                className={`absolute left-0 sm:-left-6 md:-left-10 z-40 p-2 sm:p-3 rounded-full bg-slate-900/90 border border-slate-700/80 text-white shadow-2xl transition-all cursor-pointer ${
+                                className={`absolute left-0 sm:-left-6 md:-left-10 z-50 p-2 sm:p-3 rounded-full bg-slate-900/90 border border-slate-700/80 text-white shadow-2xl transition-all cursor-pointer ${
                                     (isMobile ? mobilePage <= 1 : spreadIndex <= 0)
                                         ? 'opacity-20 cursor-not-allowed pointer-events-none'
                                         : 'hover:scale-110 active:scale-95 hover:bg-emerald-500 hover:text-slate-950'
@@ -584,9 +851,9 @@ export default function ThreeDBookModal() {
 
                             {/* Outer Floating Navigation: Next Spread */}
                             <button
-                                onClick={goNext}
+                                onClick={() => startAutoFlip('next')}
                                 disabled={isMobile ? mobilePage >= totalBookPages : spreadIndex >= totalSpreads - 1}
-                                className={`absolute right-0 sm:-right-6 md:-right-10 z-40 p-2 sm:p-3 rounded-full bg-slate-900/90 border border-slate-700/80 text-white shadow-2xl transition-all cursor-pointer ${
+                                className={`absolute right-0 sm:-right-6 md:-right-10 z-50 p-2 sm:p-3 rounded-full bg-slate-900/90 border border-slate-700/80 text-white shadow-2xl transition-all cursor-pointer ${
                                     (isMobile ? mobilePage >= totalBookPages : spreadIndex >= totalSpreads - 1)
                                         ? 'opacity-20 cursor-not-allowed pointer-events-none'
                                         : 'hover:scale-110 active:scale-95 hover:bg-emerald-500 hover:text-slate-950'
@@ -601,6 +868,8 @@ export default function ThreeDBookModal() {
                             <div
                                 className="relative w-full h-full rounded-2xl bg-[#faf9f5] border border-[#d2cebf] flex overflow-hidden transition-all duration-300"
                                 style={{
+                                    perspective: '2400px',
+                                    transformStyle: 'preserve-3d',
                                     boxShadow: `
                                         0 1px 2px rgba(0, 0, 0, 0.15),
                                         0 6px 0 -2px #f4f3ec,
@@ -611,15 +880,15 @@ export default function ThreeDBookModal() {
                                     `
                                 }}
                             >
-                                {/* Center Book Spine Gutter Shadow (Creates realistic 3D depth down the center crease) */}
+                                {/* Center Book Spine Gutter Shadow */}
                                 {!isMobile && (
                                     <>
                                         {/* Center Vertical Deep Crease Line */}
-                                        <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[1px] bg-black/25 z-30 pointer-events-none" />
+                                        <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[1px] bg-black/25 z-40 pointer-events-none" />
 
                                         {/* Central Spine Shadow Gradient spanning Left and Right pages */}
                                         <div
-                                            className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[70px] pointer-events-none z-20"
+                                            className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[70px] pointer-events-none z-35"
                                             style={{
                                                 background: 'linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.06) 30%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.06) 70%, rgba(0,0,0,0) 100%)'
                                             }}
@@ -632,101 +901,245 @@ export default function ThreeDBookModal() {
                                 <div className="absolute top-0 bottom-0 right-0 w-3 bg-gradient-to-l from-black/10 to-transparent pointer-events-none z-20" />
 
                                 {/* --------------------------------------------------------- */}
-                                {/* DESKTOP VIEW: DUAL-PAGE SPREAD (LEFT & RIGHT)            */}
+                                {/* DESKTOP VIEW: DUAL-PAGE SPREAD WITH 3D FLIP MECHANICS     */}
                                 {/* --------------------------------------------------------- */}
                                 {!isMobile ? (
-                                    <div className="w-full h-full flex">
-                                        {/* LEFT PAGE */}
-                                        <div
-                                            onClick={goPrev}
-                                            className="w-1/2 h-full relative overflow-hidden bg-[#faf9f5] flex flex-col justify-between p-3 sm:p-5 md:p-6 border-r border-[#e3dfd3] cursor-pointer group"
-                                            title="Click left page to flip backward"
-                                        >
-                                            {/* Top Academic Header */}
-                                            <div className="flex items-center justify-between pb-1.5 border-b border-black/10 text-[11px] font-serif text-slate-600 select-none">
-                                                <span>{leftPageNum ? `Palestine Polytechnic University • Page ${leftPageNum}` : 'Palestine Polytechnic University'}</span>
-                                                <span className="font-semibold">{leftPageNum ? leftPageNum : '—'}</span>
-                                            </div>
+                                    <div className="w-full h-full relative flex" style={{ transformStyle: 'preserve-3d' }}>
+                                        {/* LEFT HALF OF BOOK */}
+                                        <div className="w-1/2 h-full relative overflow-hidden">
+                                            {/* Static Base Left Page */}
+                                            <SinglePage
+                                                pageNum={currentLeftPage}
+                                                totalBookPages={totalBookPages}
+                                                activeBook={activeBook}
+                                                formatPageSrc={formatPageSrc}
+                                                side="left"
+                                                isInteractive={!flipState.active && spreadIndex > 0}
+                                                onMouseDown={handleMouseDownOnPage('left')}
+                                                isDragging={flipState.active && flipState.direction === 'prev'}
+                                            />
 
-                                            {/* Page Content Viewport */}
-                                            <div className="flex-1 w-full flex items-center justify-center overflow-hidden py-1">
-                                                {leftPageNum ? (
-                                                    <img
-                                                        src={formatPageSrc(leftPageNum)}
-                                                        alt={`Thesis Page ${leftPageNum}`}
-                                                        className="w-full h-full object-contain filter contrast-[1.02] shadow-sm select-none"
-                                                        loading="eager"
+                                            {/* Shadow on Left Page when Next page turns towards it */}
+                                            {flipState.active && flipState.direction === 'next' && p > 0.5 && (
+                                                <div
+                                                    className="absolute inset-0 pointer-events-none z-20"
+                                                    style={{
+                                                        background: 'linear-gradient(to left, rgba(0,0,0,0.4), transparent)',
+                                                        opacity: Math.sin(p * Math.PI) * 0.45
+                                                    }}
+                                                />
+                                            )}
+
+                                            {/* Underneath Page Revealed during Prev flip */}
+                                            {flipState.active && flipState.direction === 'prev' && (
+                                                <div className="absolute inset-0 z-0">
+                                                    <SinglePage
+                                                        pageNum={prevLeftPage}
+                                                        totalBookPages={totalBookPages}
+                                                        activeBook={activeBook}
+                                                        formatPageSrc={formatPageSrc}
+                                                        side="left"
                                                     />
-                                                ) : (
-                                                    /* Inside Front Cover / Academic Seal */
-                                                    <div className="h-full flex flex-col items-center justify-center text-center p-6 bg-gradient-to-br from-[#f5f3eb] to-[#e8e4d5] rounded-xl border border-black/5 shadow-inner">
-                                                        <div className="w-20 h-20 rounded-full border-2 border-emerald-600/30 flex items-center justify-center bg-white shadow-md mb-4">
-                                                            <Award size={40} className="text-emerald-700" />
-                                                        </div>
-                                                        <h3 className="font-serif font-black text-lg text-slate-800 tracking-wide uppercase mb-1">
-                                                            Palestine Polytechnic University
-                                                        </h3>
-                                                        <p className="font-serif text-xs text-slate-600 italic max-w-xs mb-3">
-                                                            College of Information Technology & Computer Engineering
-                                                        </p>
-                                                        <div className="text-[11px] font-sans font-medium text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full">
-                                                            Official Graduation Thesis · 2025–2026
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            {/* Bottom Page Footer */}
-                                            <div className="pt-1 border-t border-black/10 flex items-center justify-between text-[10px] font-serif text-slate-500">
-                                                <span>{leftPageNum ? `AI-Powered Retinal OCT Diagnosis` : 'Cover'}</span>
-                                                <span>{leftPageNum ? `${leftPageNum}` : ''}</span>
-                                            </div>
-
-                                            {/* Left Page Inner Spine Shadow */}
-                                            <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-black/15 to-transparent pointer-events-none" />
+                                                    <div
+                                                        className="absolute inset-0 pointer-events-none z-10"
+                                                        style={{
+                                                            background: 'linear-gradient(to left, rgba(0,0,0,0.4), transparent)',
+                                                            opacity: Math.sin(p * Math.PI) * 0.35
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
 
-                                        {/* RIGHT PAGE */}
-                                        <div
-                                            onClick={goNext}
-                                            className="w-1/2 h-full relative overflow-hidden bg-[#faf9f5] flex flex-col justify-between p-3 sm:p-5 md:p-6 cursor-pointer group"
-                                            title="Click right page to flip forward"
-                                        >
-                                            {/* Top Academic Header */}
-                                            <div className="flex items-center justify-between pb-1.5 border-b border-black/10 text-[11px] font-serif text-slate-600 select-none">
-                                                <span className="font-semibold">{rightPageNum}</span>
-                                                <span>{rightPageNum === 1 ? 'Title & Cover' : `Department of Computer Science • Page ${rightPageNum}`}</span>
-                                            </div>
+                                        {/* RIGHT HALF OF BOOK */}
+                                        <div className="w-1/2 h-full relative overflow-hidden">
+                                            {/* Static Base Right Page */}
+                                            <SinglePage
+                                                pageNum={currentRightPage}
+                                                totalBookPages={totalBookPages}
+                                                activeBook={activeBook}
+                                                formatPageSrc={formatPageSrc}
+                                                side="right"
+                                                isInteractive={!flipState.active && spreadIndex < totalSpreads - 1}
+                                                onMouseDown={handleMouseDownOnPage('right')}
+                                                isDragging={flipState.active && flipState.direction === 'next'}
+                                            />
 
-                                            {/* Page Content Viewport */}
-                                            <div className="flex-1 w-full flex items-center justify-center overflow-hidden py-1">
-                                                {rightPageNum <= totalBookPages ? (
-                                                    <img
-                                                        src={formatPageSrc(rightPageNum)}
-                                                        alt={`Thesis Page ${rightPageNum}`}
-                                                        className="w-full h-full object-contain filter contrast-[1.02] shadow-sm select-none"
-                                                        loading="eager"
+                                            {/* Shadow on Right Page when Prev page turns towards it */}
+                                            {flipState.active && flipState.direction === 'prev' && p > 0.5 && (
+                                                <div
+                                                    className="absolute inset-0 pointer-events-none z-20"
+                                                    style={{
+                                                        background: 'linear-gradient(to right, rgba(0,0,0,0.4), transparent)',
+                                                        opacity: Math.sin(p * Math.PI) * 0.45
+                                                    }}
+                                                />
+                                            )}
+
+                                            {/* Underneath Page Revealed during Next flip */}
+                                            {flipState.active && flipState.direction === 'next' && (
+                                                <div className="absolute inset-0 z-0">
+                                                    <SinglePage
+                                                        pageNum={nextRightPage}
+                                                        totalBookPages={totalBookPages}
+                                                        activeBook={activeBook}
+                                                        formatPageSrc={formatPageSrc}
+                                                        side="right"
                                                     />
-                                                ) : (
-                                                    <div className="h-full flex flex-col items-center justify-center text-slate-400 font-serif">
-                                                        <span>End of Document</span>
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            {/* Bottom Page Footer */}
-                                            <div className="pt-1 border-t border-black/10 flex items-center justify-between text-[10px] font-serif text-slate-500">
-                                                <span>{rightPageNum}</span>
-                                                <span>{activeBook.titleEn}</span>
-                                            </div>
-
-                                            {/* Right Page Inner Spine Shadow */}
-                                            <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-black/15 to-transparent pointer-events-none" />
+                                                    <div
+                                                        className="absolute inset-0 pointer-events-none z-10"
+                                                        style={{
+                                                            background: 'linear-gradient(to right, rgba(0,0,0,0.4), transparent)',
+                                                            opacity: Math.sin(p * Math.PI) * 0.35
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
+
+                                        {/* ========================================================= */}
+                                        {/* 3D TURNING LEAF (NEXT FLIP: PIVOTS FROM SPINE TO LEFT)    */}
+                                        {/* ========================================================= */}
+                                        {flipState.active && flipState.direction === 'next' && (
+                                            <div
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: '50%',
+                                                    width: '50%',
+                                                    height: '100%',
+                                                    transformOrigin: 'left center',
+                                                    transform: `rotateY(${-p * 180}deg)`,
+                                                    transformStyle: 'preserve-3d',
+                                                    zIndex: 30,
+                                                    pointerEvents: 'none'
+                                                }}
+                                            >
+                                                {/* Front Face: Current Right Page */}
+                                                <div
+                                                    style={{
+                                                        position: 'absolute',
+                                                        inset: 0,
+                                                        backfaceVisibility: 'hidden',
+                                                        WebkitBackfaceVisibility: 'hidden',
+                                                        transform: 'rotateY(0deg)'
+                                                    }}
+                                                >
+                                                    <SinglePage
+                                                        pageNum={currentRightPage}
+                                                        totalBookPages={totalBookPages}
+                                                        activeBook={activeBook}
+                                                        formatPageSrc={formatPageSrc}
+                                                        side="right"
+                                                    />
+                                                    <div
+                                                        className="absolute inset-0 pointer-events-none z-10"
+                                                        style={{
+                                                            background: `linear-gradient(to right, rgba(0,0,0,${0.35 * Math.sin(p * Math.PI)}), transparent 60%)`
+                                                        }}
+                                                    />
+                                                </div>
+
+                                                {/* Back Face: Next Left Page */}
+                                                <div
+                                                    style={{
+                                                        position: 'absolute',
+                                                        inset: 0,
+                                                        backfaceVisibility: 'hidden',
+                                                        WebkitBackfaceVisibility: 'hidden',
+                                                        transform: 'rotateY(180deg)'
+                                                    }}
+                                                >
+                                                    <SinglePage
+                                                        pageNum={nextLeftPage}
+                                                        totalBookPages={totalBookPages}
+                                                        activeBook={activeBook}
+                                                        formatPageSrc={formatPageSrc}
+                                                        side="left"
+                                                    />
+                                                    <div
+                                                        className="absolute inset-0 pointer-events-none z-10"
+                                                        style={{
+                                                            background: `linear-gradient(to left, rgba(0,0,0,${0.35 * Math.sin(p * Math.PI)}), transparent 60%)`
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* ========================================================= */}
+                                        {/* 3D TURNING LEAF (PREV FLIP: PIVOTS FROM SPINE TO RIGHT)   */}
+                                        {/* ========================================================= */}
+                                        {flipState.active && flipState.direction === 'prev' && (
+                                            <div
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: '50%',
+                                                    height: '100%',
+                                                    transformOrigin: 'right center',
+                                                    transform: `rotateY(${p * 180}deg)`,
+                                                    transformStyle: 'preserve-3d',
+                                                    zIndex: 30,
+                                                    pointerEvents: 'none'
+                                                }}
+                                            >
+                                                {/* Front Face: Current Left Page */}
+                                                <div
+                                                    style={{
+                                                        position: 'absolute',
+                                                        inset: 0,
+                                                        backfaceVisibility: 'hidden',
+                                                        WebkitBackfaceVisibility: 'hidden',
+                                                        transform: 'rotateY(0deg)'
+                                                    }}
+                                                >
+                                                    <SinglePage
+                                                        pageNum={currentLeftPage}
+                                                        totalBookPages={totalBookPages}
+                                                        activeBook={activeBook}
+                                                        formatPageSrc={formatPageSrc}
+                                                        side="left"
+                                                    />
+                                                    <div
+                                                        className="absolute inset-0 pointer-events-none z-10"
+                                                        style={{
+                                                            background: `linear-gradient(to left, rgba(0,0,0,${0.35 * Math.sin(p * Math.PI)}), transparent 60%)`
+                                                        }}
+                                                    />
+                                                </div>
+
+                                                {/* Back Face: Previous Right Page */}
+                                                <div
+                                                    style={{
+                                                        position: 'absolute',
+                                                        inset: 0,
+                                                        backfaceVisibility: 'hidden',
+                                                        WebkitBackfaceVisibility: 'hidden',
+                                                        transform: 'rotateY(180deg)'
+                                                    }}
+                                                >
+                                                    <SinglePage
+                                                        pageNum={prevRightPage}
+                                                        totalBookPages={totalBookPages}
+                                                        activeBook={activeBook}
+                                                        formatPageSrc={formatPageSrc}
+                                                        side="right"
+                                                    />
+                                                    <div
+                                                        className="absolute inset-0 pointer-events-none z-10"
+                                                        style={{
+                                                            background: `linear-gradient(to right, rgba(0,0,0,${0.35 * Math.sin(p * Math.PI)}), transparent 60%)`
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 ) : (
                                     /* --------------------------------------------------------- */
-                                    /* MOBILE VIEW: SINGLE PAGE DISPLAY WITH SPINE BINDING SHADOW */
+                                    /* MOBILE VIEW: SINGLE PAGE DISPLAY WITH TOUCH DRAG SUPPORT  */
                                     /* --------------------------------------------------------- */
                                     <div className="w-full h-full relative overflow-hidden bg-[#faf9f5] flex flex-col justify-between p-3 sm:p-5">
                                         <div className="flex items-center justify-between pb-1.5 border-b border-black/10 text-xs font-serif text-slate-700">
@@ -734,17 +1147,26 @@ export default function ThreeDBookModal() {
                                             <span className="text-[11px] text-slate-500 font-sans">{activeBook.badge}</span>
                                         </div>
 
-                                        <div className="flex-1 w-full flex items-center justify-center overflow-hidden py-1">
+                                        <div
+                                            className="flex-1 w-full flex items-center justify-center overflow-hidden py-1 relative"
+                                            style={{
+                                                transform: flipState.active
+                                                    ? `translateX(${flipState.direction === 'next' ? -p * 20 : p * 20}px)`
+                                                    : 'none',
+                                                transition: flipState.source === 'auto' ? 'transform 0.25s ease' : 'none'
+                                            }}
+                                        >
                                             <img
                                                 src={formatPageSrc(mobilePage)}
                                                 alt={`Thesis Page ${mobilePage}`}
                                                 className="w-full h-full object-contain filter contrast-[1.02]"
                                                 loading="eager"
+                                                draggable={false}
                                             />
                                         </div>
 
                                         <div className="pt-1 border-t border-black/10 flex items-center justify-between text-[11px] font-serif text-slate-600">
-                                            <span>Palestine Polytechnic University</span>
+                                            <span>Swipe or tap arrows to flip</span>
                                             <span className="font-bold">{mobilePage}</span>
                                         </div>
                                     </div>
@@ -758,63 +1180,91 @@ export default function ThreeDBookModal() {
                         <div
                             className={`relative w-full max-w-[880px] h-[520px] xs:h-[560px] sm:h-[620px] rounded-2xl ${activeBook.coverColor} border-2 ${activeBook.borderColor} shadow-2xl flex flex-col overflow-hidden transition-all duration-300`}
                         >
-                            <div className="p-4 sm:p-7 md:p-9 flex flex-col justify-between h-full overflow-y-auto">
-                                <div>
-                                    <div className="flex items-center justify-between pb-2 mb-3 border-b border-white/10 text-xs font-mono text-slate-400">
-                                        <span className={selectedBookId === 'volunteer' ? 'text-emerald-400 font-bold' : 'text-amber-400 font-bold'}>
-                                            {isRTL ? activeBook.pages[1].chapterAr : activeBook.pages[1].chapterEn}
-                                        </span>
-                                        <span>Official Published Thesis Summary</span>
-                                    </div>
+                            {/* Chapter Selector Tabs */}
+                            {activeBook.chapters && (
+                                <div className="flex items-center gap-1.5 p-3 border-b border-white/10 bg-black/20 overflow-x-auto">
+                                    {activeBook.chapters.map((ch, idx) => (
+                                        <button
+                                            key={ch.id || idx}
+                                            onClick={() => setActiveChapterIndex(idx)}
+                                            className={`px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                                                activeChapterIndex === idx
+                                                    ? 'bg-emerald-500 text-slate-950 font-bold shadow'
+                                                    : 'text-slate-300 hover:text-white hover:bg-white/10'
+                                            }`}
+                                        >
+                                            {isRTL ? ch.chapterAr.split(':')[0] : `Chapter ${idx + 1}`}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
 
-                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white mb-3">
-                                        {isRTL ? activeBook.pages[1].titleAr : activeBook.pages[1].titleEn}
-                                    </h2>
+                            {/* Chapter Content View */}
+                            {activeBook.chapters && activeBook.chapters[activeChapterIndex] && (
+                                <div className="p-4 sm:p-7 md:p-9 flex flex-col justify-between h-full overflow-y-auto">
+                                    <div>
+                                        <div className="flex items-center justify-between pb-2 mb-3 border-b border-white/10 text-xs font-mono text-slate-400">
+                                            <span className={selectedBookId === 'volunteer' ? 'text-emerald-400 font-bold' : 'text-amber-400 font-bold'}>
+                                                {isRTL
+                                                    ? activeBook.chapters[activeChapterIndex].chapterAr
+                                                    : activeBook.chapters[activeChapterIndex].chapterEn}
+                                            </span>
+                                            <span>Published Academic Thesis Summary</span>
+                                        </div>
 
-                                    <div className="text-slate-200 text-xs sm:text-sm md:text-[15px] leading-relaxed whitespace-pre-line mb-4 font-normal">
-                                        {isRTL ? activeBook.pages[1].contentAr : activeBook.pages[1].contentEn}
-                                    </div>
+                                        <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white mb-3">
+                                            {isRTL
+                                                ? activeBook.chapters[activeChapterIndex].titleAr
+                                                : activeBook.chapters[activeChapterIndex].titleEn}
+                                        </h2>
 
-                                    {/* Highlights Row */}
-                                    {activeBook.pages[1].highlights && (
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-3">
-                                            {activeBook.pages[1].highlights.map((h, i) => (
-                                                <div key={i} className="bg-black/40 border border-white/10 rounded-xl p-3 flex flex-col gap-1">
-                                                    <div className="flex items-center gap-2 font-bold text-xs text-emerald-300">
-                                                        <CheckCircle2 size={14} className="text-emerald-400" />
-                                                        <span>{h.titleEn}</span>
+                                        <div className="text-slate-200 text-xs sm:text-sm md:text-[15px] leading-relaxed whitespace-pre-line mb-4 font-normal">
+                                            {isRTL
+                                                ? activeBook.chapters[activeChapterIndex].contentAr
+                                                : activeBook.chapters[activeChapterIndex].contentEn}
+                                        </div>
+
+                                        {/* Highlights Row */}
+                                        {activeBook.chapters[activeChapterIndex].highlights && (
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-3">
+                                                {activeBook.chapters[activeChapterIndex].highlights.map((h, i) => (
+                                                    <div key={i} className="bg-black/40 border border-white/10 rounded-xl p-3 flex flex-col gap-1">
+                                                        <div className="flex items-center gap-2 font-bold text-xs text-emerald-300">
+                                                            <CheckCircle2 size={14} className="text-emerald-400" />
+                                                            <span>{h.titleEn}</span>
+                                                        </div>
+                                                        <p className="text-[11px] text-slate-300 leading-snug">{h.descEn}</p>
                                                     </div>
-                                                    <p className="text-[11px] text-slate-300 leading-snug">{h.descEn}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
+                                                ))}
+                                            </div>
+                                        )}
 
-                                    {/* Official Acknowledgment Blockquote */}
-                                    <div className="mt-4 p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-100">
-                                        <div className="font-bold text-xs uppercase tracking-wider text-emerald-400 mb-1 flex items-center gap-1.5">
-                                            <Award size={14} />
-                                            <span>Official Thesis Acknowledgment Citation</span>
-                                        </div>
-                                        <p className="text-xs sm:text-sm italic font-serif leading-relaxed">
-                                            "Special thanks to Omar Mohamed Abdelsalam Bassiouny Gad, a Software Engineer from Egypt, for his remote support and guidance. His expertise, generosity in sharing knowledge played a significant role in the development and success of this work."
-                                        </p>
-                                        <div className="text-[11px] text-slate-400 mt-2 font-sans">
-                                            — Palestine Polytechnic University Thesis Board (Supervisor: Dr. Hashem Tamimi)
+                                        {/* Official Acknowledgment Citation */}
+                                        <div className="mt-4 p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-100">
+                                            <div className="font-bold text-xs uppercase tracking-wider text-emerald-400 mb-1 flex items-center gap-1.5">
+                                                <Award size={14} />
+                                                <span>Official Thesis Acknowledgment Citation</span>
+                                            </div>
+                                            <p className="text-xs sm:text-sm italic font-serif leading-relaxed">
+                                                "Special thanks to Omar Mohamed Abdelsalam Bassiouny Gad, a Software Engineer from Egypt, for his remote support and guidance. His expertise, generosity in sharing knowledge played a significant role in the development and success of this work."
+                                            </p>
+                                            <div className="text-[11px] text-slate-400 mt-2 font-sans">
+                                                — Palestine Polytechnic University Thesis Board (Supervisor: Dr. Hashem Tamimi)
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-                                    <button
-                                        onClick={() => setViewMode('pages')}
-                                        className="px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs flex items-center gap-2 cursor-pointer hover:bg-emerald-400 shadow-md"
-                                    >
-                                        <BookOpen size={14} />
-                                        <span>Open Full 2-Page Book Spread</span>
-                                    </button>
+                                    <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                                        <button
+                                            onClick={() => setViewMode('pages')}
+                                            className="px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs flex items-center gap-2 cursor-pointer hover:bg-emerald-400 shadow-md"
+                                        >
+                                            <BookOpen size={14} />
+                                            <span>Open Authentic 2-Page Scans</span>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -827,9 +1277,7 @@ export default function ThreeDBookModal() {
                     <div className="flex items-center gap-2 font-mono">
                         <span className="font-bold text-emerald-400">
                             {!isMobile ? (
-                                spreadIndex === 0
-                                    ? 'Cover • Page 1'
-                                    : `Pages ${leftPageNum} – ${Math.min(rightPageNum, totalBookPages)} of ${totalBookPages}`
+                                `Pages ${currentLeftPage} – ${Math.min(currentRightPage, totalBookPages)} of ${totalBookPages}`
                             ) : (
                                 `Page ${mobilePage} of ${totalBookPages}`
                             )}
@@ -862,14 +1310,14 @@ export default function ThreeDBookModal() {
                     {/* Right: Quick Page Flippers */}
                     <div className="flex items-center gap-1.5">
                         <button
-                            onClick={goPrev}
+                            onClick={() => startAutoFlip('prev')}
                             disabled={isMobile ? mobilePage <= 1 : spreadIndex <= 0}
                             className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-30 cursor-pointer font-bold"
                         >
                             ◄
                         </button>
                         <button
-                            onClick={goNext}
+                            onClick={() => startAutoFlip('next')}
                             disabled={isMobile ? mobilePage >= totalBookPages : spreadIndex >= totalSpreads - 1}
                             className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-30 cursor-pointer font-bold"
                         >
