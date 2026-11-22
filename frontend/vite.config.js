@@ -22,36 +22,35 @@ function resolveBackendPort() {
 
 const backendPort = resolveBackendPort();
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     plugins: [
         react()
     ],
     publicDir: 'public',
+    oxc: mode === 'production' ? {
+        drop: ['console', 'debugger']
+    } : {},
     build: {
         outDir: 'dist',
         emptyOutDir: true,
         minify: 'esbuild',
         sourcemap: false,
-        // More aggressive code splitting
+        // Enterprise code splitting and chunk isolation
         rollupOptions: {
             output: {
                 manualChunks(id) {
                     if (!id.includes('node_modules')) return null;
+                    if (id.includes('three')) return 'three';
                     if (id.includes('framer-motion')) return 'motion';
                     if (id.includes('react-icons') || id.includes('lucide-react')) return 'icons';
-                    if (id.includes('react') || id.includes('react-dom')) return 'vendor';
+                    if (id.includes('react') || id.includes('react-dom') || id.includes('axios')) return 'vendor';
                     return null;
                 }
             }
         },
         // Asset optimization
         assetsInlineLimit: 4096,
-        chunkSizeWarningLimit: 1000,
-        terserOptions: {
-            compress: {
-                drop_console: true
-            }
-        }
+        chunkSizeWarningLimit: 1000
     },
     server: {
         port: 5173,
@@ -65,4 +64,4 @@ export default defineConfig({
             }
         }
     }
-});
+}));

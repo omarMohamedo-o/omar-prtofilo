@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
 
 // Import components
 import Header from './Header';
@@ -15,13 +15,14 @@ import Languages from './Languages';
 import FAQ from './FAQ';
 import Contact from './Contact';
 import Footer from './Footer';
-import ChatWidget from './ChatWidget';
 import UpArrowButton from './UpArrowButton';
-import DiscoveryForm from './DiscoveryForm';
 import SpaceBackground from './SpaceBackground';
-import MinecraftGuide3D from './MinecraftGuide3D';
-import ThreeDBookModal from './ThreeDBookModal';
 import Volunteering from './Volunteering';
+
+// Lazy-loaded heavy off-screen modals and interactive widgets for instant initial page paint
+const ThreeDBookModal = React.lazy(() => import('./ThreeDBookModal'));
+const ChatWidget = React.lazy(() => import('./ChatWidget'));
+const DiscoveryForm = React.lazy(() => import('./DiscoveryForm'));
 
 // Import data with mode support
 import { MODES, getPortfolioData } from '../data/data';
@@ -390,7 +391,9 @@ export default function Portfolio() {
       <FAQ isVisible={isVisible} themeColor={themeColor} />
 
       {/* Discovery Form Section */}
-      <DiscoveryForm isVisible={isVisible} themeColor={themeColor} />
+      <Suspense fallback={null}>
+        <DiscoveryForm isVisible={isVisible} themeColor={themeColor} />
+      </Suspense>
 
       {/* Contact Section */}
       <Contact isVisible={isVisible} personalInfo={portfolioData.personalInfo} themeColor={themeColor} />
@@ -405,10 +408,14 @@ export default function Portfolio() {
       {/* <MinecraftGuide3D /> */}
 
       {/* 3D Interactive Books Modal (Graduation Project & Volunteer Thesis) */}
-      <ThreeDBookModal />
+      <Suspense fallback={null}>
+        <ThreeDBookModal />
+      </Suspense>
 
       {/* Chat Widget */}
-      <ChatWidget />
+      <Suspense fallback={null}>
+        <ChatWidget />
+      </Suspense>
     </div>
   );
 }

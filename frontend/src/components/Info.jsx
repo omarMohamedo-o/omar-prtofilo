@@ -256,6 +256,9 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
                 alt={personalInfo.name || 'Profile'}
                 className="w-full h-full object-cover"
                 style={{ objectPosition: '35% 12%' }}
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
             </div>
