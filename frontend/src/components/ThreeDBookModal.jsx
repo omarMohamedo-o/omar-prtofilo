@@ -53,11 +53,11 @@ export const BOOKS_DATA = {
         titleAr: 'جامعة بوليتكنك فلسطين: نظام تشخيص أمراض شبكية العين',
         subtitleEn: 'Published Academic Graduation Research Thesis (2025–2026)',
         subtitleAr: 'أطروحة مشروع تخرج هندسي معتمدة ومنشورة (2025–2026)',
-        themeColor: 'from-emerald-600 via-teal-600 to-emerald-950',
+        themeColor: 'from-cyan-600 via-blue-600 to-slate-950',
         badge: 'Official Thesis Acknowledgement',
         badgeAr: 'شكر رسمي في الأطروحة الأكاديمية',
-        coverColor: 'bg-gradient-to-br from-[#06241b] via-[#093527] to-[#041a13]',
-        borderColor: 'border-emerald-500/60',
+        coverColor: 'bg-gradient-to-br from-[#071d2b] via-[#0a2f46] to-[#05141e]',
+        borderColor: 'border-cyan-500/60',
         pdfUrl: '/Books/AI-Powered%20Retinal%20OCT%20Disease%20Diagnosis%20and%20Analysis%20System.pdf',
         pageImages: {
             basePath: '/Books/retinal-oct-thesis/',
@@ -704,7 +704,7 @@ export default function ThreeDBookModal() {
             >
                 {/* Background Ambient Glow */}
                 <div className={`absolute w-[600px] h-[600px] rounded-full blur-[160px] opacity-20 pointer-events-none ${
-                    selectedBookId === 'volunteer' ? 'bg-emerald-500' : 'bg-amber-500'
+                    selectedBookId === 'volunteer' ? 'bg-cyan-500' : 'bg-blue-500'
                 }`} />
 
                 {/* ============================================================= */}
@@ -717,7 +717,7 @@ export default function ThreeDBookModal() {
                             onClick={() => switchBook('volunteer')}
                             className={`px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer touch-manipulation ${
                                 selectedBookId === 'volunteer'
-                                    ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold shadow-md shadow-emerald-500/25'
+                                    ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold shadow-md shadow-cyan-500/25'
                                     : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
                             }`}
                         >
@@ -747,10 +747,10 @@ export default function ThreeDBookModal() {
                         {selectedBookId === 'volunteer' && (
                             <button
                                 onClick={jumpToAcknowledgment}
-                                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 hover:bg-emerald-500/25 transition-all text-xs font-semibold cursor-pointer shadow-sm animate-pulse"
+                                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/15 border border-cyan-400/40 text-cyan-300 hover:bg-cyan-500/25 transition-all text-xs font-semibold cursor-pointer shadow-sm animate-pulse"
                                 title="Jump directly to Page 2 where Omar Mohamed is officially acknowledged in the thesis"
                             >
-                                <Bookmark size={13} className="text-emerald-400" />
+                                <Bookmark size={13} className="text-cyan-400" />
                                 <span>⭐ Official Acknowledgment (Page 2)</span>
                             </button>
                         )}
@@ -800,7 +800,7 @@ export default function ThreeDBookModal() {
                                 download
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="px-3 py-1.5 rounded-full bg-slate-900/80 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-sm"
+                                className="px-3 py-1.5 rounded-full bg-slate-900/80 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-500 hover:text-slate-950 transition-all text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-sm"
                                 title="Download Full Official Thesis PDF Document"
                             >
                                 <Download size={13} />
@@ -841,7 +841,7 @@ export default function ThreeDBookModal() {
                                 className={`absolute left-0 sm:-left-6 md:-left-10 z-50 p-2 sm:p-3 rounded-full bg-slate-900/90 border border-slate-700/80 text-white shadow-2xl transition-all cursor-pointer ${
                                     (isMobile ? mobilePage <= 1 : spreadIndex <= 0)
                                         ? 'opacity-20 cursor-not-allowed pointer-events-none'
-                                        : 'hover:scale-110 active:scale-95 hover:bg-emerald-500 hover:text-slate-950'
+                                        : 'hover:scale-110 active:scale-95 hover:bg-cyan-500 hover:text-slate-950'
                                 }`}
                                 aria-label="Previous Page"
                                 title="Previous Page (◄ Arrow Left)"
@@ -856,7 +856,7 @@ export default function ThreeDBookModal() {
                                 className={`absolute right-0 sm:-right-6 md:-right-10 z-50 p-2 sm:p-3 rounded-full bg-slate-900/90 border border-slate-700/80 text-white shadow-2xl transition-all cursor-pointer ${
                                     (isMobile ? mobilePage >= totalBookPages : spreadIndex >= totalSpreads - 1)
                                         ? 'opacity-20 cursor-not-allowed pointer-events-none'
-                                        : 'hover:scale-110 active:scale-95 hover:bg-emerald-500 hover:text-slate-950'
+                                        : 'hover:scale-110 active:scale-95 hover:bg-cyan-500 hover:text-slate-950'
                                 }`}
                                 aria-label="Next Page"
                                 title="Next Page (► Arrow Right)"
@@ -1143,7 +1143,7 @@ export default function ThreeDBookModal() {
                                     /* --------------------------------------------------------- */
                                     <div className="w-full h-full relative overflow-hidden bg-[#faf9f5] flex flex-col justify-between p-3 sm:p-5">
                                         <div className="flex items-center justify-between pb-1.5 border-b border-black/10 text-xs font-serif text-slate-700">
-                                            <span className="font-bold text-emerald-800">Page {mobilePage} of {totalBookPages}</span>
+                                            <span className="font-bold text-cyan-700">Page {mobilePage} of {totalBookPages}</span>
                                             <span className="text-[11px] text-slate-500 font-sans">{activeBook.badge}</span>
                                         </div>
 
@@ -1189,7 +1189,7 @@ export default function ThreeDBookModal() {
                                             onClick={() => setActiveChapterIndex(idx)}
                                             className={`px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                                                 activeChapterIndex === idx
-                                                    ? 'bg-emerald-500 text-slate-950 font-bold shadow'
+                                                    ? 'bg-cyan-500 text-slate-950 font-bold shadow'
                                                     : 'text-slate-300 hover:text-white hover:bg-white/10'
                                             }`}
                                         >
@@ -1204,7 +1204,7 @@ export default function ThreeDBookModal() {
                                 <div className="p-4 sm:p-7 md:p-9 flex flex-col justify-between h-full overflow-y-auto">
                                     <div>
                                         <div className="flex items-center justify-between pb-2 mb-3 border-b border-white/10 text-xs font-mono text-slate-400">
-                                            <span className={selectedBookId === 'volunteer' ? 'text-emerald-400 font-bold' : 'text-amber-400 font-bold'}>
+                                            <span className={selectedBookId === 'volunteer' ? 'text-cyan-400 font-bold' : 'text-amber-400 font-bold'}>
                                                 {isRTL
                                                     ? activeBook.chapters[activeChapterIndex].chapterAr
                                                     : activeBook.chapters[activeChapterIndex].chapterEn}
@@ -1229,8 +1229,8 @@ export default function ThreeDBookModal() {
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-3">
                                                 {activeBook.chapters[activeChapterIndex].highlights.map((h, i) => (
                                                     <div key={i} className="bg-black/40 border border-white/10 rounded-xl p-3 flex flex-col gap-1">
-                                                        <div className="flex items-center gap-2 font-bold text-xs text-emerald-300">
-                                                            <CheckCircle2 size={14} className="text-emerald-400" />
+                                                        <div className="flex items-center gap-2 font-bold text-xs text-cyan-300">
+                                                            <CheckCircle2 size={14} className="text-cyan-400" />
                                                             <span>{h.titleEn}</span>
                                                         </div>
                                                         <p className="text-[11px] text-slate-300 leading-snug">{h.descEn}</p>
@@ -1240,8 +1240,8 @@ export default function ThreeDBookModal() {
                                         )}
 
                                         {/* Official Acknowledgment Citation */}
-                                        <div className="mt-4 p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-100">
-                                            <div className="font-bold text-xs uppercase tracking-wider text-emerald-400 mb-1 flex items-center gap-1.5">
+                                        <div className="mt-4 p-4 rounded-xl bg-cyan-950/40 border border-cyan-500/40 text-cyan-100">
+                                            <div className="font-bold text-xs uppercase tracking-wider text-cyan-400 mb-1 flex items-center gap-1.5">
                                                 <Award size={14} />
                                                 <span>Official Thesis Acknowledgment Citation</span>
                                             </div>
@@ -1257,7 +1257,7 @@ export default function ThreeDBookModal() {
                                     <div className="pt-3 border-t border-white/10 flex items-center justify-between">
                                         <button
                                             onClick={() => setViewMode('pages')}
-                                            className="px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs flex items-center gap-2 cursor-pointer hover:bg-emerald-400 shadow-md"
+                                            className="px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs flex items-center gap-2 cursor-pointer hover:bg-cyan-400 shadow-md"
                                         >
                                             <BookOpen size={14} />
                                             <span>Open Authentic 2-Page Scans</span>
@@ -1275,7 +1275,7 @@ export default function ThreeDBookModal() {
                 <div className="relative z-30 w-full max-w-2xl flex flex-col sm:flex-row items-center justify-between gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/60 shadow-xl text-xs text-slate-300">
                     {/* Left: Spread / Page Counter */}
                     <div className="flex items-center gap-2 font-mono">
-                        <span className="font-bold text-emerald-400">
+                        <span className="font-bold text-cyan-400">
                             {!isMobile ? (
                                 `Pages ${currentLeftPage} – ${Math.min(currentRightPage, totalBookPages)} of ${totalBookPages}`
                             ) : (
@@ -1302,7 +1302,7 @@ export default function ThreeDBookModal() {
                                 }
                                 if (soundEnabled) playPageTurnSound();
                             }}
-                            className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-400"
+                            className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400"
                             title="Scrub across thesis pages"
                         />
                     </div>

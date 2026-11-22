@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, BookOpen } from 'lucide-react';
 import {
   titleVariant,
   containerVariant,
@@ -110,19 +110,21 @@ const Projects = function Projects({ isVisible, projects = [], themeColor = 'cya
                 ))}
               </div>
 
-              {/* 3D Interactive Graduation Book Action Button */}
+              {/* Graduation Project Book Action Button */}
               {(project.title?.toLowerCase().includes('historyverse') || project.description?.toLowerCase().includes('graduation')) && (
-                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-end">
                   <button
                     onClick={() => window.dispatchEvent(new CustomEvent('open-3d-book', { detail: { bookId: 'graduation' } }))}
-                    className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-amber-600/20 hover:from-amber-500 hover:to-yellow-500 hover:text-slate-950 text-amber-300 border border-amber-500/40 font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg hover:shadow-amber-500/30 touch-manipulation group"
+                    className={`px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer shadow-sm active:scale-95 group ${
+                      themeColor === 'purple'
+                        ? 'bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border-purple-500/40 hover:shadow-purple-500/20'
+                        : 'bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border-cyan-500/40 hover:shadow-cyan-500/20'
+                    }`}
+                    title={isRTL ? 'عرض توثيق مشروع التخرج' : 'Open Bachelor Graduation Project Report (Grade A+)'}
                   >
-                    <span className="text-base group-hover:scale-110 transition-transform">📖</span>
-                    <span>{isRTL ? 'تصفح كتاب مشروع التخرج 3D (امتياز A+)' : 'Open 3D Graduation Book (Grade A+)'}</span>
+                    <BookOpen size={14} className="group-hover:scale-110 transition-transform" />
+                    <span>{isRTL ? 'مشروع التخرج (Grade A+)' : 'Graduation Project (A+)'}</span>
                   </button>
-                  <span className="text-[11px] font-mono text-amber-400 font-bold bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-full">
-                    A+
-                  </span>
                 </div>
               )}
             </motion.div>

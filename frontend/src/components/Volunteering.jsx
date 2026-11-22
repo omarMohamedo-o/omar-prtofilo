@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { GraduationCap, Award } from 'lucide-react';
+import { GraduationCap, Award, BookOpen } from 'lucide-react';
 import {
   titleVariant,
   containerVariant,
@@ -73,7 +73,11 @@ const Volunteering = function Volunteering({ isVisible, volunteering = [], theme
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
                   <h3 className={`text-xl sm:text-2xl font-bold ${textColor}`}>{item.title}</h3>
                   {item.badge && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${
+                      themeColor === 'purple'
+                        ? 'bg-purple-500/10 text-purple-400 border-purple-500/30'
+                        : 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30'
+                    }`}>
                       <Award size={13} />
                       <span>{item.badge}</span>
                     </span>
@@ -101,18 +105,20 @@ const Volunteering = function Volunteering({ isVisible, volunteering = [], theme
                 ))}
               </ul>
 
-              {/* 3D Interactive Volunteer Mentorship Thesis Button */}
-              <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+              {/* Thesis Action Button (Opens 3D Book Modal) */}
+              <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-end">
                 <button
                   onClick={() => window.dispatchEvent(new CustomEvent('open-3d-book', { detail: { bookId: 'volunteer' } }))}
-                  className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-emerald-600/20 hover:from-emerald-500 hover:to-teal-500 hover:text-slate-950 text-emerald-300 border border-emerald-500/40 font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg hover:shadow-emerald-500/30 touch-manipulation group"
+                  className={`px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer shadow-sm active:scale-95 group ${
+                    themeColor === 'purple'
+                      ? 'bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border-purple-500/40 hover:shadow-purple-500/20'
+                      : 'bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border-cyan-500/40 hover:shadow-cyan-500/20'
+                  }`}
+                  title={isRTL ? 'عرض وتصفح الأطروحة الأكاديمية' : 'Open Published Academic Research Thesis'}
                 >
-                  <span className="text-base group-hover:scale-110 transition-transform">📖</span>
-                  <span>{isRTL ? 'تصفح كتاب أطروحة التطوع 3D (جامعة بوليتكنك فلسطين)' : 'Open 3D Volunteer Research Book'}</span>
+                  <BookOpen size={14} className="group-hover:scale-110 transition-transform" />
+                  <span>{isRTL ? 'الأطروحة الأكاديمية (Thesis)' : 'Thesis'}</span>
                 </button>
-                <span className="text-[11px] font-mono text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-500/40 px-2 py-0.5 rounded-full">
-                  Thesis
-                </span>
               </div>
             </motion.div>
           ))}
