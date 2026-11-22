@@ -17,6 +17,7 @@ export default function Header({
     const [activeSection, setActiveSection] = useState('');
     const [hoveredSection, setHoveredSection] = useState(null);
     const navRef = useRef(null);
+    const isManualScrollingRef = useRef(false);
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 50);
@@ -29,16 +30,48 @@ export default function Header({
     useEffect(() => {
         const sectionIds = ['about', 'experience', 'internships', 'skills', 'projects', 'education', 'certifications', 'contact'];
         const handleScrollSpy = () => {
-            const scrollPos = window.scrollY + 220;
-            for (let i = sectionIds.length - 1; i >= 0; i--) {
-                const el = document.getElementById(sectionIds[i]);
-                if (el && el.offsetTop <= scrollPos) {
-                    setActiveSection(sectionIds[i]);
+            if (isManualScrollingRef.current) return;
+
+            // Check if user has reached bottom of page (or near bottom)
+            const scrollHeight = document.documentElement.scrollHeight;
+            const scrollBottom = window.innerHeight + window.scrollY;
+            if (scrollHeight - scrollBottom <= 140) {
+                setActiveSection('contact');
+                return;
+            }
+
+            // Top of page (Hero section)
+            if (window.scrollY < 200) {
+                setActiveSection('');
+                return;
+            }
+
+            // Check contact section with higher priority because it sits above the footer at page end
+            const contactEl = document.getElementById('contact');
+            if (contactEl) {
+                const contactRect = contactEl.getBoundingClientRect();
+                if (contactRect.top <= 350) {
+                    setActiveSection('contact');
                     return;
                 }
             }
-            if (window.scrollY < 300) {
-                setActiveSection('');
+
+            // Find current section using viewport-relative bounding rect
+            const triggerLine = 180;
+            let current = '';
+
+            for (let i = 0; i < sectionIds.length; i++) {
+                const el = document.getElementById(sectionIds[i]);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top <= triggerLine) {
+                        current = sectionIds[i];
+                    }
+                }
+            }
+
+            if (current) {
+                setActiveSection(current);
             }
         };
 
@@ -101,7 +134,12 @@ export default function Header({
 
     const handleNavClick = (section) => {
         setMobileMenuOpen(false);
+        setActiveSection(section);
+        isManualScrollingRef.current = true;
         scrollToSection(section);
+        setTimeout(() => {
+            isManualScrollingRef.current = false;
+        }, 900);
     };
 
     const { language, setLanguage, toggleLanguage, t, isRTL } = useLanguage();
@@ -194,7 +232,11 @@ export default function Header({
                                     key={item.id}
                                     onClick={() => {
                                         setActiveSection(item.id);
+                                        isManualScrollingRef.current = true;
                                         scrollToSection(item.id);
+                                        setTimeout(() => {
+                                            isManualScrollingRef.current = false;
+                                        }, 900);
                                     }}
                                     onMouseEnter={() => setHoveredSection(item.id)}
                                     onMouseLeave={() => setHoveredSection(null)}
