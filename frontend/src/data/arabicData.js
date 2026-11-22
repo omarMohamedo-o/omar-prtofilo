@@ -168,6 +168,8 @@ export const arabicEducation = [
     {
         degree: "بكالوريوس هندسة الحاسب",
         institution: "المعهد العالي للهندسة والتكنولوجيا (BHI)",
+        logo: "/images/companies/bhi.png",
+        link: "https://bhi47.com/",
         location: "البحيرة، مصر",
         period: "سبتمبر 2019 – يوليو 2024",
         gpa: "التقدير: جيد جداً (B+) مع مرتبة الشرف (معدل 3.2 / 4.0)",

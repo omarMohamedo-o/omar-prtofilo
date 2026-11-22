@@ -182,6 +182,7 @@ export const education = [
     {
         degree: "Bachelor of Engineering in Computer Engineering",
         institution: "Higher Institute of Engineering & Technology (BHI)",
+        logo: "/images/companies/bhi.png",
         link: "https://bhi47.com/",
         location: "Alexandria, Egypt",
         period: "Sep 2019 – Jul 2024",
