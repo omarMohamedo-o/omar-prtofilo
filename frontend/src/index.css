@@ -255,7 +255,7 @@ body {
 .chat-notice {
     position: absolute;
     right: 0;
-    bottom: 105px;
+    bottom: 64px;
     /* Responsive width - max 480px on large screens */
     width: calc(100vw - 48px);
     max-width: 380px;
@@ -320,9 +320,9 @@ body {
 
 @media (max-width: 640px) {
     .chat-notice {
-        right: 8px;
+        right: 0;
         left: auto;
-        bottom: 60px;
+        bottom: 58px;
         /* Responsive width for small screens */
         max-width: calc(100vw - 80px);
         width: calc(100vw - 80px);
@@ -431,7 +431,7 @@ body {
 
 .chat-panel {
     position: absolute;
-    bottom: 72px;
+    bottom: 62px;
     right: 0;
     /* responsive width: cap at 380px but shrink on narrow viewports */
     width: min(380px, 92vw);
