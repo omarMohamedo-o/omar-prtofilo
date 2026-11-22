@@ -71,6 +71,7 @@ export const devopsCertifications = [
     {
         name: "Aspire Leaders Program",
         issuer: "Aspire Institute (Founded at Harvard)",
+        logo: "/images/companies/aspire.svg",
         date: "Sep 2026",
         verified: true,
         link: "https://www.aspireleaders.org/",
@@ -81,6 +82,7 @@ export const devopsCertifications = [
     {
         name: "Red Hat Certified System Administrator (RHCSA)",
         issuer: "Red Hat",
+        logo: "/images/companies/redhat.svg",
         date: "May 2025",
         verified: true,
         link: "https://rhtapps.redhat.com/verify?certId=250-068-707",
@@ -90,6 +92,7 @@ export const devopsCertifications = [
     {
         name: "HCCDA-Tech Essentials Huawei Cloud Developer",
         issuer: "Huawei",
+        logo: "/images/companies/huawei.svg",
         date: "Jul 2025",
         verified: true,
         link: "https://drive.google.com/file/d/1PF71T7ycbmXjV-CchoOzmJCtfF_gBsLL/view",
@@ -102,6 +105,7 @@ export const devopsCourses = [
     {
         name: "Docker Essentials: A Developer Introduction",
         provider: "IBM",
+        logo: "/images/companies/ibm.svg",
         date: "May 2025",
         verified: true,
         link: "https://www.credly.com/badges/517d3f92-9950-4b0c-b637-cc22f5206447/linked_in_profile",
@@ -111,6 +115,7 @@ export const devopsCourses = [
     {
         name: "AWS Academy Cloud Foundations",
         provider: "Amazon Web Services (AWS)",
+        logo: "/images/companies/aws.svg",
         date: "Apr 2025",
         verified: true,
         link: "https://www.credly.com/badges/795c58fb-53f7-4859-b894-51660e879def/print",
@@ -120,6 +125,7 @@ export const devopsCourses = [
     {
         name: "Jenkins Course Completion",
         provider: "KodeKloud",
+        logo: "/images/companies/kodekloud.svg",
         date: "Sep 2024",
         verified: true,
         link: "https://learn.kodekloud.com/certificate/a061b87c-80c0-4470-a120-b0fa1ec77e5d",
@@ -129,6 +135,7 @@ export const devopsCourses = [
     {
         name: "Ansible Course Completion",
         provider: "KodeKloud",
+        logo: "/images/companies/kodekloud.svg",
         date: "Aug 2025",
         verified: true,
         link: "https://learn.kodekloud.com/certificate/2ccb19f5-74a5-4e56-9232-91bd1ce4674c",
@@ -138,6 +145,7 @@ export const devopsCourses = [
     {
         name: "Terraform Basics Training Course",
         provider: "KodeKloud",
+        logo: "/images/companies/kodekloud.svg",
         date: "Aug 2025",
         verified: true,
         link: "https://learn.kodekloud.com/certificate/e2cbdf47-bc11-4166-9f6f-550db8fa6343",
@@ -147,6 +155,7 @@ export const devopsCourses = [
     {
         name: "Sprints x Microsoft Summer Camp - DevOps Foundations Certificate",
         provider: "Sprints / Microsoft",
+        logos: ["/images/companies/sprints.svg", "/images/companies/microsoft.svg"],
         date: "Oct 2025",
         verified: true,
         link: "https://sprints.ai/en-eg/journeys/learning/ID%20-%20SPR%20-%202ES2O9/view-certificate-serial",
@@ -157,6 +166,7 @@ export const devopsCourses = [
     {
         name: "GitHub Actions / Foundation",
         provider: "DataCamp",
+        logo: "/images/companies/datacamp.svg",
         date: "Oct 2025",
         verified: true,
         link: "https://www.datacamp.com/completed/statement-of-accomplishment/track/bc61190444fa6e4ae3acbde64d805a1e05b43833",

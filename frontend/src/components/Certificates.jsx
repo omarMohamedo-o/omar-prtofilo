@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Award } from 'lucide-react';
 import {
     getOrbitalItemVariant,
     getGridOrbitalVariant,
@@ -12,6 +13,62 @@ import ButtonCard from './ButtonCard';
 import useIsMobile from '../hooks/useIsMobile';
 import PreviewableImage from './PreviewableImage';
 import { useLanguage } from '../context/LanguageContext';
+
+export const ISSUER_LOGOS = {
+    'red hat': '/images/companies/redhat.svg',
+    'aspire institute': '/images/companies/aspire.svg',
+    'aspire institute (founded at harvard)': '/images/companies/aspire.svg',
+    'aspire': '/images/companies/aspire.svg',
+    'huawei': '/images/companies/huawei.svg',
+    'huawei cloud': '/images/companies/huawei.svg',
+    'ibm': '/images/companies/ibm.svg',
+    'amazon web services (aws)': '/images/companies/aws.svg',
+    'amazon web services': '/images/companies/aws.svg',
+    'aws': '/images/companies/aws.svg',
+    'kodekloud': '/images/companies/kodekloud.svg',
+    'sprints': '/images/companies/sprints.svg',
+    'microsoft': '/images/companies/microsoft.svg',
+    'datacamp': '/images/companies/datacamp.svg',
+    '365 data science': '/images/companies/365datascience.svg'
+};
+
+export function getIssuerLogoPath(name) {
+    if (!name) return null;
+    const clean = String(name).trim().toLowerCase();
+    if (ISSUER_LOGOS[clean]) return ISSUER_LOGOS[clean];
+    for (const [key, path] of Object.entries(ISSUER_LOGOS)) {
+        if (clean.includes(key) || key.includes(clean)) {
+            return path;
+        }
+    }
+    const slug = clean.replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    return `/images/companies/${slug}.svg`;
+}
+
+export function IssuerLogo({ name, logo, className = '' }) {
+    const [hasError, setHasError] = useState(false);
+    const resolved = logo || getIssuerLogoPath(name);
+
+    if (!resolved || hasError) {
+        return (
+            <span className={`w-5 h-5 sm:w-[22px] sm:h-[22px] rounded-md bg-white/[0.06] border border-white/10 inline-flex items-center justify-center flex-shrink-0 text-cyan-400/80 ${className}`}>
+                <Award size={12} />
+            </span>
+        );
+    }
+
+    return (
+        <span className={`w-5 h-5 sm:w-[22px] sm:h-[22px] rounded-md bg-white/[0.06] border border-white/10 p-0.5 inline-flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm transition-transform duration-300 hover:scale-110 ${className}`}>
+            <img
+                src={resolved}
+                alt={name ? `${name} logo` : 'Issuer logo'}
+                className="w-full h-full object-contain"
+                loading="lazy"
+                onError={() => setHasError(true)}
+            />
+        </span>
+    );
+}
 
 export function getImagePath(item) {
     let basePath = '';
@@ -84,30 +141,42 @@ export function Certifications({ isVisible, certifications = [], themeColor = 'c
                             <motion.h3 variants={itemVariant} className={`text-lg sm:text-xl lg:text-2xl font-bold ${accentColor}`}>{cert.name}</motion.h3>
                             <motion.div variants={itemVariant} className="text-surface/80 text-sm sm:text-base font-semibold mt-1 sm:mt-2">
                                 {Array.isArray(cert.issuerLinks) && cert.issuerLinks.length ? (
-                                    cert.issuer
-                                        .split('/')
-                                        .map((part) => part.trim())
-                                        .map((part, i) => (
-                                            <span key={i}>
-                                                {i > 0 && <span className="mx-1">/</span>}
-                                                {cert.issuerLinks[i] ? (
-                                                    <a href={cert.issuerLinks[i]} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                                                        {part}
-                                                    </a>
-                                                ) : (
-                                                    part
-                                                )}
-                                            </span>
-                                        ))
+                                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                        {cert.issuer
+                                            .split('/')
+                                            .map((part) => part.trim())
+                                            .map((part, i) => (
+                                                <span key={i} className="inline-flex items-center gap-1.5">
+                                                    {i > 0 && <span className="mx-1 text-gray-500 font-normal">/</span>}
+                                                    <IssuerLogo
+                                                        name={part}
+                                                        logo={Array.isArray(cert.logos) ? cert.logos[i] : (i === 0 ? cert.logo : undefined)}
+                                                    />
+                                                    {cert.issuerLinks[i] ? (
+                                                        <a href={cert.issuerLinks[i]} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-cyan-400 transition-colors">
+                                                            {part}
+                                                        </a>
+                                                    ) : (
+                                                        <span>{part}</span>
+                                                    )}
+                                                </span>
+                                            ))}
+                                    </div>
                                 ) : cert.issuerLink ? (
-                                    <a href={cert.issuerLink} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                                        {cert.issuer}
-                                    </a>
+                                    <div className="inline-flex items-center gap-2">
+                                        <IssuerLogo name={cert.issuer} logo={cert.logo} />
+                                        <a href={cert.issuerLink} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-cyan-400 transition-colors">
+                                            {cert.issuer}
+                                        </a>
+                                    </div>
                                 ) : (
-                                    cert.issuer
+                                    <div className="inline-flex items-center gap-2">
+                                        <IssuerLogo name={cert.issuer} logo={cert.logo} />
+                                        <span>{cert.issuer}</span>
+                                    </div>
                                 )}
                             </motion.div>
-                            <motion.div variants={itemVariant} className="text-surface/70 text-xs sm:text-sm">{cert.date}</motion.div>
+                            <motion.div variants={itemVariant} className="text-surface/70 text-xs sm:text-sm mt-1">{cert.date}</motion.div>
                         </motion.div>
 
                         <motion.div variants={containerVariant} className="mt-3 sm:mt-0 sm:ml-4 flex items-center gap-2">
@@ -162,27 +231,39 @@ export function Courses({ isVisible, courses = [], themeColor = 'cyan' }) {
                         <h3 className={`text-lg sm:text-xl font-bold ${accentColor}`}>{course.name}</h3>
                         <div className="text-surface/80 text-sm font-semibold mt-1 sm:mt-2 mb-1">
                             {Array.isArray(course.providerLinks) && course.providerLinks.length ? (
-                                course.provider
-                                    .split('/')
-                                    .map((part) => part.trim())
-                                    .map((part, i) => (
-                                        <span key={i}>
-                                            {i > 0 && <span className="mx-1">/</span>}
-                                            {course.providerLinks[i] ? (
-                                                <a href={course.providerLinks[i]} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                                                    {part}
-                                                </a>
-                                            ) : (
-                                                part
-                                            )}
-                                        </span>
-                                    ))
+                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                    {course.provider
+                                        .split('/')
+                                        .map((part) => part.trim())
+                                        .map((part, i) => (
+                                            <span key={i} className="inline-flex items-center gap-1.5">
+                                                {i > 0 && <span className="mx-1 text-gray-500 font-normal">/</span>}
+                                                <IssuerLogo
+                                                    name={part}
+                                                    logo={Array.isArray(course.logos) ? course.logos[i] : (i === 0 ? course.logo : undefined)}
+                                                />
+                                                {course.providerLinks[i] ? (
+                                                    <a href={course.providerLinks[i]} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-cyan-400 transition-colors">
+                                                        {part}
+                                                    </a>
+                                                ) : (
+                                                    <span>{part}</span>
+                                                )}
+                                            </span>
+                                        ))}
+                                </div>
                             ) : course.providerLink ? (
-                                <a href={course.providerLink} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                                    {course.provider}
-                                </a>
+                                <div className="inline-flex items-center gap-2">
+                                    <IssuerLogo name={course.provider} logo={course.logo} />
+                                    <a href={course.providerLink} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-cyan-400 transition-colors">
+                                        {course.provider}
+                                    </a>
+                                </div>
                             ) : (
-                                course.provider
+                                <div className="inline-flex items-center gap-2">
+                                    <IssuerLogo name={course.provider} logo={course.logo} />
+                                    <span>{course.provider}</span>
+                                </div>
                             )}
                         </div>
                         <div className="flex items-center justify-between mt-2 sm:mt-3">
@@ -202,3 +283,4 @@ export function Courses({ isVisible, courses = [], themeColor = 'cyan' }) {
 }
 
 export default Certifications;
+
