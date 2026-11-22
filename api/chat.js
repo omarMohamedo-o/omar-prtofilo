@@ -136,7 +136,7 @@ function generateNaturalAnswer(query = '') {
     }
 
     // 2. Real-time time & date
-    if (/(time|date|clock|current\s*time|what\s*time|ساع[ةه]|وقت|تاريخ|نهار[ده]|دلوقتي)/i.test(normalized)) {
+    if (/(time|date|clock|current\s*time|what\s*time|ساع[ةه]|الوقت|تاريخ|نهار[ده])/i.test(normalized)) {
         const now = new Date();
         const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Cairo' });
         const dateStr = now.toLocaleDateString(isArabic ? 'ar-EG' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Africa/Cairo' });
