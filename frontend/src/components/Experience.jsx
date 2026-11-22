@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Briefcase } from 'lucide-react';
 import {
@@ -9,6 +9,26 @@ import {
 } from '../utils/animationVariants';
 import useIsMobile from '../hooks/useIsMobile';
 import { useLanguage } from '../context/LanguageContext';
+
+function CompanyLogo({ logo, name, FallbackIcon = Briefcase }) {
+  const [hasError, setHasError] = useState(false);
+
+  if (!logo || hasError) {
+    return <FallbackIcon size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0 text-gray-400" />;
+  }
+
+  return (
+    <span className="w-5 h-5 sm:w-[22px] sm:h-[22px] rounded-md bg-white/[0.06] border border-white/10 p-0.5 inline-flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm transition-transform duration-300 group-hover:scale-110">
+      <img
+        src={logo}
+        alt={name || 'Company logo'}
+        className="w-full h-full object-contain"
+        loading="lazy"
+        onError={() => setHasError(true)}
+      />
+    </span>
+  );
+}
 
 const Experience = function Experience({ isVisible, experiences = [], themeColor = 'cyan' }) {
   const { t } = useLanguage();
@@ -50,7 +70,7 @@ const Experience = function Experience({ isVisible, experiences = [], themeColor
               <div className="mb-3 sm:mb-4">
                 <h3 className={`text-xl sm:text-2xl font-bold ${textColor}`}>{exp.title}</h3>
                 <div className="flex items-center gap-2 text-gray-300 text-sm sm:text-base">
-                  <Briefcase size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0" />
+                  <CompanyLogo logo={exp.logo} name={exp.company} />
                   {exp.link ? (
                     <a href={exp.link} target="_blank" rel="noopener noreferrer" className={`font-semibold transition-colors duration-300 ${themeColor === 'purple' ? 'hover:text-purple-400' : 'hover:text-cyan-400'}`}>
                       {exp.company}

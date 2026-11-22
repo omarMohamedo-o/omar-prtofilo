@@ -24,6 +24,7 @@ export const Intern = [
     {
         title: "DevOps Engineer Intern",
         company: "Digital Egypt Pioneers Initiative (DEPI)",
+        logo: "/images/companies/depi.png",
         link: "https://depi.gov.eg/",
         location: "Alexandria, Egypt",
         period: "Apr 2024 – Oct 2024",
@@ -37,6 +38,7 @@ export const Intern = [
     {
         title: "Artificial Intelligence Engineer Intern",
         company: "Telecom Egypt",
+        logo: "/images/companies/telecom-egypt.png",
         link: "https://www.te.eg/",
         location: "Alexandria, Egypt",
         period: "Sep 2023 – Dec 2023",
@@ -50,6 +52,7 @@ export const Intern = [
     {
         title: "System Administration Intern",
         company: "Information Technology Institute (ITI)",
+        logo: "/images/companies/iti.png",
         link: "https://iti.gov.eg/",
         location: "Alexandria, Egypt",
         period: "Apr 2025 – Aug 2025",
@@ -67,6 +70,7 @@ export const Experiences = [
     {
         title: "MLOps & AI Infrastructure Engineer",
         company: "PlayerHub.GG",
+        logo: "/images/companies/playerhub.png",
         link: "https://www.playerhub.gg/en",
         location: "Dubai, UAE",
         period: "Sep 2026 – Present",
@@ -80,6 +84,7 @@ export const Experiences = [
     {
         title: "AI & ML Engineer",
         company: "CliniSoft",
+        logo: "/images/companies/clinisoft.png",
         link: "https://clinisoft.org/",
         location: "Alexandria, Egypt",
         period: "Apr 2026 – Aug 2026",
@@ -93,6 +98,7 @@ export const Experiences = [
     {
         title: "Programming Instructor",
         company: "EYouth",
+        logo: "/images/companies/eyouth.png",
         link: "https://eyouthlearning.com/en",
         location: "Cairo, Egypt",
         period: "Apr 2026 – Sep 2026",
@@ -105,6 +111,7 @@ export const Experiences = [
     {
         title: "Software & DevOps Engineer",
         company: "ChloroMaster",
+        logo: "/images/companies/chloromaster.png",
         link: "https://chloromaster.com/",
         location: "Egypt",
         period: "Jun 2025 – Apr 2026",
@@ -118,6 +125,7 @@ export const Experiences = [
     {
         title: "Python & AI Instructor",
         company: "Black Horse Courses",
+        logo: "/images/companies/blackhorse.png",
         link: "https://black-horse-courses.com/",
         location: "Alexandria, Egypt",
         period: "Jan 2025 – Dec 2025",
@@ -133,6 +141,7 @@ export const Volunteering = [
     {
         title: "Remote Technical Mentor (Volunteer)",
         company: "Palestine Polytechnic University",
+        logo: "/images/companies/ppu.png",
         link: "https://www.ppu.edu/",
         location: "Palestine",
         period: "2025 – 2026",
@@ -149,6 +158,7 @@ export const education = [
     {
         degree: "Master of Science in Computer Engineering",
         institution: "Arab Academy for Science, Technology and Maritime Transport (AASTMT)",
+        logo: "/images/companies/aastmt.png",
         link: "https://aast.edu/en/",
         location: "Alexandria, Egypt",
         period: "Feb 2026 – Present",
@@ -158,6 +168,7 @@ export const education = [
     {
         degree: "Diploma in Software Engineering – Intensive Code Camp",
         institution: "Information Technology Institute (ITI)",
+        logo: "/images/companies/iti.png",
         link: "https://iti.gov.eg/",
         program: "Intensive Code Camp (ICC)",
         location: "Alexandria, Egypt",

@@ -47,13 +47,20 @@ export default function Education({ isVisible, education = [], themeColor = 'cya
               className={`ds-card rounded-xl p-4 sm:p-5 lg:p-6 ${borderHover} transition-all duration-500 hover:shadow-lg`}
             >
               <h3 className={`text-lg sm:text-xl font-bold ${textColor}`}>{edu.degree}</h3>
-              {edu.link ? (
-                <a href={edu.link} target="_blank" rel="noopener noreferrer" className={`text-gray-300 text-sm sm:text-base font-semibold block transition-colors duration-300 ${themeColor === 'purple' ? 'hover:text-purple-400' : 'hover:text-cyan-400'}`}>
-                  {edu.institution}
-                </a>
-              ) : (
-                <div className="text-gray-300 text-sm sm:text-base font-semibold">{edu.institution}</div>
-              )}
+              <div className="flex items-center gap-2 mb-1">
+                {edu.logo && (
+                  <span className="w-5 h-5 sm:w-[22px] sm:h-[22px] rounded-md bg-white/[0.06] border border-white/10 p-0.5 inline-flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm">
+                    <img src={edu.logo} alt={edu.institution} className="w-full h-full object-contain" loading="lazy" />
+                  </span>
+                )}
+                {edu.link ? (
+                  <a href={edu.link} target="_blank" rel="noopener noreferrer" className={`text-gray-300 text-sm sm:text-base font-semibold transition-colors duration-300 ${themeColor === 'purple' ? 'hover:text-purple-400' : 'hover:text-cyan-400'}`}>
+                    {edu.institution}
+                  </a>
+                ) : (
+                  <div className="text-gray-300 text-sm sm:text-base font-semibold">{edu.institution}</div>
+                )}
+              </div>
               {edu.program && <div className="text-gray-400 text-xs sm:text-sm mb-1">{edu.program}</div>}
               <div className="text-gray-400 text-xs sm:text-sm mb-2">{edu.location} • {edu.period}</div>
               {(edu.cgpa || edu.gpa) && (

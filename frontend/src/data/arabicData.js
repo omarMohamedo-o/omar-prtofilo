@@ -24,6 +24,7 @@ export const arabicExperiences = [
     {
         title: "مهندس MLOps والبنية التحتية للذكاء الاصطناعي",
         company: "PlayerHub.GG",
+        logo: "/images/companies/playerhub.png",
         link: "https://www.playerhub.gg/en",
         location: "دبي، الإمارات",
         period: "سبتمبر 2026 – الآن",
@@ -37,6 +38,7 @@ export const arabicExperiences = [
     {
         title: "مهندس ذكاء اصطناعي وتعلم الآلة",
         company: "CliniSoft",
+        logo: "/images/companies/clinisoft.png",
         link: "https://clinisoft.org/",
         location: "الإسكندرية، مصر",
         period: "أبريل 2026 – أغسطس 2026",
@@ -50,6 +52,7 @@ export const arabicExperiences = [
     {
         title: "مدرب برمجة وذكاء اصطناعي",
         company: "EYouth",
+        logo: "/images/companies/eyouth.png",
         link: "https://eyouthlearning.com/en",
         location: "مصر",
         period: "أبريل 2026 – سبتمبر 2026",
@@ -61,6 +64,7 @@ export const arabicExperiences = [
     {
         title: "مرشد تقني متطوع",
         company: "جامعة بوليتكنك فلسطين",
+        logo: "/images/companies/ppu.png",
         link: "https://www.ppu.edu/",
         location: "فلسطين",
         period: "2025 – 2026",
@@ -72,6 +76,7 @@ export const arabicExperiences = [
     {
         title: "مهندس برمجيات وDevOps",
         company: "ChloroMaster",
+        logo: "/images/companies/chloromaster.png",
         link: "https://chloromaster.com/",
         location: "الإسكندرية، مصر",
         period: "يونيو 2025 – أبريل 2026",
@@ -84,6 +89,7 @@ export const arabicExperiences = [
     {
         title: "مدرب بايثون وذكاء اصطناعي",
         company: "Black Horse Courses",
+        logo: "/images/companies/blackhorse.png",
         link: "#",
         location: "الإسكندرية، مصر",
         period: "يناير 2025 – ديسمبر 2025",
@@ -98,6 +104,7 @@ export const arabicInternships = [
     {
         title: "متدرب هندسة DevOps والبنية التحتية",
         company: "مبادرة رواد مصر الرقمية (DEPI)",
+        logo: "/images/companies/depi.png",
         link: "https://depi.gov.eg/",
         location: "الإسكندرية، مصر",
         period: "أبريل 2024 – أكتوبر 2024",
@@ -111,6 +118,7 @@ export const arabicInternships = [
     {
         title: "متدرب ذكاء اصطناعي ومعالجة لغات طبيعية",
         company: "الشركة المصرية للاتصالات (Telecom Egypt)",
+        logo: "/images/companies/telecom-egypt.png",
         link: "https://te.eg/",
         location: "الإسكندرية، مصر",
         period: "يوليو 2024 – أغسطس 2024",
@@ -123,6 +131,7 @@ export const arabicInternships = [
     {
         title: "متدرب إدارة أنظمة وشبكات",
         company: "معهد تكنولوجيا المعلومات (ITI)",
+        logo: "/images/companies/iti.png",
         link: "https://iti.gov.eg/",
         location: "الإسكندرية، مصر",
         period: "يوليو 2023 – أغسطس 2023",
@@ -138,6 +147,7 @@ export const arabicEducation = [
     {
         degree: "ماجستير العلوم في هندسة الحاسب",
         institution: "الأكاديمية العربية للعلوم والتكنولوجيا والنقل البحري (AASTMT)",
+        logo: "/images/companies/aastmt.png",
         location: "الإسكندرية، مصر",
         period: "فبراير 2026 – الآن",
         gpa: "المعدل التراكمي: 4.0 / 4.0 (امتياز مع مرتبة الشرف)",
@@ -146,6 +156,7 @@ export const arabicEducation = [
     {
         degree: "دبلومة هندسة البرمجيات المكثفة (ICC)",
         institution: "معهد تكنولوجيا المعلومات (ITI)",
+        logo: "/images/companies/iti.png",
         location: "الإسكندرية، مصر",
         period: "مارس 2025 – أغسطس 2025",
         description: "برنامج مكثف متقدم في الحوسبة الموزعة، هندسة البرمجيات، الشبكات العصبية الاصطناعية، والتعرف على الأنماط."

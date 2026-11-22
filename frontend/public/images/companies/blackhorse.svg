@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3d37a"/>
+      <stop offset="50%" stop-color="#c9a84c"/>
+      <stop offset="100%" stop-color="#8e7025"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#161f33"/>
+      <stop offset="100%" stop-color="#0a0f18"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="22" fill="url(#bgGrad)" stroke="#c9a84c" stroke-opacity="0.3" stroke-width="2"/>
+  <!-- Stylized Horse / Knight Head -->
+  <path d="M28 78 L72 78 C70 73 66 70 60 68 C64 64 68 57 69 49 C70 38 66 31 59 24 C57 21 53 19 50 17 C49 20 48 23 48 26 C43 25 38 27 34 31 C29 36 28 42 29 48 C30 51 32 53 35 54 C37 54 39 52 40 50 C41 47 43 45 46 45 C48 45 49 46 49 48 C49 53 43 59 38 63 C33 67 29 72 28 78 Z" fill="url(#goldGrad)"/>
+  <!-- Horse Eye -->
+  <circle cx="42" cy="38" r="2.5" fill="#161f33"/>
+  <!-- Mane details -->
+  <path d="M59 24 C63 29 64 35 64 42 C64 48 62 53 58 57" fill="none" stroke="#f3d37a" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+</svg>
