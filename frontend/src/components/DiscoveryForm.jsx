@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import {
+    titleVariant,
+    containerVariant,
+    itemVariant,
+    viewportOptions
+} from '../utils/animationVariants';
 
-export default function DiscoveryForm({ isVisible = () => false, themeColor = 'cyan' }) {
+export default function DiscoveryForm({ isVisible, themeColor = 'cyan' }) {
     const { t, currentLocale } = useLanguage();
     const [formData, setFormData] = useState({
         firstName: '',
@@ -20,6 +27,9 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
     const borderFocus = themeColor === 'purple'
         ? 'focus:border-purple-500 focus:ring-purple-500/20'
         : 'focus:border-cyan-500 focus:ring-cyan-500/20';
+    const borderHover = themeColor === 'purple'
+        ? 'hover:border-purple-500/50 hover:shadow-purple-500/10'
+        : 'hover:border-cyan-500/50 hover:shadow-cyan-500/10';
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -72,28 +82,37 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
     const services = currentLocale?.discoveryServices || [];
 
     return (
-        <section id="discovery" className="py-24 px-6 scroll-mt-20">
+        <motion.section
+            id="discovery"
+            className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 ds-section scroll-mt-20"
+            initial="hidden"
+            whileInView="show"
+            viewport={viewportOptions}
+        >
             <div className="max-w-6xl mx-auto">
-                <div className={`ds-card rounded-3xl p-8 md:p-12 ${isVisible('discovery') ? 'animate-fade-in-up' : 'opacity-0'}`}>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <motion.div
+                    variants={containerVariant}
+                    className={`ds-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-gray-800 transition-all duration-500 ${borderHover} drop-shadow-lg`}
+                >
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                         {/* Left side - Text content */}
                         <div className="flex flex-col justify-center">
-                            <div className="flex items-center justify-center mb-0">
-                                <span className={`${accentColor} text-sm font-semibold tracking-wider uppercase`}>
+                            <motion.div variants={itemVariant} className="flex items-center mb-1">
+                                <span className={`${accentColor} text-xs sm:text-sm font-semibold tracking-wider uppercase`}>
                                     {t('discoveryBadge')}
                                 </span>
-                            </div>
-                            <h2 className="section-title text-gray-900 mt-1 mb-4 leading-tight">
+                            </motion.div>
+                            <motion.h2 variants={titleVariant} className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mt-1 mb-4 leading-tight">
                                 {t('discoveryHeadline')}
-                            </h2>
-                            <p className="text-gray-700 text-lg leading-relaxed">
+                            </motion.h2>
+                            <motion.p variants={itemVariant} className="text-gray-300 text-sm sm:text-base lg:text-lg leading-relaxed">
                                 {t('discoverySubheadline')}
-                            </p>
+                            </motion.p>
                         </div>
 
                         {/* Right side - Form */}
                         <div className="flex flex-col justify-center">
-                            <form onSubmit={handleSubmit} className="space-y-5 pt-6 pb-6">
+                            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 pt-2 sm:pt-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <input
                                         type="text"
@@ -145,7 +164,7 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
                                         className={`w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 ${borderFocus} focus:ring-2 focus:outline-none transition-all duration-300`}
                                     />
                                     <div>
-                                        <label className="block text-gray-700 text-sm mb-1">{t('discoveryServiceLabel')}</label>
+                                        <label className="block text-gray-300 text-xs sm:text-sm mb-1">{t('discoveryServiceLabel')}</label>
                                         <select
                                             name="serviceOfInterest"
                                             value={formData.serviceOfInterest}
@@ -162,24 +181,24 @@ export default function DiscoveryForm({ isVisible = () => false, themeColor = 'c
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-2">
                                     <button
                                         type="submit"
                                         disabled={status.loading}
-                                        className={`w-full md:w-auto px-8 py-3 ${buttonBg} text-white font-semibold rounded-lg transition-all duration-300 transform ${status.loading ? 'opacity-60 cursor-wait' : 'hover:scale-105 hover:shadow-lg'} border border-transparent glow-btn`}
+                                        className={`w-full md:w-auto px-8 py-3 ${buttonBg} text-white font-semibold rounded-lg transition-all duration-300 transform ${status.loading ? 'opacity-60 cursor-wait' : 'hover:scale-105 hover:shadow-lg'} border border-transparent glow-btn cursor-pointer`}
                                     >
                                         {status.loading ? t('discoverySending') : t('discoverySubmitBtn')}
                                     </button>
                                     <div className="mt-2 sm:mt-0">
-                                        {status.message && <div className="text-green-500 font-medium">{status.message}</div>}
-                                        {status.error && <div className="text-red-400 font-medium">{status.error}</div>}
+                                        {status.message && <div className="text-green-400 font-medium text-sm">{status.message}</div>}
+                                        {status.error && <div className="text-red-400 font-medium text-sm">{status.error}</div>}
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
-        </section>
+        </motion.section>
     );
 }

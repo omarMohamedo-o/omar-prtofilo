@@ -19,11 +19,11 @@ import UpArrowButton from './UpArrowButton';
 import SpaceBackground from './SpaceBackground';
 import Volunteering from './Volunteering';
 import Testimonials from './Testimonials';
+import DiscoveryForm from './DiscoveryForm';
 
 // Lazy-loaded heavy off-screen modals and interactive widgets for instant initial page paint
 const ThreeDBookModal = React.lazy(() => import('./ThreeDBookModal'));
 const ChatWidget = React.lazy(() => import('./ChatWidget'));
-const DiscoveryForm = React.lazy(() => import('./DiscoveryForm'));
 
 // Import data with mode support
 import { MODES, getPortfolioData } from '../data/data';
@@ -203,7 +203,7 @@ export default function Portfolio() {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
 
-    // Intersection Observer for section-level animations
+    // Intersection Observer for section-level navigation / tracking
     const sectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -220,43 +220,9 @@ export default function Portfolio() {
       sectionObserver.observe(section);
     });
 
-    // Card-level intersection observer for staggered reveal
-    const cardObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const card = entry.target;
-            // Add visible class to trigger animation
-            card.classList.add('card-visible');
-            card.classList.remove('card-hidden');
-            // Stop observing once animated
-            cardObserver.unobserve(card);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
-    );
-
-    // Delay to ensure DOM is ready, then observe all cards
-    const observeCards = () => {
-      document.querySelectorAll('.ds-card').forEach((card, index) => {
-        // Add initial hidden state and stagger delay
-        if (!card.classList.contains('card-visible')) {
-          card.classList.add('card-hidden');
-          card.style.setProperty('--card-index', index);
-        }
-        cardObserver.observe(card);
-      });
-    };
-
-    // Run after a short delay to ensure components are mounted
-    const timeoutId = setTimeout(observeCards, 100);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
       sectionObserver.disconnect();
-      cardObserver.disconnect();
-      clearTimeout(timeoutId);
     };
   }, [currentMode]); // Re-run when mode changes
 
@@ -319,7 +285,7 @@ export default function Portfolio() {
     }
   };
 
-  const isVisible = (sectionId) => visibleSections.has(sectionId);
+  const isVisible = (sectionId) => true;
 
   // Dynamic theme class based on mode
   const themeColor = portfolioData.themeColor === 'purple' ? 'purple' : 'cyan';
@@ -395,9 +361,7 @@ export default function Portfolio() {
       <FAQ isVisible={isVisible} themeColor={themeColor} />
 
       {/* Discovery Form Section */}
-      <Suspense fallback={null}>
-        <DiscoveryForm isVisible={isVisible} themeColor={themeColor} />
-      </Suspense>
+      <DiscoveryForm isVisible={isVisible} themeColor={themeColor} />
 
       {/* Contact Section */}
       <Contact isVisible={isVisible} personalInfo={portfolioData.personalInfo} themeColor={themeColor} />
