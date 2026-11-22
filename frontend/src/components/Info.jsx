@@ -138,7 +138,7 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight break-words lg:whitespace-nowrap bg-gradient-to-r ${gradientClasses} bg-clip-text text-transparent`}
+              className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight break-words xl:whitespace-nowrap bg-gradient-to-r ${gradientClasses} bg-clip-text text-transparent`}
             >
               {personalInfo.name}
             </motion.h1>

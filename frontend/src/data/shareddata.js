@@ -4,7 +4,7 @@
  */
 
 export const personalInfo = {
-    name: "Omar Mohamed",
+    name: "Omar Mohamed Abdelsalam",
     fullName: "Omar Mohamed Abdelsalam",
     title: "Computer Engineer | AI & Machine Learning | LLMs & RAG | MLOps & Cloud",
     tagline: "Computer Engineering graduate and M.Sc. candidate (CGPA 4.0 / 4.0) with experience building LLM, RAG, NLP, and speech systems and running them in production.",
