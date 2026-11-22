@@ -9,7 +9,7 @@
  * Returns the original path as images are already optimized
  * Supports WebP format detection
  */
-export function getOptimizedImagePath(path, format = 'jpg') {
+export function getOptimizedImagePath(path, format = 'webp') {
   if (!path) return path;
 
   // Replace file extension for the specified format
@@ -17,8 +17,8 @@ export function getOptimizedImagePath(path, format = 'jpg') {
     return path.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
   }
 
-  // Normalize to jpg for consistency
-  return path.replace(/\.(png|gif)$/i, '.jpg');
+  // Normalize to png for fallback consistency (no jpg files exist)
+  return path.replace(/\.(jpg|jpeg|webp|gif)$/i, '.png');
 }
 
 /**
@@ -30,7 +30,7 @@ export function getImagePathWithFallback(path) {
 
   return {
     webp: getOptimizedImagePath(path, 'webp'),
-    src: getOptimizedImagePath(path, 'jpg')
+    src: getOptimizedImagePath(path, 'png')
   };
 }
 

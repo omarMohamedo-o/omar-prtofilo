@@ -139,7 +139,7 @@ export const mlnlpCertifications = [
         verified: true,
         link: "https://rhtapps.redhat.com/verify?certId=250-068-707",
         issuerLink: "https://www.redhat.com/en",
-        image: "red-hat-certified-system-administrator-rhcsa.jpg"
+        image: "red-hat-certified-system-administrator-rhcsa.png"
     },
     {
         name: "HCCDA-Tech Essentials Huawei Cloud Developer",
@@ -178,7 +178,7 @@ export const mlnlpCourses = [
         verified: true,
         link: "https://learn.kodekloud.com/certificate/a061b87c-80c0-4470-a120-b0fa1ec77e5d",
         providerLink: "https://kodekloud.com/",
-        image: "KodeKloud Jenkins Certificate.jpg"
+        image: "KodeKloud Jenkins Certificate.png"
     },
     {
         name: "GitHub Foundation",
@@ -187,7 +187,7 @@ export const mlnlpCourses = [
         verified: true,
         link: "https://www.datacamp.com/completed/statement-of-accomplishment/track/bc61190444fa6e4ae3acbde64d805a1e05b43833",
         providerLink: "https://www.datacamp.com/",
-        image: "GItHub-Foundition.jpg"
+        image: "GItHub-Foundition.png"
     },
     {
         name: "Data Scientist Full Career Track (9 Courses)",
@@ -196,7 +196,7 @@ export const mlnlpCourses = [
         verified: true,
         link: "https://learn.365datascience.com/c/177c03e65b/",
         providerLink: "https://365datascience.com/",
-        image: "Data-Scientist-Career-Track.jpg"
+        image: "Data-Scientist-Career-Track.png"
     }
 ];
 

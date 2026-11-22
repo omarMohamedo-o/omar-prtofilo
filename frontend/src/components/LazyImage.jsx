@@ -12,7 +12,7 @@ export default function LazyImage({ src, alt = '', width, height, className = ''
 
     // optimized path maps images/... -> images-optimized/ and uses .webp
     const optimizedWebp = '/' + clean.replace(/^images\//, 'images-optimized/').replace(/\.(jpg|jpeg|png)$/i, '.webp');
-    const optimizedFallback = '/' + clean.replace(/^images\//, 'images-optimized/').replace(/\.(jpg|jpeg|png)$/i, '.jpg');
+    const optimizedFallback = '/' + clean.replace(/^images\//, 'images-optimized/').replace(/\.(jpg|jpeg|webp)$/i, '.png');
 
     if (isSvg) {
         return <img src={src} alt={alt} loading="lazy" width={width} height={height} className={className} {...props} />;

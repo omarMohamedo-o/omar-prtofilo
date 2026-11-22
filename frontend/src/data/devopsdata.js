@@ -85,7 +85,7 @@ export const devopsCertifications = [
         verified: true,
         link: "https://rhtapps.redhat.com/verify?certId=250-068-707",
         issuerLink: "https://www.redhat.com/en",
-        image: "red-hat-certified-system-administrator-rhcsa.jpg"
+        image: "red-hat-certified-system-administrator-rhcsa.png"
     },
     {
         name: "HCCDA-Tech Essentials Huawei Cloud Developer",
@@ -124,7 +124,7 @@ export const devopsCourses = [
         verified: true,
         link: "https://learn.kodekloud.com/certificate/a061b87c-80c0-4470-a120-b0fa1ec77e5d",
         providerLink: "https://kodekloud.com/",
-        image: "KodeKloud Jenkins Certificate.jpg"
+        image: "KodeKloud Jenkins Certificate.png"
     },
     {
         name: "Ansible Course Completion",
@@ -133,7 +133,7 @@ export const devopsCourses = [
         verified: true,
         link: "https://learn.kodekloud.com/certificate/2ccb19f5-74a5-4e56-9232-91bd1ce4674c",
         providerLink: "https://kodekloud.com/",
-        image: "KodeKloud Ansible Basics Certificate.jpg"
+        image: "KodeKloud Ansible Basics Certificate.png"
     },
     {
         name: "Terraform Basics Training Course",
@@ -142,7 +142,7 @@ export const devopsCourses = [
         verified: true,
         link: "https://learn.kodekloud.com/certificate/e2cbdf47-bc11-4166-9f6f-550db8fa6343",
         providerLink: "https://kodekloud.com/",
-        image: "KodeKloud Terraform Basics Certificate.jpg"
+        image: "KodeKloud Terraform Basics Certificate.png"
     },
     {
         name: "Sprints x Microsoft Summer Camp - DevOps Foundations Certificate",
@@ -152,7 +152,7 @@ export const devopsCourses = [
         link: "https://sprints.ai/en-eg/journeys/learning/ID%20-%20SPR%20-%202ES2O9/view-certificate-serial",
         providerLink: "https://learn.microsoft.com/en-us/training/",
         providerLinks: ["https://sprints.ai/en-eg", "https://learn.microsoft.com/en-us/training/"],
-        image: "Sprints x Microsoft Summer Camp - DevOps Foundations Certificate.jpg"
+        image: "Sprints x Microsoft Summer Camp - DevOps Foundations Certificate.png"
     },
     {
         name: "GitHub Actions / Foundation",
@@ -161,7 +161,7 @@ export const devopsCourses = [
         verified: true,
         link: "https://www.datacamp.com/completed/statement-of-accomplishment/track/bc61190444fa6e4ae3acbde64d805a1e05b43833",
         providerLink: "https://www.datacamp.com/",
-        image: "GItHub-Foundition.jpg"
+        image: "GItHub-Foundition.png"
     }
 ];
 
