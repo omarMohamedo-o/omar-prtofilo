@@ -28,7 +28,7 @@ export default function Header({
 
     // Scroll spy to dynamically track active section and colorize the nav buttons
     useEffect(() => {
-        const sectionIds = ['about', 'experience', 'internships', 'skills', 'projects', 'education', 'certifications', 'recommendations', 'contact'];
+        const sectionIds = ['about', 'experience', 'internships', 'skills', 'projects', 'education', 'certifications', 'contact'];
         const handleScrollSpy = () => {
             if (isManualScrollingRef.current) return;
 
@@ -180,7 +180,7 @@ export default function Header({
         { id: 'projects', label: t('navProjects') },
         { id: 'education', label: t('navEducation') },
         { id: 'certifications', label: t('navCertifications') },
-        { id: 'recommendations', label: t('navRecommendations') },
+        // { id: 'recommendations', label: t('navRecommendations') },
         { id: 'contact', label: t('navContact') }
     ];
 

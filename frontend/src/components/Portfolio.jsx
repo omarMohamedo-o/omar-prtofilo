@@ -388,8 +388,8 @@ export default function Portfolio() {
         <Languages isVisible={isVisible} languages={portfolioData.languages} themeColor={themeColor} />
       )}
 
-      {/* Recommendations & Client Testimonials Section */}
-      <Testimonials isVisible={isVisible} themeColor={themeColor} />
+      {/* Recommendations & Client Testimonials Section (hidden for now) */}
+      {/* <Testimonials isVisible={isVisible} themeColor={themeColor} /> */}
 
       {/* FAQ Section */}
       <FAQ isVisible={isVisible} themeColor={themeColor} />
