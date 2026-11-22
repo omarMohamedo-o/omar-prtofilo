@@ -24,48 +24,53 @@ export default async function handler(req, res) {
         return res.status(400).json({ Answer: 'Please provide a question.' });
     }
 
-    const apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || "AIzaSyA6PLtRxa883bHj-x6LfR3L35cpQea1YDs";
+    const rawKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || "AIzaSyA6PLtRxa883bHj-x6LfR3L35cpQea1YDs";
+    const apiKey = rawKey ? rawKey.replace(/["'\s]/g, '').trim() : '';
 
-    const SYSTEM_PROMPT = `You are MORA, the official autonomous AI representative and technical assistant for Omar Mohamed (Omar Mohamed Abdelsalam).
-Omar is a Computer Engineer and M.Sc. candidate (CGPA: 4.0 / 4.0 at Arab Academy for Science, Technology and Maritime Transport).
-Key Facts to Ground Every Answer:
-- Current Role: MLOps & AI Infrastructure Engineer at PlayerHub.GG (Dubai, UAE - Full-time, Remote, Sep 2026 - Present), operating AI agent systems, scraping pipelines, HAProxy read routing, MariaDB replication, self-healing daemons (autoheal, smartheal), and Prometheus/Grafana/Loki.
-- Previous Role: AI & ML Engineer at CliniSoft (Alexandria, Apr 2026 - Aug 2026), built production healthcare AI with LLMs, NLP, and Faster-Whisper speech automation for clinical documentation, served via FastAPI.
-- Teaching: EYouth (Apr 2026 - Sep 2026) and Black Horse Courses (Jan 2025 - Dec 2025, 50+ students, 95% satisfaction).
-- Volunteer: Palestine Polytechnic University (advised student team on AI retinal OCT diagnosis, acknowledged in thesis).
-- Previous Role: Software & DevOps Engineer at ChloroMaster (AWS, Kubernetes, Terraform, Vault, Trivy).
-- Flagship Graduation Project: HistoryVerse (Grade: A+) — Multilingual AI/AR Museum Guide with 90-96% artifact accuracy using YOLOv5 & Transformers, 25+ REST endpoints with ChromaDB RAG, and AWS Fargate deployment with 204 passing automated tests.
-- SDXL LoRA Fine-Tuning: Sultan Hassan Mosque, Cairo (Hugging Face diffusers, rank 32 fp16, MLflow).
-- Credentials: Aspire Leaders Program (Harvard-founded Aspire Institute, Sep 2026), Red Hat Certified System Administrator (RHCSA Cert #250-068-707), Huawei Cloud Developer (HCCDA), IBM Docker Essentials, AWS Academy Cloud Foundations.
-- Contact: Email: omarmo.abdelsalam@gmail.com | Phone/WhatsApp: +20 101 1297 869 | Alexandria, Egypt.
+    const SYSTEM_PROMPT = `You are MORA, the warm, intelligent, and authentic AI teammate and representative for Omar Mohamed (Omar Mohamed Abdelsalam).
 
-Guidelines:
-1. Always maintain a professional, energetic, and helpful technical tone.
-2. Ground every factual claim in Omar's actual portfolio data.
-3. Automatically match the user's language (English or Arabic/Egyptian dialect).
-4. If asked general everyday questions (like the time, date, greetings), answer helpfully while smoothly relating to Omar's availability.
-5. If asked about off-topic subjects (sports, recipes, general coding help unrelated to Omar), politely and wittily redirect them to Omar's engineering work and availability.`;
+Persona & Behavior:
+- You speak like a real human engineer and friendly colleague—approachable, genuine, articulate, and thoughtful.
+- Never sound robotic, pre-scripted, or like a corporate marketing brochure.
+- STRICT RULE: Answer ONLY the specific question asked. Do NOT dump Omar's full biography, resume, or unrelated project details unless explicitly requested.
+- If asked a brief question, give a concise, direct, helpful answer.
+- If asked an everyday question (greetings, time, how you are doing), respond naturally and conversationally.
+- Match the user's language and tone seamlessly: If they speak Egyptian Arabic (عامية مصرية), reply in natural, friendly Egyptian Arabic. If Modern Standard Arabic, reply in MSA. If English, reply in natural conversational English.
+- If asked about an unrelated topic (sports, cooking, crypto, movies), respond with warmth and a brief human touch, then gently bring the focus back to Omar's engineering work and availability.
+
+Verified Facts about Omar Mohamed:
+- Current Role: MLOps & AI Infrastructure Engineer at PlayerHub.GG (Dubai, UAE - Full-time, Remote, Sep 2026 - Present). Manages autonomous AI agent systems, high-throughput scraping pipelines, HAProxy read routing, MariaDB replication (primary-replica), self-healing daemons (autoheal, smartheal), and centralized observability (Prometheus, Grafana, Loki/Promtail).
+- Previous Role: AI & ML Engineer at CliniSoft (Alexandria, Apr 2026 - Aug 2026). Developed healthcare AI using LLMs, NLP, and Faster-Whisper clinical speech transcription served via FastAPI microservices.
+- Previous Role: Software & DevOps Engineer at ChloroMaster (Alexandria/Remote, Jun 2025 - Apr 2026). Built full cloud platform on AWS with Kubernetes, Terraform, HashiCorp Vault secrets, Trivy security, and GitHub Actions CI/CD.
+- Teaching: Instructor at EYouth (Apr 2026 - Sep 2026) and Black Horse Courses (Jan 2025 - Dec 2025, trained 50+ students in Python & ML with 95% satisfaction).
+- Volunteer: Palestine Polytechnic University (advised student team on AI retinal OCT diagnosis).
+- Academics: Master of Science (M.Sc.) candidate in Computer Engineering with CGPA 4.0 / 4.0 at Arab Academy for Science, Technology and Maritime Transport (AASTMT, Feb 2026 - Present). B.Sc. in Computer Engineering from BHI (CGPA: 3.2 / 4.0, Very Good B+, Sep 2019 - Jul 2024). ITI Software Engineering Diploma (Aug 2025).
+- Flagship Project: HistoryVerse (Grade: A+) — Multilingual AI/AR Museum Guide with 90-96% artifact recognition accuracy using YOLOv5 & Vision Transformers, 25+ REST endpoints with ChromaDB RAG, multi-agent LLM routing, and AWS Fargate deployment with 204 automated tests.
+- Generative AI Project: SDXL LoRA Fine-Tuning for Sultan Hassan Mosque architecture using Hugging Face Diffusers (rank 32, fp16) and MLflow experiment tracking.
+- Credentials: Aspire Leaders Program (Harvard-founded Aspire Institute, Sep 2026), Red Hat Certified System Administrator (RHCSA #250-068-707), Huawei Cloud Developer (HCCDA), IBM Docker Essentials, AWS Academy Cloud Foundations.
+- Contact: Email: omarmo.abdelsalam@gmail.com | Phone/WhatsApp: +20 101 1297 869 | Location: Alexandria, Egypt (Open for full-time, remote, hybrid, and consultancy roles worldwide).`;
 
     if (apiKey) {
         const candidateModels = [
-            process.env.GEMINI_MODEL || 'gemini-2.0-flash-lite',
+            process.env.GEMINI_MODEL,
+            'gemini-2.0-flash-lite',
+            'gemini-2.5-flash',
             'gemini-2.0-flash',
             'gemini-1.5-flash',
             'gemini-1.5-flash-latest'
-        ];
+        ].filter(Boolean);
 
         const contents = [
             {
                 role: 'user',
-                parts: [{ text: `${SYSTEM_PROMPT}\n\nPlease acknowledge your role as MORA.` }]
+                parts: [{ text: `${SYSTEM_PROMPT}\n\nPlease acknowledge your role as MORA and follow the strict rule: answer ONLY what the user asks, naturally and conversationally.` }]
             },
             {
                 role: 'model',
-                parts: [{ text: "Understood. I am MORA, Omar Mohamed's personal AI Assistant, grounded in his verified portfolio facts." }]
+                parts: [{ text: "Understood! I'm MORA. I will answer only the specific question asked in a warm, direct, human conversational tone." }]
             }
         ];
 
-        // Append conversational history if provided
         if (Array.isArray(history)) {
             for (const turn of history.slice(-6)) {
                 contents.push({
@@ -103,12 +108,17 @@ Guidelines:
                     }
                 }
             } catch (modelErr) {
-                console.warn(`Model ${modelName} call failed, trying next...`, modelErr.message);
+                console.warn(`Model ${modelName} call failed, trying next...`, modelErr?.message);
             }
         }
     }
 
-    // Intelligent knowledge-based fallback engine (Arabic & English supported)
+    // Dynamic, human conversational response engine (No hardcoded bio dumps!)
+    const humanAnswer = generateNaturalAnswer(query);
+    return res.status(200).json({ Answer: humanAnswer });
+}
+
+function generateNaturalAnswer(query = '') {
     const isArabic = /[\u0600-\u06FF]/.test(query);
     const normalized = query.toLowerCase()
         .replace(/[\u0617-\u061A\u064B-\u0652\u0670\u0640]/g, '')
@@ -117,197 +127,149 @@ Guidelines:
         .replace(/ى/g, 'ي')
         .trim();
 
-    // 1. Natural Conversational Greetings (like ChatGPT)
+    // 1. Natural greetings
     if (/^(hi|hello|hey|yo|howdy|sup|good\s*morning|good\s*evening|greetings|ازيك|مرحبا|سلام|اهلا|صباح الخير|مساء الخير|هاي|هلو)[\s!.]*$/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "👋 أهلاً بك! أنا **MORA**، المساعد الذكي الخاص بالمهندس **عمر محمد**.\n\nكيف يمكنني مساعدتك اليوم؟ يسعدني أن تسألني عن خبرات عمر في **PlayerHub.GG** و**CliniSoft**، أو مشروعه المميز **HistoryVerse (+A)**، مهاراته في MLOps و Cloud، أو كيفية التواصل معه وتوظيفه! 🚀"
-            });
+            return "أهلاً بك! أنا مورا (MORA)، المساعد الذكي للمهندس عمر محمد. يسعدني جداً التحدث معك، كيف يمكنني مساعدتك اليوم؟";
         }
-        return res.status(200).json({
-            Answer: "👋 Hey there! I'm **MORA**, Omar Mohamed's personal AI Assistant.\n\nHow can I help you today? Ask me anything about Omar's work at **PlayerHub.GG** & **CliniSoft**, his **HistoryVerse (A+)** AI/AR platform, his **MLOps & LLM skills**, or how to get in touch!"
-        });
+        return "Hey there! I'm MORA, Omar Mohamed's AI assistant. Great to chat with you! How can I help you today?";
     }
 
-    // 2. Real-Time Clock & Date
+    // 2. Real-time time & date
     if (/(time|date|clock|current\s*time|what\s*time|الساعة|الوقت|تاريخ|النهارده|النهاردة)/i.test(normalized)) {
         const now = new Date();
         const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Cairo' });
         const dateStr = now.toLocaleDateString(isArabic ? 'ar-EG' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Africa/Cairo' });
         if (isArabic) {
-            return res.status(200).json({
-                Answer: `⏱️ الساعة الآن هي **${timeStr}** بتوقيت مصر (${dateStr}).\nيسعدني دائماً مساعدتك في استكشاف خبرات ومشاريع المهندس **عمر محمد** أو حجز مقابلة استكشافية معه!`
-            });
+            return `الساعة الآن **${timeStr}** بتوقيت مصر (${dateStr}). هل هناك أي شيء أستطيع مساعدتك به؟`;
         }
-        return res.status(200).json({
-            Answer: `⏱️ The current time is **${timeStr}** (Egypt Time / UTC+2) on **${dateStr}**.\nHow can I help you learn more about Omar Mohamed's engineering projects, tech stack, or availability?`
-        });
+        return `Right now it's **${timeStr}** (Egypt Time / UTC+2) on **${dateStr}**. What's on your mind?`;
     }
 
-    // 3. "How are you" / Friendly Check-ins
-    if (/(how\s*are\s*you|how\s*is\s*it\s*going|how\s*do\s*you\s*do|عامل ايه|اخبارك|ازيك ايه الاخبار|كيف حالك)/i.test(normalized)) {
+    // 3. How are you / check-in
+    if (/(how\s*are\s*you|how\s*is\s*it\s*going|how\s*do\s*you\s*do|whats\s*up|عامل ايه|اخبارك|ازيك ايه الاخبار|كيف حالك)/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "أنا ممتاز وبأفضل حال، شكراً لسؤالك! جاهز لمساعدتك بكامل طاقتي 🚀 حابب تعرف إيه عن مسيرة عمر الهندسية أو مشاريعه في الذكاء الاصطناعي؟"
-            });
+            return "أنا ممتاز وبأفضل حال، شكراً لسؤالك! جاهز لمساعدتك في أي استفسار يخص عمل ومشاريع المهندس عمر. حابب تسأل عن إيه؟";
         }
-        return res.status(200).json({
-            Answer: "I'm doing great and running at full speed! 🚀 Ready to answer any questions about Omar's engineering projects, production architecture, or background. What would you like to explore?"
-        });
+        return "I'm doing great, thank you for asking! Ready to help you with anything regarding Omar's engineering work, projects, or background. What would you like to explore?";
     }
 
-    // 4. "Who are you" / "What is your name"
+    // 4. Identity
     if (/(who\s*are\s*you|what\s*is\s*your\s*name|tell\s*me\s*about\s*yourself|انت مين|اسمك ايه|عرف نفسك|مين انت)/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "أنا **MORA**، الممثل التقني الذكي والمساعد الرسمي للمهندس **عمر محمد**.\nأنا مصمم للإجابة عن كل ما يتعلق بخبرات عمر، مشاريعه (مثل **HistoryVerse** و**SDXL LoRA**)، وبنيته التحتية في **PlayerHub.GG**. يمكنك سؤالي عن أي مهارة أو أداة!"
-            });
+            return "أنا **مورا (MORA)**، المساعد التقني الذكي للمهندس **عمر محمد** (Omar Mohamed). أنا هنا للإجابة عن أسئلتك حول مشاريعه، تقنياته، وخبراته في الذكاء الاصطناعي وهندسة البنية التحتية، أو لمساعدتك في التواصل معه مباشرة!";
         }
-        return res.status(200).json({
-            Answer: "I'm **MORA**, the official autonomous AI representative and technical assistant for **Omar Mohamed** (Omar Mohamed Abdelsalam).\nI'm grounded in his verified portfolio, production systems, and resume. Feel free to quiz me on his skills, past companies, or graduation project!"
-        });
+        return "I'm **MORA**, the AI representative and technical assistant for **Omar Mohamed**. Think of me as his digital co-pilot here to answer questions about his AI & MLOps engineering work, past projects, or help you connect with him directly!";
     }
 
-    // 5. "What can you do"
+    // 5. Capabilities / What can you do
     if (/(what\s*can\s*you\s*do|help\s*me|capabilities|تقدر تعمل ايه|بتعمل ايه|مساعده)/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "أستطيع مساعدتك في عدة أمور:\n• الإجابة عن مشاريع عمر وخبراته في **PlayerHub.GG** و**CliniSoft**.\n• شرح تفاصيل مشروع تخرجه **HistoryVerse (+A)** وتدريب **SDXL LoRA**.\n• استعراض مهاراته في **MLOps** و **Docker** و **Kubernetes** و **LLMs**.\n• إرشادك في جولة داخل البورتفوليو أو تزويدك ببيانات التواصل والتوظيف!"
-            });
+            return "أستطيع مساعدتك في:\n• الإجابة عن مشاريع عمر وخبراته العملية في PlayerHub.GG و CliniSoft.\n• شرح تفاصيل مشروع تخرجه HistoryVerse (+A) وتدريب SDXL LoRA.\n• استعراض مهاراته في MLOps، Docker، Kubernetes، و LLMs.\n• تزويدك ببيانات التواصل المباشر أو التوظيف.";
         }
-        return res.status(200).json({
-            Answer: "Here's what I can do for you:\n• Answer detailed technical questions about Omar's work at **PlayerHub.GG** and **CliniSoft**.\n• Explain his flagship projects like **HistoryVerse (A+)** and **SDXL LoRA fine-tuning**.\n• Break down his **MLOps, Cloud, and LLM stack** (Docker, Kubernetes, Terraform, Vault).\n• Provide direct contact info, resume downloads, or guide you through the portfolio!"
-        });
+        return "Here is what I can help you with:\n• Discuss Omar's production engineering work at **PlayerHub.GG** and **CliniSoft**.\n• Deep dive into flagship projects like **HistoryVerse (A+)** and **SDXL LoRA fine-tuning**.\n• Share details on his tech stack: Docker, Kubernetes, Terraform, PyTorch, and LLMs/RAG.\n• Provide direct contact and hiring details.";
     }
 
-    // 6. Thanks & Appreciation
+    // 6. Thanks
     if (/(thank\s*you|thanks|thx|شكرا|تسلم|جزاك الله خيرا|الف شكر)/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "العفو، تحت أمرك دائماً! يسعدني دائماً تقديم المساعدة 🚀"
-            });
+            return "العفو، على الرحب والسعة دائماً! لو عندك أي سؤال تاني أنا في الخدمة 🚀";
         }
-        return res.status(200).json({
-            Answer: "You're very welcome! Let me know if there's anything else you'd like to explore about Omar's work! 🚀"
-        });
+        return "You're very welcome! Feel free to ask if there is anything else you'd like to know 🚀";
     }
 
     // 7. Goodbyes
     if (/(bye|goodbye|see\s*you|مع السلامة|باي|اشوفك بعدين)/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "مع السلامة! سعدت بالتحدث معك، وأتمنى لك يوماً رائعاً. يمكنك دائماً العودة أو التواصل مع عمر عبر البريد أو لينكد إن! 🚀"
-            });
+            return "مع السلامة! سعدت بالحديث معك، وأتمنى لك يوماً رائعاً. يمكنك دائماً العودة أو مراسلة عمر مباشرة!";
         }
-        return res.status(200).json({
-            Answer: "Goodbye! Thanks for visiting Omar's portfolio. Feel free to come back anytime or reach out to Omar via email or LinkedIn! 🚀"
-        });
+        return "Goodbye! It was a pleasure chatting. Feel free to come back anytime or reach out to Omar directly!";
     }
 
-    // Out-of-domain guardrail
-    if (/(football|soccer|كورة|ماتش|طبخة|recipe|cooking|weather|طقس|crypto|bitcoin)/i.test(normalized)) {
+    // 8. Off-topic queries (football, cooking, weather, crypto, etc.)
+    if (/(football|soccer|كورة|ماتش|طبخة|recipe|cooking|weather|طقس|crypto|bitcoin|btc)/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "أنا **MORA**، المساعد الذكي الخاص بالمهندس **عمر محمد**. أنا هنا للإجابة عن مشاريعه (مثل **HistoryVerse** و **SDXL LoRA**)، خبراته في **PlayerHub.GG** و **CliniSoft**، مهاراته في MLOps و Cloud، وفرص العمل والتعاون. يسعدني الإجابة عن أي سؤال في هذه المجالات! 🚀"
-            });
+            return "يبدو موضوعاً ممتعاً، لكن تخصصي الأساسي هو مساعدة زوار موقع المهندس عمر محمد والإجابة عن مشاريعه في الذكاء الاصطناعي، وخبراته في MLOps و Cloud، وفرص التعاون والتوظيف. حابب تسأل عن أي من هذه المجالات؟";
         }
-        return res.status(200).json({
-            Answer: "I am **MORA**, Omar Mohamed's personal AI representative. I specialize in answering questions about Omar's engineering career, AI projects (like **HistoryVerse** and **SDXL LoRA**), cloud/MLOps infrastructure, and job opportunities. How can I help you regarding Omar's work?"
-        });
+        return "That sounds interesting, but my main focus is helping people learn about Omar Mohamed's engineering background—his AI projects, MLOps/cloud infrastructure, and availability for new opportunities. Is there anything about his work you'd like to check out?";
     }
 
-    // Laptop Backpack, Tech Tools & GitHub
-    if (/laptop|backbag|backpack|bag|شنطة|لابتوب|كمبيوتر|جيت هاب|github|tools|stack/i.test(normalized)) {
+    // 9. Current Role & Job (PlayerHub.GG)
+    if (/playerhub|بلاير|دبي|dubai|scraping|ha\s*proxy|mariadb|شغال\s*فين|بيشتغل\s*فين|وظيفته|شغله|current\s*role|where\s*does\s*he\s*work/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "💻 **لابتوب وحقيبة المهندس عمر محمد:**\nفي حقيبتي التكتيكية ثلاثية الأبعاد (Laptop Backpack) والممهورة بشعار GitHub:\n• **بيئة العمل المتطورة:** لابتوب عالي الأداء مع بيئة Linux/Mac، وحاويات Docker و Kubernetes محلية للتطوير واختبار النماذج.\n• **حزمة أدوات AI & MLOps:** مكتبات PyTorch و Transformers و ChromaDB و Langfuse و MLflow.\n• **مستودعات GitHub:** يمكنك استكشاف مشاريعه مفتوحة المصدر وكود HistoryVerse و SDXL LoRA عبر: [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o) 🚀"
-            });
+            return "يعمل عمر حالياً كـ **MLOps & AI Infrastructure Engineer** في شركة **PlayerHub.GG** (دبي، الإمارات · عن بُعد منذ سبتمبر 2026)، حيث يدير أنظمة وكلاء الذكاء الاصطناعي (AI agents)، وخطوط سحب البيانات، والبنية التحتية التلقائية التعافي (autoheal/smartheal) ومراقبة الأنظمة بـ Prometheus و Grafana.";
         }
-        return res.status(200).json({
-            Answer: "💻 **Omar Mohamed's Developer Laptop & Backpack:**\nInside my 3D Minecraft tactical backpack (sporting the glowing GitHub logo):\n• **Development Environment:** High-performance Linux/Mac workstation with local Docker containers, Kubernetes clusters, and VS Code configured for high-velocity AI engineering.\n• **AI & MLOps Stack:** PyTorch, Hugging Face Transformers, ChromaDB RAG vectorstores, Langfuse tracing, and MLflow.\n• **GitHub Repositories:** Explore Omar's open-source projects including HistoryVerse, SDXL LoRA fine-tuning, and CI/CD pipelines at [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o) 🚀"
-        });
+        return "Omar currently works as an **MLOps & AI Infrastructure Engineer** at **PlayerHub.GG** (Dubai, Remote · Sep 2026 – Present). He manages autonomous AI agent deployments, high-throughput scraping pipelines, HAProxy read routing, MariaDB replication, self-healing daemons, and Prometheus/Grafana observability.";
     }
 
-    // PlayerHub.GG
-    if (/playerhub|بلاير|دبي|dubai|scraping|ha\s*proxy|mariadb/i.test(normalized)) {
-        if (isArabic) {
-            return res.status(200).json({
-                Answer: "**PlayerHub.GG [دبي، الإمارات · عن بُعد · سبتمبر 2026 – الآن]:**\nيعمل عمر كـ **MLOps & AI Infrastructure Engineer**، حيث يتولى:\n• إدارة ونشر أنظمة وكلاء الذكاء الاصطناعي (AI agents) وخطوط سحب البيانات (scraping pipelines) عبر بيئات الإنتاج والتطوير.\n• تصميم بنية تحتية عالية التوافر (HA) باستخدام HAProxy و MariaDB replication و Docker و Kubernetes.\n• تنفيذ آليات التعافي التلقائي (self-healing workloads مثل autoheal و smartheal).\n• بناء خطوط CI/CD مؤتمتة بـ GitHub Actions ومراقبة متكاملة بـ Prometheus و Grafana و Loki."
-            });
-        }
-        return res.status(200).json({
-            Answer: "**PlayerHub.GG [Dubai, UAE · Remote · Sep 2026 – Present]:**\nOmar works as an **MLOps & AI Infrastructure Engineer**:\n• Owns deployment and operations for AI agent systems, scraping pipelines, and production/dev/test environments (Docker, Kubernetes, hybrid cloud).\n• Engineered high-availability architecture with HAProxy read routing, MariaDB replication, and self-healing workloads (autoheal, smartheal).\n• Built end-to-end GitHub Actions CI/CD pipelines and centralized logging and monitoring with Prometheus, Grafana, and Loki."
-        });
-    }
-
-    // CliniSoft
+    // 10. CliniSoft
     if (/clinisoft|كلينيسوفت|طبي|health|clinical|faster-whisper/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "**CliniSoft [الإسكندرية، مصر · دوام كامل · أبريل 2026 – أغسطس 2026]:**\nعمل عمر كـ **AI & ML Engineer**:\n• طوّر أنظمة ذكاء اصطناعي للرعاية الصحية مستخدماً LLMs و NLP و Faster-Whisper لأتمتة التوثيق السريري وتفريغ الاستشارات الطبية صوتياً.\n• صمم واجهات برمجية عالية الأداء بـ FastAPI ونشرها وفق أفضل ممارسات MLOps السحابية."
-            });
+            return "في **CliniSoft**، عمل عمر كـ **AI & ML Engineer** حيث بنى أنظمة ذكاء اصطناعي للرعاية الصحية مستخدماً LLMs و NLP ونماذج Faster-Whisper لأتمتة التوثيق السريري وتفريغ الاستشارات الطبية عبر خدمات مصغرة بـ FastAPI.";
         }
-        return res.status(200).json({
-            Answer: "**CliniSoft [Alexandria, Egypt · Apr 2026 – Aug 2026]:**\nOmar served as an **AI & ML Engineer**:\n• Developed production healthcare AI utilizing LLMs, NLP, and Faster-Whisper speech models to automate clinical documentation and medical consultations.\n• Served microservices via FastAPI and deployed them using cloud MLOps best practices."
-        });
+        return "At **CliniSoft**, Omar worked as an **AI & ML Engineer**, building production healthcare AI using LLMs, NLP, and Faster-Whisper speech models to automate clinical documentation through high-throughput FastAPI services.";
     }
 
-    // HistoryVerse
+    // 11. HistoryVerse / Graduation Project
     if (/historyverse|تخرج|graduation|museum|متحف|yolo|arcore|fargate|chromadb/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "**مشروع التخرج: HistoryVerse [الدرجة: +A · موثق]:**\nمرشد متاحف تفاعلي بالذكاء الاصطناعي والواقع المعزز (AI/AR):\n• **الرؤية الحاسوبية:** دقة 90–96% في التعرف على الآثار بـ YOLOv5 و Vision Transformers.\n• **منصة وكلاء متعددين و RAG:** أكثر من 25 REST endpoint عبر ChromaDB وتوجيه ذكي بين النماذج (Gemini, OpenAI, Llama, Ollama).\n• **صوت وواقع معزز:** تفاعل صوتي فوري (Faster-Whisper, Google TTS) ونماذج ثلاثية الأبعاد بـ ARCore.\n• **الموثوقية السحابية:** مخرجات محققة بـ Pydantic، وتتبع Langfuse، وتقييم Ragas مع 204 اختبارات مؤتمتة ناجحة ونشر على **AWS Fargate** بـ Terraform."
-            });
+            return "مشروع تخرج عمر هو **HistoryVerse** (وحصل على امتياز مرتفع **+A**). وهو مرشد متاحف تفاعلي بالذكاء الاصطناعي والواقع المعزز، يتعرف على الآثار بدقة 90-96% بـ YOLOv5 و Transformers، ويحتوي على منصة RAG عبر ChromaDB ونشر كامل على AWS Fargate مع 204 اختبارات مؤتمتة ناجحة.";
         }
-        return res.status(200).json({
-            Answer: "**HistoryVerse — Multilingual AI/AR Museum Guide [Graduation Project, Grade: A+]:**\n• **Computer Vision:** 90–96% artifact recognition accuracy using YOLOv5 and Transformers.\n• **Multi-Agent RAG Platform:** 25+ REST endpoints, RAG over ChromaDB, and model-agnostic LLM routing (Gemini, OpenAI, Llama, Ollama).\n• **Voice & AR:** Multilingual voice conversation (Faster-Whisper, Google TTS) and interactive 3D reconstructions with ARCore and Jetpack Compose.\n• **Enterprise Reliability:** Pydantic validation, Langfuse distributed tracing, Ragas evaluation, 204 passing automated tests, deployed to **AWS Fargate** with modular Terraform."
-        });
+        return "Omar's graduation project is **HistoryVerse** (graded **A+**)—an interactive multilingual AI/AR museum guide featuring 90–96% artifact recognition accuracy with YOLOv5 & Vision Transformers, ChromaDB RAG, and automated deployment on AWS Fargate with 204 passing tests.";
     }
 
-    // SDXL LoRA
+    // 12. SDXL LoRA Fine-Tuning
     if (/sdxl|lora|diffusers|sultan|مسجد|سلطان حسن|diffusion/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "**SDXL LoRA Fine-Tuning Pipeline – مسجد السلطان حسن بالقاهرة:**\n• تنظيم وتسمية مجموعة بيانات صور معمارية دقيقة.\n• تدريب Stable Diffusion XL LoRA عبر Hugging Face Diffusers (rank 32, fp16).\n• تتبع كامل لمنحنيات الخسارة وتجارب التعلم بـ **MLflow** داخل بيئة Docker Compose قابلة للتكرار بالكامل."
-            });
+            return "قام عمر بتدريب وتخصيص نموذج **Stable Diffusion XL (SDXL) LoRA** على العمارة التاريخية لمسجد السلطان حسن بالقاهرة، باستخدام Hugging Face Diffusers (rank 32, fp16) وتتبع التجارب بالكامل عبر **MLflow** داخل بيئة Docker قابلة للتكرار.";
         }
-        return res.status(200).json({
-            Answer: "**SDXL LoRA Fine-Tuning Pipeline – Sultan Hassan Mosque, Cairo:**\n• Dataset curation, captioning, and Stable Diffusion XL LoRA training using Hugging Face Diffusers (rank 32, fp16 precision).\n• Tracked hyperparameter optimization and loss convergence with **MLflow** in a fully reproducible Docker Compose pipeline."
-        });
+        return "Omar engineered an **SDXL LoRA fine-tuning pipeline** for Sultan Hassan Mosque's architectural heritage using Hugging Face Diffusers (rank 32, fp16 precision), tracking loss convergence and hyperparameters with **MLflow** in Docker.";
     }
 
-    // Contact / Hire
-    if (/contact|email|phone|whatsapp|hire|reach|ايميل|تواصل|تليفون|رقم|واتس|توظيف/i.test(normalized)) {
+    // 13. Docker & Kubernetes / Container stack
+    if (/docker|kubernetes|k8s|container|دوكر|كوبيرنيتيس/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "**معلومات التواصل مع عمر محمد:**\n• **البريد الإلكتروني:** omarmo.abdelsalam@gmail.com\n• **الهاتف / واتساب:** +20 101 1297 869\n• **لينكد إن:** [linkedin.com/in/omar-mohamedo-o](https://linkedin.com/in/omar-mohamedo-o)\n• **جيت هاب:** [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o)\n• **الموقع:** الإسكندرية، مصر (متاح للعمل عن بُعد ولعقود واستشارات AI/MLOps)."
-            });
+            return "يملك عمر خبرة قوية في الحاويات والأوركسترا: يستخدم Docker و Kubernetes يومياً في إدارة أنظمة AI وكلاء PlayerHub.GG، وبنى بنية تحتية سحابية كاملة بـ K8s في ChloroMaster، وهو حاصل على شهادة **IBM Docker Essentials** و **RHCSA** في إدارة نظم لينكس.";
         }
-        return res.status(200).json({
-            Answer: "**Contact Omar Mohamed:**\n• **Email:** omarmo.abdelsalam@gmail.com\n• **Phone / WhatsApp:** +20 101 1297 869\n• **LinkedIn:** [linkedin.com/in/omar-mohamedo-o](https://linkedin.com/in/omar-mohamedo-o)\n• **GitHub:** [github.com/omarMohamedo-o](https://github.com/omarMohamedo-o)\n• **Location:** Alexandria, Egypt (Open to remote roles, full-time opportunities, and AI/MLOps consulting)."
-        });
+        return "Omar has hands-on production experience with **Docker & Kubernetes**: managing containerized AI agents and scraping pipelines at PlayerHub.GG, architecting AWS EKS/K8s environments at ChloroMaster, and holds the **IBM Docker Essentials** and **RHCSA** credentials.";
     }
 
-    // Certifications & Education
+    // 14. Contact / Hire / Availability
+    if (/contact|email|phone|whatsapp|hire|reach|ايميل|تواصل|تليفون|رقم|واتس|توظيف|متاح/i.test(normalized)) {
+        if (isArabic) {
+            return "يمكنك التواصل مباشرة مع المهندس عمر:\n• **البريد:** omarmo.abdelsalam@gmail.com\n• **واتساب / هاتف:** +20 101 1297 869\n• **لينكد إن:** linkedin.com/in/omar-mohamedo-o\nوهو متاح للفرص بدوام كامل والتعاقدات والاستشارات في MLOps و AI.";
+        }
+        return "You can reach Omar directly at:\n• **Email:** omarmo.abdelsalam@gmail.com\n• **Phone / WhatsApp:** +20 101 1297 869\n• **LinkedIn:** linkedin.com/in/omar-mohamedo-o\nHe is currently open to full-time engineering roles, contract MLOps architecture, and AI consulting worldwide.";
+    }
+
+    // 15. Education & GPA
     if (/cert|rhcsa|redhat|aspire|degree|education|msc|master|gpa|جامع|شهادات|تعليم/i.test(normalized)) {
         if (isArabic) {
-            return res.status(200).json({
-                Answer: "**التعليم والشهادات الاحترافية:**\n• **ماجستير هندسة الحاسب:** الأكاديمية العربية للعلوم والتكنولوجيا (CGPA: 4.0 / 4.0 · فبراير 2026 – الآن).\n• **برنامج Aspire Leaders:** برعاية خريجي جامعة هارفارد (سبتمبر 2026).\n• **RHCSA:** مهندس نظم معتمد من ريد هات (Red Hat Certified System Administrator #250-068-707).\n• **دبلومة هندسة البرمجيات:** معهد تكنولوجيا المعلومات (ITI · أغسطس 2025).\n• **بكالوريوس هندسة الحاسب:** معهد الإسكندرية العالي للهندسة والتكنولوجيا (جيد جداً مع مرتبة الشرف، 3.2 / 4.0)."
-            });
+            return "المؤهلات الأكاديمية والشهادات لعمر:\n• باحث ماجستير هندسة الحاسب بالأكاديمية العربية (AASTMT) بمعدل ممتاز **4.0 / 4.0**.\n• خريج برنامج **Aspire Leaders** (برعاية خريجي جامعة هارفارد).\n• مهندس نظم معتمد من ريد هات (**RHCSA #250-068-707**).\n• مطور سحابي معتمد من هواوي (**HCCDA**) ومعهد ITI.";
         }
-        return res.status(200).json({
-            Answer: "**Education & Professional Certifications:**\n• **M.Sc. in Computer Engineering:** Arab Academy for Science, Technology and Maritime Transport (CGPA: 4.0 / 4.0 · Feb 2026 – Present).\n• **Aspire Leaders Program:** Harvard-founded Aspire Institute (Sep 2026).\n• **RHCSA:** Red Hat Certified System Administrator (Cert #250-068-707).\n• **Software Engineering Diploma:** Information Technology Institute (ITI · Intensive Code Camp, Aug 2025).\n• **B.Eng. in Computer Engineering:** Higher Institute of Engineering & Technology (BHI · CGPA: 3.2 / 4.0, Very Good B+)."
-        });
+        return "Omar's academic credentials and certifications:\n• **M.Sc. in Computer Engineering** at AASTMT with a perfect **4.0 / 4.0 CGPA**.\n• **Aspire Leaders Program** (Harvard-founded Aspire Institute, Sep 2026).\n• **Red Hat Certified System Administrator (RHCSA #250-068-707)**.\n• **Huawei Cloud Developer (HCCDA)** and ITI Software Engineering Diploma.";
     }
 
-    // General Summary Fallback
+    // 16. Location / Where is Omar
+    if (/where|location|based|egypt|alexandria|فين|مكان|عايش|مقيم/i.test(normalized)) {
+        if (isArabic) {
+            return "المهندس عمر مقيم في **الإسكندرية، مصر**، ويعمل عن بُعد مع فرق عمل عالمية (حالياً مع PlayerHub.GG في دبي)، وهو متاح للعمل عن بُعد ولفرص الانتقال الدولية.";
+        }
+        return "Omar is based in **Alexandria, Egypt**, working remotely with international teams (currently with PlayerHub.GG in Dubai), and is open to remote roles as well as global relocation.";
+    }
+
+    // 17. Who is Omar / General Overview (Concise, human, not a massive wall of text)
+    if (/who\s*is\s*omar|tell\s*me\s*about\s*omar|مين\s+(هو\s+)?عمر|من\s+(هو\s+)?عمر|نبذة\s*عن\s*عمر/i.test(normalized)) {
+        if (isArabic) {
+            return "عمر محمد هو مهندس حاسب وباحث ماجستير (معدل 4.0) متخصص في **الذكاء الاصطناعي (LLMs & RAG)** وهندسة **MLOps والبنية السحابية**. يعمل حالياً كمهندس MLOps في شركة **PlayerHub.GG** (دبي، عن بُعد)، ولديه مشروعات متميزة مثل **HistoryVerse** (+A) و **SDXL LoRA**.";
+        }
+        return "Omar Mohamed is a Computer Engineer and M.Sc. candidate (CGPA 4.0) specializing in **AI/LLMs, RAG, and MLOps/Cloud Infrastructure**. He currently works as an MLOps & AI Infrastructure Engineer at **PlayerHub.GG** (Dubai, Remote) and has built production systems across healthcare, gaming, and cloud automation.";
+    }
+
+    // 18. Conversational Fallback - Friendly, human, answers naturally without dumping static bio!
     if (isArabic) {
-        return res.status(200).json({
-            Answer: "عمر محمد مهندس حاسب وباحث ماجستير (معدل 4.0) متخصص في **الذكاء الاصطناعي (LLMs & RAG)** وهندسة **MLOps والبنية السحابية**. يعمل حالياً في **PlayerHub.GG** (دبي)، وسبق له العمل في **CliniSoft** و **ChloroMaster**. من أبرز مشاريعه **HistoryVerse** (+A) و **SDXL LoRA**. للتواصل: omarmo.abdelsalam@gmail.com أو +20 101 1297 869."
-        });
+        return "يسعدني جداً التحدث معك! بصفتي المساعد الذكي لعمر، أقدر أجاوبك بالتفصيل عن أي جانب في مسيرته الهندسية—سواء مشاريعه (مثل HistoryVerse و SDXL LoRA)، خبراته في PlayerHub.GG و CliniSoft، مهاراته في MLOps و Docker و LLMs، أو كيفية التواصل معه وتوظيفه. تحب تسأل عن إيه بالتحديد؟";
     }
 
-    return res.status(200).json({
-        Answer: "Omar Mohamed is a Computer Engineer & M.Sc. candidate (CGPA 4.0) specializing in **AI & Machine Learning (LLMs, RAG, NLP)** and **MLOps & Cloud Infrastructure**. Currently an MLOps Engineer at **PlayerHub.GG** (Dubai, Remote), previously at **CliniSoft** and **ChloroMaster**. Flagship projects: **HistoryVerse** (A+) and **SDXL LoRA**. Contact him at omarmo.abdelsalam@gmail.com or +20 101 1297 869!"
-    });
+    return "I'd be glad to help with that! As Omar's AI teammate, I can answer anything specific about his engineering work—such as his systems at PlayerHub.GG, his healthcare AI at CliniSoft, projects like HistoryVerse (A+), his MLOps/LLM stack, or how to get in touch. What specific area would you like to explore?";
 }

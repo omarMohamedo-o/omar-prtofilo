@@ -275,7 +275,7 @@ export const en = {
             targetId: "contact",
             title: "Straw Hat Grand Fleet Arc: Join the Crew & Collaborate",
             badge: "🏴‍☠️ Grand Fleet Arc",
-            description: "Ready to collaborate? Reach out directly via the Discovery form, WhatsApp, Email, or chat live with Captain Luffy & MORA — ready to answer questions about any project or skill!",
+            description: "Ready to collaborate? Reach out directly via the Discovery form, WhatsApp, Email, or chat live with MORA — ready to answer questions about any project or skill!",
             itemHighlights: ["Interactive Discovery Inquiry Form", "Direct WhatsApp & Email", "MORA AI Chatbot with Voice & RAG"]
         }
     ]
