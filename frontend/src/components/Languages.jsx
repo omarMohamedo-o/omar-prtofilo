@@ -35,14 +35,14 @@ export default function Languages({ isVisible, languages = [], themeColor = 'cya
         {/* Phase 2: Content container with delayed staggered children */}
         <motion.div
           variants={containerVariant}
-          className="flex justify-center gap-8"
+          className="flex flex-wrap justify-center gap-6 sm:gap-8"
         >
           {languages.map((lang, index) => (
             <motion.div
               key={index}
               variants={getOrbitalItemVariant(index, isMobile)}
               whileHover={{ scale: 1.05, y: -3 }}
-              className={`ds-card rounded-xl p-6 ${borderHover} transition-all duration-500 text-center`}
+              className={`ds-card rounded-xl p-6 min-w-[200px] sm:min-w-[220px] ${borderHover} transition-all duration-500 text-center`}
             >
               <h3 className={`text-xl font-bold ${accentColor} mb-2`}>{lang.name}</h3>
               <p className="text-gray-300">{lang.level}</p>

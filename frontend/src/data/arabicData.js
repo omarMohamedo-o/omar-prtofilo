@@ -177,7 +177,8 @@ export const arabicEducation = [
 
 export const arabicLanguages = [
     { name: "العربية", level: "اللغة الأم (طلاقة كاملة)" },
-    { name: "الإنجليزية", level: "طلاقة مهنية وتقنية كاملة" }
+    { name: "الإنجليزية", level: "طلاقة مهنية وتقنية كاملة" },
+    { name: "الألمانية", level: "مبتدئ (Beginner - A1)" }
 ];
 
 export const arabicDevopsData = {

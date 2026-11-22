@@ -193,7 +193,8 @@ export const education = [
 
 export const languages = [
     { name: "Arabic", level: "Native" },
-    { name: "English", level: "Fluent" }
+    { name: "English", level: "Fluent" },
+    { name: "German", level: "Beginner (A1)" }
 ];
 
 // Portfolio modes
