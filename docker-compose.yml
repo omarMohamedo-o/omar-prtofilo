@@ -1,19 +1,14 @@
-# ============================================
 # MORA Portfolio - Docker Compose
 # Production-ready multi-service setup
-# ============================================
 # Usage:
 #   docker compose up -d                    # Start all services
 #   docker compose up -d --build            # Rebuild and start
 #   docker compose logs -f                  # View logs
 #   docker compose down                     # Stop services
 #   docker compose down -v                  # Stop and remove volumes
-# ============================================
 
 services:
-  # ==========================================
   # Frontend Service (React + Vite + Nginx)
-  # ==========================================
   frontend:
     build:
       context: ./frontend
@@ -55,9 +50,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  # ==========================================
   # MoraBot Service (Python FastAPI)
-  # ==========================================
   morabot:
     build:
       context: ./MoraBot
@@ -102,9 +95,7 @@ services:
         max-size: "20m"
         max-file: "5"
 
-  # ==========================================
   # Backend Mailer Service (Discovery Form)
-  # ==========================================
   backend:
     build:
       context: ./backend
@@ -146,9 +137,7 @@ services:
 
   # Note: backend service removed — discovery/email is handled serverlessly
 
-  # ==========================================
   # Nginx Reverse Proxy
-  # ==========================================
   nginx:
     build:
       context: ./nginx
@@ -200,9 +189,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  # ==========================================
   # Redis Cache (Optional - for session/caching)
-  # ==========================================
   redis:
     image: redis:7-alpine
     container_name: mora-redis
@@ -239,17 +226,13 @@ services:
         max-size: "5m"
         max-file: "2"
 
-# ==========================================
 # Networks
-# ==========================================
 networks:
   mora-network:
     driver: bridge
     name: mora-portfolio-network
 
-# ==========================================
 # Volumes
-# ==========================================
 volumes:
   morabot_db:
     name: mora-morabot-db

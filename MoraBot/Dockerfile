@@ -1,11 +1,7 @@
-# ============================================
 # MORA Portfolio - MoraBot Dockerfile
 # Multi-stage build for Python FastAPI
-# ============================================
 
-# ============================================
 # Stage 1: Builder
-# ============================================
 FROM python:3.11-slim AS builder
 
 WORKDIR /app
@@ -38,9 +34,7 @@ RUN pip install --upgrade pip && \
 # Install remaining requirements (torch already satisfied)
 RUN pip install -r requirements.txt
 
-# ============================================
 # Stage 2: Production Runtime
-# ============================================
 FROM python:3.11-slim AS production
 
 # Metadata

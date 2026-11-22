@@ -1,6 +1,5 @@
 /**
  * Arabic Localization Data for Omar Mohamed's Portfolio
- * ========================================================
  * Professional, authentic Arabic translation for all engineering profiles,
  * production case studies, academic honors, and skill taxonomies.
  */

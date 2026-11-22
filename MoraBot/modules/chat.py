@@ -1,6 +1,5 @@
 """
 Chat Module for INTEGR8 AI Assistant
-====================================
 
 Provides RAG-based conversational interface using ChromaDB vector store
 and Google Gemini language models.
@@ -48,9 +47,7 @@ from modules.config import (
 )
 
 
-# =============================================================================
 # Custom Exceptions
-# =============================================================================
 
 class ChatError(Exception):
     """Base exception for chat errors."""
@@ -72,9 +69,7 @@ class RateLimitError(ChatError):
     pass
 
 
-# =============================================================================
 # Retry Decorator
-# =============================================================================
 
 T = TypeVar('T')
 
@@ -140,9 +135,7 @@ def retry_on_rate_limit(
     return decorator
 
 
-# =============================================================================
 # RAG Pipeline
-# =============================================================================
 
 # Cached RAG pipeline instance
 _cached_qa_pipeline: Optional[RetrievalQA] = None
@@ -251,9 +244,7 @@ def retrieval_qa_pipeline(
     return qa
 
 
-# =============================================================================
 # Chat Engine
-# =============================================================================
 
 class ChatEngine:
     """
@@ -423,9 +414,7 @@ class ChatEngine:
         
         return self.chat_general(query), False
     
-    # =========================================================================
     # Memory Management
-    # =========================================================================
     
     def _add_to_memory(self, query: str, answer: str) -> None:
         """Add Q&A pair to memory."""
@@ -458,9 +447,7 @@ class ChatEngine:
         self.logger.info("Conversation memory cleared")
 
 
-# =============================================================================
 # Convenience Functions
-# =============================================================================
 
 # Global engine instance
 _engine: Optional[ChatEngine] = None

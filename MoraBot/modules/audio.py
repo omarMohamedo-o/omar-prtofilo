@@ -1,6 +1,5 @@
 """
 Audio Module for INTEGR8 AI Assistant
-=====================================
 
 Provides speech recognition, text-to-speech, and audio processing
 capabilities with production-ready error handling.
@@ -49,9 +48,7 @@ from modules.config import get_settings, get_logger, suppress_library_warnings
 suppress_library_warnings()
 
 
-# =============================================================================
 # Custom Exceptions
-# =============================================================================
 
 class AudioError(Exception):
     """Base exception for audio processing errors."""
@@ -73,9 +70,7 @@ class TranscriptionError(AudioError):
     pass
 
 
-# =============================================================================
 # Configuration
-# =============================================================================
 
 @dataclass
 class AudioConfig:
@@ -95,9 +90,7 @@ class AudioConfig:
         return os.cpu_count() or 4
 
 
-# =============================================================================
 # Audio Processor Class
-# =============================================================================
 
 class AudioProcessor:
     """
@@ -140,9 +133,7 @@ class AudioProcessor:
         self._openai_client: Optional[OpenAI] = None
         self._pyttsx_engine: Optional[pyttsx3.Engine] = None
     
-    # =========================================================================
     # Lazy Initialization
-    # =========================================================================
     
     @property
     def recognizer(self) -> sr.Recognizer:
@@ -179,9 +170,7 @@ class AudioProcessor:
             self._openai_client = OpenAI(api_key=self._settings.openai_api_key)
         return self._openai_client
     
-    # =========================================================================
     # Speech Recognition
-    # =========================================================================
     
     def recognize_speech(self) -> str:
         """
@@ -290,9 +279,7 @@ class AudioProcessor:
             self.logger.error("Whisper transcription failed: %s", e)
             raise TranscriptionError(f"Failed to transcribe audio: {e}") from e
     
-    # =========================================================================
     # Text-to-Speech
-    # =========================================================================
     
     def speak(
         self, 
@@ -417,9 +404,7 @@ class AudioProcessor:
             pygame.mixer.quit()
 
 
-# =============================================================================
 # Convenience Functions (Backward Compatibility)
-# =============================================================================
 
 # Global processor instance
 _processor: Optional[AudioProcessor] = None

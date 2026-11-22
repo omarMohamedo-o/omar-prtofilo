@@ -10,9 +10,7 @@ export const orbitalEasing = [0.16, 1, 0.3, 1];   // Fast, butter-smooth settle
 export const smoothEasing = [0.25, 0.1, 0.25, 1]; // Natural ease
 export const bounceEasing = [0.34, 1.4, 0.64, 1]; // Crisp overshoot
 
-// =============================================================================
 // PHASE 1: TITLE ANIMATIONS
-// =============================================================================
 
 export const titleVariant = {
   hidden: {
@@ -52,9 +50,7 @@ export const titleVariantMobile = {
   },
 };
 
-// =============================================================================
 // PHASE 2: CONTAINER ANIMATIONS
-// =============================================================================
 
 export const containerVariant = {
   hidden: {},
@@ -86,9 +82,7 @@ export const createContainerVariant = (delayChildren = 0.1, staggerChildren = 0.
   },
 });
 
-// =============================================================================
 // CHILD ITEM ANIMATIONS
-// =============================================================================
 
 export const itemVariant = {
   hidden: {
@@ -246,9 +240,7 @@ export const getOrbitalItemVariant = (index, isMobile = false) => {
   };
 };
 
-// =============================================================================
 // VIEWPORT OPTIONS
-// =============================================================================
 
 export const viewportOptions = {
   once: true,
@@ -260,9 +252,7 @@ export const viewportOptionsMobile = {
   margin: "-30px",
 };
 
-// =============================================================================
 // HOVER & FLOATING ANIMATIONS
-// =============================================================================
 
 export const cardHoverScale = {
   scale: 1.02,

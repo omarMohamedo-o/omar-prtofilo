@@ -1,6 +1,5 @@
 """
 INTEGR8 AI Assistant Modules
-============================
 
 A professional AI assistant with support for:
 - 🧠 Image Analysis

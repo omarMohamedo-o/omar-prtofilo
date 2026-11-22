@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 MORA AI Assistant - Portfolio Chatbot
-======================================
 
 AI assistant for Omar Mohamed Abdelsalam's professional portfolio, specializing in:
 - DevOps & Cloud Infrastructure
@@ -74,9 +73,7 @@ from modules.chat import (
 suppress_library_warnings()
 
 
-# =============================================================================
 # Configuration
-# =============================================================================
 
 @dataclass
 class ConversationMode:
@@ -90,9 +87,7 @@ class ConversationMode:
     EXIT = ("quit", "q", "exit")
 
 
-# =============================================================================
 # MORA Chatbot Class
-# =============================================================================
 
 class MORAChatbot:
     """
@@ -151,9 +146,7 @@ class MORAChatbot:
         _ = self.chat_engine  # Trigger lazy initialization
         print(" Ready!\n")
     
-    # =========================================================================
     # Lazy Component Initialization
-    # =========================================================================
     
     @property
     def chat_engine(self) -> ChatEngine:
@@ -197,9 +190,7 @@ class MORAChatbot:
             self._image_generator = ImageGenerator()
         return self._image_generator
     
-    # =========================================================================
     # Core Chat Methods
-    # =========================================================================
     
     def chat(self, query: str) -> str:
         """
@@ -232,9 +223,7 @@ class MORAChatbot:
         
         return self.chat(query)
     
-    # =========================================================================
     # Image Analysis
-    # =========================================================================
     
     def analyze_image(self, source: str, question: str) -> str:
         """
@@ -250,9 +239,7 @@ class MORAChatbot:
         image = self.image_analyzer.load_image(source)
         return self.image_analyzer.analyze(image, question)
     
-    # =========================================================================
     # PDF Analysis
-    # =========================================================================
     
     def load_pdf(self, source: str) -> None:
         """
@@ -275,9 +262,7 @@ class MORAChatbot:
         """
         return self.pdf_analyzer.ask(question)
     
-    # =========================================================================
     # Video Analysis
-    # =========================================================================
     
     def analyze_video(self, source: str, question: str) -> str:
         """
@@ -292,9 +277,7 @@ class MORAChatbot:
         """
         return self.video_analyzer.analyze(source, question)
     
-    # =========================================================================
     # Response Handling
-    # =========================================================================
     
     def handle_response(
         self,
@@ -331,9 +314,7 @@ class MORAChatbot:
             pass
 
 
-# =============================================================================
 # Interactive Session Handler
-# =============================================================================
 
 class InteractiveSession:
     """
@@ -419,9 +400,7 @@ class InteractiveSession:
         """Check if user wants to exit."""
         return query.lower().strip() in ConversationMode.EXIT
     
-    # =========================================================================
     # Conversation Modes
-    # =========================================================================
     
     def _text_conversation(self) -> None:
         """Handle text-based conversation."""
@@ -691,9 +670,7 @@ class InteractiveSession:
             print(f"Error: {e}")
 
 
-# =============================================================================
 # Main Entry Point
-# =============================================================================
 
 def main() -> None:
     """Main entry point for the chatbot."""

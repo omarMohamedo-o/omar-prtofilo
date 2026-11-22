@@ -1,6 +1,5 @@
 /**
  * Main Portfolio Data Aggregator
- * ================================
  * Combines shared data with mode-specific data
  */
 

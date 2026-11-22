@@ -1,6 +1,5 @@
 /**
  * Shared Portfolio Data - Omar Mohamed (Omar Mohamed Abdelsalam)
- * ==============================================================
  * Common data shared across all portfolio modes
  */
 

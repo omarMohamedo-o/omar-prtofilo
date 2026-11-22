@@ -1,6 +1,5 @@
 """
 Video Analysis Module for INTEGR8 AI Assistant
-==============================================
 
 Provides video analysis capabilities using Google Gemini multimodal models.
 
@@ -45,9 +44,7 @@ from modules.config import (
 from modules.image_analysis import is_safe_url, UnsafeURLError
 
 
-# =============================================================================
 # Custom Exceptions
-# =============================================================================
 
 class VideoAnalysisError(Exception):
     """Base exception for video analysis errors."""
@@ -69,9 +66,7 @@ class AnalysisError(VideoAnalysisError):
     pass
 
 
-# =============================================================================
 # Configuration
-# =============================================================================
 
 @dataclass
 class VideoConfig:
@@ -87,9 +82,7 @@ class VideoConfig:
         return self.max_file_size_mb * 1024 * 1024
 
 
-# =============================================================================
 # Video Analyzer Class
-# =============================================================================
 
 class VideoAnalyzer:
     """
@@ -150,9 +143,7 @@ class VideoAnalyzer:
         """Build system prompt for video analysis."""
         return VIDEO_ANALYSIS_PROMPT
     
-    # =========================================================================
     # Video Loading
-    # =========================================================================
     
     def _validate_video_path(self, path: Path) -> None:
         """Validate video file exists and is appropriate."""
@@ -242,9 +233,7 @@ class VideoAnalyzer:
         except requests.RequestException as e:
             raise VideoLoadError(f"Failed to download video: {e}") from e
     
-    # =========================================================================
     # Video Analysis
-    # =========================================================================
     
     def analyze(
         self,
@@ -340,9 +329,7 @@ class VideoAnalyzer:
         )
 
 
-# =============================================================================
 # Convenience Functions
-# =============================================================================
 
 # Global analyzer instance
 _analyzer: Optional[VideoAnalyzer] = None

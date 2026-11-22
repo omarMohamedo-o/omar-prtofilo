@@ -1,6 +1,5 @@
 """
 PDF Analysis Module for INTEGR8 AI Assistant
-============================================
 
 Provides PDF document loading, embedding, and question-answering
 capabilities using LangChain and Google Gemini.
@@ -48,9 +47,7 @@ from modules.config import (
 from modules.image_analysis import is_safe_url, UnsafeURLError
 
 
-# =============================================================================
 # Custom Exceptions
-# =============================================================================
 
 class PDFAnalysisError(Exception):
     """Base exception for PDF analysis errors."""
@@ -72,9 +69,7 @@ class QueryError(PDFAnalysisError):
     pass
 
 
-# =============================================================================
 # PDF Analyzer Class
-# =============================================================================
 
 class PDFAnalyzer:
     """
@@ -162,9 +157,7 @@ class PDFAnalyzer:
             input_variables=["context", "question"],
         )
     
-    # =========================================================================
     # PDF Loading
-    # =========================================================================
     
     def load_pdf(
         self,
@@ -247,9 +240,7 @@ class PDFAnalyzer:
         except Exception as e:
             raise PDFLoadError(f"Failed to process PDF: {e}") from e
     
-    # =========================================================================
     # Vector Store & Chain Building
-    # =========================================================================
     
     def _build_vector_store(self) -> None:
         """Build vector store from loaded pages."""
@@ -301,9 +292,7 @@ class PDFAnalyzer:
         
         self.logger.info("QA chains built successfully")
     
-    # =========================================================================
     # Question Answering
-    # =========================================================================
     
     def ask(self, question: str) -> str:
         """
@@ -390,9 +379,7 @@ class PDFAnalyzer:
         self.logger.info("PDF analyzer cleared")
 
 
-# =============================================================================
 # Convenience Functions (Backward Compatibility)
-# =============================================================================
 
 # Global analyzer instance
 _analyzer: Optional[PDFAnalyzer] = None

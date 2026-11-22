@@ -1,6 +1,5 @@
 /**
  * DevOps & MLOps Engineer Portfolio Data
- * ========================================
  * Data specific to DevOps Engineer mode - Omar Mohamed
  */
 

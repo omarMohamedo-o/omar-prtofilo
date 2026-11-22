@@ -9,9 +9,7 @@ import {
 import { sendTextMessage } from '../services/chatbotService';
 import { useLanguage } from '../context/LanguageContext';
 
-// =============================================================================
 // PROCEDURAL PIXEL TEXTURE GENERATORS: MONKEY D. LUFFY (ONE PIECE)
-// =============================================================================
 
 function createSmoothCanvas(width, height) {
     const canvas = document.createElement('canvas');
@@ -515,9 +513,7 @@ function createOnePieceHologramCanvas(arcBadge = 'EAST BLUE ARC', title = 'Setti
     return { canvas, ctx, texture };
 }
 
-// =============================================================================
 // THE 9 LEGENDARY ONE PIECE ARCS (Mapping sections to Luffy's journey)
-// =============================================================================
 
 const ONE_PIECE_ARCS = [
     {
@@ -622,9 +618,7 @@ const ONE_PIECE_ARCS = [
     }
 ];
 
-// =============================================================================
 // MAIN 3D COMPANION COMPONENT (MONKEY D. LUFFY)
-// =============================================================================
 
 export default function MinecraftGuide3D({ onStartTour }) {
     const containerRef = useRef(null);
@@ -1068,9 +1062,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
         return () => observer.disconnect();
     }, [showArcHologram]);
 
-    // =========================================================================
     // THREE.JS SETUP & LUFFY 3D RIGGING
-    // =========================================================================
     useEffect(() => {
         const mount = canvasContainerRef.current;
         if (!mount) return;
@@ -1180,9 +1172,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
         torsoMesh.add(cloudSashMesh);
         cloudSashRef.current = cloudSashMesh;
 
-        // =====================================================================
         // REAL ANIME 3D HEAD & SCULPTED SPIKY HAIR RIGGING
-        // =====================================================================
         const headGroup = new THREE.Group();
         headGroup.position.set(0, 1.38, 0);
         characterGroup.add(headGroup);
@@ -1269,9 +1259,7 @@ export default function MinecraftGuide3D({ onStartTour }) {
         stringMesh.rotation.x = Math.PI / 2.2;
         strawHatGroup.add(stringMesh);
 
-        // =====================================================================
         // HELD PROPS: 🍖 GIANT ANIME ROAST MEAT & 🧭 LOG POSE PROJECTOR
-        // =====================================================================
         // Anime Meat Prop in Right Hand
         const meatGroup = new THREE.Group();
         meatGroup.position.set(0, -1.0, 0.32);

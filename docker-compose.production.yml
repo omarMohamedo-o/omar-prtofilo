@@ -1,7 +1,5 @@
-# ============================================
 # MORA Portfolio - Production Docker Compose
 # Use with: docker compose -f docker-compose.yml -f docker-compose.production.yml up -d
-# ============================================
 #
 # This file is designed for production deployments with:
 # - External secrets management (GitHub Secrets, Vault, AWS Secrets Manager)
@@ -14,7 +12,6 @@
 # - GOOGLE_API_KEY: Google AI API key for MoraBot
 # - HF_TOKEN: HuggingFace token for MoraBot
 #
-# ============================================
 
 services:
   frontend:

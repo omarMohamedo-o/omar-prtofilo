@@ -1,6 +1,5 @@
 """
 Image Generation Module for INTEGR8 AI Assistant
-================================================
 
 Provides AI-powered image generation capabilities using Google Gemini
 and other image generation APIs.
@@ -47,9 +46,7 @@ from modules.config import (
 )
 
 
-# =============================================================================
 # Custom Exceptions
-# =============================================================================
 
 class ImageGenerationError(Exception):
     """Base exception for image generation errors."""
@@ -71,9 +68,7 @@ class SaveError(ImageGenerationError):
     pass
 
 
-# =============================================================================
 # Enums
-# =============================================================================
 
 class ImageStyle(Enum):
     """Available image generation styles."""
@@ -96,9 +91,7 @@ class ImageSize(Enum):
     TALL = (576, 1024)
 
 
-# =============================================================================
 # Configuration
-# =============================================================================
 
 @dataclass
 class GenerationConfig:
@@ -114,9 +107,7 @@ class GenerationConfig:
     default_time_period: Optional[str] = None
 
 
-# =============================================================================
 # Generated Image Container
-# =============================================================================
 
 @dataclass
 class GeneratedImage:
@@ -178,9 +169,7 @@ class GeneratedImage:
         return self.image.size
 
 
-# =============================================================================
 # Image Generator Class
-# =============================================================================
 
 class ImageGenerator:
     """
@@ -222,9 +211,7 @@ class ImageGenerator:
         self._settings = get_settings()
         self._client = get_genai_client()
     
-    # =========================================================================
     # Prompt Enhancement
-    # =========================================================================
     
     def _enhance_prompt(
         self,
@@ -292,9 +279,7 @@ class ImageGenerator:
         
         return prompt
     
-    # =========================================================================
     # Image Generation
-    # =========================================================================
     
     def generate(
         self,
@@ -549,9 +534,7 @@ class ImageGenerator:
         )
 
 
-# =============================================================================
 # Convenience Functions
-# =============================================================================
 
 # Global generator instance
 _generator: Optional[ImageGenerator] = None

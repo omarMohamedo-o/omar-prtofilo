@@ -1,6 +1,5 @@
 /**
  * Advanced Portfolio Knowledge Base & RAG Engine for MORA AI
- * ==========================================================
  * Inspired by HistoryVerse-Chatbot Multi-Agent Architecture:
  * - Arabic text normalization & Egyptian colloquial expansion
  * - Domain scope guardrails & refusal handling
@@ -9,10 +8,8 @@
  * - Persona: MORA (Omar Mohamed's Autonomous Technical Representative)
  */
 
-// =============================================================================
 // ARABIC NLP & COLLOQUIAL NORMALIZATION UTILITIES
 // (Adapted from HistoryVerse-Chatbot utils/arabic.py & colloquial.py)
-// =============================================================================
 
 const TASHKEEL_REGEX = /[\u0617-\u061A\u064B-\u0652\u0670]/g;
 const TATWEEL_REGEX = /\u0640/g;
@@ -61,9 +58,7 @@ export function expandColloquialQuery(query = '') {
     return enriched;
 }
 
-// =============================================================================
 // DOMAIN SCOPE GUARDRAILS (From HistoryVerse-Chatbot refusal.py)
-// =============================================================================
 
 const OUT_OF_DOMAIN_PATTERNS = [
     /(?:^|\s)(football|soccer|champions league|كورة|ماتش|اهداف|دوري|كرة قدم)(?:\s|$)/i,
@@ -86,9 +81,7 @@ export function checkOutOfDomain(query = '') {
     return null;
 }
 
-// =============================================================================
 // COMPREHENSIVE PORTFOLIO KNOWLEDGE BASE
-// =============================================================================
 
 export const PORTFOLIO_KNOWLEDGE = {
     profile: {
@@ -365,9 +358,7 @@ export const PORTFOLIO_KNOWLEDGE = {
     ]
 };
 
-// =============================================================================
 // INTELLIGENT MULTI-TURN RAG MATCHER
-// =============================================================================
 
 export function queryLocalKnowledge(userQuery = '', conversationHistory = []) {
     if (!userQuery) return null;

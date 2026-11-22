@@ -1,6 +1,4 @@
-# ============================================
 # MORA Portfolio - Nginx Reverse Proxy Dockerfile
-# ============================================
 
 FROM nginx:1.27-alpine
 

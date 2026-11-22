@@ -1,11 +1,7 @@
-# ============================================
 # MORA Portfolio - Frontend Dockerfile
 # Multi-stage build for React + Vite
-# ============================================
 
-# ============================================
 # Stage 1: Builder
-# ============================================
 FROM node:20-alpine AS builder
 
 WORKDIR /app
@@ -34,9 +30,7 @@ RUN npm run build && \
     rm -rf node_modules && \
     npm cache clean --force
 
-# ============================================
 # Stage 2: Production Runtime (Nginx)
-# ============================================
 FROM nginx:1.27-alpine AS production
 
 # Metadata

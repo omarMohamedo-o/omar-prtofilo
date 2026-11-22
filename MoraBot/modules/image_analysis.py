@@ -1,6 +1,5 @@
 """
 Image Analysis Module for INTEGR8 AI Assistant
-==============================================
 
 Provides image loading, analysis, and historical context extraction
 using Google Gemini vision models.
@@ -44,9 +43,7 @@ from modules.config import (
 )
 
 
-# =============================================================================
 # Custom Exceptions
-# =============================================================================
 
 class ImageAnalysisError(Exception):
     """Base exception for image analysis errors."""
@@ -68,9 +65,7 @@ class AnalysisError(ImageAnalysisError):
     pass
 
 
-# =============================================================================
 # URL Safety Utilities
-# =============================================================================
 
 def is_safe_url(url: str) -> bool:
     """
@@ -156,9 +151,7 @@ def identify_url_content_type(url: str, timeout: int = 10) -> str:
         raise ImageLoadError(f"Failed to identify URL content: {e}") from e
 
 
-# =============================================================================
 # Conversation Memory
-# =============================================================================
 
 @dataclass
 class ConversationMessage:
@@ -206,9 +199,7 @@ class ConversationMemory:
         self.messages.clear()
 
 
-# =============================================================================
 # Image Analyzer Class
-# =============================================================================
 
 class ImageAnalyzer:
     """
@@ -263,9 +254,7 @@ class ImageAnalyzer:
             "safety_settings": self._settings.get_safety_settings_list(),
         }
     
-    # =========================================================================
     # Image Loading
-    # =========================================================================
     
     def load_image(
         self,
@@ -329,9 +318,7 @@ class ImageAnalyzer:
         except Exception as e:
             raise ImageLoadError(f"Failed to process image data: {e}") from e
     
-    # =========================================================================
     # Image Analysis
-    # =========================================================================
     
     def analyze(
         self,
@@ -423,9 +410,7 @@ class ImageAnalyzer:
         self.logger.info("Conversation history cleared")
 
 
-# =============================================================================
 # Convenience Functions (Backward Compatibility)
-# =============================================================================
 
 # Global analyzer instance
 _analyzer: Optional[ImageAnalyzer] = None

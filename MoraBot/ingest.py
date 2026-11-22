@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 INTEGR8 Document Ingestion Pipeline
-====================================
 Loads documents from SOURCE_DOCUMENTS/, splits them into chunks,
 and stores embeddings in ChromaDB for RAG retrieval.
 
@@ -18,9 +17,7 @@ import sys
 import warnings
 from datetime import datetime
 
-# ============================================================================
 # Suppress verbose warnings and logs BEFORE importing libraries
-# ============================================================================
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", message=".*LangChainDeprecationWarning.*")
@@ -63,9 +60,7 @@ except ImportError:
     PDF_LOADER = PDFMinerLoader
 
 
-# ============================================================================
 # Configuration
-# ============================================================================
 SOURCE_DIRECTORY = "SOURCE_DOCUMENTS/"
 PERSIST_DIRECTORY = "DB/"
 INGEST_THREADS = os.cpu_count() or 8
@@ -99,9 +94,7 @@ DOCUMENT_MAP = {
 }
 
 
-# ============================================================================
 # Console Output Helpers
-# ============================================================================
 class Colors:
     """ANSI color codes for terminal output."""
     HEADER = "\033[95m"
@@ -146,9 +139,7 @@ def print_error(text: str) -> None:
     print(f"{Colors.RED}✗{Colors.END} {text}")
 
 
-# ============================================================================
 # File Logging
-# ============================================================================
 def file_log(logentry: str, silent: bool = False) -> None:
     """Write entry to log file and optionally print."""
     with open("file_ingest.log", "a", encoding="utf-8") as f:
@@ -158,9 +149,7 @@ def file_log(logentry: str, silent: bool = False) -> None:
         print_info(logentry)
 
 
-# ============================================================================
 # Document Loading
-# ============================================================================
 def load_single_document(file_path: str) -> Document | None:
     """Load a single document from file path."""
     try:
@@ -232,9 +221,7 @@ def split_documents(documents: list[Document]) -> tuple[list[Document], list[Doc
     return text_docs, python_docs
 
 
-# ============================================================================
 # Main Ingestion Pipeline
-# ============================================================================
 def main() -> None:
     """Run the document ingestion pipeline."""
     start_time = datetime.now()

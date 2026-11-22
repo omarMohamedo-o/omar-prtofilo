@@ -24,9 +24,7 @@
 /* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind utilities;
 
-/* ===========================================
-   RESPONSIVE LAYOUT SYSTEM
-   =========================================== */
+/* RESPONSIVE LAYOUT SYSTEM */
 
 /* Consistent section spacing - mobile first */
 .ds-section {
@@ -1406,9 +1404,7 @@ body {
     color: white;
 }
 
-/* -----------------------
-   Space / Galaxy Theme
-   ----------------------- */
+/* Space / Galaxy Theme */
 
 :root {
     --space-ink: #03040a;
@@ -2054,9 +2050,7 @@ section[id] h3 .title-highlight {
     }
 }
 
-/* =========================================
-   🌌 ENHANCED SPACE / GALAXY THEME
-   ========================================= */
+/* 🌌 ENHANCED SPACE / GALAXY THEME */
 
 /* Individual Star Elements */
 .star {
@@ -2357,9 +2351,7 @@ section[id] h3 .title-highlight {
     }
 }
 
-/* =========================================
-   🪐 ORBITAL SECTION TRANSITIONS
-   ========================================= */
+/* 🪐 ORBITAL SECTION TRANSITIONS */
 
 /* All sections are visible - individual elements animate in */
 section[id] {
@@ -2373,9 +2365,7 @@ section[id] {
     will-change: transform;
 }
 
-/* =========================================
-   🌍 STAGGERED CARD ANIMATIONS
-   ========================================= */
+/* 🌍 STAGGERED CARD ANIMATIONS */
 
 /* Enhanced stagger delays for sequential reveal */
 .stagger-1 {
@@ -2490,9 +2480,7 @@ section[id] {
     animation: orbitalFadeUp 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* =========================================
-   🧩 FLOATING CARD EFFECTS
-   ========================================= */
+/* 🧩 FLOATING CARD EFFECTS */
 
 /* Cards start hidden and animate in when scrolled into view */
 .card-hidden {
@@ -2598,9 +2586,7 @@ section[id] {
     border-color: rgba(127, 234, 255, 0.15);
 }
 
-/* =========================================
-   🎨 THEME VARIATIONS
-   ========================================= */
+/* 🎨 THEME VARIATIONS */
 
 /* DevOps Theme (Cyan/Blue) - Stable, Engineered */
 .space-theme-cyan {
@@ -2689,9 +2675,7 @@ section[id] {
     box-shadow: 0 0 20px rgba(236, 72, 153, 0.25);
 }
 
-/* =========================================
-   ⚡ PERFORMANCE & ACCESSIBILITY
-   ========================================= */
+/* ⚡ PERFORMANCE & ACCESSIBILITY */
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -2752,9 +2736,7 @@ section[id] {
     }
 }
 
-/* =========================================
-   📱 RESPONSIVE ADJUSTMENTS
-   ========================================= */
+/* 📱 RESPONSIVE ADJUSTMENTS */
 
 @media (max-width: 768px) {
     .orbit-ring {
@@ -2813,9 +2795,7 @@ section[id] {
     }
 }
 
-/* =========================================
-   Mode Switcher - Floating & Responsive
-   ========================================= */
+/* Mode Switcher - Floating & Responsive */
 
 /* Floating mode switcher container */
 .mode-switcher-float {
@@ -2998,9 +2978,7 @@ section[id] {
     }
 }
 
-/* ===========================================
-   ARABIC & RTL (RIGHT-TO-LEFT) SUPPORT
-   =========================================== */
+/* ARABIC & RTL (RIGHT-TO-LEFT) SUPPORT */
 [dir="rtl"],
 html.rtl-mode {
     font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;

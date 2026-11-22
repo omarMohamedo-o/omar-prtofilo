@@ -1,6 +1,5 @@
 """
 MORA AI Assistant - FastAPI Backend
-====================================
 
 REST API endpoints for Omar's portfolio chatbot, designed for website integration.
 
@@ -50,9 +49,7 @@ suppress_library_warnings()
 logger = get_logger(__name__)
 
 
-# =============================================================================
 # Pydantic Models
-# =============================================================================
 
 class ChatRequest(BaseModel):
     """Request model for chat endpoint - matches frontend expectations."""
@@ -133,9 +130,7 @@ class ErrorResponse(BaseModel):
     detail: str
 
 
-# =============================================================================
 # Session Management
-# =============================================================================
 
 class SessionManager:
     """
@@ -200,9 +195,7 @@ class SessionManager:
 session_manager = SessionManager()
 
 
-# =============================================================================
 # Shared Components (Lazy Initialization)
-# =============================================================================
 
 _image_analyzer = None
 _pdf_analyzer = None
@@ -250,9 +243,7 @@ def get_audio_processor():
     return _audio_processor
 
 
-# =============================================================================
 # Application Lifespan
-# =============================================================================
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -262,9 +253,7 @@ async def lifespan(app: FastAPI):
     logger.info("Shutting down INTEGR8 API")
 
 
-# =============================================================================
 # FastAPI Application
-# =============================================================================
 
 app = FastAPI(
     title="MORA AI Assistant API",
@@ -286,9 +275,7 @@ app.add_middleware(
 )
 
 
-# =============================================================================
 # API Endpoints
-# =============================================================================
 
 @app.get("/health", response_model=HealthResponse, tags=["System"])
 async def health_check():
@@ -387,9 +374,7 @@ async def clear_session(session_id: str):
     )
 
 
-# =============================================================================
 # File Upload Endpoint
-# =============================================================================
 
 @app.post(
     "/upload",
@@ -430,9 +415,7 @@ async def upload_file(
         )
 
 
-# =============================================================================
 # Voice/Audio Endpoints
-# =============================================================================
 
 @app.post(
     "/transcribe",
@@ -575,9 +558,7 @@ async def speak_text(request: SpeakRequest):
         )
 
 
-# =============================================================================
 # Image Conversation Endpoint (Frontend Compatible)
-# =============================================================================
 
 @app.post(
     "/image_conversation",
@@ -882,9 +863,7 @@ async def generate_image(request: ImageGenerationRequest):
         )
 
 
-# =============================================================================
 # Main Entry Point
-# =============================================================================
 
 if __name__ == "__main__":
     import uvicorn

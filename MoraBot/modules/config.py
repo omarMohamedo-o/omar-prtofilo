@@ -1,6 +1,5 @@
 """
 Configuration Module for INTEGR8 AI Assistant
-==============================================
 
 Centralized configuration management with type safety, validation,
 and production-ready settings for all assistant modules.
@@ -32,9 +31,7 @@ from chromadb.config import Settings as ChromaSettings
 load_dotenv()
 
 
-# =============================================================================
 # Custom Exceptions
-# =============================================================================
 
 class ConfigurationError(Exception):
     """Raised when configuration is invalid or missing."""
@@ -46,9 +43,7 @@ class APIKeyMissingError(ConfigurationError):
     pass
 
 
-# =============================================================================
 # Settings Dataclass
-# =============================================================================
 
 @dataclass(frozen=True)
 class GenerationConfig:
@@ -159,9 +154,7 @@ class Settings:
         return config
 
 
-# =============================================================================
 # Prompts - MORA AI Assistant (Omar's Portfolio)
-# =============================================================================
 
 INTEGR8_SYSTEM_PROMPT = """
 You are MORA, the AI assistant for Omar Mohamed Abdelsalam's professional portfolio.
@@ -253,9 +246,7 @@ User's question: {query}
 """.strip()
 
 
-# =============================================================================
 # Factory Functions
-# =============================================================================
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
@@ -311,9 +302,7 @@ def get_logger(name: str) -> logging.Logger:
     return logger
 
 
-# =============================================================================
 # Utility Functions
-# =============================================================================
 
 def suppress_library_warnings() -> None:
     """Suppress verbose warnings and logs from third-party libraries."""

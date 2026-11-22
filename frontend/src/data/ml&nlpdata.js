@@ -1,6 +1,5 @@
 /**
  * ML & NLP Engineer Portfolio Data
- * ==================================
  * Data specific to ML & NLP Engineer mode - Omar Mohamed
  */
 
