@@ -133,6 +133,30 @@ export const en = {
         {
             q: "Does Omar hold verified industry certifications?",
             a: "Yes, Omar is an officially certified Red Hat Certified System Administrator (RHCSA) and Huawei Cloud Developer (HCCDA-Tech Essentials), with credentials verifiable on Credly."
+        },
+        {
+            q: "Why should an enterprise or high-growth company hire Omar Mohamed as a Cloud DevOps or MLOps Engineer?",
+            a: "Omar delivers proven production reliability and cost reduction. Maintaining a perfect 4.0 / 4.0 CGPA in his Computer Engineering M.Sc. at AASTMT and certified as an RHCSA (#250-068-707), he architected PlayerHub.GG's infrastructure to achieve 99.9% uptime with HAProxy read/write splitting, while his healthcare AI at CliniSoft slashed physician charting overhead by 70% with 100% on-premise HIPAA compliance. He bridges the gap between machine learning research and enterprise cloud infrastructure."
+        },
+        {
+            q: "What quantitative benchmarks and verifiable metrics prove the performance of Omar's architectures?",
+            a: "Key audited benchmarks include: (1) 99.9% platform uptime under 10,000+ daily active users; (2) 60% query absorption with sub-10ms latency using Redis; (3) < 4.5s automated container self-healing; (4) 90.4%–96.2% artifact recognition mAP@0.5 in HistoryVerse across 204 automated tests; (5) 68% GPU VRAM reduction and 1.15s transcription latency with Faster-Whisper int8; (6) 96.6% cloud provisioning acceleration via Terraform IaC; and (7) zero HIGH or CRITICAL CVEs allowed into release containers using Trivy automated gates."
+        },
+        {
+            q: "What is the estimated cost savings and ROI of adopting Omar's cloud and MLOps solutions?",
+            a: "Adopting Omar's engineered architectures delivers 65% to 93% reduction in recurring AI inference costs (slashing token fees from $0.03–$0.06 USD per 1k tokens down to $0.002 USD via on-premise LoRA fp16 and Faster-Whisper, saving $15,000+ USD/year), over $45,000 USD annual operational savings per medical clinic by automating clinical documentation, and 40% cloud compute savings ($8,400+ USD/year) via Terraform right-sizing."
+        },
+        {
+            q: "How does Omar implement enterprise secrets management, DevSecOps compliance, and HIPAA confidentiality?",
+            a: "Omar enforces zero-trust DevSecOps by integrating HashiCorp Vault with GitHub Actions via OIDC AppRole authentication. Secrets are dynamically leased with a 3,600-second (1-hour) TTL and automated revocation. Every Docker container undergoes automated Trivy vulnerability scanning before deployment, blocking any build with HIGH or CRITICAL CVEs, while Kubernetes enforces strict Role-Based Access Control (RBAC)."
+        },
+        {
+            q: "How does Omar prevent LLM hallucinations and optimize retrieval accuracy in production RAG systems?",
+            a: "Omar prevents LLM hallucinations through a 5-layer verification pipeline: (1) Hybrid chunking and vector indexing in ChromaDB and FAISS with cross-encoder re-ranking; (2) Multi-agent routing across specialized domain agents; (3) Strict Pydantic output validation; (4) Automated scoring with the Ragas framework (context precision, context recall, faithfulness, answer relevancy); and (5) Real-time distributed tracing with Langfuse to attribute latency and cost per route."
+        },
+        {
+            q: "What are Omar's technical consulting rates, service offerings, and global remote work availability?",
+            a: "Omar is available worldwide for full-time roles, contract MLOps/DevOps architecture, and technical consulting. Consulting rates: $85 – $150 USD per hour, or fixed-scope contract engagements from $5,000 to $25,000 USD per production deployment. Prospective enterprise teams can also book a complimentary 30-minute discovery consultation (valued at $150 USD) directly through the website."
         }
     ],
 

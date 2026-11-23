@@ -538,6 +538,27 @@ export function queryLocalKnowledge(userQuery = '', conversationHistory = []) {
             : "Omar's core technical stack:\n• **AI & LLMs:** RAG architectures, Multi-Agent systems, ChromaDB, LangChain, PyTorch, Faster-Whisper, and SDXL LoRA fine-tuning.\n• **MLOps & Cloud:** Docker, Kubernetes, GitHub Actions CI/CD, Terraform, AWS, Prometheus, and Grafana.\n• **Programming:** Python, C++, Java, Bash · PostgreSQL, MariaDB, and Redis.";
     }
 
+    // Pricing, Rates & ROI
+    if (q.includes('rate') || q.includes('price') || q.includes('cost') || q.includes('fee') || q.includes('roi') || q.includes('سعر') || q.includes('اسعار') || q.includes('تكلفه') || q.includes('تكلفة') || q.includes('عائد')) {
+        return isArabic
+            ? "أسعار الاستشارات الهندسية والعائد المالي (ROI):\n• **الاستشارات التقنية:** 85 إلى 150 دولاراً أمريكياً في الساعة.\n• **مشاريع MLOps/DevOps محددة النطاق:** من 5,000 إلى 25,000 دولار أمريكي.\n• **جلسة استكشافية:** مجانية لمدة 30 دقيقة (بقيمة 150 دولاراً).\n• **العائد المحقق:** توفير 65% إلى 93% من تكاليف واجهات الـ AI التوليدي (أكثر من 15,000 دولار سنوياً)، وتوفير 45,000+ دولار سنوياً للمراكز الطبية بأتمتة التوثيق السريري."
+            : "Omar's consulting rates & verified ROI:\n• **Technical Consulting:** $85 to $150 USD per hour.\n• **Fixed-Scope MLOps/Cloud Deployments:** $5,000 to $25,000 USD per project.\n• **Discovery Consultation:** Complimentary 30-minute session (valued at $150 USD).\n• **Demonstrated ROI:** 65% to 93% reduction in recurring LLM API inference costs (saving $15,000+ USD/yr) and over $45,000 USD annual savings per clinical practice via documentation automation.";
+    }
+
+    // Why Hire & Value Proposition
+    if (q.includes('why hire') || q.includes('why omar') || q.includes('value') || q.includes('ليه اوظف') || q.includes('ليه اختار')) {
+        return isArabic
+            ? "لماذا تختار توظيف عمر محمد؟\n• **جاهزية إنتاجية 99.9%:** خبرة حية في إدارة عناقيد Kubernetes و HAProxy ومزامنة MariaDB تحت أكثر من 10,000 مستخدم نشط.\n• **كفاءة وتوفير مالي:** خفض تكاليف الذكاء الاصطناعي بنسبة تصل إلى 93% بنماذج LoRA وتفريغ الصوت Faster-Whisper المكممة.\n• **اعتمادات دولية موثقة:** شهادة RHCSA من Red Hat (#250-068-707)، وباحث ماجستير بمعدل كامل 4.0 / 4.0 في AASTMT."
+            : "Why hire Omar Mohamed?\n• **99.9% Production Reliability:** Proven experience engineering HAProxy read routing and MariaDB replication under 10,000+ DAU at PlayerHub.GG.\n• **Dramatic Cost Reduction:** Slashed AI inference costs by up to 93% using local quantized Faster-Whisper and LoRA fine-tuning.\n• **Verified Elite Credentials:** RHCSA Certified (#250-068-707) and M.Sc. in Computer Engineering with a perfect 4.0 / 4.0 CGPA.";
+    }
+
+    // RAG Architecture & Hallucination Mitigation
+    if (q.includes('rag') || q.includes('hallucinat') || q.includes('vector') || q.includes('chroma') || q.includes('هلوسه') || q.includes('هلوسة') || q.includes('استرجاع')) {
+        return isArabic
+            ? "كيف يمنع عمر هلوسة نماذج اللغة في أنظمة RAG؟\n• **فهرسة واسترجاع هجين:** في ChromaDB و FAISS مع إعادة الترتيب بـ Cross-Encoder.\n• **توجيه بالوكلاء (Multi-Agent):** تقسيم المهام بين وكلاء مستقلين للمعلومات والترجمة.\n• **تدقيق صارم:** التحقق من المخرجات عبر هياكل Pydantic وقياس الدقة بإطار عمل Ragas وتتبع الأداء بـ Langfuse."
+            : "How Omar prevents LLM hallucinations in production RAG:\n• **Hybrid Indexing & Retrieval:** ChromaDB and FAISS with Cross-Encoder re-ranking.\n• **Multi-Agent Orchestration:** Specialized domain agents for retrieval, translation, and verification.\n• **Strict Validation & Evals:** Pydantic schema validation, Ragas framework scoring, and distributed OpenTelemetry tracing with Langfuse.";
+    }
+
     // Conversational Fallback - Friendly, human, answers naturally without dumping static bio!
     return isArabic
         ? "يسعدني مساعدتك! بصفتي المساعد الذكي لعمر، أستطيع الإجابة عن أي شيء يخص مشاريعه الهندسية (مثل HistoryVerse و SDXL LoRA)، خبراته في PlayerHub.GG و CliniSoft، مهاراته في MLOps و Docker و LLMs، أو كيفية التواصل معه وتوظيفه. تحب تسأل عن إيه بالتحديد؟"
