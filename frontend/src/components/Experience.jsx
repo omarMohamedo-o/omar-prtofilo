@@ -31,7 +31,7 @@ function CompanyLogo({ logo, name, FallbackIcon = Briefcase }) {
 }
 
 const Experience = function Experience({ isVisible, experiences = [], themeColor = 'cyan' }) {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const isMobile = useIsMobile();
   const textColor = themeColor === 'purple' ? 'text-purple-400' : 'text-cyan-400';
   const borderHover = themeColor === 'purple'
@@ -85,7 +85,7 @@ const Experience = function Experience({ isVisible, experiences = [], themeColor
               <ul className="space-y-1.5 sm:space-y-2 text-gray-300 text-sm sm:text-base">
                 {exp.achievements.map((achievement, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className={`${textColor} flex-shrink-0 leading-relaxed mt-0.5`}>▹</span>
+                    <span className={`${textColor} flex-shrink-0 leading-relaxed mt-0.5`}>{isRTL ? '◃' : '▹'}</span>
                     <span>{achievement}</span>
                   </li>
                 ))}

@@ -101,10 +101,10 @@ export default function Internships({ isVisible, internships = [], themeColor = 
                 <div className="text-gray-400 text-xs sm:text-sm mb-1">{internship.location} • {internship.type}</div>
                 <div className="text-gray-400 text-xs sm:text-sm">{internship.period}</div>
               </div>
-              <ul className="space-y-1.5 sm:space-y-2 text-gray-300 text-sm sm:text-base">
+              <ul className={`space-y-1.5 sm:space-y-2 text-gray-300 text-sm sm:text-base ${getInternshipCert(internship) ? (isRTL ? 'md:pl-32' : 'md:pr-32') : ''}`}>
                 {internship.achievements.map((achievement, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className={`${accentColor} flex-shrink-0 leading-relaxed mt-0.5`}>▹</span>
+                    <span className={`${accentColor} flex-shrink-0 leading-relaxed mt-0.5`}>{isRTL ? '◃' : '▹'}</span>
                     <span>{achievement}</span>
                   </li>
                 ))}

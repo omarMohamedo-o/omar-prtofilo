@@ -17,6 +17,7 @@ export const personalInfo = {
     credly: "https://www.credly.com/users/omar-mohamedo-o/badges#credly",
     whatsapp: "https://wa.me/201011297869",
     image: "/images/me/Personal_Photo.svg",
+    resume: "/resumes/Omar Mohamed Abdelsalam-DevOps-Resume.pdf",
     researchInterests: ["Applied ML", "Generative AI", "Multilingual Conversational Systems", "LLMs & RAG", "MLOps"]
 };
 

@@ -3008,6 +3008,13 @@ html.rtl-mode {
     text-align: center;
 }
 
+[dir="rtl"] .section-title,
+html.rtl-mode .section-title {
+    line-height: 1.35 !important;
+    padding-top: 0.5rem;
+    overflow: visible;
+}
+
 [dir="rtl"] .font-mono {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     direction: ltr;

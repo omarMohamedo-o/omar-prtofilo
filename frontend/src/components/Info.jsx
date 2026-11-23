@@ -214,12 +214,15 @@ export default function Info({ isVisible = () => false, personalInfo = {}, theme
               <FileText size={18} className="sm:w-5 sm:h-5" />
               <span className="whitespace-nowrap">{t('bookDiscoveryCall')}</span>
             </ButtonCard>
-            {personalInfo.resume && (
-              <ButtonCard href={personalInfo.resume} external className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white" variants={itemVariant}>
-                <FileText size={18} className="sm:w-5 sm:h-5" />
-                {t('resume')}
-              </ButtonCard>
-            )}
+            <ButtonCard
+              href={personalInfo.resume || (currentMode === MODES.MLNLP ? '/resumes/Omar Mohamed Abdelsalam-AI-Resume.pdf' : '/resumes/Omar Mohamed Abdelsalam-DevOps-Resume.pdf')}
+              external
+              className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white min-w-[150px]"
+              variants={itemVariant}
+            >
+              <FileText size={18} className="sm:w-5 sm:h-5" />
+              <span className="whitespace-nowrap">{t('resume')}</span>
+            </ButtonCard>
           </motion.div>
 
           <motion.div

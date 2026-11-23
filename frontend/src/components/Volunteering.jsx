@@ -99,7 +99,7 @@ const Volunteering = function Volunteering({ isVisible, volunteering = [], theme
               <ul className="space-y-1.5 sm:space-y-2 text-gray-300 text-sm sm:text-base">
                 {item.achievements.map((achievement, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className={`${textColor} flex-shrink-0 leading-relaxed mt-0.5`}>▹</span>
+                    <span className={`${textColor} flex-shrink-0 leading-relaxed mt-0.5`}>{isRTL ? '◃' : '▹'}</span>
                     <span>{achievement}</span>
                   </li>
                 ))}

@@ -107,7 +107,7 @@ export const ar = {
     faqBadge: "الأسئلة الشائعة",
     faqTitle1: "الأسئلة",
     faqTitle2: "الشائعة",
-    faqHeading: "FAQS",
+    faqHeading: "الأسئلة الشائعة",
     faqSubtitle: "إجابات سريعة على الأسئلة الشائعة حول خبرتي التقنية، ومشاريع الإنتاج، ونماذج العمل المتاحة.",
     faqItems: [
         {
