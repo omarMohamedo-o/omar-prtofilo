@@ -25,21 +25,21 @@ export const devopsSkills = {
 export const devopsProjects = [
     {
         title: "PlayerHub.GG — Production Game Platform & MLOps Infrastructure",
-        description: "Live production gaming and AI platform infrastructure. Orchestrated a resilient containerized stack with Nginx edge, PHP-FPM (Laravel), HAProxy intelligent read routing, MariaDB primary-replica replication, and separated Redis caching clusters. Integrated Prometheus, Grafana, and Loki/Promtail observability, self-healing daemons (autoheal, smartheal), toxiproxy chaos engineering, and zero-downtime CI/CD deployment pipelines.",
+        description: "Live production gaming and AI platform infrastructure (Sep 2026 – Present). Orchestrated a resilient containerized stack with Nginx edge, HAProxy intelligent read routing, MariaDB primary-replica replication, and separated Redis caching clusters achieving 99.9% uptime under 10,000+ daily active users, absorbing 60% of query volume with sub-10ms latency and saving over $15,000 USD annually in scaling overhead. Integrated Prometheus, Grafana, and Loki/Promtail observability with self-healing supervisors (autoheal, smartheal).",
         tech: ["Docker", "Kubernetes", "Nginx", "HAProxy", "MariaDB", "Redis", "Prometheus", "Grafana", "Loki", "GitHub Actions"],
         github: "",
         link: "https://www.playerhub.gg/en"
     },
     {
         title: "ChloroMaster — Production Cloud Microservices Platform",
-        description: "Full-scale enterprise chemical & agricultural management platform deployed on AWS. Engineered end-to-end containerized microservices orchestration on Kubernetes with modular Terraform IaC, automated GitHub Actions CI/CD with HashiCorp Vault secrets management and Trivy security scanning, plus 24/7 Prometheus & Grafana alerting.",
+        description: "Full-scale enterprise agricultural platform deployed on AWS (Jun 2025 – Apr 2026). Engineered end-to-end containerized microservices on Kubernetes with modular Terraform IaC, accelerating multi-tier cloud provisioning from 6.0 hours to 12 minutes (96.6% speedup) and reducing AWS infrastructure run-rate by $8,400+ USD annually. Automated GitHub Actions CI/CD with HashiCorp Vault dynamic secrets (3,600s TTL) and Trivy security scanning with 0 critical CVEs.",
         tech: ["AWS", "Kubernetes", "Docker", "Terraform", "GitHub Actions", "HashiCorp Vault", "Trivy", "Prometheus", "Grafana"],
         github: "",
         link: "https://chloromaster.com/"
     },
     {
         title: "HistoryVerse — AWS Fargate & Modular Terraform Infrastructure",
-        description: "Cloud infrastructure for the graduation project (Grade: A+). Designed modular Terraform configurations deploying the multi-agent AI system onto AWS Fargate, configured automated horizontal autoscaling, Langfuse distributed tracing, and automated regression test runner with 204 passing integration tests.",
+        description: "Cloud infrastructure for the graduation project graded A+ (98/100, Jul 2024). Designed modular Terraform configurations deploying the multi-agent AI system onto AWS Fargate, configured automated horizontal autoscaling, Langfuse distributed tracing, and automated regression test runner with 204 passing integration tests, slashing inference API costs by 93% (from $0.03 to $0.002 USD per 1k tokens).",
         tech: ["AWS Fargate", "Terraform", "Docker", "Langfuse", "Pydantic", "pytest", "GitHub Actions"],
         github: "https://github.com/omarMohamedo-o/HistoryVerse",
         link: "#"
